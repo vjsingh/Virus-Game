@@ -8,23 +8,25 @@
 //  p.PVector vel = initial velocity
 //  p.PVector accel = initial acceleration
 
-var game_object = function (spec) {
-
-    // private variables
-    var mode = spec.mode;
-    var pos = spec.pos;
-    var width = spec.width;
-    var height = spec.height;
-    var vel = spec.vel;
-    var accel = spec.accel;
+var game_object = function (p, spec) {
 
     // object to return
     var obj = {};
 
+    // --- private variables ---
+
+    var mode = spec.mode || p.CENTER;
+    var pos = spec.pos || new p.PVector(0, 0);
+    var width = spec.width || 0;
+    var height = spec.height || 0;
+    var vel = spec.vel || new p.PVector(0, 0);
+    var accel = spec.accel || new p.PVector(0, 0);
+
+    // --- public methods ---
+
     // all game_objects must implement this interface:
     // void update() - called each frame to move/update objects
-    // void draw(Processing p) - called each frame to display the object
-    //      - takes a Processing instance to draw to
+    // void draw() - called each frame to display the object
     // boolean is_dead() - returns true if the object should be
     //                      removed from the game
 
@@ -32,7 +34,7 @@ var game_object = function (spec) {
     obj.update = function() { obj.move(); };
     
     // draw does nothing by default
-    obj.draw = function(p) {};
+    obj.draw = function() {};
     
     // is_dead returns false by default
     obj.is_dead = function() { return false; };
@@ -48,7 +50,7 @@ var game_object = function (spec) {
         vel = new p.PVector(0, 0);
     }
 
-    // --- SETTERS --- 
+    // --- setters --- 
 
     obj.set_accel = function(new_accel) {
         accel = new_accel;
@@ -58,7 +60,7 @@ var game_object = function (spec) {
         vel = new_vel;
     }
 
-    // --- GETTERS --- 
+    // --- getters --- 
 
     obj.get_pos = function() {
         return pos;
@@ -76,4 +78,5 @@ var game_object = function (spec) {
         return mode;
     }
 
+    return obj;
 }
