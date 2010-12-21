@@ -44,8 +44,9 @@ var game = function (p) {
     obj.update_all_objects = function() {
 		//Remove all objs at end in case there is an issue in removing while iterating
 		to_remove = [];
-        for (lst_of_o in game_objects) {
-            for (o in lst_of_o) {
+        for (var i=0; i<game_objects.length; j++) {
+            for (var i=0; i<game_objects[i].length; i++) {
+                var o = game_objects[i][j];
                 o.update();
 				if (o.off_screen()) {
 					to_remove.push(o);
