@@ -83,5 +83,13 @@ var game_object = function (p, spec) {
         return mode;
     }
 
+    obj.get_vel = function() {
+        return vel;
+    }
+
+    obj.get_accel = function() {
+        return accel;
+    }
+
     return obj;
 }

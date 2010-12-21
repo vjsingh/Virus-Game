@@ -2,8 +2,7 @@
 // which gets passed in a processing instance p
 var pCode = function(p) {
 
-    var p1, p2, p3;
-    var c1, c2, c3;
+    var objs = [];
 
     // built in functions are attributes of the processing instance
     p.setup = function() {
@@ -19,35 +18,39 @@ var pCode = function(p) {
 
 
         // make some test particles
-        p1 = particle(p, {
+        objs.push(particle(p, {
             pos: new p.PVector(100, 100),
             vel: new p.PVector(.2, .2)
-        });
+        }));
 
-        p2 = particle(p, {
+        objs.push(particle(p, {
             pos: new p.PVector(300, 100),
             vel: new p.PVector(-.2, .2)
-        });
+        }));
 
-        p3 = particle(p, {
+        objs.push(particle(p, {
             pos: new p.PVector(100, 300),
             vel: new p.PVector(.2, -.2)
-        });
+        }));
 
-        c1 = cell(p, {
+        objs.push(cell(p, {
             pos: new p.PVector(200, 200),
             state: "alive"
-        });
+        }));
 
-        c2 = cell(p, {
+        objs.push(cell(p, {
             pos: new p.PVector(250, 200),
             state: "infected"
-        });
+        }));
 
-        c3 = cell(p, {
+        objs.push(cell(p, {
             pos: new p.PVector(150, 200),
             state: "dead"
-        });
+        }));
+
+        objs.push(floater(p, {
+            pos: new p.PVector(400, 200),
+        }));
 
     };
 
@@ -57,23 +60,10 @@ var pCode = function(p) {
         p.fill(0);
         p.text("testing", p.width/2, p.height/2);
 
-        p1.update();
-        p1.draw();
-
-        p2.update();
-        p2.draw();
-
-        p3.update();
-        p3.draw();
-
-        c1.update();
-        c1.draw();
-
-        c2.update();
-        c2.draw();
-
-        c3.update();
-        c3.draw();
+        for (var i=0; i<objs.length; i++) {
+            objs[i].update();
+            objs[i].draw();
+        }
     };
 }
 
