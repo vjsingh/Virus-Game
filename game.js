@@ -1,18 +1,9 @@
 // *** game ***
-// spec:
-//  mode = p.CENTER or p.CORNERS (constants from processing)
-//     - describes how the coords work, set by p.shapeMode()
-//  p.PVector pos = initial position (x,y)
-//  float width = width of the entire object
-//  float height = height of the entire object
-//  p.PVector vel = initial velocity
-//  p.PVector accel = initial acceleration
-
-//Possible States:
+// Possible States:
 // Splash, Game, Pause, Help
 
 
-var game_object = function (p, spec) {
+var game_object = function (p) {
 
     // object to return
     var obj = {};
