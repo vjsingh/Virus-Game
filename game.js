@@ -27,35 +27,28 @@ var game = function (p) {
     // --- private methods ---
     handle_collision = function(obj1, obj2) {};
 	
-	remove_obj = function(o) {
+	//Removes all objs which are either off screen or dead
+	remove_objs = function() {
+		var filter_fun = function(x) {
+            return (! x.off_screen() && ! x.is_dead())
+        };  
         for (lst_of_o in game_objects) {
-            var index = game_objects.indexOf(o);
-            if (index >= 0) {
-				game_objects.splice(index, 1);
-				break; //Every object should only be in one list
-            }
+			lst_of_o = lst_of_o.filter(filter_fun);
         }
-	}
+	};
     
     // --- public methods ---
 
-    //Calls upate() on every obj
-	//after updating, if obj is off_screen(), removes from world
+    //Calls update() on every obj
+	//after updating, calls remove_objs
     obj.update_all_objects = function() {
-		//Remove all objs at end in case there is an issue in removing while iterating
-		to_remove = [];
         for (lst_of_o in game_objects) {
             for (o in lst_of_o) {
                 o.update();
-				if (o.off_screen()) {
-					to_remove.push(o);
-				}
             }
         }
 		
-		for (o in to_remove) {
-			remove_obj(o);
-		}
+		remove_objs();
     };
     
     //Handles a mouse click at x, y according to which state we are in
