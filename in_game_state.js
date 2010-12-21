@@ -1,7 +1,7 @@
 // *** game ***
 // NOTE: get_type() returns "game" not "in_game"
 
-var in_game_state = function (p) {
+var in_game_state = function (p, previous_state) {
 
     // object to return
     var obj = game_state(p);
@@ -11,6 +11,7 @@ var in_game_state = function (p) {
     
     // --- private variables ---
 
+	var prev_state = previous_state;
     var curr_state = "Splash"; //Splash, Game, Pause, Help
     var distance = 0; //x-coordinate of the total distance travelled
     var score = 0;

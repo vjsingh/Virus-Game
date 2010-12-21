@@ -1,12 +1,7 @@
 // *** state_manager ***
 // The game engine; manages all of the games states
-// Provides update() and mouse_click(x, y)
-// State Changing (all in mouse_click):
-//      States can only be changed by a mouse click
-//      Next state is returned by state.mouse_click()
-//      Next state can be either a string or an actual state
-//          If actual state, means it was a previous state, so return to it
-//          If string, make appropriate new state, and handle 
+// Provides update(), mouse_click(x, y), and key_pressed(k)
+// The next state to go to, if applicable, is returned by state.update()
 
 var state_manager = function (p) {
 
@@ -62,16 +57,7 @@ var state_manager = function (p) {
 
     //Updates the current state and renders all appropriate states
     obj.update = function() {
-        curr_state.update();
-        for (var i = 0; i < displayed_states.length; i++) {
-            displayed_states[i].render();
-        }
-    }
-    
-    //Handles a mouse click at x, y according to which state we are in
-    //Then handles changing states
-    obj.mouse_click= function (x, y) {
-        var next_state = curr_state.mouse_click(x, y); 
+		var next_state = curr_state.update();
         
         //If we have a new state to go to
         if (next_state) {
@@ -91,7 +77,6 @@ var state_manager = function (p) {
                 case "help":
                     is_overlay = true;
                     break;
-                        
             }
 			
 			//Remove current state and set curr to next
@@ -111,7 +96,19 @@ var state_manager = function (p) {
 				displayed_states = [curr_state];
 			}
 		}
+		
+		 for (var i = 0; i < displayed_states.length; i++) {
+            displayed_states[i].render();
+        }
+    }
+    
+    //Passes clicks on to curr_state
+    obj.mouse_click = function (x, y) {
+        curr_state.mouse_click(x, y); 
     };
+	obj.key_pressed = function(k) {
+		curr_state.key_pressed(k);
+	}
     
     return obj;
 };

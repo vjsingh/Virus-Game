@@ -5,6 +5,7 @@
 // All game states must take a previous_state in their constructor
 // When this state is finished, it should return to that previous_state
 // The previous state is returned by either update or mouse_click
+// The exception to this is splash, which is the base state and should never be exited
 var game_state = function (p) {
 
     // object to return
