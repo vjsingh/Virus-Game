@@ -39,18 +39,19 @@ var in_game_state = function (p) {
 			lst_of_o = lst_of_o.filter(filter_fun);
         }
 	};
+	
+	//Checks whether any 2 objs are colliding, and if so calls handle_collision on them
+    check_collisions = function() {};
     
     // --- public methods ---
 	
 	obj.get_type = function() {
 		return "game";
-	}
+	};
 
     //Calls update() on every obj
 	//after updating, calls remove_objs
-    obj.update_all_objects = function() {
-		//Remove all objs at end in case there is an issue in removing while iterating
-		to_remove = [];
+    obj.update = function() {
         for (var i=0; i<game_objects.length; i++) {
             for (var j=0; j<game_objects[i].length; j++) {
                 var o = game_objects[i][j];
@@ -61,32 +62,19 @@ var in_game_state = function (p) {
 		remove_objs();
     };
     
-    //Handles a mouse click at x, y according to which state we are in
-    obj.mouse_click= function (x, y) {
-        switch (curr_state) {
-            case "Splash":
-                break;          
-            case "Game":
-                break;
-            case "Pause":
-                break;
-            case "Help":
-                break;
-        }
-    };
-    
     //Calls draw() on every obj
     obj.render = function(){
         for (var i=0; i<game_objects.length; i++) {
             for (var j=0; j<game_objects[i].length; j++) {
-				var o = game_objects[i][j];
+                var o = game_objects[i][j];
                 o.draw();
             }
         }
     };
-    
-    //Checks whether any 2 objs are colliding, and if so calls handle_collision on them
-    obj.check_collisions = function() {};
+	
+    obj.mouse_click= function (x, y) {
+		
+    };
     
     //Adds a game_object to the game world
     obj.add_object = function(o) {
