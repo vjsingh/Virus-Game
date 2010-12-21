@@ -1,12 +1,12 @@
 // *** game ***
 
-var game_object = function (p) {
+var game = function (p) {
 
     // object to return
     var obj = {};
 
     // --- constants ---
-    var num_of_types = 5;
+    var num_of_render_levels = 5;
     
     // --- private variables ---
 
@@ -14,28 +14,48 @@ var game_object = function (p) {
     var distance = 0; //x-coordinate of the total distance travelled
     var score = 0;
     
-    //Initialize to be a list of num_of_types empty lists
+    //Initialize to be a list of num_of_render_levels empty lists
     var game_objects = [];
-    for (var i = 0; i < num_of_types; i++) {
+    for (var i = 0; i < num_of_render_levels; i++) {
         game_objects[i] = [];
     }
     
     //A mapping from game_object types to their rendering levels
-    var type_to_level = {"background":0, "particle":1, "cell":2, "enemy":3, "info":4}; 
-
+    var type_to_level = {"background":0, "particle":1, "cell":2, "wall_cell":2,
+	                       "empty_cell":2, "floater":3, "tkiller":3, "info":4}; 
     
     // --- private methods ---
-    obj.handle_collision = function(obj1, obj2) {};
+    handle_collision = function(obj1, obj2) {};
+	
+	remove_obj = function(o) {
+        for (lst_of_o in game_objects) {
+            var index = game_objects.indexOf(o);
+            if (index >= 0) {
+				game_objects.splice(index, 1);
+				break; //Every object should only be in one list
+            }
+        }
+	}
     
     // --- public methods ---
 
     //Calls upate() on every obj
+	//after updating, if obj is off_screen(), removes from world
     obj.update_all_objects = function() {
+		//Remove all objs at end in case there is an issue in removing while iterating
+		to_remove = [];
         for (lst_of_o in game_objects) {
             for (o in lst_of_o) {
                 o.update();
+				if (o.off_screen()) {
+					to_remove.push(o);
+				}
             }
         }
+		
+		for (o in to_remove) {
+			remove_obj(o);
+		}
     };
     
     //Handles a mouse click at x, y according to which state we are in
@@ -68,7 +88,7 @@ var game_object = function (p) {
     obj.add_object = function(o) {
         var type = o.get_type();
         var render_level = type_to_level[type];
-        game_objects[render_level] = game_objects[render_level].concat(o);
+        game_objects[render_level].push(o);
     };
     
     return obj;
