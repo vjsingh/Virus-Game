@@ -55,7 +55,7 @@ var pCode = function(p) {
         p.background(200);
 
         g.update_all_objects();
-        g.draw_all();
+        g.render();
     };
 }
 
