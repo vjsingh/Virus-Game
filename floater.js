@@ -16,7 +16,7 @@ var floater = function(p, spec) {
 
     obj.get_type = function() {
         return "floater";
-    }
+    };
 
     // --- private variables ---
     
@@ -38,7 +38,7 @@ var floater = function(p, spec) {
             obj.set_vel(new p.PVector(v.x, -v.y));
         }
         obj.move();
-    }
+    };
 
     // (rectangle for now)
     obj.draw = function() {
@@ -52,11 +52,11 @@ var floater = function(p, spec) {
 
         p.rect(pos.x, pos.y,
                 obj.get_width(), obj.get_height());
-    }
+    };
 
     obj.is_dead = function() {
         return false;
-    }
+    };
 
     return obj;
 }
