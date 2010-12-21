@@ -13,6 +13,10 @@ var particle = function(p, spec) {
     // obj to return
     var obj = game_object(p, spec);
 
+    obj.get_type = function() {
+        return "particle";
+    }
+
     // --- private variables ---
 
     var alive = true;

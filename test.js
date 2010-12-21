@@ -3,6 +3,7 @@
 var pCode = function(p) {
 
     var p1, p2, p3;
+    var c1, c2, c3;
 
     // built in functions are attributes of the processing instance
     p.setup = function() {
@@ -33,6 +34,21 @@ var pCode = function(p) {
             vel: new p.PVector(.2, -.2)
         });
 
+        c1 = cell(p, {
+            pos: new p.PVector(200, 200),
+            state: "alive"
+        });
+
+        c2 = cell(p, {
+            pos: new p.PVector(250, 200),
+            state: "infected"
+        });
+
+        c3 = cell(p, {
+            pos: new p.PVector(150, 200),
+            state: "dead"
+        });
+
     };
 
     // draw is called repeatedly
@@ -49,6 +65,15 @@ var pCode = function(p) {
 
         p3.update();
         p3.draw();
+
+        c1.update();
+        c1.draw();
+
+        c2.update();
+        c2.draw();
+
+        c3.update();
+        c3.draw();
     };
 }
 

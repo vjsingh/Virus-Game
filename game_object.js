@@ -13,6 +13,11 @@ var game_object = function (p, spec) {
     // object to return
     var obj = {};
 
+    // should be overridden by subtypes
+    obj.get_type = function() {
+        return "game_object";
+    }
+
     // --- private variables ---
 
     var mode = spec.mode || p.CENTER;
