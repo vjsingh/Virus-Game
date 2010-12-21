@@ -105,7 +105,7 @@ var state_manager = function (p) {
 			
 			//If overlay, add to displayed, otherwise reset displayed
 			if (is_overlay) {
-				add_to_displayed_stats[curr_state];
+				add_to_displayed_states[curr_state];
 			}
 			else {
 				displayed_states = [curr_state];
