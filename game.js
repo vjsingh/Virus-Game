@@ -3,7 +3,7 @@
 // Splash, Game, Pause, Help
 
 
-var game_object = function (p) {
+var game = function (p) {
 
     // object to return
     var obj = {};
@@ -71,7 +71,7 @@ var game_object = function (p) {
 	obj.add_object = function(o) {
 		var type = o.get_type();
 		var render_level = type_to_level[type];
-		game_objects[render_level] = game_objects[render_level].concat(o);
+		game_objects[render_level].push(o);
 	};
 	
     return obj;
