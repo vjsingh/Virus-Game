@@ -30,9 +30,11 @@ var game = function (p) {
 	//Removes all objs which are either off screen or dead
 	remove_objs = function() {
 		var filter_fun = function(x) {
-            return (! x.off_screen() && ! x.is_dead())
+            //return (! x.off_screen() && ! x.is_dead())
+			return ! x.is_dead();
         };  
-        for (lst_of_o in game_objects) {
+        for (var i = 0; i < game_objects.length; i++) {
+			lst_of_o = game_objects[i];
 			lst_of_o = lst_of_o.filter(filter_fun);
         }
 	};
@@ -43,7 +45,7 @@ var game = function (p) {
 	//after updating, calls remove_objs
     obj.update_all_objects = function() {
 		//Remove all objs at end in case there is an issue in removing while iterating
-	    var to_remove = [];
+		to_remove = [];
         for (var i=0; i<game_objects.length; i++) {
             for (var j=0; j<game_objects[i].length; j++) {
                 var o = game_objects[i][j];
@@ -51,7 +53,7 @@ var game = function (p) {
             }
         }
 		
-	//	remove_objs();
+		remove_objs();
     };
     
     //Handles a mouse click at x, y according to which state we are in
@@ -70,8 +72,9 @@ var game = function (p) {
     
     //Calls draw() on every obj
     obj.render = function(){
-        for (var i=0; i<game_objects.length; j++) {
-            for (var i=0; i<game_objects[i].length; i++) {
+        for (var i=0; i<game_objects.length; i++) {
+            for (var j=0; j<game_objects[i].length; j++) {
+				var o = game_objects[i][j];
                 o.draw();
             }
         }
