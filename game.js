@@ -43,15 +43,15 @@ var game = function (p) {
 	//after updating, calls remove_objs
     obj.update_all_objects = function() {
 		//Remove all objs at end in case there is an issue in removing while iterating
-		to_remove = [];
-        for (var i=0; i<game_objects.length; j++) {
+	    var to_remove = [];
+        for (var i=0; i<game_objects.length; i++) {
             for (var j=0; j<game_objects[i].length; j++) {
                 var o = game_objects[i][j];
                 o.update();
             }
         }
 		
-		remove_objs();
+	//	remove_objs();
     };
     
     //Handles a mouse click at x, y according to which state we are in
