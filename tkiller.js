@@ -34,6 +34,7 @@ var tkiller = function(p, spec) {
     obj.update = function() {
         var pos = obj.get_pos();
         var tpos;
+        var speed_to_use = speed;
 
         // if no target
         if (target === null) {
@@ -42,7 +43,7 @@ var tkiller = function(p, spec) {
                 target_angle += p.random(-p.PI/16, p.PI/16);
             }
             // laze
-            speed = 0.02;
+            speed_to_use = 0.02;
         }
         else {
             tpos = target.get_pos();
@@ -58,8 +59,8 @@ var tkiller = function(p, spec) {
         }
 
         // change velocity to point towards target
-        obj.set_vel(new p.PVector(speed*p.cos(target_angle),
-                speed*p.sin(target_angle)));
+        obj.set_vel(new p.PVector(speed_to_use*p.cos(target_angle),
+                speed_to_use*p.sin(target_angle)));
 
 
         obj.move();

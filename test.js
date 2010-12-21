@@ -2,7 +2,7 @@
 // which gets passed in a processing instance p
 var pCode = function(p) {
 
-    var g;
+    var g, t1, c1, c2;
 
     p.setup = function() {
         p.size(500, 500);
@@ -25,11 +25,17 @@ var pCode = function(p) {
             vel: new p.PVector(.2, -.2)
         }));
 
-        var c1 = cell(p, {
+        c1 = cell(p, {
             pos: new p.PVector(200, 200),
             state: "active"
         });
         g.add_object(c1);
+
+        c2 = cell(p, {
+            pos: new p.PVector(100, 400),
+            state: "active"
+        });
+        g.add_object(c2);
 
         g.add_object(cell(p, {
             pos: new p.PVector(250, 200),
@@ -53,10 +59,13 @@ var pCode = function(p) {
             pos: new p.PVector(400, 200)
         }));
 
-        g.add_object(tkiller(p, {
+        t1 = tkiller(p, {
             pos: new p.PVector(400, 400),
             target: c1
-        }));
+        });
+        g.add_object(t1);
+
+        setTimeout(function() { t1.set_target(c2); }, 9000);
     };
 
     // draw is called repeatedly
@@ -65,6 +74,7 @@ var pCode = function(p) {
 
         g.update_all_objects();
         g.render();
+
     };
 }
 
