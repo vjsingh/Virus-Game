@@ -14,6 +14,10 @@ var cell = function(p, spec) {
     // obj to return
     var obj = game_object(p, spec);
 
+    obj.get_type = function() {
+        return "cell";
+    }
+
     // --- private variables ---
 
     // state can be "alive", "infected", or "dead"
