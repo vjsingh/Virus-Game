@@ -61,6 +61,7 @@ var in_game_state = function (p, previous_state) {
         }
         
         remove_objs();
+		//TODO: add end game check
     };
     
     //Calls draw() on every obj
@@ -73,9 +74,12 @@ var in_game_state = function (p, previous_state) {
         }
     };
     
-    obj.mouse_click= function (x, y) {
+    obj.mouse_click = function (x, y) {
         
     };
+	obj.key_pressed = function(k) {
+		
+	};
     
     //Adds a game_object to the game world
     obj.add_object = function(o) {
