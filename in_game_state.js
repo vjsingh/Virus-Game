@@ -1,9 +1,10 @@
 // *** game ***
+// NOTE: get_type() returns "game" not "in_game"
 
-var game = function (p) {
+var in_game_state = function (p) {
 
     // object to return
-    var obj = {};
+    var obj = game_state(p);
 
     // --- constants ---
     var num_of_render_levels = 5;
@@ -40,6 +41,10 @@ var game = function (p) {
 	};
     
     // --- public methods ---
+	
+	obj.get_type = function() {
+		return "game";
+	}
 
     //Calls update() on every obj
 	//after updating, calls remove_objs
