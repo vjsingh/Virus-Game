@@ -47,6 +47,7 @@ var empty_cell = function(p, spec) {
 
         p.strokeWeight(2);
         p.stroke(0);
+        p.noFill();
 
         if (state === "alive") {
             p.stroke(0);

@@ -2,7 +2,7 @@
 // --- inherits from game_object
 // spec:
 //  game_object spec +
-//  String state = "alive" or "dead" or "infected"
+//  String state = "alive" or "dead" or "infected" or "active"
 
 var cell = function(p, spec) {
     
@@ -20,7 +20,7 @@ var cell = function(p, spec) {
 
     // --- private variables ---
 
-    // state can be "alive", "infected", or "dead"
+    // state can be "alive", "infected", "active", or "dead"
     var state = spec.state || "alive";
     var antibody_angle = 0;
     var antibody_dir = 1;
@@ -36,6 +36,9 @@ var cell = function(p, spec) {
             // just chill
         }
         else if (state === "infected") {
+            // still chill
+        }
+        else if (state === "active") {
             // spin the antibody
             rotateAntibody();
         }
@@ -55,6 +58,9 @@ var cell = function(p, spec) {
         }
         else if (state === "infected") {
             p.fill(255);
+        }
+        else if (state === "active") {
+            p.fill(255);
             drawAntibody();
         }
         else if (state === "dead") {
@@ -72,8 +78,12 @@ var cell = function(p, spec) {
         return state === "dead";
     };
 
+    obj.set_state = function(s) {
+        state = s;
+    };
+
     obj.die = function() {
-        state = "dead";
+        obj.set_state("dead");
     };
 
     // --- private functions ---
