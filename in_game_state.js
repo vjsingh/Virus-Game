@@ -23,34 +23,34 @@ var in_game_state = function (p) {
     
     //A mapping from game_object types to their rendering levels
     var type_to_level = {"background":0, "particle":1, "cell":2, "wall_cell":2,
-	                       "empty_cell":2, "floater":3, "tkiller":3, "info":4}; 
+                           "empty_cell":2, "floater":3, "tkiller":3, "info":4}; 
     
     // --- private methods ---
     handle_collision = function(obj1, obj2) {};
-	
-	//Removes all objs which are either off screen or dead
-	remove_objs = function() {
-		var filter_fun = function(x) {
+    
+    //Removes all objs which are either off screen or dead
+    remove_objs = function() {
+        var filter_fun = function(x) {
             //return (! x.off_screen() && ! x.is_dead())
-			return ! x.is_dead();
+            return ! x.is_dead();
         };  
         for (var i = 0; i < game_objects.length; i++) {
-			lst_of_o = game_objects[i];
-			lst_of_o = lst_of_o.filter(filter_fun);
+            lst_of_o = game_objects[i];
+            lst_of_o = lst_of_o.filter(filter_fun);
         }
-	};
-	
-	//Checks whether any 2 objs are colliding, and if so calls handle_collision on them
+    };
+    
+    //Checks whether any 2 objs are colliding, and if so calls handle_collision on them
     check_collisions = function() {};
     
     // --- public methods ---
-	
-	obj.get_type = function() {
-		return "game";
-	};
+    
+    obj.get_type = function() {
+        return "game";
+    };
 
     //Calls update() on every obj
-	//after updating, calls remove_objs
+    //after updating, calls remove_objs
     obj.update = function() {
         for (var i=0; i<game_objects.length; i++) {
             for (var j=0; j<game_objects[i].length; j++) {
@@ -58,8 +58,8 @@ var in_game_state = function (p) {
                 o.update();
             }
         }
-		
-		remove_objs();
+        
+        remove_objs();
     };
     
     //Calls draw() on every obj
@@ -71,9 +71,9 @@ var in_game_state = function (p) {
             }
         }
     };
-	
+    
     obj.mouse_click= function (x, y) {
-		
+        
     };
     
     //Adds a game_object to the game world
