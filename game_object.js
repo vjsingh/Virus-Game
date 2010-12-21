@@ -16,7 +16,7 @@ var game_object = function (p, spec) {
     // should be overridden by subtypes
     obj.get_type = function() {
         return "game_object";
-    }
+    };
 
     // --- private variables ---
 
@@ -48,48 +48,48 @@ var game_object = function (p, spec) {
     obj.move = function() {
         vel.add(accel);
         pos.add(vel);
-    }
+    };
 
     // stops the object in its tracks by zeroing out vel
     obj.stop = function() {
         vel = new p.PVector(0, 0);
-    }
+    };
 
     // --- setters --- 
 
     obj.set_accel = function(new_accel) {
         accel = new_accel;
-    }
+    };
 
     obj.set_vel = function(new_vel) {
         vel = new_vel;
-    }
+    };
 
     // --- getters --- 
 
     obj.get_pos = function() {
         return pos;
-    }
+    };
 
     obj.get_width = function() {
         return width;
-    }
+    };
 
     obj.get_height = function() {
         return height;
-    }
+    };
 
     obj.get_mode = function() {
         return mode;
-    }
+    };
 
     obj.get_vel = function() {
         return vel;
-    }
+    };
 
     obj.get_accel = function() {
         return accel;
-    }
+    };
 
     return obj;
 }

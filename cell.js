@@ -16,7 +16,7 @@ var cell = function(p, spec) {
 
     obj.get_type = function() {
         return "cell";
-    }
+    };
 
     // --- private variables ---
 
@@ -42,7 +42,7 @@ var cell = function(p, spec) {
         else if (state === "dead") {
             // explode!!
         }
-    }
+    };
 
     // draw makes a cell with a different color depending on state
     // (circle for now)
@@ -66,15 +66,15 @@ var cell = function(p, spec) {
 
         p.ellipse(pos.x, pos.y,
                 obj.get_width(), obj.get_height());
-    }
+    };
 
     obj.is_dead = function() {
         return state === "dead";
-    }
+    };
 
     obj.die = function() {
         state = "dead";
-    }
+    };
 
     // --- private functions ---
 
@@ -86,7 +86,7 @@ var cell = function(p, spec) {
             antibody_dir = (2-antibody_dir)-2;
         }
         antibody_angle += p.radians(1)*antibody_dir;
-    }
+    };
 
     // draw the Y-shaped antibody at the edge of the cell
     var drawAntibody = function() {
@@ -111,7 +111,7 @@ var cell = function(p, spec) {
         p.line(x1, 0, x1+w/3, -w/3);
 
         p.popMatrix();
-    }
+    };
 
     return obj;
 }

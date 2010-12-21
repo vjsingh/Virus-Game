@@ -1,20 +1,18 @@
-// *** particle ***
-// --- inherits from game_object
+// *** wall_cell ***
+// --- inherits from cell
 // spec:
 //  game_object spec
 
-var particle = function(p, spec) {
+var wall_cell = function(p, spec) {
     
     // --- defaults ---
-
-    spec.width = spec.width || 10;
-    spec.height = spec.height || 10;
+    // inherited from cell
 
     // obj to return
-    var obj = game_object(p, spec);
+    var obj = cell(p, spec);
 
     obj.get_type = function() {
-        return "particle";
+        return "wall_cell";
     };
 
     // --- private variables ---
@@ -24,26 +22,28 @@ var particle = function(p, spec) {
     // --- public methods --- 
 
     // implementing game_object interface
-    
-    // update is default (move)
+   
+    // update is back to the default 
+    obj.update = function() {
+        obj.move();
+    };
 
-    // draw makes a small virus particle
     // (circle for now)
     obj.draw = function() {
         var pos = obj.get_pos();
         p.shapeMode(obj.mode);
-        p.fill(100);
+
+        p.fill(0);
         p.noStroke();
+
         p.ellipse(pos.x, pos.y,
                 obj.get_width(), obj.get_height());
     };
 
-    // is_dead just returns whether it isn't alive 
     obj.is_dead = function() {
         return !alive;
     };
 
-    // which means we need a way to die
     obj.die = function() {
         alive = false;
     };

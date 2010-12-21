@@ -49,7 +49,11 @@ var pCode = function(p) {
         }));
 
         objs.push(floater(p, {
-            pos: new p.PVector(400, 200),
+            pos: new p.PVector(400, 200)
+        }));
+
+        objs.push(wall_cell(p, {
+            pos: new p.PVector(400, 100)
         }));
 
     };
