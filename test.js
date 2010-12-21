@@ -24,7 +24,7 @@ var pCode = function(p) {
             pos: new p.PVector(100, 300),
             vel: new p.PVector(.2, -.2)
         }));
-
+/*
         g.add_object(cell(p, {
             pos: new p.PVector(200, 200),
             state: "alive"
@@ -47,14 +47,14 @@ var pCode = function(p) {
         g.add_object(wall_cell(p, {
             pos: new p.PVector(400, 100)
         }));
-
+*/
     };
 
     // draw is called repeatedly
     p.draw = function() {
         p.background(200);
 
-        g.update_all();
+        g.update_all_objects();
         g.draw_all();
     };
 }
