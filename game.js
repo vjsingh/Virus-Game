@@ -72,6 +72,7 @@ var game = function (p) {
     obj.render = function(){
         for (var i=0; i<game_objects.length; j++) {
             for (var i=0; i<game_objects[i].length; i++) {
+				var o = game_objects[i][j];
                 o.draw();
             }
         }
