@@ -70,8 +70,8 @@ var game = function (p) {
     
     //Calls draw() on every obj
     obj.render = function(){
-        for (lst_of_o in game_objects) {
-            for (o in lst_of_o) {
+        for (var i=0; i<game_objects.length; j++) {
+            for (var i=0; i<game_objects[i].length; i++) {
                 o.draw();
             }
         }
