@@ -44,6 +44,20 @@ var game_object = function (p, spec) {
     // is_dead returns false by default
     obj.is_dead = function() { return false; };
 
+    // returns true if the object is completely offscreen
+    // i.e. checks pos + dimensions
+    obj.is_offscreen = function() {
+        var left_edge = pos.x - width;
+        var right_edge = pos.x + width;
+        var top_edge = pos.y - height;
+        var btm_edge = pos.y + height;
+
+        return (left_edge > p.width
+            || right_edge < 0
+            || top_edge > p.height
+            || btm_edge < 0);
+    }
+
     // updates the position according to accel and vel
     obj.move = function() {
         vel.add(accel);
