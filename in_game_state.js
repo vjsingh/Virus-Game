@@ -115,6 +115,11 @@ var in_game_state = function (p, previous_state) {
         if (infecteds.length > 0) {
             next = infecteds[0];
             next.set_state("active");
+            // update the tkillers' targets
+            do_to_type(function(obj) {
+                    obj.set_target(next);
+                }, "tkiller", true);
+
             //console.log("got next "+next.to_string());
         }
 
@@ -242,6 +247,7 @@ var in_game_state = function (p, previous_state) {
                 // particle vs. wall_cell
                 // bounce particle off cell
                 // (cell shouldn't move right?)
+                // TODO
                 "wall_cell": nothing,
 
                 // particle vs. empty_cell
@@ -302,7 +308,8 @@ var in_game_state = function (p, previous_state) {
                 "cell": nothing,
                 "wall_cell": nothing,
                 "empty_cell": nothing,
-                "floater": nothing
+                "floater": nothing,
+                "tkiller": nothing
             }
         };
         return handlers;
@@ -321,6 +328,8 @@ var in_game_state = function (p, previous_state) {
         }
     };
 	
+    /*
+    // DEPRECATED 
 	//Does a function to every object
 	//Pass in a function that takes an object
 	var do_to_all_objs = function(f) {
@@ -331,6 +340,27 @@ var in_game_state = function (p, previous_state) {
             }
         }
 	}
+    */
+
+    // applies a function to every object
+    // on the specified rendering level
+    // if strict is true, also checks to make sure 
+    // the object has the specified type
+    var do_to_type = function(f, type, strict) {
+        var level = game_objects[type_to_level[type]];
+        for (var i=0; i<level.length; i++) {
+            if (!strict || level[i].get_type() === type) {
+                f(level[i]);
+            }
+        }
+    };
+
+    // applies do_to_type to all given types
+    var do_to_types = function(f, types, strict) {
+        for (var i=0; i<types.length; i++) {
+            do_to_type(f, types[i], strict);
+        }
+    };
     
     
     // --- public methods ---
@@ -342,32 +372,42 @@ var in_game_state = function (p, previous_state) {
 	//Scrolls if scroll_counter = 0, if so resets scroll_counter to scroll_rate
     //Calls update() on every obj
     //after updating, calls remove_objs
-    obj.update = function() {
-		//Add any newly generated objs
-		generator.update();
-		
-		if (scroll_counter <= 0) {
-			scroll_counter = scroll_rate;
-			do_to_all_objs(function (o) {o.scroll(-1)});
-			distance++;
-		}
-		else {
-			scroll_counter--;
-		}
-		
-        // if we don't have an active cell
-        if (!active_cell) {
-            // try to find the next one
-            active_cell = next_active_cell();
-        }
-		
-		do_to_all_objs(function (o) {o.update()});
+    obj.update = (function() {
+        var game_types = ["background", "particle", "cell", "enemy"];
 
-        check_collisions();
+        var update_fun = function() {
+            //Add any newly generated objs
+            generator.update();
+
+            
+            if (scroll_counter <= 0) {
+                scroll_counter = scroll_rate;
+                // scroll all objects
+                do_to_types(function (o) { o.scroll(-1); },
+                        game_types, false);
+            }
+            else {
+                scroll_counter--;
+            }
+            
+            // if we don't have an active cell
+            if (!active_cell) {
+                // try to find the next one
+                active_cell = next_active_cell();
+            }
         
-        remove_objs();
-		//TODO: add end game check
-    };
+            // update all objects
+            do_to_types(function (o) { o.update(); },
+                    game_types, false);
+
+            check_collisions();
+            
+            remove_objs();
+            //TODO: add end game check
+        };
+        
+        return update_fun;
+    }());
     
     //Calls draw() on every obj
     obj.render = function(){
