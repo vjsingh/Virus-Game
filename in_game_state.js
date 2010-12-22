@@ -12,7 +12,6 @@ var in_game_state = function (p, previous_state) {
     // --- private variables ---
 
 	var prev_state = previous_state;
-    var curr_state = "Splash"; //Splash, Game, Pause, Help
     var distance = 0; //x-coordinate of the total distance travelled
     var score = 0;
 	var active_cell = null;
@@ -31,6 +30,36 @@ var in_game_state = function (p, previous_state) {
         "tkiller":3,
         "info":4
     }; 
+	
+	// Buttons
+	// Have a rectangle representing their position and
+	// a state to go to when pressed
+	var pause_button = {
+		state : pause_state(),
+		rectangle : rectangle(p, {
+			pos : new p.PVector(p.width - 20, 20),
+			width : 20,
+			height : 20
+		})
+	};
+	var help_button = {
+		state : help_state(),
+		rectangle : rectangle(p, {
+			pos : new p.PVector(p.width - 80, 20),
+			width : 20,
+			height : 20
+		})
+	};	
+	var exit_button = {
+		state : exit_state(),
+		rectangle : rectangle(p, {
+			pos : new p.PVector(20, 20),
+			width : 20,
+			height : 20
+		})
+	};	
+	//Not ordered
+	var all_buttons = [pause_button, help_button, exit_button];
     
     // --- private methods ---
 
@@ -286,12 +315,31 @@ var in_game_state = function (p, previous_state) {
     };
     
     obj.mouse_click = function (x, y) {
-        
+		//For every button, if the mouse click is in the button, then
+		//set next state to be the state specified by the button
+		for (var i = 0; i < all_buttons.length; i++) {
+			var button = all_buttons[i];
+			var rectangle = button.rectangle;
+			if (rectangle.is_in(x, y)) {
+				obj.set_next_state(button.state);
+				break;
+			}
+		}
     };
+	
 	obj.key_pressed = function(k) {
-		if (k == 32) { //spacebar
+		if (k === 32) { //spacebar
 			active_cell.fire();
 		}
+		else if (k === 112) { //p
+			pause_state = pause_state();
+			obj.set_next_state(pause_state);
+		}
+		else if (k === 104) { //h
+			help_state = help_state();
+			obj.set_next_state(help_state);
+		}
+		
 	};
     
     //Adds a game_object to the game world
