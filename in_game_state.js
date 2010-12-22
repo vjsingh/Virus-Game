@@ -311,6 +311,9 @@ var in_game_state = function (p, previous_state) {
     //Removes all objs which are either off screen or dead
     var remove_objs = function() {
         var filter_fun = function(x) {
+            if ( !( ! x.is_offscreen() && ! x.is_dead())) {
+				alert ("removing: " + x.get_type());
+			}
             return (! x.is_offscreen() && ! x.is_dead())
         };  
         for (var i = 0; i < game_objects.length; i++) {
