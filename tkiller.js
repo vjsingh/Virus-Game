@@ -59,9 +59,10 @@ var tkiller = function(p, spec) {
         }
 
         // change velocity to point towards target
-        obj.set_vel(new p.PVector(speed_to_use*p.cos(target_angle),
-                speed_to_use*p.sin(target_angle)));
-
+        var new_vel = new p.PVector(
+                p.cos(target_angle), p.sin(target_angle));
+        new_vel.mult(speed_to_use);
+        obj.set_vel(new_vel);
 
         obj.move();
     }

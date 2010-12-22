@@ -17,7 +17,7 @@ var in_game_state = function (p, previous_state) {
     var score = 0;
 	var active_cell = null;
     var game_objects = [];
-	var generator = generator(p, obj);
+	var gen = generator(p, obj);
     
     //A mapping from game_object types to their rendering levels
     var type_to_level = {
@@ -114,6 +114,12 @@ var in_game_state = function (p, previous_state) {
         if (infecteds.length > 0) {
             next = infecteds[0];
             next.set_state("active");
+            // update the tkillers' targets
+            do_to_all_objects(function(obj) {
+                    if (obj.get_type() === "tkiller") {
+                        obj.set_target(next);
+                    }
+                });
             //console.log("got next "+next.to_string());
         }
 
@@ -241,6 +247,7 @@ var in_game_state = function (p, previous_state) {
                 // particle vs. wall_cell
                 // bounce particle off cell
                 // (cell shouldn't move right?)
+                // TODO
                 "wall_cell": nothing,
 
                 // particle vs. empty_cell
@@ -355,8 +362,10 @@ var in_game_state = function (p, previous_state) {
             // try to find the next one
             active_cell = next_active_cell();
         }
-		
-		do_to_all_objs(function (o) {o.update()});
+	
+		do_to_all_objs(function (o) {
+            o.update()
+        });
 
         check_collisions();
         
