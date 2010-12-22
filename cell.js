@@ -82,9 +82,19 @@ var cell = function(p, spec) {
         state = s;
     };
 
+    obj.get_state = function() {
+        return state;
+    };
+
     obj.die = function() {
         obj.set_state("dead");
     };
+
+    // override for circular object
+    obj.calc_radius = function() {
+        return obj.get_width()/2;
+    };
+    obj.set_radius(obj.calc_radius());
 
     // --- private functions ---
 

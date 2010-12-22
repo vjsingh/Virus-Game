@@ -43,6 +43,8 @@ var floater = function(p, spec) {
     // (rectangle for now)
     obj.draw = function() {
         var pos = obj.get_pos();
+        var w = obj.get_width();
+        var h = obj.get_height();
         p.shapeMode(obj.mode);
 
         p.fill(50);
@@ -50,8 +52,9 @@ var floater = function(p, spec) {
         p.stroke(0);
         p.strokeWeight(1);
 
-        p.rect(pos.x, pos.y,
-                obj.get_width(), obj.get_height());
+        // had to hack to center rect
+        // might need to change
+        p.rect(pos.x-w/2, pos.y-h/2, w, h);
     };
 
     obj.is_dead = function() {

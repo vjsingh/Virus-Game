@@ -48,5 +48,11 @@ var particle = function(p, spec) {
         alive = false;
     };
 
+    // override for circular object
+    obj.calc_radius = function() {
+        return obj.get_width()/2;
+    };
+    obj.set_radius(obj.calc_radius());
+
     return obj;
 }
