@@ -104,8 +104,8 @@ var in_game_state = function (p, previous_state) {
                             if (obj1 !== obj2
                                 && check_circle_collision(obj1, obj2)) {
                                 handle_collision(obj1, obj2);
-                                console.log("collision! " +obj1.to_string()
-                                    +", "+obj2.to_string());
+                                //console.log("collision! " +obj1.to_string()
+                                //    +", "+obj2.to_string());
                             }
                         }
                     );
