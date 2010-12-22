@@ -1,14 +1,14 @@
 // *** generator ***
 // generates random enemies
 // Takes one parameter:
-//		game - an in_game_state
+//		game - an in_game
 //			Is going to access: (through getters since we're so safe)
 //			game_objects - array
 //			distance - a num
 //			type_to_level - hash from type to level
 //			active_cell
 
-var make_generator = function(p, game) {
+var make_generator = function(p, a_game) {
     // --- defaults ---
 
     // obj to return
@@ -16,7 +16,7 @@ var make_generator = function(p, game) {
 
     // --- private variables ---
 	
-	var game_state = game;
+	var game = a_game;
 	//This is static, but is updated in update since when we create
 	//generator this method is not yet added to the game state
 	//FIX?????
@@ -31,8 +31,8 @@ var make_generator = function(p, game) {
 	//Should be called every time the game updates
 	obj.update = function() {
 		type_to_level = game.get_type_to_level(); //Should be fixed, is static
-		game_objects = game_state.get_game_objects();
-		distance = game_state.get_distance();
+		game_objects = game.get_game_objects();
+		distance = game.get_distance();
 		
 		//If total enemies < 10, add a random enemy
 		var total_enemies = get_total_enemies();
@@ -49,7 +49,7 @@ var make_generator = function(p, game) {
 				case 0:
 			        new_enemy = cell(p, {
 			            pos: enemy_pos,
-			            state: "active"
+			            state: "alive"
 			        });
 					break;
 				case 1:
@@ -65,19 +65,21 @@ var make_generator = function(p, game) {
 				case 3: 
 			        new_enemy = tkiller(p, {
 			            pos: enemy_pos,
-			            target: game_state.get_active_cell()
+			            target: game.get_active_cell()
 			        });
 					break;
 			}
 			assert(new_enemy != null, "Error in generator.update()");
 			
 			//Add the new enemy to game_objects
-			game_objects[type_to_level[new_enemy.get_type()]].push(new_enemy);
+			//game_objects[type_to_level[new_enemy.get_type()]].push(new_enemy);
+            game.add_object(new_enemy);
 		}
 		
+        // distance didn't change - jonah
 		//Set updated game_objects and distance
-		game_state.set_game_objects(game_objects);
-		game_state.set_distance(distance);
+		//game.set_game_objects(game_objects);
+		//game.set_distance(distance);
 	}
 	
 	// --- private methods ---
@@ -87,6 +89,7 @@ var make_generator = function(p, game) {
 	var get_total_enemies = function() {
 		var total = 0;
 		
+        // USE A CLOSURE SO WE DONT HAVE TO MAKE THIS ARRAY EVERY TIME
 		//These are the types to check
 		//For now, enemies and cells
 		//Could be done by rendering levels, but doesn't seem right

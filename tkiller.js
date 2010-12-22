@@ -52,10 +52,13 @@ var tkiller = function(p, spec) {
             target_angle = p.atan2(tpos.y-pos.y,
                     tpos.x-pos.x); // y first!
                 
+            // SHOULD BE HANDLED BY COLLISIONS
             // when we get there, stop
+            /*
             if (pos.dist(tpos) < target.get_width()/2) {
                 target = null;
             }
+            */
         }
 
         // change velocity to point towards target
