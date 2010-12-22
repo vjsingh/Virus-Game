@@ -93,17 +93,18 @@ var cell = function(p, spec) {
 	// explodes this cell if it is active
     // takes number of particles to generate
 	obj.fire = function(num_particles) {
-		if (obj.state === "active") {
+		if (state === "active") {
+            // TODO: need a slower death
 			obj.die();
 			
 			var pos = obj.get_pos();
             var ang = antibody_angle;
             // use width cuz it's a circle
-            var w = obj.get_width();
+            var r = obj.get_width()/2;
 
             // gen particles at edge of cell for now
-            var x = w*p.cos(ang);
-            var y = w*p.sin(ang);
+            var x = r*p.cos(ang) + pos.x;
+            var y = r*p.sin(ang) + pos.y;
 
             // angle between all the shots
             var range = p.PI/6;
@@ -114,14 +115,14 @@ var cell = function(p, spec) {
             ang = antibody_angle - range/2;
             while (num_particles > 0) {
                 var new_vel = new p.PVector(p.cos(ang), p.sin(ang));
+                // mult by speed scalar
+                new_vel.mult(0.5);
                 // if we want to add velocity of cell
-                // probably need to add some sort of normalization
-                //new_vel.add(obj.get_vel());
+                new_vel.add(obj.get_vel());
                 
                 particles.push(particle(p, {
                     pos: new p.PVector(x, y),
-                    vel: new_vel,
-                    speed: 0.2
+                    vel: new_vel
                 }));
 
                 num_particles--;
@@ -130,6 +131,7 @@ var cell = function(p, spec) {
 
             return particles;
         }
+        throw "Can't fire on "+state+" cell!";
 	};
 
     // override for circular object

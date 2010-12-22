@@ -1,10 +1,7 @@
 // *** particle ***
 // --- inherits from game_object
 // spec:
-//  game_object spec +
-//  speed (new speed for particle)
-//  NOTE: vel should just have angle components
-//        that will be multiplied by speed
+//  game_object spec
 
 var particle = function(p, spec) {
 
@@ -12,10 +9,6 @@ var particle = function(p, spec) {
 
     spec.width = spec.width || 10;
     spec.height = spec.height || 10;
-
-    // multiply vel by speed scalar
-    var speed = spec.speed || 0.2;
-    spec.vel = spec.vel.mult(speed);
 
     // obj to return
     var obj = game_object(p, spec);

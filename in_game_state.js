@@ -30,7 +30,8 @@ var in_game_state = function (p, previous_state) {
         "tkiller":3,
         "info":4
     }; 
-	
+
+/*	
 	// Buttons
 	// Have a rectangle representing their position and
 	// a state to go to when pressed
@@ -60,7 +61,8 @@ var in_game_state = function (p, previous_state) {
 	};	
 	//Not ordered
 	var all_buttons = [pause_button, help_button, exit_button];
-    
+*/
+
     // --- private methods ---
 
     // initialization code goes here
@@ -129,7 +131,6 @@ var in_game_state = function (p, previous_state) {
                             //    +", "+obj2.to_string());
                             // check the collisions
                             // don't check collisions with self
-                            
                             if (obj1 !== obj2
                                 && check_circle_collision(obj1, obj2)) {
                                 handle_collision(obj1, obj2);
@@ -329,15 +330,16 @@ var in_game_state = function (p, previous_state) {
 	
 	obj.key_pressed = function(k) {
 		if (k === 32) { //spacebar
-			active_cell.fire();
+			var particles = active_cell.fire(5);
+            obj.add_objects(particles);
 		}
 		else if (k === 112) { //p
-			pause_state = pause_state();
-			obj.set_next_state(pause_state);
+			//pause_state = pause_state();
+			//obj.set_next_state(pause_state);
 		}
 		else if (k === 104) { //h
-			help_state = help_state();
-			obj.set_next_state(help_state);
+			//help_state = help_state();
+			//obj.set_next_state(help_state);
 		}
 		
 	};
@@ -347,6 +349,13 @@ var in_game_state = function (p, previous_state) {
         var type = o.get_type();
         var render_level = type_to_level[type];
         game_objects[render_level].push(o);
+    };
+
+    // add multiple objects
+    obj.add_objects = function(os) {
+        for (var i=0; i<os.length; i++) {
+            obj.add_object(os[i]);
+        }
     };
     
     return obj;
