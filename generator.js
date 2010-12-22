@@ -9,7 +9,7 @@
 //			active_cell
 
 var generator = function(p, game) {
-    
+    alert("in generator");
     // --- defaults ---
 
     // obj to return
@@ -107,4 +107,4 @@ var generator = function(p, game) {
 	}
 
     return obj;
-}
+};
