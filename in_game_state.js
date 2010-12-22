@@ -85,6 +85,36 @@ var in_game_state = function (p, previous_state) {
 		
 		active_cell = initial_cell;
 	}());
+
+    // returns the leftmost infected cell
+    // if no cells are infected, returns null
+    var next_active_cell = function() {
+        var next = null;
+
+        var cells = game_objects[type_to_level["cell"]]
+        var infecteds = cells.filter(
+                function(cell) {
+                    return cell.get_state() === "infected"
+                        // don't want empty_cells
+                        && cell.get_type() === "cell";
+                });
+        // sort fun should return:
+        // - if cell1 more left than cell2
+        // 0 if they are the same
+        // + if cell1 more right than cell2
+        infecteds.sort(
+                function(cell1, cell2) {
+                    return cell1.get_pos().x - cell2.get_pos().x;
+                });
+
+        if (infecteds.length > 0) {
+            next = infecteds[0];
+            next.set_state("active");
+            //console.log("got next "+next.to_string());
+        }
+
+        return next;
+    };
 	
     //Checks whether any 2 objs are colliding, and if so calls handle_collision on them
     var check_collisions = (function() {
@@ -291,6 +321,12 @@ var in_game_state = function (p, previous_state) {
     //Calls update() on every obj
     //after updating, calls remove_objs
     obj.update = function() {
+        // if we don't have an active cell
+        if (!active_cell) {
+            // try to find the next one
+            active_cell = next_active_cell();
+        }
+
         for (var i=0; i<game_objects.length; i++) {
             for (var j=0; j<game_objects[i].length; j++) {
                 var o = game_objects[i][j];
@@ -333,6 +369,7 @@ var in_game_state = function (p, previous_state) {
 		if (k === 32) { //spacebar
 			var particles = active_cell.fire(5);
             obj.add_objects(particles);
+            active_cell = null;
 		}
 		else if (k === 112) { //p
 			//pause_state = pause_state();
