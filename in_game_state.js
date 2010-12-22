@@ -34,7 +34,8 @@ var in_game_state = function (p, previous_state) {
     
     // --- private methods ---
 
-	var initialize = function() {
+    // initialization code goes here
+	(function() {
 		//Initialize game_objects to be a list of num_of_render_levels empty lists
     	for (var i = 0; i < num_of_render_levels; i++) {
         	game_objects[i] = [];
@@ -43,7 +44,7 @@ var in_game_state = function (p, previous_state) {
 		//Set one active cell on the left, halfway down
 		var initial_cell = cell(p, {
             pos: new p.PVector(20, p.height / 2),
-            vel: new p.PVector(.2, .2),
+            vel: new p.PVector(.02, .02),
 			state: "active"
         });
 		
@@ -51,10 +52,10 @@ var in_game_state = function (p, previous_state) {
 		game_objects[cell_level].push(initial_cell);
 		
 		active_cell = initial_cell;
-	}
+	}());
 	
     //Checks whether any 2 objs are colliding, and if so calls handle_collision on them
-    var check_collisions = function() {
+    var check_collisions = (function() {
         // rendering levels to check collisions for:
         // particle (1) vs. particle (1) (?)
         // particle (1) vs. cell (2)
@@ -64,7 +65,7 @@ var in_game_state = function (p, previous_state) {
         // enemy (3) vs. enemy (3)
         
         // hey this looks like combinations!
-        var do_combinations = function(arr1, start1, end1,
+        var do_comb = function(arr1, start1, end1,
                 arr2, start2, end2, fun) {
             var i = start1, j = start2;
             while (i <= end1) {
@@ -73,36 +74,46 @@ var in_game_state = function (p, previous_state) {
                     j++;
                 }
                 i++;
-                j = i;
+                // when arrays are the same
+                // don't do repeats
+                if (arr1 === arr2) {
+                    j = i;
+                }
+                else {
+                    j = 0;
+                }
             }
         };
 
-        // double combinations!
-        // for each pair of rendering groups
-        do_combinations(game_objects, 1, 3,
-            game_objects, 1, 3,
-            function(lvl1, lvl2) {
-                //console.log("new levels");
-                // for each pair of objects in the groups
-                do_combinations(lvl1, 0, lvl1.length-1,
-                    lvl2, 0, lvl2.length-1,
-                    function(obj1, obj2) {
-                        //console.log("checking "+obj1.to_string()
-                        //    +", "+obj2.to_string());
-                        // check the collisions
-                        // don't check collisions with self
-                        if (obj1 !== obj2
-                            && check_circle_collision(obj1, obj2)) {
-                            handle_collision(obj1, obj2);
-                            console.log("collision! " +obj1.to_string()
-                                +", "+obj2.to_string());
+        var collision_fun = function() {
+            // double combinations!
+            // for each pair of rendering groups
+            do_comb(game_objects, 1, 3,
+                game_objects, 1, 3,
+                function(lvl1, lvl2) {
+                    //console.log("new levels");
+                    // for each pair of objects in the groups
+                    do_comb(lvl1, 0, lvl1.length-1,
+                        lvl2, 0, lvl2.length-1,
+                        function(obj1, obj2) {
+                            //console.log("checking "+obj1.to_string()
+                            //    +", "+obj2.to_string());
+                            // check the collisions
+                            // don't check collisions with self
+                            
+                            if (obj1 !== obj2
+                                && check_circle_collision(obj1, obj2)) {
+                                handle_collision(obj1, obj2);
+                                console.log("collision! " +obj1.to_string()
+                                    +", "+obj2.to_string());
+                            }
                         }
-                    }
-                );
-            }
-        );
-    
-    };
+                    );
+                }
+            );
+        };
+        return collision_fun;
+    }());
 
     // checks for collisions between two objects by
     // checking if their bounding circles are overlapping
@@ -119,7 +130,7 @@ var in_game_state = function (p, previous_state) {
     var handle_collision = function(obj1, obj2) {
         var ot1 = obj1.get_type();
         var ot2 = obj2.get_type();
-        
+
         // try first with one order
         var handler = collision_handlers[ot1][ot2];
         // if it doesn't work
