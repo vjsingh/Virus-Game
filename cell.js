@@ -90,17 +90,45 @@ var cell = function(p, spec) {
         obj.set_state("dead");
     };
 	
-	// Explodes this cell if it is active
-	obj.fire = function() {
+	// explodes this cell if it is active
+    // takes number of particles to generate
+	obj.fire = function(num_particles) {
 		if (obj.state === "active") {
 			obj.die();
 			
-			//Create new virus particles and send them flying right
 			var pos = obj.get_pos();
-			var p1 = particle(p, {
-				pos: pos,
-				vel: new p.PVector(1, 1)
-				});
+            var ang = antibody_angle;
+            // use width cuz it's a circle
+            var w = obj.get_width();
+
+            // gen particles at edge of cell for now
+            var x = w*p.cos(ang);
+            var y = w*p.sin(ang);
+
+            // angle between all the shots
+            var range = p.PI/6;
+            var incr = range/num_particles;
+
+            var particles = [];
+
+            ang = antibody_angle - range/2;
+            while (num_particles > 0) {
+                var new_vel = new p.PVector(p.cos(ang), p.sin(ang));
+                // if we want to add velocity of cell
+                // probably need to add some sort of normalization
+                //new_vel.add(obj.get_vel());
+                
+                particles.push(particle(p, {
+                    pos: new p.PVector(x, y),
+                    vel: new_vel,
+                    speed: 0.2
+                }));
+
+                num_particles--;
+                ang += incr;
+            }
+
+            return particles;
         }
 	};
 
