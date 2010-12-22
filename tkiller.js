@@ -72,6 +72,8 @@ var tkiller = function(p, spec) {
         p.pushMatrix();
          
         var pos = obj.get_pos();
+        var w = obj.get_width();
+        var h = obj.get_height();
         p.shapeMode(obj.mode);
        
         p.translate(pos.x, pos.y);
@@ -80,11 +82,8 @@ var tkiller = function(p, spec) {
         p.fill(50);
         p.noStroke();
 
-        var w = obj.get_width();
-        var h = obj.get_height();
-        
         // rightward triangle
-        p.triangle(0, -w/2, 0, w/2, h, 0);
+        p.triangle(-w/2, -h/2, -w/2, h/2, w/2, 0);
 
         p.popMatrix();
     };

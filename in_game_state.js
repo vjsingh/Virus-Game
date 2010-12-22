@@ -139,6 +139,18 @@ var in_game_state = function (p, previous_state) {
     // created once with a closure
     var collision_handlers = (function() {
         var nothing = function(obj1, obj2) {};
+
+        // infects the cell, kills the particle
+        var infect = function(par, cell) {
+            // only if cell is "alive"
+            // (ie only one particle per cell)
+            if (cell.get_state() === "alive") {
+                par.die();
+                cell.set_state("infected");
+            }
+            // TODO: maybe infected cells should deflect
+        };
+
         var handlers =
         {
             "particle": {
@@ -148,10 +160,7 @@ var in_game_state = function (p, previous_state) {
 
                 // particle vs. cell
                 // infect the cell, kill the particle
-                "cell": function(par, cell) {
-                    par.die();
-                    cell.set_state("infected");
-                },
+                "cell": infect,
                      
                 // particle vs. wall_cell
                 // bounce particle off cell
@@ -160,7 +169,7 @@ var in_game_state = function (p, previous_state) {
 
                 // particle vs. empty_cell
                 // infect the cell, kill the particle
-                "empty_cell": nothing,
+                "empty_cell": infect,
                 
                 // particle vs. floater
                 // kill the particle
@@ -223,12 +232,10 @@ var in_game_state = function (p, previous_state) {
     //Removes all objs which are either off screen or dead
     var remove_objs = function() {
         var filter_fun = function(x) {
-            //return (! x.off_screen() && ! x.is_dead())
-            return ! x.is_dead();
+            return (! x.is_offscreen() && ! x.is_dead())
         };  
         for (var i = 0; i < game_objects.length; i++) {
-            lst_of_o = game_objects[i];
-            lst_of_o = lst_of_o.filter(filter_fun);
+            game_objects[i] = game_objects[i].filter(filter_fun);
         }
     };
     

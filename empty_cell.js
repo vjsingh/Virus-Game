@@ -18,7 +18,7 @@ var empty_cell = function(p, spec) {
     // --- private variables ---
 
     // state can be "alive", "infected", or "dead"
-    var state = spec.state || "alive";
+    //var state = spec.state || "alive";
 
     // --- public methods --- 
 
@@ -27,13 +27,13 @@ var empty_cell = function(p, spec) {
     // update is different depending on state
     obj.update = function() {
         obj.move();
-        if (state === "alive") {
+        if (obj.get_state() === "alive") {
             // just chill
         }
-        else if (state === "infected") {
+        else if (obj.get_state() === "infected") {
             // prepare to die
         }
-        else if (state === "dead") {
+        else if (obj.get_state() === "dead") {
             // explode!!
         }
     };
@@ -49,13 +49,13 @@ var empty_cell = function(p, spec) {
         p.stroke(0);
         p.noFill();
 
-        if (state === "alive") {
+        if (obj.get_state() === "alive") {
             p.stroke(0);
         }
-        else if (state === "infected") {
+        else if (obj.get_state() === "infected") {
             p.stroke(150);
         }
-        else if (state === "dead") {
+        else if (obj.get_state() === "dead") {
             p.fill(0);
         }
 
@@ -64,11 +64,11 @@ var empty_cell = function(p, spec) {
     };
 
     obj.is_dead = function() {
-        return state === "dead";
+        return obj.get_state() === "dead";
     };
 
     obj.die = function() {
-        state = "dead";
+        obj.set_state("dead") = "dead";
     };
 
     return obj;

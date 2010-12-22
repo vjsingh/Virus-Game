@@ -11,7 +11,7 @@ var pCode = function(p) {
 
         // make some test particles
         g.add_object(particle(p, {
-            pos: new p.PVector(100, 100),
+            pos: new p.PVector(50, 100),
             vel: new p.PVector(.2, .2)
         }));
 
@@ -21,7 +21,7 @@ var pCode = function(p) {
         }));
 
         g.add_object(particle(p, {
-            pos: new p.PVector(100, 300),
+            pos: new p.PVector(300, 300),
             vel: new p.PVector(.2, -.2)
         }));
 

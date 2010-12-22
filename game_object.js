@@ -82,6 +82,11 @@ var game_object = function (p, spec) {
         vel = new_vel;
     };
 
+    // should only be used once, just for circular objects
+    obj.set_radius = function(new_radius) {
+        radius = new_radius;
+    };
+
     // --- getters --- 
 
     obj.get_pos = function() {
@@ -118,9 +123,10 @@ var game_object = function (p, spec) {
 
     // draws the collision circle as an overlay
     obj.draw_circle = function() {
-        p.fill(255, 100);
+        p.fill(255, 50);
+        p.noStroke();
         p.shapeMode(p.CENTER);
-        p.ellipse(width/2, height/2, 2*radius, 2*radius); 
+        p.ellipse(pos.x, pos.y, 2*radius, 2*radius); 
     };
 
     // --- private methods ---
@@ -129,6 +135,7 @@ var game_object = function (p, spec) {
     var calc_radius = function() {
         return 0.5*p.sqrt(width*width+height*height);
     };
+
     // calc radius if not already set
     radius = radius || calc_radius();
 
