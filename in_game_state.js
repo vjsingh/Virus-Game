@@ -270,6 +270,7 @@ var in_game_state = function (p, previous_state) {
     obj.mouse_click = function (x, y) {
         
     };
+	
 	obj.key_pressed = function(k) {
 		if (k == 32) { //spacebar
 			active_cell.fire();

@@ -38,6 +38,11 @@ var particle = function(p, spec) {
                 obj.get_width(), obj.get_height());
     };
 
+	// explodes this particle, if it is in the right state
+	obj.fire = function() {
+		
+	}
+	
     // is_dead just returns whether it isn't alive 
     obj.is_dead = function() {
         return !alive;
