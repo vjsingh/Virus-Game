@@ -16,8 +16,8 @@ var in_game_state = function (p, previous_state) {
     var distance = 0;
     var score = 0;
 	var active_cell = null;
-    
     var game_objects = [];
+	var generator = generator(p, obj);
     
     //A mapping from game_object types to their rendering levels
     var type_to_level = {
@@ -32,6 +32,10 @@ var in_game_state = function (p, previous_state) {
         "info":4
     }; 
 
+	// Sets the rate of scrolling, every this # of frames will scroll
+	var scroll_rate = 10;
+	var scroll_counter = scroll_rate; //decremented every update till 0
+	
 /*	
 	// Buttons
 	// Have a rectangle representing their position and
@@ -312,6 +316,17 @@ var in_game_state = function (p, previous_state) {
             game_objects[i] = game_objects[i].filter(filter_fun);
         }
     };
+	
+	//Does a function to every object
+	//Pass in a function that takes an object
+	var do_to_all_objs = function(f) {
+        for (var i=0; i<game_objects.length; i++) {
+            for (var j=0; j<game_objects[i].length; j++) {
+                var o = game_objects[i][j];
+                f(o);
+            }
+        }
+	}
     
     
     // --- public methods ---
@@ -320,21 +335,28 @@ var in_game_state = function (p, previous_state) {
         return "game";
     };
 
+	//Scrolls if scroll_counter = 0, if so resets scroll_counter to scroll_rate
     //Calls update() on every obj
     //after updating, calls remove_objs
     obj.update = function() {
+		//Add any newly generated objs
+		generator.update();
+		
+		if (scroll_counter <= 0) {
+			scroll_counter = scroll_rate;
+			do_to_all_objs(function (o) {o.scroll(1)});
+		}
+		else {
+			scroll_counter--;
+		}
+		
         // if we don't have an active cell
         if (!active_cell) {
             // try to find the next one
             active_cell = next_active_cell();
         }
-
-        for (var i=0; i<game_objects.length; i++) {
-            for (var j=0; j<game_objects[i].length; j++) {
-                var o = game_objects[i][j];
-                o.update();
-            }
-        }
+		
+		do_to_all_objs(function (o) {o.update()});
 
         check_collisions();
         

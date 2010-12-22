@@ -47,6 +47,7 @@ var game_object = function (p, spec) {
     // is_dead returns false by default
     obj.is_dead = function() { return false; };
 
+	// Generic methods for all game_objects:
     // returns true if the object is completely offscreen
     // i.e. checks pos + dimensions
     obj.is_offscreen = function() {
@@ -71,6 +72,12 @@ var game_object = function (p, spec) {
     obj.stop = function() {
         vel = new p.PVector(0, 0);
     };
+	
+	// Scrolls the obj a specified distance left or right (positive is right)
+	obj.scroll = function(scroll_x) {
+		var old_x = pos.x, old_y = pos.y;
+		pos = new p.PVector(old_x + scroll_x, old_y);
+	}
 
     // --- setters --- 
 
