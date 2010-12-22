@@ -91,12 +91,12 @@ var in_game_state = function (p, previous_state) {
 		active_cell = initial_cell;
 	}());
 
-    // returns the leftmost infected cell
-    // if no cells are infected, returns null
+    // sets active_cell to the leftmost infected cell
+    // if there is one
     var next_active_cell = function() {
-        var next = null;
+        //assert(active_cell === null, "A cell is already active!");
 
-        var cells = game_objects[type_to_level["cell"]]
+        var cells = game_objects[type_to_level["cell"]];
         var infecteds = cells.filter(
                 function(cell) {
                     return cell.get_state() === "infected"
@@ -113,17 +113,15 @@ var in_game_state = function (p, previous_state) {
                 });
 
         if (infecteds.length > 0) {
-            next = infecteds[0];
-            next.set_state("active");
+            active_cell = infecteds[0];
+            active_cell.set_state("active");
             // update the tkillers' targets
             do_to_type(function(obj) {
-                    obj.set_target(next);
+                    obj.set_target(active_cell);
                 }, "tkiller", true);
-
-            //console.log("got next "+next.to_string());
+            console.log("got next "+active_cell.to_string());
         }
 
-        return next;
     };
 	
     //Checks whether any 2 objs are colliding, and if so calls handle_collision on them
@@ -298,14 +296,21 @@ var in_game_state = function (p, previous_state) {
                 "floater": nothing
             },
                 
-            // tkiller vs. cell
-            // tkiller vs. wall_cell
-            // tkiller vs. empty_cell
-            // tkiller vs. floater
-            // tkiller vs. tkiller
-            // nothing?
             "tkiller": {
-                "cell": nothing,
+                // tkiller vs. cell
+                // if cell is active, kill it
+                "cell": function(tk, cell) {
+                    if (cell.get_state() === "active") {
+                        cell.die();
+                        active_cell = null;
+                    }
+                },
+
+                // tkiller vs. wall_cell
+                // tkiller vs. empty_cell
+                // tkiller vs. floater
+                // tkiller vs. tkiller
+                // nothing?
                 "wall_cell": nothing,
                 "empty_cell": nothing,
                 "floater": nothing,
@@ -376,7 +381,6 @@ var in_game_state = function (p, previous_state) {
             //Add any newly generated objs
             generator.update();
 
-            
             if (scroll_counter <= 0) {
                 scroll_counter = scroll_rate;
                 // scroll all objects
@@ -388,9 +392,9 @@ var in_game_state = function (p, previous_state) {
             }
             
             // if we don't have an active cell
-            if (!active_cell) {
+            if (active_cell === null) {
                 // try to find the next one
-                active_cell = next_active_cell();
+                next_active_cell();
             }
         
             // update all objects
@@ -433,9 +437,12 @@ var in_game_state = function (p, previous_state) {
 	
 	obj.key_pressed = function(k) {
 		if (k === 32) { //spacebar
-			var particles = active_cell.fire(5);
-            obj.add_objects(particles);
-            active_cell = null;
+            if (active_cell !== null) {
+                var particles = active_cell.fire(5);
+                obj.add_objects(particles);
+                active_cell = null;
+                console.log("nulled");
+            }
 		}
 		else if (k === 112) { //p
 			//pause_state = pause_state();
@@ -445,7 +452,6 @@ var in_game_state = function (p, previous_state) {
 			//help_state = help_state();
 			//obj.set_next_state(help_state);
 		}
-		
 	};
     
     //Adds a game_object to the game world
@@ -478,17 +484,20 @@ var in_game_state = function (p, previous_state) {
 	
 	obj.get_active_cell = function() {
 		return active_cell;
-	}
+	};
 	
 	// --- setters ---
 	
-	obj.set_distance = function (n) {
+	obj.set_distance = function(n) {
 		obj.distance = n;
-	}
+	};
 	
-	obj.set_game_objects = function(go) {
+	/*
+    // DANGEROUS
+    obj.set_game_objects = function(go) {
 		obj.game_objects = go;
-	}
+	};
+    */
 	
     return obj;
 };
