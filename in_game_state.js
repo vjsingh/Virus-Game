@@ -66,18 +66,19 @@ var in_game_state = function (p, previous_state) {
         do_combinations(game_objects, 1, 3,
             game_objects, 1, 3,
             function(lvl1, lvl2) {
+                //console.log("new levels");
                 // for each pair of objects in the groups
-                do_combinations(lvl1, 0, lvl1.length,
-                    lvl2, 0, lvl2.length,
+                do_combinations(lvl1, 0, lvl1.length-1,
+                    lvl2, 0, lvl2.length-1,
                     function(obj1, obj2) {
-                        console.log("checking "+obj1.to_string()
-                            +", "+obj2.to_string());
+                        //console.log("checking "+obj1.to_string()
+                        //    +", "+obj2.to_string());
                         // check the collisions
                         // don't check collisions with self
                         if (obj1 !== obj2
                             && check_circle_collision(obj1, obj2)) {
                             handle_collision(obj1, obj2);
-                            alert("collision! " +obj1.to_string()
+                            console.log("collision! " +obj1.to_string()
                                 +", "+obj2.to_string());
                         }
                     }
@@ -131,7 +132,7 @@ var in_game_state = function (p, previous_state) {
 
                 // particle vs. cell
                 // infect the cell, kill the particle
-                "cell": function(cell, par) {
+                "cell": function(par, cell) {
                     par.die();
                     cell.set_state("infected");
                 },

@@ -118,9 +118,9 @@ var game_object = function (p, spec) {
 
     // draws the collision circle as an overlay
     obj.draw_circle = function() {
-        fill(255, 100);
+        p.fill(255, 100);
         p.shapeMode(p.CENTER);
-        ellipse(width/2, height/2, 2*radius, 2*radius); 
+        p.ellipse(width/2, height/2, 2*radius, 2*radius); 
     };
 
     // --- private methods ---
