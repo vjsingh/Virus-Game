@@ -15,12 +15,9 @@ var in_game_state = function (p, previous_state) {
     var curr_state = "Splash"; //Splash, Game, Pause, Help
     var distance = 0; //x-coordinate of the total distance travelled
     var score = 0;
+	var active_cell = null;
     
-    //Initialize to be a list of num_of_render_levels empty lists
     var game_objects = [];
-    for (var i = 0; i < num_of_render_levels; i++) {
-        game_objects[i] = [];
-    }
     
     //A mapping from game_object types to their rendering levels
     var type_to_level = {
@@ -37,6 +34,25 @@ var in_game_state = function (p, previous_state) {
     
     // --- private methods ---
 
+	var initialize = function() {
+		//Initialize game_objects to be a list of num_of_render_levels empty lists
+    	for (var i = 0; i < num_of_render_levels; i++) {
+        	game_objects[i] = [];
+    	}
+		
+		//Set one active cell on the left, halfway down
+		var initial_cell = cell(p, {
+            pos: new p.PVector(20, p.height / 2),
+            vel: new p.PVector(.2, .2),
+			state: "active"
+        });
+		
+		var cell_level = type_to_level["cell"];
+		game_objects[cell_level].push(initial_cell);
+		
+		active_cell = initial_cell;
+	}
+	
     //Checks whether any 2 objs are colliding, and if so calls handle_collision on them
     var check_collisions = function() {
         // rendering levels to check collisions for:
@@ -254,7 +270,9 @@ var in_game_state = function (p, previous_state) {
         
     };
 	obj.key_pressed = function(k) {
-		
+		if (k == 32) { //spacebar
+			active_cell.fire();
+		}
 	};
     
     //Adds a game_object to the game world

@@ -85,6 +85,20 @@ var cell = function(p, spec) {
     obj.die = function() {
         obj.set_state("dead");
     };
+	
+	// Explodes this cell if it is active
+	obj.fire = function() {
+		if (obj.state === "active") {
+			obj.die();
+			
+			//Create new virus particles and send them flying right
+			var pos = obj.get_pos();
+			var p1 = particle(p, {
+				pos: pos,
+				vel: new p.PVector(1, 1)
+				});
+        }
+	};
 
     // --- private functions ---
 
