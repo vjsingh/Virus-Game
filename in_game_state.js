@@ -48,7 +48,7 @@ var in_game_state = function (p, previous_state) {
         // enemy (3) vs. enemy (3)
         
         // hey this looks like combinations!
-        var do_combinations(arr1, start1, end1,
+        var do_combinations = function(arr1, start1, end1,
                 arr2, start2, end2, fun) {
             var i = start1, j = start2;
             while (i <= end1) {
@@ -62,13 +62,18 @@ var in_game_state = function (p, previous_state) {
         };
 
         // double combinations!
+        // for each pair of rendering groups
         do_combinations(game_objects, 1, 3,
             game_objects, 1, 3,
             function(lvl1, lvl2) {
+                // for each pair of objects in the groups
                 do_combinations(lvl1, 0, lvl1.length,
                     lvl2, 0, lvl2.length,
                     function(obj1, obj2) {
-                        if (check_circle_collision(obj1, obj2)) {
+                        // check the collisions
+                        // don't check collisions with self
+                        if (obj1 !== obj2
+                            && check_circle_collision(obj1, obj2)) {
                             handle_collision(obj1, obj2);
                             alert("collision! " +obj1.to_string()
                                 +", "+obj2.to_string());
@@ -88,7 +93,7 @@ var in_game_state = function (p, previous_state) {
         // is <= the sum of their radii then they are colliding
         // ONLY WORKS FOR CENTERED SHAPES
         return (obj1.get_pos().dist(obj2.get_pos())
-                <= obj1.get_radius() + obj2.get_radius();
+                <= obj1.get_radius() + obj2.get_radius());
     };
 
     // handles collisions between different object types

@@ -28,7 +28,7 @@ var game_object = function (p, spec) {
     var vel = spec.vel || new p.PVector(0, 0);
     var accel = spec.accel || new p.PVector(0, 0);
     // used for circle collision testing
-    var radius = spec.radius || calc_radius();
+    var radius = spec.radius // default set at bottom of file
 
     // --- public methods ---
 
@@ -114,6 +114,7 @@ var game_object = function (p, spec) {
 
     obj.to_string = function() {
         return obj.get_type()+" ("+pos.x+", "+pos.y+")";
+    };
 
     // draws the collision circle as an overlay
     obj.draw_circle = function() {
@@ -128,7 +129,8 @@ var game_object = function (p, spec) {
     var calc_radius = function() {
         return 0.5*p.sqrt(width*width+height*height);
     };
-
+    // calc radius if not already set
+    radius = radius || calc_radius();
 
     return obj;
 }

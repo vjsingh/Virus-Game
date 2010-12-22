@@ -7,7 +7,7 @@ var pCode = function(p) {
     p.setup = function() {
         p.size(500, 500);
 
-        g = in_game_state(p); 
+        g = in_game_state(p, null); 
 
         // make some test particles
         g.add_object(particle(p, {
