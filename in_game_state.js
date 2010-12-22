@@ -70,6 +70,8 @@ var in_game_state = function (p, previous_state) {
                 do_combinations(lvl1, 0, lvl1.length,
                     lvl2, 0, lvl2.length,
                     function(obj1, obj2) {
+                        console.log("checking "+obj1.to_string()
+                            +", "+obj2.to_string());
                         // check the collisions
                         // don't check collisions with self
                         if (obj1 !== obj2
