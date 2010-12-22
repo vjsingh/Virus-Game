@@ -4,7 +4,7 @@
 //  game_object spec
 
 var particle = function(p, spec) {
-    
+
     // --- defaults ---
 
     spec.width = spec.width || 10;

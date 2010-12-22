@@ -90,18 +90,48 @@ var cell = function(p, spec) {
         obj.set_state("dead");
     };
 	
-	// Explodes this cell if it is active
-	obj.fire = function() {
-		if (obj.state === "active") {
+	// explodes this cell if it is active
+    // takes number of particles to generate
+	obj.fire = function(num_particles) {
+		if (state === "active") {
+            // TODO: need a slower death
 			obj.die();
 			
-			//Create new virus particles and send them flying right
 			var pos = obj.get_pos();
-			var p1 = particle(p, {
-				pos: pos,
-				vel: new p.PVector(1, 1)
-				});
+            var ang = antibody_angle;
+            // use width cuz it's a circle
+            var r = obj.get_width()/2;
+
+            // gen particles at edge of cell for now
+            var x = r*p.cos(ang) + pos.x;
+            var y = r*p.sin(ang) + pos.y;
+
+            // angle between all the shots
+            var range = p.PI/6;
+            var incr = range/num_particles;
+
+            var particles = [];
+
+            ang = antibody_angle - range/2;
+            while (num_particles > 0) {
+                var new_vel = new p.PVector(p.cos(ang), p.sin(ang));
+                // mult by speed scalar
+                new_vel.mult(0.5);
+                // if we want to add velocity of cell
+                new_vel.add(obj.get_vel());
+                
+                particles.push(particle(p, {
+                    pos: new p.PVector(x, y),
+                    vel: new_vel
+                }));
+
+                num_particles--;
+                ang += incr;
+            }
+
+            return particles;
         }
+        throw "Can't fire on "+state+" cell!";
 	};
 
     // override for circular object
