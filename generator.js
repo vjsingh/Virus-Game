@@ -76,9 +76,10 @@ var make_generator = function(p, a_game) {
             game.add_object(new_enemy);
 		}
 		
+        // distance didn't change - jonah
 		//Set updated game_objects and distance
 		//game.set_game_objects(game_objects);
-		game.set_distance(distance);
+		//game.set_distance(distance);
 	}
 	
 	// --- private methods ---
@@ -88,6 +89,7 @@ var make_generator = function(p, a_game) {
 	var get_total_enemies = function() {
 		var total = 0;
 		
+        // USE A CLOSURE SO WE DONT HAVE TO MAKE THIS ARRAY EVERY TIME
 		//These are the types to check
 		//For now, enemies and cells
 		//Could be done by rendering levels, but doesn't seem right

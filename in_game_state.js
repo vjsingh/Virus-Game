@@ -94,14 +94,14 @@ var in_game_state = function (p, previous_state) {
     // sets active_cell to the leftmost infected cell
     // if there is one
     var next_active_cell = function() {
-        //assert(active_cell === null, "A cell is already active!");
+        assert(active_cell === null, "A cell is already active!");
 
         var cells = game_objects[type_to_level["cell"]];
         var infecteds = cells.filter(
                 function(cell) {
-                    return cell.get_state() === "infected"
-                        // don't want empty_cells
-                        && cell.get_type() === "cell";
+                    // don't want empty_cells
+                    return cell.get_type() === "cell"
+                        && cell.get_state() === "infected";
                 });
         // sort fun should return:
         // - if cell1 more left than cell2
@@ -116,12 +116,26 @@ var in_game_state = function (p, previous_state) {
             active_cell = infecteds[0];
             active_cell.set_state("active");
             // update the tkillers' targets
-            do_to_type(function(obj) {
+            do_to_type(
+                function(obj) {
                     obj.set_target(active_cell);
-                }, "tkiller", true);
-            console.log("got next "+active_cell.to_string());
+                },
+                "tkiller", true);
+            //console.log("got next "+active_cell.to_string());
         }
 
+    };
+
+    // kills the active cell and updates the targets
+    // of all the tkillers
+    var kill_active_cell = function() {
+        active_cell.die();
+        active_cell = null;
+        do_to_type(
+            function(tk) {
+                tk.set_target(null);
+            },
+            "tkiller", "true");
     };
 	
     //Checks whether any 2 objs are colliding, and if so calls handle_collision on them
@@ -202,16 +216,20 @@ var in_game_state = function (p, previous_state) {
 
         // try first with one order
         var handler = collision_handlers[ot1][ot2];
-        // if it doesn't work
-        if (!handler) {
+        if (handler) {
+            handler(obj1, obj2);
+        }
+        // if it didn't work
+        else {
             // try the other order
             handler = collision_handlers[ot2][ot1];
-            if (!handler) {
+            if (handler) {
+                handler(obj2, obj1);
+            }
+            else {
                 throw "Unsupported collision type!";
             }
         }
-
-        handler(obj1, obj2);
     };
         
     
@@ -224,6 +242,7 @@ var in_game_state = function (p, previous_state) {
         var infect = function(par, cell) {
             // only if cell is "alive"
             // (ie only one particle per cell)
+            assert(cell, "Not a cell in infect!");
             if (cell.get_state() === "alive") {
                 par.die();
                 cell.set_state("infected");
@@ -301,8 +320,9 @@ var in_game_state = function (p, previous_state) {
                 // if cell is active, kill it
                 "cell": function(tk, cell) {
                     if (cell.get_state() === "active") {
+                        kill_active_cell();
+                        // just in case, kill again
                         cell.die();
-                        active_cell = null;
                     }
                 },
 
@@ -440,8 +460,7 @@ var in_game_state = function (p, previous_state) {
             if (active_cell !== null) {
                 var particles = active_cell.fire(5);
                 obj.add_objects(particles);
-                active_cell = null;
-                console.log("nulled");
+                kill_active_cell();
             }
 		}
 		else if (k === 112) { //p
