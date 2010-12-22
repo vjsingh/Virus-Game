@@ -108,7 +108,7 @@ var state_manager = function (p) {
     };
 	obj.key_pressed = function(k) {
 		curr_state.key_pressed(k);
-	}
+	};
     
     return obj;
 };

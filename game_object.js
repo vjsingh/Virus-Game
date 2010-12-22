@@ -5,6 +5,7 @@
 //  p.PVector pos = initial position (x,y)
 //  float width = width of the entire object
 //  float height = height of the entire object
+//  float radius = circle collision radius (will be auto-calced)
 //  p.PVector vel = initial velocity
 //  p.PVector accel = initial acceleration
 
@@ -26,6 +27,8 @@ var game_object = function (p, spec) {
     var height = spec.height || 0;
     var vel = spec.vel || new p.PVector(0, 0);
     var accel = spec.accel || new p.PVector(0, 0);
+    // used for circle collision testing
+    var radius = spec.radius || calc_radius();
 
     // --- public methods ---
 
@@ -104,6 +107,28 @@ var game_object = function (p, spec) {
     obj.get_accel = function() {
         return accel;
     };
+    
+    obj.get_radius = function() {
+        return radius;
+    };
+
+    obj.to_string = function() {
+        return obj.get_type()+" ("+pos.x+", "+pos.y+")";
+
+    // draws the collision circle as an overlay
+    obj.draw_circle = function() {
+        fill(255, 100);
+        p.shapeMode(p.CENTER);
+        ellipse(width/2, height/2, 2*radius, 2*radius); 
+    };
+
+    // --- private methods ---
+
+    // uses pythagorean theorem to calc radius of bounding circle
+    var calc_radius = function() {
+        return 0.5*p.sqrt(width*width+height*height);
+    };
+
 
     return obj;
 }

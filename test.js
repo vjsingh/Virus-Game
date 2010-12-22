@@ -7,7 +7,7 @@ var pCode = function(p) {
     p.setup = function() {
         p.size(500, 500);
 
-        g = game(p); 
+        g = in_game_state(p); 
 
         // make some test particles
         g.add_object(particle(p, {
@@ -65,14 +65,14 @@ var pCode = function(p) {
         });
         g.add_object(t1);
 
-        setTimeout(function() { t1.set_target(c2); }, 9000);
+        //setTimeout(function() { t1.set_target(c2); }, 9000);
     };
 
     // draw is called repeatedly
     p.draw = function() {
         p.background(200);
 
-        g.update_all_objects();
+        g.update();
         g.render();
 
     };
