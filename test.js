@@ -76,6 +76,11 @@ var pCode = function(p) {
         g.render();
 
     };
+	
+	//Mouse and Keyboard input
+	p.keyPressed = function() {
+		g.key_pressed(p.key);
+	};
 }
 
 
