@@ -245,8 +245,10 @@ var in_game_state = function (p, previous_state) {
                 
                 // particle vs. floater
                 // kill the particle
-                // (maybe cell does something? later)
-                "floater": nothing,
+                // (maybe floater does something? later)
+                "floater": function(par, flo) {
+                    par.die();
+                },
                 
                 // particle vs. tkiller
                 // nothing?
