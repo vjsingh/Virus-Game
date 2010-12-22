@@ -48,7 +48,7 @@ var pCode = function(p) {
         }));
 
         g.add_object(floater(p, {
-            pos: new p.PVector(400, 200)
+            pos: new p.PVector(400, 250)
         }));
 
         g.add_object(wall_cell(p, {
