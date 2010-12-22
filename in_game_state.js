@@ -12,12 +12,13 @@ var in_game_state = function (p, previous_state) {
     // --- private variables ---
 
 	var prev_state = previous_state;
-	//distance is the x-coordinate of the total distance traveled
-    var distance = 0;
+	//distance is the x-coordinate of the total distance traveled 
+	//The farthest right coordinate seen on the screen
+    var distance = p.width;
     var score = 0;
 	var active_cell = null;
     var game_objects = [];
-	var gen = generator(p, obj);
+	var generator = make_generator(p, obj);
     
     //A mapping from game_object types to their rendering levels
     var type_to_level = {
@@ -307,7 +308,8 @@ var in_game_state = function (p, previous_state) {
                 "cell": nothing,
                 "wall_cell": nothing,
                 "empty_cell": nothing,
-                "floater": nothing
+                "floater": nothing,
+                "tkiller": nothing
             }
         };
         return handlers;
@@ -378,7 +380,7 @@ var in_game_state = function (p, previous_state) {
             if (scroll_counter <= 0) {
                 scroll_counter = scroll_rate;
                 // scroll all objects
-                do_to_types(function (o) { o.scroll(1); },
+                do_to_types(function (o) { o.scroll(-1); },
                         game_types, false);
             }
             else {

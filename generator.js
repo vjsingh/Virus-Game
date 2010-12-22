@@ -8,8 +8,7 @@
 //			type_to_level - hash from type to level
 //			active_cell
 
-var generator = function(p, game) {
-    alert("in generator");
+var make_generator = function(p, game) {
     // --- defaults ---
 
     // obj to return
@@ -18,7 +17,10 @@ var generator = function(p, game) {
     // --- private variables ---
 	
 	var game_state = game;
-	var type_to_level = game.get_type_to_Level() //should be static
+	//This is static, but is updated in update since when we create
+	//generator this method is not yet added to the game state
+	//FIX?????
+	var type_to_level = null;
 	
 	//These will be updated at every call of update()
     var game_objects = null;
@@ -28,6 +30,7 @@ var generator = function(p, game) {
 	
 	//Should be called every time the game updates
 	obj.update = function() {
+		type_to_level = game.get_type_to_level(); //Should be fixed, is static
 		game_objects = game_state.get_game_objects();
 		distance = game_state.get_distance();
 		
@@ -35,10 +38,10 @@ var generator = function(p, game) {
 		var total_enemies = get_total_enemies();
 		if (total_enemies < 10) {
 			//For now, 4 enemies: cell, empty_cell, floater, tkiller
-			var random_num = Math.Floor(Math.random() * 4);
+			var random_num = p.floor(Math.random() * 4);
 			
 			//Generate random y position
-			var enemy_y = Math.Floor(Math.random() * p.height);
+			var enemy_y = p.floor(Math.random() * p.height);
 			var enemy_pos = new p.PVector(distance, enemy_y);
 			
 			var new_enemy = null;
@@ -60,7 +63,7 @@ var generator = function(p, game) {
 					});
 					break;
 				case 3: 
-			        t1 = tkiller(p, {
+			        new_enemy = tkiller(p, {
 			            pos: enemy_pos,
 			            target: game_state.get_active_cell()
 			        });
@@ -96,7 +99,7 @@ var generator = function(p, game) {
 		
 		for (var i = 0; i < game_objects.length; i++) {
 			var lst = game_objects[i];
-			for (var j = 0; j < game_objects.length; j++) {
+			for (var j = 0; j < lst.length; j++) {
 				var obj = lst[j];
 				if (member(types, obj.get_type())) {
 					total++;
