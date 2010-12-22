@@ -9,7 +9,7 @@ var pCode = function(p) {
 
         g = in_game_state(p, null); 
 
-        // make some test particles
+        /*
         g.add_object(particle(p, {
             pos: new p.PVector(50, 100),
             vel: new p.PVector(.2, .2)
@@ -24,22 +24,23 @@ var pCode = function(p) {
             pos: new p.PVector(300, 300),
             vel: new p.PVector(.2, -.2)
         }));
+        */
 
         c1 = cell(p, {
             pos: new p.PVector(200, 200),
-            state: "active"
+            state: "alive"
         });
         g.add_object(c1);
 
         c2 = cell(p, {
             pos: new p.PVector(100, 400),
-            state: "active"
+            state: "alive"
         });
         g.add_object(c2);
 
         g.add_object(cell(p, {
             pos: new p.PVector(250, 200),
-            state: "infected"
+            state: "alive"
         }));
 
         g.add_object(cell(p, {
