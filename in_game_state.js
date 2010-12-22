@@ -12,7 +12,8 @@ var in_game_state = function (p, previous_state) {
     // --- private variables ---
 
 	var prev_state = previous_state;
-    var distance = 0; //x-coordinate of the total distance travelled
+	//distance is the x-coordinate of the total distance traveled
+    var distance = 0;
     var score = 0;
 	var active_cell = null;
     
@@ -349,5 +350,33 @@ var in_game_state = function (p, previous_state) {
         game_objects[render_level].push(o);
     };
     
+    // --- getters --- 
+
+    obj.get_distance = function() {
+        return distance;
+    };
+
+    obj.get_game_objects = function() {
+        return game_objects;
+    };
+
+    obj.get_type_to_level = function() {
+        return type_to_level;
+    };
+	
+	obj.get_active_cell = function() {
+		return active_cell;
+	}
+	
+	// --- setters ---
+	
+	obj.set_distance = function (n) {
+		obj.distance = n;
+	}
+	
+	obj.set_game_objects = function(go) {
+		obj.game_objects = go;
+	}
+	
     return obj;
 };
