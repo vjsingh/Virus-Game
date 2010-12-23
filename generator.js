@@ -36,13 +36,13 @@ var make_generator = function(p, a_game) {
 		
 		//If total enemies < 10, add a random enemy
 		var total_enemies = get_total_enemies();
-		if (total_enemies < 10) {
+		if (distance >= p.width/4 && total_enemies < 10) {
 			//For now, 4 enemies: cell, empty_cell, floater, tkiller
 			var random_num = p.floor(Math.random() * 4);
 			
 			//Generate random y position
 			var enemy_y = p.floor(Math.random() * p.height);
-			var enemy_pos = new p.PVector(distance, enemy_y);
+			var enemy_pos = new p.PVector(p.width+30, enemy_y);
 			
 			var new_enemy = null;
 			switch (random_num) {

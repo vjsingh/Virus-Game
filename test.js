@@ -24,7 +24,6 @@ var pCode = function(p) {
             pos: new p.PVector(300, 300),
             vel: new p.PVector(.2, -.2)
         }));
-        */
 
         c1 = cell(p, {
             pos: new p.PVector(200, 200),
@@ -67,6 +66,7 @@ var pCode = function(p) {
         g.add_object(t1);
 
         //setTimeout(function() { t1.set_target(c2); }, 9000);
+        */
     };
 
     // draw is called repeatedly

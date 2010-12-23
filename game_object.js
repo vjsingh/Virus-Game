@@ -103,19 +103,20 @@ var game_object = function (p, spec) {
 	
 	obj.get_left = function() {
 		return pos.x - (width / 2);
-	}
+	};
 	
 	obj.get_top = function() {
 		return pos.y - (height / 2);
-	}
+	};
 
 	obj.get_right = function() {
 		return pos.x + (width / 2);
-	}
+	};
 	
 	obj.get_bottom = function() {
 		return pos.y + (height / 2);
-	}
+	};
+
     obj.get_width = function() {
         return width;
     };

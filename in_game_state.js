@@ -14,7 +14,7 @@ var in_game_state = function (p, previous_state) {
 	var prev_state = previous_state;
 	//distance is the x-coordinate of the total distance traveled 
 	//The farthest right coordinate seen on the screen
-    var distance = p.width;
+    var distance = 0;
     var score = 0;
 	var active_cell = null;
     var game_objects = [];
@@ -83,25 +83,33 @@ var in_game_state = function (p, previous_state) {
     // --- private methods ---
 
     // initialization code goes here
-	(function() {
+    // gets called at the bottom
+	var init = function() {
 		//Initialize game_objects to be a list of num_of_render_levels empty lists
     	for (var i = 0; i < num_of_render_levels; i++) {
         	game_objects[i] = [];
     	}
 		
-		//Set one active cell on the left, halfway down
+		//Set one active cell on the right, halfway down
 		var initial_cell = cell(p, {
-            pos: new p.PVector(20, p.height / 2),
-            vel: new p.PVector(.02, .02),
-			state: "active"
+            pos: new p.PVector(p.width-50, p.height / 2),
+            vel: new p.PVector(0, 0),
+			state: "alive"
         });
 		
 		//var cell_level = type_to_level["cell"];
 		//game_objects[cell_level].push(initial_cell);
-        level("cell").push(initial_cell);
+        obj.add_object(initial_cell);
+
+        var initial_par = particle(p, {
+            pos: new p.PVector(0, p.height/2),
+            vel: new p.PVector(1, 0)
+        });
+
+        obj.add_object(initial_par);
 		
-		active_cell = initial_cell;
-	}());
+		//active_cell = initial_cell;
+	};
 
     // sets active_cell to the leftmost infected cell
     // if there is one
@@ -491,6 +499,11 @@ var in_game_state = function (p, previous_state) {
             // scroll all objects
             do_to_types(function (o) { o.scroll(scroll_dist); },
                         game_types, false);
+
+            // update distance travelled
+            // (negative because scrolling is negative)
+            distance += -scroll_dist;
+
             //}
             //else {
                 //scroll_counter--;
@@ -611,5 +624,7 @@ var in_game_state = function (p, previous_state) {
 	};
     */
 	
+    // initialize the game
+    init();
     return obj;
 };
