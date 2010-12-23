@@ -197,7 +197,7 @@ var in_game_state = function (p, previous_state) {
                             // check the collisions
                             // don't check collisions with self
                             if (obj1 !== obj2
-                                && check_circle_collision(obj1, obj2)) {
+                                && check_collision(obj1, obj2)) {
                                 handle_collision(obj1, obj2);
                                 //console.log("collision! " +obj1.to_string()
                                 //    +", "+obj2.to_string());
@@ -209,6 +209,38 @@ var in_game_state = function (p, previous_state) {
         };
         return collision_fun;
     }());
+	
+	var check_collision = function(obj1, obj2) {
+		var type1 = obj1.get_type();
+		var type2 = obj2.get_type();
+		//if (1 === 2) {
+		if ((type1 === "particle" && type2 === "wall_cell") ||
+				(type1 === "wall_cell" && type2 === "particle")) {
+			// Pass in circle as first arg, rect as 2nd
+			if (type1 === "wall_cell") {
+				return check_rectangle_collision(obj2, obj1);
+			}
+			else {
+				return check_rectangle_collision(obj1, obj2);
+			}	
+		}
+		else {
+			return check_circle_collision(obj1, obj2);
+		}
+	};
+	
+	// Checks for a collision between circle (obj1) and rectangle (obj2)
+	var check_rectangle_collision = function(obj1, obj2) {
+		var circlel = obj1.get_left(), circler = obj1.get_right();
+		var circlet = obj1.get_top(), circleb = obj1.get_bottom();
+		var rectl = obj2.get_left(), rectr = obj2.get_right();
+		var rectt = obj2.get_top(), rectb = obj2.get_bottom();
+		
+		return ( ((circler <= rectr && circler >= rectl) || 
+					(circlel >= rectl && circlel <= rectr)) &&
+				 ((circleb <= rectb && circleb >= rectt) || 
+				 	(circlet >= rectt && circlet <= rectb)));
+	}
 
     // checks for collisions between two objects by
     // checking if their bounding circles are overlapping
@@ -277,7 +309,21 @@ var in_game_state = function (p, previous_state) {
                 // bounce particle off cell
                 // (cell shouldn't move right?)
                 // TODO
-                "wall_cell": nothing,
+                "wall_cell": function(par, wall) {
+					var circlel = par.get_left(), circler = par.get_right();
+					var circlet = par.get_top(), circleb = par.get_bottom();
+					var rectl = wall.get_left(), rectr = wall.get_right();
+					var rectt = wall.get_top(), rectb = wall.get_bottom();
+					
+					//bounce vertically
+					if (circler >= rectl || circlel <= rectr) {
+						par.reverse_y();
+					}
+					//bounce horizontally
+					else if (circleb >= rectt || circlet <= rectb) {
+						par.reverse_x();
+					}
+				},
 
                 // particle vs. empty_cell
                 // infect the cell, kill the particle
