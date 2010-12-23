@@ -75,9 +75,10 @@ var game_object = function (p, spec) {
 	
 	// Scrolls the obj a specified distance left or right (positive is right)
 	obj.scroll = function(scroll_x) {
-		var old_x = pos.x, old_y = pos.y;
-		pos = new p.PVector(old_x + scroll_x, old_y);
-	}
+		//var old_x = pos.x, old_y = pos.y;
+		//pos = new p.PVector(old_x + scroll_x, old_y);
+        pos.add(new p.PVector(scroll_x, 0));
+	};
 
     // --- setters --- 
 

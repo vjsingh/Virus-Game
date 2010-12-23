@@ -19,6 +19,8 @@ var in_game_state = function (p, previous_state) {
 	var active_cell = null;
     var game_objects = [];
 	var generator = make_generator(p, obj);
+    // temporary flag TODO
+    var game_over = false;
     
     //A mapping from game_object types to their rendering levels
     var type_to_level = {
@@ -42,8 +44,9 @@ var in_game_state = function (p, previous_state) {
     };
 
 	// Sets the rate of scrolling, every this # of frames will scroll
-	var scroll_rate = 10;
-	var scroll_counter = scroll_rate; //decremented every update till 0
+	//var scroll_rate = 10;
+	//var scroll_counter = scroll_rate; //decremented every update till 0
+    var scroll_dist = -0.1; // how far to move each frame
 	
 /*	
 	// Buttons
@@ -360,6 +363,11 @@ var in_game_state = function (p, previous_state) {
         for (var i = 0; i < game_objects.length; i++) {
             game_objects[i] = game_objects[i].filter(filter_fun);
         }
+
+        // check offscreen for active cell
+        if (active_cell && active_cell.is_offscreen()) {
+            active_cell = null;
+        }
     };
 	
     /*
@@ -411,30 +419,37 @@ var in_game_state = function (p, previous_state) {
 
         var update_fun = function() {
 
-            // check for game over
-            // (if no particles are left)
-            if (level("particle").length === 0) {
-                // do some game over stuff
-            }
-
-            //Add any newly generated objs
-            generator.update();
-
-            if (scroll_counter <= 0) {
-                scroll_counter = scroll_rate;
-                // scroll all objects
-                do_to_types(function (o) { o.scroll(-1); },
-                        game_types, false);
-            }
-            else {
-                scroll_counter--;
-            }
-            
             // if we don't have an active cell
             if (active_cell === null) {
                 // try to find the next one
                 next_active_cell();
             }
+            // THIS MUST COME BEFORE GAME OVER CHECK
+
+            // check for game over
+            // (if no particles are left and no active cell)
+            if (active_cell === null
+                && level("particle").length === 0) {
+                // for now, use a flag TODO
+                game_over = true;
+                // simply don't do the rest of update
+                return;
+            }
+
+            //Add any newly generated objs
+            generator.update();
+
+            //if (scroll_counter <= 0) {
+                //scroll_counter = scroll_rate;
+                
+            // scroll all objects
+            do_to_types(function (o) { o.scroll(scroll_dist); },
+                        game_types, false);
+            //}
+            //else {
+                //scroll_counter--;
+            //}
+            
         
             // update all objects
             do_to_types(function (o) { o.update(); },
@@ -458,6 +473,16 @@ var in_game_state = function (p, previous_state) {
                 // to test collisions
                 o.draw_circle();
             }
+        }
+
+        // draw game over overlay for now
+        if (game_over) {
+            p.noStroke();
+            p.fill(0, 75);
+            p.rect(0, 0, p.width, p.height);
+            p.fill(0);
+            p.textAlign(p.CENTER);
+            p.text("GAME OVER\nRELOAD TO RESTART", p.width/2, p.height/2);
         }
     };
     
