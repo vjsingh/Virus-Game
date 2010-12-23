@@ -20,7 +20,7 @@ var make_generator = function(p, a_game) {
 	//This is static, but is updated in update since when we create
 	//generator this method is not yet added to the game state
 	//FIX?????
-	var type_to_level = null;
+	//var type_to_level = null;
 	
 	//These will be updated at every call of update()
     var game_objects = null;
@@ -30,7 +30,7 @@ var make_generator = function(p, a_game) {
 	
 	//Should be called every time the game updates
 	obj.update = function() {
-		type_to_level = game.get_type_to_level(); //Should be fixed, is static
+		//type_to_level = game.get_type_to_level(); //Should be fixed, is static
 		game_objects = game.get_game_objects();
 		distance = game.get_distance();
 		
