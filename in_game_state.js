@@ -91,15 +91,32 @@ var in_game_state = function (p, previous_state) {
     	}
 		
 		//Set one active cell on the right, halfway down
-		var initial_cell = cell(p, {
-            pos: new p.PVector(p.width-50, p.height / 2),
-            vel: new p.PVector(0, 0),
-			state: "alive"
-        });
+		var initial_cells = [
+            cell(p, {
+                pos: new p.PVector(p.width-120, p.height/2),
+                vel: new p.PVector(0, 0),
+                state: "alive"
+            }),
+            cell(p, {
+                pos: new p.PVector(p.width, p.height/2-50),
+                vel: new p.PVector(0, 0),
+                state: "alive"
+            }),
+            cell(p, {
+                pos: new p.PVector(p.width, p.height/2),
+                vel: new p.PVector(0, 0),
+                state: "alive"
+            }),
+            cell(p, {
+                pos: new p.PVector(p.width, p.height/2+50),
+                vel: new p.PVector(0, 0),
+                state: "alive"
+            })
+        ];
 		
 		//var cell_level = type_to_level["cell"];
 		//game_objects[cell_level].push(initial_cell);
-        obj.add_object(initial_cell);
+        obj.add_objects(initial_cells);
 
         var initial_par = particle(p, {
             pos: new p.PVector(0, p.height/2),
