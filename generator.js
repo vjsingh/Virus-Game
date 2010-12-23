@@ -37,8 +37,8 @@ var make_generator = function(p, a_game) {
 		//If total enemies < 10, add a random enemy
 		var total_enemies = get_total_enemies();
 		if (total_enemies < 10) {
-			//For now, 4 enemies: cell, empty_cell, floater, tkiller
-			var random_num = p.floor(Math.random() * 4);
+			//For now, 5 enemies: cell, empty_cell, wall_cell, floater, tkiller
+			var random_num = p.floor(Math.random() * 5);
 			
 			//Generate random y position
 			var enemy_y = p.floor(Math.random() * p.height);
@@ -58,11 +58,16 @@ var make_generator = function(p, a_game) {
 					});
 					break;
 				case 2:
+					new_enemy = wall_cell(p, {
+						pos : enemy_pos
+					});
+					break;
+				case 3:
 					new_enemy = floater(p, {
 						pos : enemy_pos
 					});
 					break;
-				case 3: 
+				case 4: 
 			        new_enemy = tkiller(p, {
 			            pos: enemy_pos,
 			            target: game.get_active_cell()
