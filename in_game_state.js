@@ -255,17 +255,30 @@ var in_game_state = function (p, previous_state) {
 	};
 	
 	// Checks for a collision between circle (obj1) and rectangle (obj2)
-	var check_rectangle_collision = function(obj1, obj2) {
-		var circlel = obj1.get_left(), circler = obj1.get_right();
-		var circlet = obj1.get_top(), circleb = obj1.get_bottom();
-		var rectl = obj2.get_left(), rectr = obj2.get_right();
-		var rectt = obj2.get_top(), rectb = obj2.get_bottom();
+	var check_rectangle_collision = function(circ, rect) {
+		return overlapping_vertically(circ, rect, 0) &&
+				overlapping_horizontally(circ, rect, 0);
+	};
+	
+	
+	// Rectangle and circle collision helper functions
+	// Returns whether the circle is overlapping the rectangle, horizontally,
+	// by offset num of pixels
+	var overlapping_horizontally = function(circ, rect, offset) {
+		var circlel = circ.get_left(), circler = circ.get_right();
+		var rectl = rect.get_left(), rectr = rect.get_right();
+		return ((circler <= rectr && circler >= (rectl + offset)) || 
+					(circlel >= rectl && circlel <= (rectr + offset)));
+	};
+	// Returns whether the circle is overlapping the rectangle, vertically,
+	// by offset num of pixels
+	var overlapping_vertically = function(circ, rect, offset) {
+		var circlet = circ.get_top(), circleb = circ.get_bottom();
+		var rectt = rect.get_top(), rectb = rect.get_bottom();
 		
-		return ( ((circler <= rectr && circler >= rectl) || 
-					(circlel >= rectl && circlel <= rectr)) &&
-				 ((circleb <= rectb && circleb >= rectt) || 
-				 	(circlet >= rectt && circlet <= rectb)));
-	}
+		return (circleb <= rectb && circleb >= (rectt + offset) || 
+				 	(circlet >= rectt && circlet <= (rectb + offset)));
+	};
 
     // checks for collisions between two objects by
     // checking if their bounding circles are overlapping
@@ -341,11 +354,10 @@ var in_game_state = function (p, previous_state) {
 					var rectt = wall.get_top(), rectb = wall.get_bottom();
 					
 					//bounce vertically
-					if (circler >= rectl || circlel <= rectr) {
+					if (overlapping_horizontally(par, wall, 10)) {	
 						par.reverse_y();
 					}
-					//bounce horizontally
-					else if (circleb >= rectt || circlet <= rectb) {
+					else { //bounce horizontally
 						par.reverse_x();
 					}
 				},

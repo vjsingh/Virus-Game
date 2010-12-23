@@ -58,11 +58,16 @@ var make_generator = function(p, a_game) {
 					});
 					break;
 				case 2:
+					new_enemy = wall_cell(p, {
+						pos : enemy_pos
+					});
+					break;
+				case 3:
 					new_enemy = floater(p, {
 						pos : enemy_pos
 					});
 					break;
-				case 3: 
+				case 4: 
 			        new_enemy = tkiller(p, {
 			            pos: enemy_pos,
 			            target: game.get_active_cell()
