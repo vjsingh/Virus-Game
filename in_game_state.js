@@ -33,6 +33,14 @@ var in_game_state = function (p, previous_state) {
         "info":4
     }; 
 
+    // given a type returns the array of objects
+    // corresponding to that type's level
+    var level = function(type) {
+        var lvl = game_objects[type_to_level[type]];
+        assert (lvl, type+" not a valid type!");
+        return lvl;
+    };
+
 	// Sets the rate of scrolling, every this # of frames will scroll
 	var scroll_rate = 10;
 	var scroll_counter = scroll_rate; //decremented every update till 0
@@ -85,8 +93,9 @@ var in_game_state = function (p, previous_state) {
 			state: "active"
         });
 		
-		var cell_level = type_to_level["cell"];
-		game_objects[cell_level].push(initial_cell);
+		//var cell_level = type_to_level["cell"];
+		//game_objects[cell_level].push(initial_cell);
+        level("cell").push(initial_cell);
 		
 		active_cell = initial_cell;
 	}());
@@ -96,7 +105,7 @@ var in_game_state = function (p, previous_state) {
     var next_active_cell = function() {
         assert(active_cell === null, "A cell is already active!");
 
-        var cells = game_objects[type_to_level["cell"]];
+        var cells = level("cell");//game_objects[type_to_level["cell"]];
         var infecteds = cells.filter(
                 function(cell) {
                     // don't want empty_cells
@@ -418,10 +427,10 @@ var in_game_state = function (p, previous_state) {
     // if strict is true, also checks to make sure 
     // the object has the specified type
     var do_to_type = function(f, type, strict) {
-        var level = game_objects[type_to_level[type]];
-        for (var i=0; i<level.length; i++) {
-            if (!strict || level[i].get_type() === type) {
-                f(level[i]);
+        var lvl = level(type);//game_objects[type_to_level[type]];
+        for (var i=0; i<lvl.length; i++) {
+            if (!strict || lvl[i].get_type() === type) {
+                f(lvl[i]);
             }
         }
     };
@@ -447,6 +456,13 @@ var in_game_state = function (p, previous_state) {
         var game_types = ["background", "particle", "cell", "enemy"];
 
         var update_fun = function() {
+
+            // check for game over
+            // (if no particles are left)
+            if (level("particle").length === 0) {
+                // do some game over stuff
+            }
+
             //Add any newly generated objs
             generator.update();
 
@@ -524,9 +540,10 @@ var in_game_state = function (p, previous_state) {
     
     //Adds a game_object to the game world
     obj.add_object = function(o) {
-        var type = o.get_type();
-        var render_level = type_to_level[type];
-        game_objects[render_level].push(o);
+        //var type = o.get_type();
+        //var render_level = type_to_level[type];
+        //game_objects[render_level].push(o);
+        level(o.get_type()).push(o);
     };
 
     // add multiple objects
@@ -546,9 +563,11 @@ var in_game_state = function (p, previous_state) {
         return game_objects;
     };
 
-    obj.get_type_to_level = function() {
+    // don't need?
+    /*obj.get_type_to_level = function() {
         return type_to_level;
     };
+    */
 	
 	obj.get_active_cell = function() {
 		return active_cell;
