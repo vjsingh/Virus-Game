@@ -6,6 +6,11 @@ var in_game_state = function (p, previous_state) {
     // object to return
     var obj = game_state(p);
 
+    // whether or not we are testing
+    // use it wherever
+    var testing = true;
+    obj.testing = function() { return testing; };
+
     // --- constants ---
     var num_of_render_levels = 5;
     
@@ -90,25 +95,29 @@ var in_game_state = function (p, previous_state) {
         	game_objects[i] = [];
     	}
 		
-		//Set one active cell on the right, halfway down
+        var startx = p.width-120;
+        if (testing) {
+            var startx = 100;
+        }
+
 		var initial_cells = [
             cell(p, {
-                pos: new p.PVector(p.width-120, p.height/2),
+                pos: new p.PVector(startx, p.height/2),
                 vel: new p.PVector(0, 0),
                 state: "alive"
             }),
             cell(p, {
-                pos: new p.PVector(p.width, p.height/2-50),
+                pos: new p.PVector(startx+120, p.height/2-40),
                 vel: new p.PVector(0, 0),
                 state: "alive"
             }),
             cell(p, {
-                pos: new p.PVector(p.width, p.height/2),
+                pos: new p.PVector(startx+120, p.height/2),
                 vel: new p.PVector(0, 0),
                 state: "alive"
             }),
             cell(p, {
-                pos: new p.PVector(p.width, p.height/2+50),
+                pos: new p.PVector(startx+120, p.height/2+40),
                 vel: new p.PVector(0, 0),
                 state: "alive"
             })
