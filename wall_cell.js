@@ -1,15 +1,17 @@
 // *** wall_cell ***
-// --- inherits from cell
+// --- inherits from game_object
 // spec:
 //  game_object spec
 
 var wall_cell = function(p, spec) {
     
     // --- defaults ---
-    // inherited from cell
+
+    spec.width = spec.width || 40;
+    spec.height = spec.height || 20;
 
     // obj to return
-    var obj = cell(p, spec);
+    var obj = game_object(p, spec);
 
     obj.get_type = function() {
         return "wall_cell";
@@ -28,7 +30,7 @@ var wall_cell = function(p, spec) {
         obj.move();
     };
 
-    // (circle for now)
+    // (rect for now)
     obj.draw = function() {
         var pos = obj.get_pos();
         p.shapeMode(obj.mode);
@@ -36,8 +38,9 @@ var wall_cell = function(p, spec) {
         p.fill(0);
         p.noStroke();
 
-        p.ellipse(pos.x, pos.y,
-                obj.get_width(), obj.get_height());
+        var w = obj.get_width();
+        var h = obj.get_height();
+        p.rect(pos.x-w/2, pos.y-h/2, w, h);
     };
 
     obj.is_dead = function() {
@@ -47,6 +50,7 @@ var wall_cell = function(p, spec) {
     obj.die = function() {
         alive = false;
     };
+
 
     return obj;
 }

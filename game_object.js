@@ -158,15 +158,13 @@ var game_object = function (p, spec) {
         p.ellipse(pos.x, pos.y, 2*radius, 2*radius); 
     };
 
-    // --- private methods ---
-
     // uses pythagorean theorem to calc radius of bounding circle
-    var calc_radius = function() {
+    obj.calc_radius = function() {
         return 0.5*p.sqrt(width*width+height*height);
     };
 
     // calc radius if not already set
-    radius = radius || calc_radius();
+    radius = radius || obj.calc_radius();
 
     return obj;
 }
