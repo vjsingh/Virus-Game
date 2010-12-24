@@ -23,11 +23,14 @@ var make_generator = function(p, game) {
     // structure that stores the generation settings
     // for each type of object
     // - start = distance after which to start generating
-    // - rate = rate to generate at (num per screen)
+    // - num = how many total on screen
+    // - cap = upper limit on num
+    // - rate = determines when to increment cap
+    //          when dist % rate = 0, cap increments
     // - make_new = function that takes a pos and returns a new enemy
     var gen_info = {
         "cell": { 
-            start: 0, rate: 15,
+            start: 0, num: 10, cap: 20, rate: 5000,
             make_new: function(en_pos) {
                 return cell(p, {
                     pos: en_pos,
@@ -36,25 +39,25 @@ var make_generator = function(p, game) {
             }
         },
         "wall_cell": {
-            start: 1000, rate: 5,
+            start: 1000, num: 1, cap: 7, rate: 20000,
             make_new: function(en_pos) {
                 return wall_cell(p, { pos: en_pos });
             } 
         },
         "empty_cell": {
-            start: 5000, rate: 5,
+            start: 5000, num: 1, cap: 10, rate: 20000,
             make_new: function(en_pos) {
                 return empty_cell(p, { pos: en_pos });
             } 
         },
         "floater": {
-            start: 3000, rate: 5,
+            start: 3000, num: 1, cap: 7, rate: 20000,
             make_new: function(en_pos) {
                 return floater(p, { pos: en_pos });
             } 
         },
         "tkiller": {
-            start: 1000, rate: 5,
+            start: 1000, num: 1, cap: 5, rate: 20000,
             make_new: function(en_pos) {
                 // target will get set later
                 return tkiller(p, { pos: en_pos });
@@ -73,14 +76,22 @@ var make_generator = function(p, game) {
     var start = function(type) {
         return gen_info[type].start;
     };
+    var num = function(type) {
+        return gen_info[type].num;
+    };
+    var cap = function(type) {
+        return gen_info[type].cap;
+    };
     var rate = function(type) {
         return gen_info[type].rate;
     };
     var make_new = function(type) {
         return gen_info[type].make_new;
     };
-    obj.gen_more = function(type, incr) {
-        gen_info[type].rate += incr;
+    var gen_more = function(type) {
+        if (num(type) < cap(type)) {
+            gen_info[type].num = num(type)+1;
+        }
     };
 
     // --- public methods --- 
@@ -94,9 +105,9 @@ var make_generator = function(p, game) {
         var num_enemies = count_enemy(enemy_type);
 
         // if there aren't enough of that enemy on the board
-        if (num_enemies < rate(enemy_type)
+        if (num_enemies < num(enemy_type)
                 // and some random factor
-                && p.random(100) < 1
+                && p.random(100) < 2
                 // and we are ready to start making this enemy
                 && distance >= start(enemy_type)) {
 			//Generate random y position
@@ -108,12 +119,25 @@ var make_generator = function(p, game) {
 
             // make sure it's not overlapping anything else
             if (is_overlapping(new_enemy)) {
+                console.log("overlapped");
                 return;
             }
 			
 			//Add the new enemy to game_objects
             game.add_object(new_enemy);
 		}
+
+        // update nums for types based on rate
+        for (var i=0; i<enemy_types.length; i++) {
+            var type = enemy_types[i];
+            if (distance % rate(type) <= 0.1 
+                    && distance >= 10) {
+                gen_more(type);
+                console.log("increased num of "+type+
+                        "s to "+num(type));
+            }
+        }
+
 	};
 	
 	// --- private methods ---
