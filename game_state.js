@@ -19,7 +19,7 @@ var game_state = function (p) {
 	// --- private variables ---
 	var next_state = null;
 	var previous_state = null;
-	var all_buttons = null; //static
+	var all_buttons = null; //TODO: This is static but is updated every update()
 
 	// --- private methods ---
 	

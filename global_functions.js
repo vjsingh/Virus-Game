@@ -23,7 +23,6 @@ var for_each = function(arr, fun) {
 		fun(arr[i]);
 	}
 };
-}
 
 function keys(obj) {
     var k = [];
@@ -33,4 +32,4 @@ function keys(obj) {
         }
     }
     return k;
-}
+};

@@ -39,7 +39,7 @@ var tkiller = function(p, spec) {
         // if no target
         if (target === null) {
             // meander
-            if (p.int(p.random(150)) === 0) {
+            if (parseInt(p.random(150)) === 0) {
                 target_angle += p.random(-p.PI/16, p.PI/16);
             }
             // laze
