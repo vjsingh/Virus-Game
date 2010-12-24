@@ -215,23 +215,24 @@ var in_game_state = function (p, previous_state) {
                     //console.log("new levels");
                     // for each pair of objects in the groups
                     do_comb(lvl1, 0, lvl1.length-1,
-                        lvl2, 0, lvl2.length-1,
-                        function(obj1, obj2) {
-                            //console.log("checking "+obj1.to_string()
-                            //    +", "+obj2.to_string());
-                            // check the collisions
-                            // don't check collisions with self
-                            if (obj1 !== obj2
-                                && check_collision(obj1, obj2)) {
-                                handle_collision(obj1, obj2);
-                                //console.log("collision! " +obj1.to_string()
-                                //    +", "+obj2.to_string());
-                            }
-                        }
-                    );
+                        lvl2, 0, lvl2.length-1, check);
                 }
             );
         };
+
+        var check = function(obj1, obj2) {
+            //console.log("checking "+obj1.to_string()
+            //    +", "+obj2.to_string());
+            // check the collisions
+            // don't check collisions with self
+            if (obj1 !== obj2
+                && check_collision(obj1, obj2)) {
+                handle_collision(obj1, obj2);
+                //console.log("collision! " +obj1.to_string()
+                //    +", "+obj2.to_string());
+            }
+        }
+
         return collision_fun;
     }());
 	
