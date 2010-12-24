@@ -345,20 +345,51 @@ var in_game_state = function (p, previous_state) {
                      
                 // particle vs. wall_cell
                 // bounce particle off cell
-                // (cell shouldn't move right?)
+                // cell doesn't move
                 // TODO
                 "wall_cell": function(par, wall) {
 					var circlel = par.get_left(), circler = par.get_right();
 					var circlet = par.get_top(), circleb = par.get_bottom();
 					var rectl = wall.get_left(), rectr = wall.get_right();
 					var rectt = wall.get_top(), rectb = wall.get_bottom();
+					var rect_mid_y = (rectb - (wall.get_height() / 2));
+					var rect_mid_x = (rectr - (wall.get_width() / 2));
 					
+					//When bouncing, check velocity to make sure ball is 'incoming'
+					//This avoids the ball getting stuck
 					//bounce vertically
 					if (overlapping_horizontally(par, wall, 10)) {	
-						par.reverse_y();
+						if ((par.get_vel().y > 0 && circlet < rect_mid_y) || //top
+							(par.get_vel().y < 0 && circleb > rect_mid_y)) { //bottom
+							par.reverse_y();
+						}
+						/*
+						// Set position
+						var old_x = par.get_pos().x;
+						var half_height = par.get_height() / 2;
+						if (circlet < rect_mid_y) { // on top	
+							par.set_pos(new p.PVector(old_x, rectt - half_height));
+						}
+						else { // on bottom	
+							par.set_pos(new p.PVector(old_x, rectb + half_height));
+						} */
 					}
 					else { //bounce horizontally
-						par.reverse_x();
+						if ((par.get_vel().x > 0 && circlel < rect_mid_x) || //left
+							(par.get_vel().x < 0 && circler > rect_mid_x)) { //right
+							par.reverse_x();
+						}
+						
+						/*
+						// Set position
+						var old_y = par.get_pos().y;
+						var half_width = par.get_width() / 2;
+						if (circlel < rect_mid_x) { //on the left
+							par.set_pos(new p.PVector(rectl - half_width, old_y));
+						}
+						else {
+							par.set_pos(new p.PVector(rectr + half_width, old_y));
+						} */
 					}
 				},
 
