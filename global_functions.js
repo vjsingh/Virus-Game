@@ -13,7 +13,7 @@ function assert(exp, message) {
 
 var assert = function(exp, message) {
 	if (!exp) {
-		alert("Assert error!: " + message);
+		console.error("Assert error!: " + message);
 	}
 };
 
@@ -23,3 +23,14 @@ var for_each = function(arr, fun) {
 		fun(arr[i]);
 	}
 };
+}
+
+function keys(obj) {
+    var k = [];
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            k.push(key);
+        }
+    }
+    return k;
+}

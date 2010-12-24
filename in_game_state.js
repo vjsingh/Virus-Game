@@ -301,6 +301,8 @@ var in_game_state = function (p, previous_state) {
         return (obj1.get_pos().dist(obj2.get_pos())
                 <= obj1.get_radius() + obj2.get_radius());
     };
+    // make it public
+    obj.check_circle_collision = check_circle_collision;
 
     // handles collisions between different object types
     var handle_collision = function(obj1, obj2) {
@@ -521,6 +523,8 @@ var in_game_state = function (p, previous_state) {
             }
         }
     };
+    // make it public
+    obj.do_to_type = do_to_type;
 
     // applies do_to_type to all given types
     var do_to_types = function(f, types, strict) {
