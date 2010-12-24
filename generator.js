@@ -20,6 +20,69 @@ var make_generator = function(p, game) {
     var game_objects = null;
 	var distance = null;
 
+    // structure that stores the generation settings
+    // for each type of object
+    // - start = distance after which to start generating
+    // - rate = rate to generate at (num per screen)
+    // - make_new = function that takes a pos and returns a new enemy
+    var gen_info = {
+        "cell": { 
+            start: 0, rate: 15,
+            make_new: function(en_pos) {
+                return cell(p, {
+                    pos: en_pos,
+                    state: "alive"
+                });
+            }
+        },
+        "wall_cell": {
+            start: 1000, rate: 5,
+            make_new: function(en_pos) {
+                return wall_cell(p, { pos: en_pos });
+            } 
+        },
+        "empty_cell": {
+            start: 5000, rate: 5,
+            make_new: function(en_pos) {
+                return empty_cell(p, { pos: en_pos });
+            } 
+        },
+        "floater": {
+            start: 3000, rate: 5,
+            make_new: function(en_pos) {
+                return floater(p, { pos: en_pos });
+            } 
+        },
+        "tkiller": {
+            start: 1000, rate: 5,
+            make_new: function(en_pos) {
+                // target will get set later
+                return tkiller(p, { pos: en_pos });
+            } 
+        }
+    };
+
+    // list of types of enemies
+    var enemy_types = keys(gen_info);
+    var random_type = function() {
+        return enemy_types[p.floor(p.random(
+                        enemy_types.length))];
+    };
+
+    // just some wrappers
+    var start = function(type) {
+        return gen_info[type].start;
+    };
+    var rate = function(type) {
+        return gen_info[type].rate;
+    };
+    var make_new = function(type) {
+        return gen_info[type].make_new;
+    };
+    obj.gen_more = function(type, incr) {
+        gen_info[type].rate += incr;
+    };
+
     // --- public methods --- 
 	
 	//Should be called every time the game updates
@@ -28,84 +91,72 @@ var make_generator = function(p, game) {
 		distance = game.get_distance();
 
 		//If total enemies < 10, add a random enemy
-		var total_enemies = get_total_enemies();
-		if (total_enemies < 10) {
-			//For now, 4 enemies: cell, empty_cell, floater, tkiller
-			var random_num = p.floor(Math.random() * 4);
-			
+        var enemy_type = random_type();
+        var num_enemies = count_enemy(enemy_type);
+
+        if (num_enemies < rate(enemy_type)
+                && p.random(100) < 1
+                && distance >= start(enemy_type)) {
 			//Generate random y position
-			var enemy_y = p.floor(Math.random() * p.height);
+			var enemy_y = p.random(30, p.height-30);
 			var enemy_pos = new p.PVector(p.width+30, enemy_y);
 			
-			var new_enemy = null;
-			switch (random_num) {
-				case 0:
-			        new_enemy = cell(p, {
-			            pos: enemy_pos,
-			            state: "alive"
-			        });
-					break;
-				case 1:
-					new_enemy = empty_cell(p, {
-						pos : enemy_pos
-					});
-					break;
-				case 2:
-					new_enemy = wall_cell(p, {
-						pos : enemy_pos
-					});
-					break;
-				case 3:
-					new_enemy = floater(p, {
-						pos : enemy_pos
-					});
-					break;
-				case 4: 
-			        new_enemy = tkiller(p, {
-			            pos: enemy_pos,
-			            target: game.get_active_cell()
-			        });
-					break;
-			}
-			assert(new_enemy != null, "Error in generator.update()");
+			var new_enemy = make_new(enemy_type)(enemy_pos);
+			assert(new_enemy, "Error in generator.update()");
 			
 			//Add the new enemy to game_objects
-			//game_objects[type_to_level[new_enemy.get_type()]].push(new_enemy);
             game.add_object(new_enemy);
 		}
-		
-        // distance didn't change - jonah
-		//Set updated game_objects and distance
-		//game.set_game_objects(game_objects);
-		//game.set_distance(distance);
-	}
+	};
 	
 	// --- private methods ---
+    
+    var count_enemy = function(enemy_type) {
+        var n = 0;
+        game.do_to_type(function(o) { n++; },
+                enemy_type, true);
+        return n;
+    }
 	
-	//TODO: Very simplistic for now, should be expanded on later
-	// Returns the total number of enemies and cells in the world
     // returns an object:
     //      cell: number of cells on the screen
     //      wall_cell: number of wall_cells
     //      empty_cell: number of empty_cells
     //      tkiller: number of tkillers
     //      floater: number of floaters
-	var get_total_enemies = (function() {
+	var get_enemies = (function() {
 		var total = 0;
 		
-        // USE A CLOSURE SO WE DONT HAVE TO MAKE THIS ARRAY EVERY TIME
-		//These are the types to check
-		//For now, enemies and cells
-		//Could be done by rendering levels, but doesn't seem right
-		var types = ["cell", "wall_cell", "empty_cell", "floater", "tkiller"];
+		// These are the types to check
+		//var types = ["cell", "wall_cell", "empty_cell",
+         //       "floater", "tkiller"];
 		
 		//Checks if an element is in an array
 		var member = function(arr, elem) {
 			return (arr.indexOf(elem) != -1);
 		};
 
-        var get_enemies = function() {
-            for (var i = 0; i < game_objects.length; i++) {
+        var get_em = function() {
+            var enemies = { "cell":0, "wall_cell":0,
+                "empty_cell":0, "floater":0, "tkiller":0 };
+
+            // increment counter for each object
+            var incr = function(o) {
+                enemies[o.get_type()] += 1;
+            };
+            game.do_to_type(incr, "cell", false);
+            game.do_to_type(incr, "enemy", false);
+        };
+            /*for (var type in enemies) {
+                if (enemies.hasOwnProperty(type)) {
+                    game.do_to_type(
+                        function(o) {
+                            enemies[type] += 1;
+                        },
+                        type, true);
+                }
+            }
+            /*for (var i = 0; i < game_objects.length; i++) {
                 var lst = game_objects[i];
                 for (var j = 0; j < lst.length; j++) {
                     var obj = lst[j];
@@ -115,9 +166,9 @@ var make_generator = function(p, game) {
                 }
             }
             return total;
-        };
+            */
 
-		return get_enemies;
+		return get_em;
     }());
 
     return obj;

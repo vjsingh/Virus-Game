@@ -489,6 +489,8 @@ var in_game_state = function (p, previous_state) {
             }
         }
     };
+    // make it public
+    obj.do_to_type = do_to_type;
 
     // applies do_to_type to all given types
     var do_to_types = function(f, types, strict) {

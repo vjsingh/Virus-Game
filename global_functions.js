@@ -13,6 +13,16 @@ function assert(exp, message) {
 
 function assert(exp, message) {
 	if (!exp) {
-		alert("Assert error!: " + message);
+		console.error("Assert error!: " + message);
 	}
+}
+
+function keys(obj) {
+    var k = [];
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            k.push(key);
+        }
+    }
+    return k;
 }
