@@ -26,7 +26,7 @@ var state_manager = function (p) {
     //Removes a state from the displayed_states
     //The state must be in displayed_states, or will throw an error
     function remove_from_displayed(s) {
-        var index = displayed_states.indexOf(curr_state);
+        var index = displayed_states.indexOf(s);
         if (index === -1) {
             throw "error in remove_from_displayed in state_manager";
         }
@@ -35,7 +35,7 @@ var state_manager = function (p) {
     
     //Adds a state to displayed_states
     //Ensures that displayed_states is sorted by ascending rendering level
-    function add_to_displayed_states(s) {
+    var add_to_displayed_states = function(s) {
         var render_level = type_to_level[s.get_type()];
         //Insert in the array right before a render level that is higher than it, or
         //at the end if none
@@ -57,14 +57,14 @@ var state_manager = function (p) {
 
     //Updates the current state and renders all appropriate states
     obj.update = function() {
-		var next_state = curr_state.update();
+		var next_state = curr_state.update_wrapper();
         
         //If we have a new state to go to
         if (next_state) {
             //Figure out if next state is an overlay
             var state_type = next_state.get_type();
             var is_overlay = -1;
-            switch (next_state_str) {
+            switch (state_type) {
                 case "splash":
                     is_overlay = false;
                     break;
@@ -79,10 +79,6 @@ var state_manager = function (p) {
                     break;
             }
 			
-			//Remove current state and set curr to next
-			remove_from_displayed(curr_state);
-			curr_state = next_state;
-			
 			//Error checking
 			if (is_overlay === -1) {
 				throw "error in mouse_click in state_manager";
@@ -90,11 +86,13 @@ var state_manager = function (p) {
 			
 			//If overlay, add to displayed, otherwise reset displayed
 			if (is_overlay) {
-				add_to_displayed_states[curr_state];
+				add_to_displayed_states(next_state);
 			}
 			else {
-				displayed_states = [curr_state];
+				remove_from_displayed(curr_state);
+				displayed_states = [next_state];
 			}
+			curr_state = next_state;
 		}
 		
 		 for (var i = 0; i < displayed_states.length; i++) {

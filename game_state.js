@@ -26,8 +26,12 @@ var game_state = function (p) {
 		if (previous_state == null) {
 			throw "error previous state not set in game_state";
 		}
+		assert(previous_state != null, "Previous state was null in game_state.exit_state");
 		next_state = previous_state;
 	}
+	
+	// Wrapper for every states update function
+	// Goes to the next state (by returning it) if next_state has been set
 	obj.update_wrapper = function() {
 		if (next_state !== null) {
 			var to_return = next_state;
@@ -37,8 +41,8 @@ var game_state = function (p) {
 		}
 		//else
 		obj.update();
+		obj.render();
 	}
-	
 	
     // all game_states must implement the following functions:
     
@@ -63,4 +67,4 @@ var game_state = function (p) {
     obj.update = function() {throw "update not overwritten"};
     
     return obj;
-}
+};
