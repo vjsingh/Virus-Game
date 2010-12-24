@@ -90,12 +90,14 @@ var make_generator = function(p, game) {
 		game_objects = game.get_game_objects();
 		distance = game.get_distance();
 
-		//If total enemies < 10, add a random enemy
         var enemy_type = random_type();
         var num_enemies = count_enemy(enemy_type);
 
+        // if there aren't enough of that enemy on the board
         if (num_enemies < rate(enemy_type)
+                // and some random factor
                 && p.random(100) < 1
+                // and we are ready to start making this enemy
                 && distance >= start(enemy_type)) {
 			//Generate random y position
 			var enemy_y = p.random(30, p.height-30);
@@ -103,6 +105,11 @@ var make_generator = function(p, game) {
 			
 			var new_enemy = make_new(enemy_type)(enemy_pos);
 			assert(new_enemy, "Error in generator.update()");
+
+            // make sure it's not overlapping anything else
+            if (is_overlapping(new_enemy)) {
+                return;
+            }
 			
 			//Add the new enemy to game_objects
             game.add_object(new_enemy);
@@ -111,12 +118,27 @@ var make_generator = function(p, game) {
 	
 	// --- private methods ---
     
+    // returns how many of given enemy there are
     var count_enemy = function(enemy_type) {
         var n = 0;
         game.do_to_type(function(o) { n++; },
                 enemy_type, true);
         return n;
     }
+
+    // returns true if the enemy overlaps any game objects
+    var is_overlapping = function(enemy) {
+        var overlap = false;
+        var check_overlap = function(obj) {
+            if (game.check_circle_collision(enemy, obj)) {
+                overlap = true;
+            }
+        };
+        game.do_to_type(check_overlap, "particle", false);
+        game.do_to_type(check_overlap, "cell", false);
+        game.do_to_type(check_overlap, "enemy", false);
+        return overlap;
+    };
 	
     // returns an object:
     //      cell: number of cells on the screen
