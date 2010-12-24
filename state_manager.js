@@ -102,6 +102,8 @@ var state_manager = function (p) {
 				displayed_states = [next_state];
 			}
 			curr_state = next_state;
+			//Potentially a problem, we do this even if not returning to a state
+			curr_state.resume(); 
 		}
 		
 		 for (var i = 0; i < displayed_states.length; i++) {

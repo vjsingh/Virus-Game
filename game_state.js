@@ -35,6 +35,9 @@ var game_state = function (p) {
 	obj.set_next_state = function(ns) {
 		next_state = ns;
 	};
+	obj.set_previous_state = function(ps) {
+		previous_state = ps;
+	};
 	obj.exit_state = function() {
 		if (previous_state == null) {
 			throw "error previous state not set in game_state";
@@ -78,14 +81,6 @@ var game_state = function (p) {
         return "get_type not overwritten";
     };
 	
-    //Renders the current state
-	//Don't override if you want to do nothing when rendering
-    obj.render = function(){ }; //throw "render not overwritten"};
-
-    //Takes in the x and y coordinates of the mouse, and handles a mouse click
-	//Don't override if you want to do nothing on a mouse click
-    obj.mouse_click = function(x, y){}; //throw "mouse_click not overwritten"};
-	
 	//Takes in the key pressed and handles a key press
     obj.key_pressed = function(k) {throw "key_pressed not overwritten"};
 	    
@@ -97,7 +92,18 @@ var game_state = function (p) {
 	
 	// Returns all of the buttons on the screen
 	obj.get_all_buttons = function() {throw "get_all_buttons not overwritten"};
+	
+    // --- Optionally implement these, they default to nothing ---
+	
+    //Renders the current state
+    obj.render = function(){ }; //throw "render not overwritten"};
+
+    //Takes in the x and y coordinates of the mouse, and handles a mouse click
+    obj.mouse_click = function(x, y){}; //throw "mouse_click not overwritten"};
     
+	//Called when returning to this state
+	obj.resume = function() {};
+	
     
 	
     return obj;

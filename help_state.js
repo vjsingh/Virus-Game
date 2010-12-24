@@ -2,7 +2,8 @@ var help_state = function (p, prev_state) {
 
     // object to return
     var obj = game_state(p);
-
+	obj.set_previous_state(prev_state);
+	
     // --- private variables ---
 	
 	// Buttons

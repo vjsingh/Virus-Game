@@ -5,6 +5,8 @@ var in_game_state = function (p, previous_state) {
 
     // object to return
     var obj = game_state(p);
+	obj.set_previous_state(prev_state);
+
 
     // whether or not we are testing
     // use it wherever
@@ -24,6 +26,7 @@ var in_game_state = function (p, previous_state) {
 	var active_cell = null;
     var game_objects = [];
 	var generator = make_generator(p, obj);
+	var paused = false;
     // temporary flag TODO
     var game_over = false;
     
@@ -547,52 +550,56 @@ var in_game_state = function (p, previous_state) {
         var game_types = ["background", "particle", "cell", "enemy"];
 
         var update_fun = function() {
-
-            // if we don't have an active cell
-            if (active_cell === null) {
-                // try to find the next one
-                next_active_cell();
-            }
-            // THIS MUST COME BEFORE GAME OVER CHECK
-
-            // check for game over
-            // (if no particles are left and no active cell)
-            if (active_cell === null
-                && level("particle").length === 0) {
-                // for now, use a flag TODO
-                game_over = true;
-                // simply don't do the rest of update
-                return;
-            }
-
-            //Add any newly generated objs
-            generator.update();
-
-            //if (scroll_counter <= 0) {
-                //scroll_counter = scroll_rate;
-                
-            // scroll all objects
-            do_to_types(function (o) { o.scroll(scroll_dist); },
-                        game_types, false);
-
-            // update distance travelled
-            // (negative because scrolling is negative)
-            distance += -scroll_dist;
-
-            //}
-            //else {
-                //scroll_counter--;
-            //}
-            
-        
-            // update all objects
-            do_to_types(function (o) { o.update(); },
-                    game_types, false);
-
-            check_collisions();
-            
-            remove_objs();
-            //TODO: add end game check
+			if (!paused) {
+			
+				// if we don't have an active cell
+				if (active_cell === null) {
+					// try to find the next one
+					next_active_cell();
+				}
+				// THIS MUST COME BEFORE GAME OVER CHECK
+				
+				// check for game over
+				// (if no particles are left and no active cell)
+				if (active_cell === null &&
+				level("particle").length === 0) {
+					// for now, use a flag TODO
+					game_over = true;
+					// simply don't do the rest of update
+					return;
+				}
+				
+				//Add any newly generated objs
+				generator.update();
+				
+				//if (scroll_counter <= 0) {
+				//scroll_counter = scroll_rate;
+				
+				// scroll all objects
+				do_to_types(function(o){
+					o.scroll(scroll_dist);
+				}, game_types, false);
+				
+				// update distance travelled
+				// (negative because scrolling is negative)
+				distance += -scroll_dist;
+				
+				//}
+				//else {
+				//scroll_counter--;
+				//}
+				
+				
+				// update all objects
+				do_to_types(function(o){
+					o.update();
+				}, game_types, false);
+				
+				check_collisions();
+				
+				remove_objs();
+			//TODO: add end game check
+			}
         };
         
         return update_fun;
@@ -642,14 +649,20 @@ var in_game_state = function (p, previous_state) {
             }
 		}
 		else if (k === 112) { //p
-			//pause_state = pause_state();
-			//obj.set_next_state(pause_state);
+			paused = true;
+			var p_state = pause_state(p, obj);
+			obj.set_next_state(p_state);
 		}
 		else if (k === 104) { //h
-			//help_state = help_state();
-			//obj.set_next_state(help_state);
+			paused = true;
+			var h_state = help_state(p, obj);
+			obj.set_next_state(h_state);
 		}
 	};
+	
+	obj.resume = function() {
+		paused = false;
+	}
     
     //Adds a game_object to the game world
     obj.add_object = function(o) {
