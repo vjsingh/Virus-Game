@@ -178,4 +178,4 @@ var cell = function(p, spec) {
     };
 
     return obj;
-}
+};

@@ -7,7 +7,8 @@ var pCode = function(p) {
     p.setup = function() {
         p.size(500, 500);
 
-        g = in_game_state(p, null); 
+		g = state_manager(p);
+        //g = in_game_state(p, null); 
 
         /*
         g.add_object(particle(p, {
@@ -73,15 +74,16 @@ var pCode = function(p) {
     p.draw = function() {
         p.background(200);
 
-        g.update();
-        g.render();
-
+        g.update(); // Also renders
     };
 	
 	//Mouse and Keyboard input
 	p.keyPressed = function() {
 		g.key_pressed(p.key);
 	};
+	p.mousePressed = function() {
+		g.mouse_click(p.mouseX, p.mouseY);
+	}
 }
 
 

@@ -11,11 +11,18 @@ function assert(exp, message) {
 }
 */
 
-function assert(exp, message) {
+var assert = function(exp, message) {
 	if (!exp) {
 		console.error("Assert error!: " + message);
 	}
-}
+};
+
+//Does something to every element of an arr
+var for_each = function(arr, fun) {
+	for (var i = 0; i < arr.length; i++) {
+		fun(arr[i]);
+	}
+};
 
 function keys(obj) {
     var k = [];
@@ -25,4 +32,4 @@ function keys(obj) {
         }
     }
     return k;
-}
+};
