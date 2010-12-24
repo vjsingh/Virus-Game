@@ -51,11 +51,6 @@ var splash_state = function (p) {
 		//do nothing
     };
     
-   	//Draws all of the buttons
-    obj.render = function(){
-		for_each(all_buttons, function(b) { b.draw()});
-    };
-	
 	obj.key_pressed = function(k) {
 		if (k === 115) { //s
 			obj.set_next_state(start_button.get_state());
@@ -65,15 +60,9 @@ var splash_state = function (p) {
 		}
 	};
 	
-	obj.mouse_click = function(x, y) {
-		var click_function = function(b) {
-			var next_state = b.is_clicked(x, y);
-			if (next_state != null) {
-				obj.set_next_state(next_state);
-			}
-		}
-		for_each(all_buttons, click_function);
-	};
+	obj.get_all_buttons = function() {
+		return all_buttons;
+	}
     
 	
     return obj;

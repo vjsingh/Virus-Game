@@ -81,9 +81,10 @@ var in_game_state = function (p, previous_state) {
 			height : 20
 		})
 	};	
-	//Not ordered
-	var all_buttons = [pause_button, help_button, exit_button];
 */
+	//Not ordered
+	var all_buttons = []; //[pause_button, help_button, exit_button];
+
 
     // --- private methods ---
 
@@ -660,6 +661,10 @@ var in_game_state = function (p, previous_state) {
             obj.add_object(os[i]);
         }
     };
+	
+	obj.get_all_buttons = function() {
+		return all_buttons;
+	}
     
     // --- getters --- 
 

@@ -57,7 +57,16 @@ var state_manager = function (p) {
 
     //Updates the current state and renders all appropriate states
     obj.update = function() {
-		var next_state = curr_state.update_wrapper();
+		var next_state = null;
+		var display_function = function(s) {
+			if (s == curr_state) {
+				next_state = s.update_wrapper();
+			}
+			else {
+				s.update_wrapper();
+			}
+		}
+		for_each(displayed_states, display_function);
         
         //If we have a new state to go to
         if (next_state) {
@@ -102,7 +111,7 @@ var state_manager = function (p) {
     
     //Passes clicks on to curr_state
     obj.mouse_click = function (x, y) {
-        curr_state.mouse_click(x, y); 
+        curr_state.mouse_click_wrapper(x, y); 
     };
 	obj.key_pressed = function(k) {
 		curr_state.key_pressed(k);
