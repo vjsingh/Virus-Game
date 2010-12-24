@@ -86,6 +86,9 @@ var state_manager = function (p) {
                 case "help":
                     is_overlay = true;
                     break;
+				case "game_over":
+					is_overlay = true;
+					break;
             }
 			
 			//Error checking

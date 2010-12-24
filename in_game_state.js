@@ -563,8 +563,9 @@ var in_game_state = function (p, previous_state) {
 				// (if no particles are left and no active cell)
 				if (active_cell === null &&
 				level("particle").length === 0) {
-					// for now, use a flag TODO
-					game_over = true;
+					var go_state = game_over_state(p, previous_state);
+					obj.set_next_state(go_state);
+					
 					// simply don't do the rest of update
 					return;
 				}
@@ -598,7 +599,6 @@ var in_game_state = function (p, previous_state) {
 				check_collisions();
 				
 				remove_objs();
-			//TODO: add end game check
 			}
         };
         
@@ -616,6 +616,7 @@ var in_game_state = function (p, previous_state) {
             }
         }
 
+		/*
         // draw game over overlay for now
         if (game_over) {
             p.noStroke();
@@ -625,6 +626,7 @@ var in_game_state = function (p, previous_state) {
             p.textAlign(p.CENTER);
             p.text("GAME OVER\nRELOAD TO RESTART", p.width/2, p.height/2);
         }
+        */	
     };
     
     obj.mouse_click = function (x, y) {
