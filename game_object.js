@@ -94,6 +94,11 @@ var game_object = function (p, spec) {
     obj.set_radius = function(new_radius) {
         radius = new_radius;
     };
+	
+	// Should only be used for collisions
+	obj.set_pos = function(p) {
+		pos = p;
+	}
 
     // --- getters --- 
 
