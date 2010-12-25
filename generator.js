@@ -109,9 +109,6 @@ var make_generator = function(p, game) {
 
         var enemy_type = random_type();
         var num_enemies = count_enemy(enemy_type);
-        if (enemy_type === "multiplier") {
-            console.log("mul "+num_enemies+", "+num(enemy_type));
-        }
 
         // if there aren't enough of that enemy on the board
         if (num_enemies < num(enemy_type)
@@ -119,6 +116,7 @@ var make_generator = function(p, game) {
                 && p.random(100) < 2
                 // and we are ready to start making this enemy
                 && distance >= start(enemy_type)) {
+
 			//Generate random y position
 			var enemy_y = p.random(30, p.height-30);
 			var enemy_pos = new p.PVector(p.width+30, enemy_y);

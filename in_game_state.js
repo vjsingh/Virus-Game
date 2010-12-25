@@ -224,6 +224,15 @@ var in_game_state = function (p, previous_state) {
         // cell (2) vs. cell (2)
         // cell (2) vs. enemy (3)
         // enemy (3) vs. enemy (3)
+        var to_check = [
+            ["particle", "particle"],
+            ["particle", "cell"],
+            ["particle", "enemy"],
+            ["particle", "multiplier"],
+            ["cell", "cell"],
+            ["cell", "enemy"],
+            ["enemy", "enemy"]
+        ];
         
         // hey this looks like combinations!
         var do_comb = function(arr1, start1, end1,
@@ -249,22 +258,24 @@ var in_game_state = function (p, previous_state) {
         var collision_fun = function() {
             // double combinations!
             // for each pair of rendering groups
-            do_comb(game_objects, 1, 3,
-                game_objects, 1, 3,
-                function(lvl1, lvl2) {
-                    //console.log("new levels");
-                    // for each pair of objects in the groups
-                    do_comb(lvl1, 0, lvl1.length-1,
+           // do_comb(game_objects, 1, 3,
+              //  game_objects, 1, 3,
+            for_each(to_check, function(pair) {
+                var lvl1 = level(pair[0]);
+                var lvl2 = level(pair[1]);
+                // for each pair of objects in the groups
+                do_comb(lvl1, 0, lvl1.length-1,
                         lvl2, 0, lvl2.length-1, check);
-                }
-            );
-			// TODO: fix
+            });
+            //);
+			/* TODO: fix
 			do_comb(game_objects, 1, 1,
 				game_objects, 4, 4,
 	                function(lvl1, lvl2) {
 	                    do_comb(lvl1, 0, lvl1.length-1,
 	                        lvl2, 0, lvl2.length-1, check);
 							});
+            */
         };
 			
 
