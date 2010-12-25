@@ -35,7 +35,7 @@ var in_game_state = function (p, previous_state) {
 	var mult = num_status_obj(p, {
 		pos : new p.PVector(p.width - 100, 20),
 		text : "Multiplier:",
-		num : 0
+		num : 1
 	})
 	var start_time = (new Date()).getMilliseconds();
 	var time_elapsed = 0; // Time elapsed in seconds
@@ -370,29 +370,25 @@ var in_game_state = function (p, previous_state) {
 	
 	// Reverses 2 objs appropriate velocities 
     var bounce_collided = function(obj1, obj2) {
+		//offset adjusts how closely we check, since we can't check exactly when they collide every time
+		var offset = 5;
 		var onel = obj1.get_left(), oner = obj1.get_right();
 		var onet = obj1.get_top(), oneb = obj1.get_bottom();
-		var twol = obj2.get_left(), twor = obj2.get_right();
-		var twot = obj2.get_top(), twob = obj2.get_bottom();
-		var two_mid_y = (twob - (obj2.get_height() / 2));
-		var two_mid_x = (twor - (obj2.get_width() / 2));
+		var twol = obj2.get_left() + offset, twor = obj2.get_right() - offset;
+		var twot = obj2.get_top() + offset, twob = obj2.get_bottom() - offset;
 		
 		//When bouncing, check velocity to make sure they are 'incoming' to each other
 		//This avoids them getting stuck (makes sure they didn't just collide)
 		//bounce vertically
-		if (onet < twob || oneb > twot) {
-			if ((obj1.get_vel().y > 0 && onet < two_mid_y) || //top
-				(obj1.get_vel().y < 0 && circleb > rect_mid_y)) { //bottom
+		var y_vel = obj1.get_vel().y;
+		var x_vel = obj1.get_vel().x;
+		if ((onet >= twob && y_vel <= 0) || (oneb <= twot && y_vel >= 0)) {
 				obj1.reverse_y();
 				obj2.reverse_y();
-			}
 		}
-		else { //bounce horizontally
-			if ((obj1.get_vel().x > 0 && circlel < rect_mid_x) || //left
-				(obj1.get_vel().x < 0 && circler > rect_mid_x)) { //right
+		else if ((oner <= twol && x_vel >= 0) || (onel > twor && x_vel <= 0)){ //bounce horizontally
 				obj1.reverse_x();
 				obj2.reverse_x();
-			}
 		}
 	}
     // object to store all the handlers
@@ -410,7 +406,7 @@ var in_game_state = function (p, previous_state) {
                 par.die();
                 cell.set_state("infected");
 				// Add 1 to score
-				score.incr(1);
+				score.incr(1 * mult.get_num());
             }
             // TODO: maybe infected cells should deflect
 			
@@ -592,7 +588,6 @@ var in_game_state = function (p, previous_state) {
         var game_types = ["background", "particle", "cell", "enemy", "multiplier"];
 
         var update_fun = function() {
-			obj.add_object(multiplier(p, {pos : new p.PVector(p.width + 50, Math.random() * 500)}));
 			if (!paused) {
 			
 				// if we don't have an active cell

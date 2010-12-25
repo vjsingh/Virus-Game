@@ -3,7 +3,6 @@
 //  game_object spec
 
 var multiplier = function(p, spec) {
-	console.log("Creating multiplier");
     // --- defaults ---
 
     spec.width = spec.width || 5;
