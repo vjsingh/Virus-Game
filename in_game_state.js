@@ -532,10 +532,21 @@ var in_game_state = function (p, previous_state) {
     //Removes all objs which are either off screen or dead
     var remove_objs = function() {
         var filter_fun = function(x) {
-            //if ( !( ! x.is_offscreen() && ! x.is_dead())) {
-				//alert ("removing: " + x.get_type());
-			//}
-            return (! x.is_offscreen() && ! x.is_dead())
+			//Check offscreen, but don't remove newly generated
+			var offscreen = false;
+			if (x.is_offscreen()) {
+				//Only remove particles that are off the right
+				if (x.is_off_right()) {
+					if (x.get_type() === "particle") {
+						offscreen = true;
+					}
+					//else false
+				}
+				else {
+					offscreen = true;
+				}
+			}
+            return (!offscreen && (! x.is_dead()));
         };  
         for (var i = 0; i < game_objects.length; i++) {
             game_objects[i] = game_objects[i].filter(filter_fun);
@@ -597,6 +608,7 @@ var in_game_state = function (p, previous_state) {
         var game_types = ["background", "particle", "cell", "enemy", "multiplier"];
 
         var update_fun = function() {
+			obj.add_object(multiplier(p, {pos : new p.PVector(p.width + 50, Math.random() * 500)}));
 			if (!paused) {
 			
 				// if we don't have an active cell
@@ -654,9 +666,6 @@ var in_game_state = function (p, previous_state) {
     
     //Calls draw() on every obj
     obj.render = function(){
-		if (game_objects[4].length > 0) {
-			console.log("Added mult");
-		}
         for (var i=0; i<game_objects.length; i++) {
             for (var j=0; j<game_objects[i].length; j++) {
                 var o = game_objects[i][j];
@@ -727,10 +736,6 @@ var in_game_state = function (p, previous_state) {
         //var render_level = type_to_level[type];
         //game_objects[render_level].push(o);
         level(o.get_type()).push(o);
-		console.log("level size: " + level(o.get_type()).length);
-		console.log("pushing: " + o.get_type());
-		console.log(o);
-		console.log("level size: " + level(o.get_type()).length);
     };
 
     // add multiple objects

@@ -6,8 +6,8 @@ var multiplier = function(p, spec) {
 	console.log("Creating multiplier");
     // --- defaults ---
 
-    spec.width = spec.width || 20;
-    spec.height = spec.height || 20;
+    spec.width = spec.width || 5;
+    spec.height = spec.height || 5;
     spec.vel = new p.PVector(Math.random(), Math.random());
 
     // obj to return

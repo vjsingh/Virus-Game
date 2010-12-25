@@ -55,12 +55,18 @@ var game_object = function (p, spec) {
 	    var right_edge = pos.x + width;
 	    var top_edge = pos.y - height;
 	    var btm_edge = pos.y + height;
-
         return (left_edge > p.width
             || right_edge < 0
             || top_edge > p.height
             || btm_edge < 0);
     }
+	
+	// Returns if the obj is off the right of the screen
+	obj.is_off_right = function() {
+		var left_edge = pos.x - width;
+		return left_edge > p.width;
+	}
+	
 
 	// Bounces the object off a wall, if it is at one
 	obj.bounce = function() {
