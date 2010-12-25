@@ -64,9 +64,9 @@ var make_generator = function(p, game) {
             }
         },
 		"multiplier": {
-			start:0, num: 1, cap: 15, rate: 20000,
+			start: 0, num: 1, cap: 15, rate: 20000,
 			make_new: function(en_pos) {
-				return multiplier(p, {pos : en_pos});
+				return multiplier(p, { pos : en_pos });
 			}
 		}
     };

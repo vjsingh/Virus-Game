@@ -727,7 +727,7 @@ var in_game_state = function (p, previous_state) {
         //var render_level = type_to_level[type];
         //game_objects[render_level].push(o);
         level(o.get_type()).push(o);
-		console.log("level size: " + level(o.get_type()).length);
+		//console.log("level size: " + level(o.get_type()).length);
 		console.log("pushing: " + o.get_type());
 		console.log(o);
 		console.log("level size: " + level(o.get_type()).length);
