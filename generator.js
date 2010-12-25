@@ -64,9 +64,9 @@ var make_generator = function(p, game) {
             }
         },
 		"multiplier": {
-			start:0, num: 1, cap: 10, rate: 20000,
+			start:0, num: 2, cap: 10, rate: 20000,
 			make_new: function(en_pos) {
-				return multiplier(p, {pos : en_pos});
+				return multiplier(p, { pos : en_pos });
 			}
 		}
     };
@@ -104,11 +104,14 @@ var make_generator = function(p, game) {
 	
 	//Should be called every time the game updates
 	obj.update = function() {
-		game_objects = game.get_game_objects();
+		//game_objects = game.get_game_objects();
 		distance = game.get_distance();
 
         var enemy_type = random_type();
         var num_enemies = count_enemy(enemy_type);
+        if (enemy_type === "multiplier") {
+            console.log("mul "+num_enemies+", "+num(enemy_type));
+        }
 
         // if there aren't enough of that enemy on the board
         if (num_enemies < num(enemy_type)
