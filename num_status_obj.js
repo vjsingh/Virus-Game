@@ -1,5 +1,5 @@
 // Generic wrapper for a status that includes text and a num
-// Provides draw, incr, and set_num
+// Provides draw, incr, set_num, and get_num
 // spec:
 //		pos : center pos of text
 //		text : Will display "<text> <num>"
@@ -42,8 +42,14 @@ var num_status_obj = function(p, spec) {
 		update(number + n);
 	};
 	
+	// Set and get
+	
 	obj.set_num = function(n) {
 		update(n);
+	}
+	
+	obj.get_num = function(n) {
+		return number;
 	}
 	
     return obj;

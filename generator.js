@@ -39,7 +39,7 @@ var make_generator = function(p, game) {
             }
         },
         "wall_cell": {
-            start: 1000, num: 1, cap: 7, rate: 20000,
+            start: 0, num: 1, cap: 7, rate: 20000, //non testing value: 1000
             make_new: function(en_pos) {
                 return wall_cell(p, { pos: en_pos });
             } 
@@ -132,7 +132,6 @@ var make_generator = function(p, game) {
 			
 			//Add the new enemy to game_objects
             game.add_object(new_enemy);
-			console.log("Adding enemy: " + new_enemy.get_type());
 		}
 
         // update nums for types based on rate

@@ -35,7 +35,7 @@ var in_game_state = function (p, previous_state) {
 	var mult = num_status_obj(p, {
 		pos : new p.PVector(p.width - 100, 20),
 		text : "Multiplier:",
-		num : 0
+		num : 1
 	})
 	var start_time = (new Date()).getMilliseconds();
 	var time_elapsed = 0; // Time elapsed in seconds
@@ -374,12 +374,37 @@ var in_game_state = function (p, previous_state) {
             else {
                 throw "Unsupported collision type!";
             }
+			
         }
+		bounce_collided(obj1, obj2);
     };
-        
-    
+	
+	// Reverses 2 objs appropriate velocities 
+    var bounce_collided = function(obj1, obj2) {
+		//offset adjusts how closely we check, since we can't check exactly when they collide every time
+		var offset = 5;
+		var onel = obj1.get_left(), oner = obj1.get_right();
+		var onet = obj1.get_top(), oneb = obj1.get_bottom();
+		var twol = obj2.get_left() + offset, twor = obj2.get_right() - offset;
+		var twot = obj2.get_top() + offset, twob = obj2.get_bottom() - offset;
+		
+		//When bouncing, check velocity to make sure they are 'incoming' to each other
+		//This avoids them getting stuck (makes sure they didn't just collide)
+		//bounce vertically
+		var y_vel = obj1.get_vel().y;
+		var x_vel = obj1.get_vel().x;
+		if ((onet >= twob && y_vel <= 0) || (oneb <= twot && y_vel >= 0)) {
+				obj1.reverse_y();
+				obj2.reverse_y();
+		}
+		else if ((oner <= twol && x_vel >= 0) || (onel > twor && x_vel <= 0)){ //bounce horizontally
+				obj1.reverse_x();
+				obj2.reverse_x();
+		}
+	}
     // object to store all the handlers
     // created once with a closure
+	// dont manage bouncing/changing direction here
     var collision_handlers = (function() {
         var nothing = function(obj1, obj2) {};
 
@@ -392,7 +417,7 @@ var in_game_state = function (p, previous_state) {
                 par.die();
                 cell.set_state("infected");
 				// Add 1 to score
-				score.incr(1);
+				score.incr(1 * mult.get_num());
             }
             // TODO: maybe infected cells should deflect
 			
@@ -412,52 +437,7 @@ var in_game_state = function (p, previous_state) {
                 // particle vs. wall_cell
                 // bounce particle off cell
                 // cell doesn't move
-                // TODO
-                "wall_cell": function(par, wall) {
-					var circlel = par.get_left(), circler = par.get_right();
-					var circlet = par.get_top(), circleb = par.get_bottom();
-					var rectl = wall.get_left(), rectr = wall.get_right();
-					var rectt = wall.get_top(), rectb = wall.get_bottom();
-					var rect_mid_y = (rectb - (wall.get_height() / 2));
-					var rect_mid_x = (rectr - (wall.get_width() / 2));
-					
-					//When bouncing, check velocity to make sure ball is 'incoming'
-					//This avoids the ball getting stuck
-					//bounce vertically
-					if (overlapping_horizontally(par, wall, 10)) {	
-						if ((par.get_vel().y > 0 && circlet < rect_mid_y) || //top
-							(par.get_vel().y < 0 && circleb > rect_mid_y)) { //bottom
-							par.reverse_y();
-						}
-						/*
-						// Set position
-						var old_x = par.get_pos().x;
-						var half_height = par.get_height() / 2;
-						if (circlet < rect_mid_y) { // on top	
-							par.set_pos(new p.PVector(old_x, rectt - half_height));
-						}
-						else { // on bottom	
-							par.set_pos(new p.PVector(old_x, rectb + half_height));
-						} */
-					}
-					else { //bounce horizontally
-						if ((par.get_vel().x > 0 && circlel < rect_mid_x) || //left
-							(par.get_vel().x < 0 && circler > rect_mid_x)) { //right
-							par.reverse_x();
-						}
-						
-						/*
-						// Set position
-						var old_y = par.get_pos().y;
-						var half_width = par.get_width() / 2;
-						if (circlel < rect_mid_x) { //on the left
-							par.set_pos(new p.PVector(rectl - half_width, old_y));
-						}
-						else {
-							par.set_pos(new p.PVector(rectr + half_width, old_y));
-						} */
-					}
-				},
+                "wall_cell": nothing,
 
                 // particle vs. empty_cell
                 // infect the cell, kill the particle
@@ -619,7 +599,6 @@ var in_game_state = function (p, previous_state) {
         var game_types = ["background", "particle", "cell", "enemy", "multiplier"];
 
         var update_fun = function() {
-			obj.add_object(multiplier(p, {pos : new p.PVector(p.width + 50, Math.random() * 500)}));
 			if (!paused) {
 			
 				// if we don't have an active cell

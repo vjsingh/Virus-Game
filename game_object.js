@@ -87,6 +87,21 @@ var game_object = function (p, spec) {
 			vel.x = -vel.x;
 		}
 	}
+	
+	// reverses the y velocity
+	// used for bouncing vertically
+	obj.reverse_y = function() {
+		var vel = obj.get_vel();
+		obj.set_vel(new p.PVector(vel.x, -vel.y));
+	}
+
+	// reverses the x velocity
+	// used for bouncing horizontally
+	obj.reverse_x = function() {
+		var vel = obj.get_vel();
+		obj.set_vel(new p.PVector(- vel.x, vel.y));
+	}
+	
     // updates the position according to accel and vel
 	// Bounces off walls
     obj.move = function() {
