@@ -61,8 +61,14 @@ var make_generator = function(p, game) {
             make_new: function(en_pos) {
                 // target will get set later
                 return tkiller(p, { pos: en_pos });
-            } 
-        }
+            }
+        },
+		"multiplier": {
+			start:0, num: 1, cap: 15, rate: 20000,
+			make_new: function(en_pos) {
+				return multiplier(p, {pos : en_pos});
+			}
+		}
     };
 
     // list of types of enemies
@@ -125,6 +131,7 @@ var make_generator = function(p, game) {
 			
 			//Add the new enemy to game_objects
             game.add_object(new_enemy);
+			console.log("Adding enemy: " + new_enemy.get_type());
 		}
 
         // update nums for types based on rate
@@ -184,7 +191,8 @@ var make_generator = function(p, game) {
 
         var get_em = function() {
             var enemies = { "cell":0, "wall_cell":0,
-                "empty_cell":0, "floater":0, "tkiller":0 };
+                "empty_cell":0, "floater":0, "tkiller":0,
+				"multiplier":0};
 
             // increment counter for each object
             var incr = function(o) {

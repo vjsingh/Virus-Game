@@ -32,6 +32,11 @@ var in_game_state = function (p, previous_state) {
 		text : "Score:",
 		num : 0
 	})
+	var mult = num_status_obj(p, {
+		pos : new p.PVector(p.width - 100, 20),
+		text : "Multiplier:",
+		num : 0
+	})
 	var start_time = (new Date()).getMilliseconds();
 	var time_elapsed = 0; // Time elapsed in seconds
 	var time_status = num_status_obj(p, {
@@ -52,7 +57,8 @@ var in_game_state = function (p, previous_state) {
         "enemy":3, // general name for level
         "floater":3,
         "tkiller":3,
-        "info":4
+		"multiplier":4,
+        "info":5
     }; 
 
     // given a type returns the array of objects
@@ -138,7 +144,6 @@ var in_game_state = function (p, previous_state) {
                 state: "alive"
             })
         ];
-		
 		//var cell_level = type_to_level["cell"];
 		//game_objects[cell_level].push(initial_cell);
         obj.add_objects(initial_cells);
@@ -151,6 +156,15 @@ var in_game_state = function (p, previous_state) {
         obj.add_object(initial_par);
 		
 		//active_cell = initial_cell;
+		
+		//Set interval to update time elapsed
+		var update_time = function() {
+			if (!paused) {
+				time_elapsed += 1;
+				time_status.set_num(time_elapsed);
+			}
+		}
+		setInterval(update_time, 1000);
 	};
 
     // sets active_cell to the leftmost infected cell
@@ -206,6 +220,7 @@ var in_game_state = function (p, previous_state) {
         // particle (1) vs. particle (1) (?)
         // particle (1) vs. cell (2)
         // particle (1) vs. enemy (3)
+		// particle (1) vs. multiplier (4)
         // cell (2) vs. cell (2)
         // cell (2) vs. enemy (3)
         // enemy (3) vs. enemy (3)
@@ -243,7 +258,15 @@ var in_game_state = function (p, previous_state) {
                         lvl2, 0, lvl2.length-1, check);
                 }
             );
+			// TODO: fix
+			do_comb(game_objects, 1, 1,
+				game_objects, 4, 4,
+	                function(lvl1, lvl2) {
+	                    do_comb(lvl1, 0, lvl1.length-1,
+	                        lvl2, 0, lvl2.length-1, check);
+							});
         };
+			
 
         var check = function(obj1, obj2) {
             //console.log("checking "+obj1.to_string()
@@ -261,10 +284,11 @@ var in_game_state = function (p, previous_state) {
         return collision_fun;
     }());
 	
+	// Returns whether 2 objects are colliding
 	var check_collision = function(obj1, obj2) {
 		var type1 = obj1.get_type();
 		var type2 = obj2.get_type();
-		//if (1 === 2) {
+		
 		if ((type1 === "particle" && type2 === "wall_cell") ||
 				(type1 === "wall_cell" && type2 === "particle")) {
 			// Pass in circle as first arg, rect as 2nd
@@ -437,7 +461,15 @@ var in_game_state = function (p, previous_state) {
                 
                 // particle vs. tkiller
                 // nothing?
-                "tkiller": nothing
+                "tkiller": nothing,
+				
+				// particle vs. multiplier
+				// get rid of both and incr mult
+				"multiplier": function(par, mul) {
+					par.die();
+					mul.die();
+					mult.incr(1);
+				}
             },
 
             // cell vs. cell
@@ -562,7 +594,7 @@ var in_game_state = function (p, previous_state) {
     //Calls update() on every obj
     //after updating, calls remove_objs
     obj.update = (function() {
-        var game_types = ["background", "particle", "cell", "enemy"];
+        var game_types = ["background", "particle", "cell", "enemy", "multiplier"];
 
         var update_fun = function() {
 			if (!paused) {
@@ -614,10 +646,6 @@ var in_game_state = function (p, previous_state) {
 				check_collisions();
 				
 				remove_objs();
-				
-				// Update time (slow?)
-				time_elapsed = ((new Date()).getMilliseconds() - start_time) / 1000;
-				time_status.set_num(time_elapsed);
 			}
         };
         
@@ -626,6 +654,9 @@ var in_game_state = function (p, previous_state) {
     
     //Calls draw() on every obj
     obj.render = function(){
+		if (game_objects[4].length > 0) {
+			console.log("Added mult");
+		}
         for (var i=0; i<game_objects.length; i++) {
             for (var j=0; j<game_objects[i].length; j++) {
                 var o = game_objects[i][j];
@@ -647,9 +678,10 @@ var in_game_state = function (p, previous_state) {
         }
         */	
 	   
-		//Draw the score and time
+		//Draw the status labels
 		score.draw();
 		time_status.draw();
+		mult.draw();
     };
     
     obj.mouse_click = function (x, y) {
@@ -695,6 +727,10 @@ var in_game_state = function (p, previous_state) {
         //var render_level = type_to_level[type];
         //game_objects[render_level].push(o);
         level(o.get_type()).push(o);
+		console.log("level size: " + level(o.get_type()).length);
+		console.log("pushing: " + o.get_type());
+		console.log(o);
+		console.log("level size: " + level(o.get_type()).length);
     };
 
     // add multiple objects

@@ -29,7 +29,7 @@ var game_object = function (p, spec) {
     var accel = spec.accel || new p.PVector(0, 0);
     // used for circle collision testing
     var radius = spec.radius // default set at bottom of file
-
+	
     // --- public methods ---
 
     // all game_objects must implement this interface:
@@ -51,10 +51,10 @@ var game_object = function (p, spec) {
     // returns true if the object is completely offscreen
     // i.e. checks pos + dimensions
     obj.is_offscreen = function() {
-        var left_edge = pos.x - width;
-        var right_edge = pos.x + width;
-        var top_edge = pos.y - height;
-        var btm_edge = pos.y + height;
+	    var left_edge = pos.x - width;
+	    var right_edge = pos.x + width;
+	    var top_edge = pos.y - height;
+	    var btm_edge = pos.y + height;
 
         return (left_edge > p.width
             || right_edge < 0
@@ -62,7 +62,27 @@ var game_object = function (p, spec) {
             || btm_edge < 0);
     }
 
+	// Bounces the object off a wall, if it is at one
+	obj.bounce = function() {
+	    var left_edge = pos.x - width;
+	    var right_edge = pos.x + width;
+	    var top_edge = pos.y - height;
+	    var btm_edge = pos.y + height;
+		if (top_edge <= 0 && vel.y < 0) {
+			vel.y = -vel.y;
+		}
+		if (btm_edge >= p.height && vel.y > 0) {
+			vel.y = -vel.y;
+		}
+		if (left_edge <= 0 && vel.x < 0) {
+			vel.x = -vel.x;
+		}
+		if (right_edge >= p.width && vel.x > 0) {
+			vel.x = -vel.x;
+		}
+	}
     // updates the position according to accel and vel
+	// Bounces off walls
     obj.move = function() {
         vel.add(accel);
         pos.add(vel);
