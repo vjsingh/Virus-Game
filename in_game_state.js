@@ -22,7 +22,7 @@ var in_game_state = function (p, previous_state) {
 	//distance is the x-coordinate of the total distance traveled 
 	//The farthest right coordinate seen on the screen
     var distance = 0;
-    var score = 0;
+    //var score = 0;
 	var active_cell = null;
     var game_objects = [];
 	var generator = make_generator(p, obj);
@@ -31,19 +31,19 @@ var in_game_state = function (p, previous_state) {
 		pos : new p.PVector(p.width - 40, 20),
 		text : "Score:",
 		num : 0
-	})
+	});
 	var mult = num_status_obj(p, {
 		pos : new p.PVector(p.width - 100, 20),
 		text : "Multiplier:",
 		num : 1
-	})
+	});
 	var start_time = (new Date()).getMilliseconds();
 	var time_elapsed = 0; // Time elapsed in seconds
 	var time_status = num_status_obj(p, {
 		pos : new p.PVector(40, 20),
 		text : "Time:",
 		num : time_elapsed
-	})
+	});
     // temporary flag TODO
     var game_over = false;
     
@@ -376,32 +376,9 @@ var in_game_state = function (p, previous_state) {
             }
 			
         }
-		bounce_collided(obj1, obj2);
+		//bounce_collided(obj1, obj2);
     };
 	
-	// Reverses 2 objs appropriate velocities 
-    var bounce_collided = function(obj1, obj2) {
-		//offset adjusts how closely we check, since we can't check exactly when they collide every time
-		var offset = 5;
-		var onel = obj1.get_left(), oner = obj1.get_right();
-		var onet = obj1.get_top(), oneb = obj1.get_bottom();
-		var twol = obj2.get_left() + offset, twor = obj2.get_right() - offset;
-		var twot = obj2.get_top() + offset, twob = obj2.get_bottom() - offset;
-		
-		//When bouncing, check velocity to make sure they are 'incoming' to each other
-		//This avoids them getting stuck (makes sure they didn't just collide)
-		//bounce vertically
-		var y_vel = obj1.get_vel().y;
-		var x_vel = obj1.get_vel().x;
-		if ((onet >= twob && y_vel <= 0) || (oneb <= twot && y_vel >= 0)) {
-				obj1.reverse_y();
-				obj2.reverse_y();
-		}
-		else if ((oner <= twol && x_vel >= 0) || (onel > twor && x_vel <= 0)){ //bounce horizontally
-				obj1.reverse_x();
-				obj2.reverse_x();
-		}
-	}
     // object to store all the handlers
     // created once with a closure
 	// dont manage bouncing/changing direction here
@@ -419,8 +396,34 @@ var in_game_state = function (p, previous_state) {
 				// Add 1 to score
 				score.incr(1 * mult.get_num());
             }
-            // TODO: maybe infected cells should deflect
-			
+            else {
+                // otherwise deflect
+                bounce(par, cell);
+            }
+        };
+
+        // Reverses 2 objs appropriate velocities 
+        var bounce = function(obj1, obj2) {
+            //offset adjusts how closely we check, since we can't check exactly when they collide every time
+            var offset = 5;
+            var onel = obj1.get_left(), oner = obj1.get_right();
+            var onet = obj1.get_top(), oneb = obj1.get_bottom();
+            var twol = obj2.get_left() + offset, twor = obj2.get_right() - offset;
+            var twot = obj2.get_top() + offset, twob = obj2.get_bottom() - offset;
+            
+            //When bouncing, check velocity to make sure they are 'incoming' to each other
+            //This avoids them getting stuck (makes sure they didn't just collide)
+            //bounce vertically
+            var y_vel = obj1.get_vel().y;
+            var x_vel = obj1.get_vel().x;
+            if ((onet >= twob && y_vel <= 0) || (oneb <= twot && y_vel >= 0)) {
+                    obj1.reverse_y();
+                    obj2.reverse_y();
+            }
+            else if ((oner <= twol && x_vel >= 0) || (onel > twor && x_vel <= 0)){ //bounce horizontally
+                    obj1.reverse_x();
+                    obj2.reverse_x();
+            }
         };
 
         var handlers =
@@ -437,7 +440,7 @@ var in_game_state = function (p, previous_state) {
                 // particle vs. wall_cell
                 // bounce particle off cell
                 // cell doesn't move
-                "wall_cell": nothing,
+                "wall_cell": bounce,
 
                 // particle vs. empty_cell
                 // infect the cell, kill the particle
@@ -452,7 +455,7 @@ var in_game_state = function (p, previous_state) {
                 
                 // particle vs. tkiller
                 // nothing?
-                "tkiller": nothing,
+                "tkiller": bounce,
 				
 				// particle vs. multiplier
 				// get rid of both and incr mult
@@ -471,16 +474,16 @@ var in_game_state = function (p, previous_state) {
             // empty_cell vs. empty_cell
             // don't let them overlap (is bouncing necessary?)
             "cell": {
-                "cell": nothing,
-                "wall_cell": nothing,
-                "empty_cell": nothing
+                "cell": bounce,
+                "wall_cell": bounce,
+                "empty_cell": bounce
             },
             "wall_cell": {
-                "wall_cell": nothing,
-                "empty_cell": nothing
+                "wall_cell": bounce,
+                "empty_cell": bounce
             },
             "empty_cell": {
-                "empty_cell": nothing
+                "empty_cell": bounce
             },
 
             // floater vs. cell
@@ -489,10 +492,10 @@ var in_game_state = function (p, previous_state) {
             // floater vs. floater
             // no overlap?
             "floater": {
-                "cell": nothing,
-                "wall_cell": nothing,
-                "empty_cell": nothing,
-                "floater": nothing
+                "cell": bounce,
+                "wall_cell": bounce,
+                "empty_cell": bounce,
+                "floater": bounce
             },
                 
             "tkiller": {
@@ -510,7 +513,7 @@ var in_game_state = function (p, previous_state) {
                 // tkiller vs. empty_cell
                 // tkiller vs. floater
                 // tkiller vs. tkiller
-                // nothing?
+                // nothing? TODO bounce?
                 "wall_cell": nothing,
                 "empty_cell": nothing,
                 "floater": nothing,
