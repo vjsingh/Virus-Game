@@ -41,6 +41,10 @@ var rectangle = function (p, spec) {
         p.text(text, pos.x, pos.y);
 	};
 	
+	obj.update_text = function(t) {
+		text = t;
+	}
+	
 	
     return obj;
 };

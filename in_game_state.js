@@ -27,6 +27,18 @@ var in_game_state = function (p, previous_state) {
     var game_objects = [];
 	var generator = make_generator(p, obj);
 	var paused = false;
+	var score = num_status_obj(p, {
+		pos : new p.PVector(p.width - 40, 20),
+		text : "Score:",
+		num : 0
+	})
+	var start_time = (new Date()).getMilliseconds();
+	var time_elapsed = 0; // Time elapsed in seconds
+	var time_status = num_status_obj(p, {
+		pos : new p.PVector(40, 20),
+		text : "Time:",
+		num : time_elapsed
+	})
     // temporary flag TODO
     var game_over = false;
     
@@ -344,8 +356,11 @@ var in_game_state = function (p, previous_state) {
             if (cell.get_state() === "alive") {
                 par.die();
                 cell.set_state("infected");
+				// Add 1 to score
+				score.incr(1);
             }
             // TODO: maybe infected cells should deflect
+			
         };
 
         var handlers =
@@ -599,6 +614,10 @@ var in_game_state = function (p, previous_state) {
 				check_collisions();
 				
 				remove_objs();
+				
+				// Update time (slow?)
+				time_elapsed = ((new Date()).getMilliseconds() - start_time) / 1000;
+				time_status.set_num(time_elapsed);
 			}
         };
         
@@ -627,6 +646,10 @@ var in_game_state = function (p, previous_state) {
             p.text("GAME OVER\nRELOAD TO RESTART", p.width/2, p.height/2);
         }
         */	
+	   
+		//Draw the score and time
+		score.draw();
+		time_status.draw();
     };
     
     obj.mouse_click = function (x, y) {
