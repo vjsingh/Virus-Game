@@ -31,19 +31,19 @@ var in_game_state = function (p, previous_state) {
 		pos : new p.PVector(p.width - 40, 20),
 		text : "Score:",
 		num : 0
-	})
+	});
 	var mult = num_status_obj(p, {
 		pos : new p.PVector(p.width - 100, 20),
 		text : "Multiplier:",
 		num : 0
-	})
+	});
 	var start_time = (new Date()).getMilliseconds();
 	var time_elapsed = 0; // Time elapsed in seconds
 	var time_status = num_status_obj(p, {
 		pos : new p.PVector(40, 20),
 		text : "Time:",
 		num : time_elapsed
-	})
+	});
     // temporary flag TODO
     var game_over = false;
     
