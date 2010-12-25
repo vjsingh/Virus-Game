@@ -64,7 +64,7 @@ var make_generator = function(p, game) {
             }
         },
 		"multiplier": {
-			start:0, num: 1, cap: 10, rate: 20000,
+			start:0, num: 2, cap: 10, rate: 20000,
 			make_new: function(en_pos) {
 				return multiplier(p, { pos : en_pos });
 			}
@@ -110,7 +110,7 @@ var make_generator = function(p, game) {
         var enemy_type = random_type();
         var num_enemies = count_enemy(enemy_type);
         if (enemy_type === "multiplier") {
-            console.log(num_enemies);
+            console.log("mul "+num_enemies+", "+num(enemy_type));
         }
 
         // if there aren't enough of that enemy on the board
