@@ -363,12 +363,41 @@ var in_game_state = function (p, previous_state) {
             else {
                 throw "Unsupported collision type!";
             }
+			
         }
+		bounce_collided(obj1, obj2);
     };
-        
-    
+	
+	// Reverses 2 objs appropriate velocities 
+    var bounce_collided = function(obj1, obj2) {
+		var onel = obj1.get_left(), oner = obj1.get_right();
+		var onet = obj1.get_top(), oneb = obj1.get_bottom();
+		var twol = obj2.get_left(), twor = obj2.get_right();
+		var twot = obj2.get_top(), twob = obj2.get_bottom();
+		var two_mid_y = (twob - (obj2.get_height() / 2));
+		var two_mid_x = (twor - (obj2.get_width() / 2));
+		
+		//When bouncing, check velocity to make sure they are 'incoming' to each other
+		//This avoids them getting stuck (makes sure they didn't just collide)
+		//bounce vertically
+		if (onet < twob || oneb > twot) {
+			if ((obj1.get_vel().y > 0 && onet < two_mid_y) || //top
+				(obj1.get_vel().y < 0 && circleb > rect_mid_y)) { //bottom
+				obj1.reverse_y();
+				obj2.reverse_y();
+			}
+		}
+		else { //bounce horizontally
+			if ((obj1.get_vel().x > 0 && circlel < rect_mid_x) || //left
+				(obj1.get_vel().x < 0 && circler > rect_mid_x)) { //right
+				obj1.reverse_x();
+				obj2.reverse_x();
+			}
+		}
+	}
     // object to store all the handlers
     // created once with a closure
+	// dont manage bouncing/changing direction here
     var collision_handlers = (function() {
         var nothing = function(obj1, obj2) {};
 
@@ -401,52 +430,7 @@ var in_game_state = function (p, previous_state) {
                 // particle vs. wall_cell
                 // bounce particle off cell
                 // cell doesn't move
-                // TODO
-                "wall_cell": function(par, wall) {
-					var circlel = par.get_left(), circler = par.get_right();
-					var circlet = par.get_top(), circleb = par.get_bottom();
-					var rectl = wall.get_left(), rectr = wall.get_right();
-					var rectt = wall.get_top(), rectb = wall.get_bottom();
-					var rect_mid_y = (rectb - (wall.get_height() / 2));
-					var rect_mid_x = (rectr - (wall.get_width() / 2));
-					
-					//When bouncing, check velocity to make sure ball is 'incoming'
-					//This avoids the ball getting stuck
-					//bounce vertically
-					if (overlapping_horizontally(par, wall, 10)) {	
-						if ((par.get_vel().y > 0 && circlet < rect_mid_y) || //top
-							(par.get_vel().y < 0 && circleb > rect_mid_y)) { //bottom
-							par.reverse_y();
-						}
-						/*
-						// Set position
-						var old_x = par.get_pos().x;
-						var half_height = par.get_height() / 2;
-						if (circlet < rect_mid_y) { // on top	
-							par.set_pos(new p.PVector(old_x, rectt - half_height));
-						}
-						else { // on bottom	
-							par.set_pos(new p.PVector(old_x, rectb + half_height));
-						} */
-					}
-					else { //bounce horizontally
-						if ((par.get_vel().x > 0 && circlel < rect_mid_x) || //left
-							(par.get_vel().x < 0 && circler > rect_mid_x)) { //right
-							par.reverse_x();
-						}
-						
-						/*
-						// Set position
-						var old_y = par.get_pos().y;
-						var half_width = par.get_width() / 2;
-						if (circlel < rect_mid_x) { //on the left
-							par.set_pos(new p.PVector(rectl - half_width, old_y));
-						}
-						else {
-							par.set_pos(new p.PVector(rectr + half_width, old_y));
-						} */
-					}
-				},
+                "wall_cell": nothing,
 
                 // particle vs. empty_cell
                 // infect the cell, kill the particle
