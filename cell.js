@@ -116,7 +116,7 @@ var cell = function(p, spec) {
             while (num_particles > 0) {
                 var new_vel = new p.PVector(p.cos(ang), p.sin(ang));
                 // mult by speed scalar
-                new_vel.mult(0.5);
+                new_vel.mult(1);
                 // if we want to add velocity of cell
                 new_vel.add(obj.get_vel());
                 

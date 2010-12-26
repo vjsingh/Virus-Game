@@ -44,6 +44,15 @@ var in_game_state = function (p, previous_state) {
 		text : "Time:",
 		num : time_elapsed
 	});
+	var mutation_status = num_status_obj(p, {
+		pos : new p.PVector(150, 20),
+		text : "Mutation:",
+		num : 0,
+		bar : true
+	})
+	// Used to draw all of them
+	var all_status_objs = [score, mult, time_status, mutation_status];
+	
     // temporary flag TODO
     var game_over = false;
     
@@ -72,7 +81,7 @@ var in_game_state = function (p, previous_state) {
 	// Sets the rate of scrolling, every this # of frames will scroll
 	//var scroll_rate = 10;
 	//var scroll_counter = scroll_rate; //decremented every update till 0
-    var scroll_dist = -0.1; // how far to move each frame
+    var scroll_dist = -0.3; // how far to move each frame
 	
 /*	
 	// Buttons
@@ -395,6 +404,8 @@ var in_game_state = function (p, previous_state) {
                 cell.set_state("infected");
 				// Add 1 to score
 				score.incr(1 * mult.get_num());
+				// increase mutation
+				mutation_status.incr(1);
             }
             else {
                 // otherwise deflect
@@ -458,9 +469,9 @@ var in_game_state = function (p, previous_state) {
                 "tkiller": bounce,
 				
 				// particle vs. multiplier
-				// get rid of both and incr mult
+				// get rid of the mult and incr mult
 				"multiplier": function(par, mul) {
-					par.die();
+					//par.die();
 					mul.die();
 					mult.incr(1);
 				}
@@ -681,9 +692,7 @@ var in_game_state = function (p, previous_state) {
         */	
 	   
 		//Draw the status labels
-		score.draw();
-		time_status.draw();
-		mult.draw();
+		for_each(all_status_objs, function(o) {o.draw();});
     };
     
     obj.mouse_click = function (x, y) {

@@ -5,7 +5,7 @@ var pCode = function(p) {
     var g, t1, c1, c2;
 
     p.setup = function() {
-        p.size(500, 500);
+        p.size(700, 600);
 
 		g = state_manager(p);
         //g = in_game_state(p, null); 
