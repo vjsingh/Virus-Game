@@ -13,6 +13,9 @@ var in_game_state = function (p, previous_state) {
     var testing = true;
     obj.testing = function() { return testing; };
 
+    // --- constants ---
+    //var num_of_render_levels = 5; Now auto-calculating in init so don't have to change
+    
     // --- private variables ---
 
 	var prev_state = previous_state;
@@ -54,15 +57,14 @@ var in_game_state = function (p, previous_state) {
     var game_over = false;
     
     //A mapping from game_object types to their rendering levels
-    var num_of_render_levels = 6;
     var type_to_level = {
         "background":0,
         "wall":1,
         "wall_segment":1,
         "particle":2, // general name for level
         "cell":3, // general name for level
-        "wall_cell":3,
-        "empty_cell":3,
+        "wall_cell": 3,
+        "empty_cell": 3,
         "enemy":4, // general name for level
         "floater":4,
         "tkiller":4,
@@ -122,6 +124,15 @@ var in_game_state = function (p, previous_state) {
     // gets called at the bottom
 	var init = function() {
 		//Initialize game_objects to be a list of num_of_render_levels empty lists
+		var num_of_render_levels = 0;
+		for (var key in type_to_level){
+			if (type_to_level.hasOwnProperty(key)) {
+				var new_level = type_to_level[key];
+				if (new_level > num_of_render_levels) {
+					num_of_render_levels = new_level;
+				}
+			}
+		}
     	for (var i = 0; i < num_of_render_levels; i++) {
         	game_objects[i] = [];
     	}
@@ -228,13 +239,6 @@ var in_game_state = function (p, previous_state) {
     //Checks whether any 2 objs are colliding, and if so calls handle_collision on them
     var check_collisions = (function() {
         // rendering levels to check collisions for:
-        // particle (1) vs. particle (1) (?)
-        // particle (1) vs. cell (2)
-        // particle (1) vs. enemy (3)
-		// particle (1) vs. multiplier (4)
-        // cell (2) vs. cell (2)
-        // cell (2) vs. enemy (3)
-        // enemy (3) vs. enemy (3)
         var to_check = [
             ["particle", "particle"],
             ["particle", "cell"],
@@ -242,7 +246,10 @@ var in_game_state = function (p, previous_state) {
             ["particle", "multiplier"],
             ["cell", "cell"],
             ["cell", "enemy"],
-            ["enemy", "enemy"]
+            ["enemy", "enemy"],
+			["particle", "wall"],
+			["multiplier", "wall"]
+			//["enemy", "wall"]
         ];
         
         // hey this looks like combinations!
@@ -279,14 +286,6 @@ var in_game_state = function (p, previous_state) {
                         lvl2, 0, lvl2.length-1, check);
             });
             //);
-			/* TODO: fix
-			do_comb(game_objects, 1, 1,
-				game_objects, 4, 4,
-	                function(lvl1, lvl2) {
-	                    do_comb(lvl1, 0, lvl1.length-1,
-	                        lvl2, 0, lvl2.length-1, check);
-							});
-            */
         };
 			
 
@@ -365,6 +364,30 @@ var in_game_state = function (p, previous_state) {
     // make it public
     obj.check_circle_collision = check_circle_collision;
 
+    // Reverses 2 objs appropriate velocities 
+    var bounce_collided = function(obj1, obj2) {
+        //offset adjusts how closely we check, since we can't check exactly when they collide every time
+        var offset = 5;
+        var onel = obj1.get_left(), oner = obj1.get_right();
+        var onet = obj1.get_top(), oneb = obj1.get_bottom();
+        var twol = obj2.get_left() + offset, twor = obj2.get_right() - offset;
+        var twot = obj2.get_top() + offset, twob = obj2.get_bottom() - offset;
+        
+        //When bouncing, check velocity to make sure they are 'incoming' to each other
+        //This avoids them getting stuck (makes sure they didn't just collide)
+        //bounce vertically
+        var y_vel = obj1.get_vel().y;
+        var x_vel = obj1.get_vel().x;
+        if ((onet >= twob && y_vel <= 0) || (oneb <= twot && y_vel >= 0)) {
+                obj1.reverse_y();
+                obj2.reverse_y();
+        }
+        else if ((oner <= twol && x_vel >= 0) || (onel > twor && x_vel <= 0)){ //bounce horizontally
+                obj1.reverse_x();
+                obj2.reverse_x();
+        }
+    };
+	
     // handles collisions between different object types
     var handle_collision = function(obj1, obj2) {
         var ot1 = obj1.get_type();
@@ -383,11 +406,14 @@ var in_game_state = function (p, previous_state) {
                 handler(obj2, obj1);
             }
             else {
-                throw "Unsupported collision type!";
+				//Not an error now?
+               	//throw "Unsupported collision type!";
             }
 			
         }
-		//bounce_collided(obj1, obj2);
+		
+		// Bounce if appropriate
+		bounce_collided(obj1, obj2);
     };
 	
     // object to store all the handlers
@@ -411,33 +437,10 @@ var in_game_state = function (p, previous_state) {
             }
             else {
                 // otherwise deflect
-                bounce(par, cell);
+                //bounce(par, cell);
             }
         };
 
-        // Reverses 2 objs appropriate velocities 
-        var bounce = function(obj1, obj2) {
-            //offset adjusts how closely we check, since we can't check exactly when they collide every time
-            var offset = 5;
-            var onel = obj1.get_left(), oner = obj1.get_right();
-            var onet = obj1.get_top(), oneb = obj1.get_bottom();
-            var twol = obj2.get_left() + offset, twor = obj2.get_right() - offset;
-            var twot = obj2.get_top() + offset, twob = obj2.get_bottom() - offset;
-            
-            //When bouncing, check velocity to make sure they are 'incoming' to each other
-            //This avoids them getting stuck (makes sure they didn't just collide)
-            //bounce vertically
-            var y_vel = obj1.get_vel().y;
-            var x_vel = obj1.get_vel().x;
-            if ((onet >= twob && y_vel <= 0) || (oneb <= twot && y_vel >= 0)) {
-                    obj1.reverse_y();
-                    obj2.reverse_y();
-            }
-            else if ((oner <= twol && x_vel >= 0) || (onel > twor && x_vel <= 0)){ //bounce horizontally
-                    obj1.reverse_x();
-                    obj2.reverse_x();
-            }
-        };
 
         var handlers =
         {
@@ -453,7 +456,7 @@ var in_game_state = function (p, previous_state) {
                 // particle vs. wall_cell
                 // bounce particle off cell
                 // cell doesn't move
-                "wall_cell": bounce,
+                "wall_cell": nothing,
 
                 // particle vs. empty_cell
                 // infect the cell, kill the particle
@@ -468,7 +471,7 @@ var in_game_state = function (p, previous_state) {
                 
                 // particle vs. tkiller
                 // nothing?
-                "tkiller": bounce,
+                "tkiller": nothing,
 				
 				// particle vs. multiplier
 				// get rid of the mult and incr mult
@@ -476,6 +479,14 @@ var in_game_state = function (p, previous_state) {
 					//par.die();
 					mul.die();
 					mult.incr(1);
+				},
+				
+				// particle vs wall
+				// Kill particle
+				"wall_segment": function(par, wall) {
+					console.log(par.get_top());
+					console.log(wall.get_bottom());
+					par.die();
 				}
             },
 
@@ -487,16 +498,16 @@ var in_game_state = function (p, previous_state) {
             // empty_cell vs. empty_cell
             // don't let them overlap (is bouncing necessary?)
             "cell": {
-                "cell": bounce,
-                "wall_cell": bounce,
-                "empty_cell": bounce
+                "cell": nothing,
+                "wall_cell": nothing,
+                "empty_cell": nothing
             },
             "wall_cell": {
-                "wall_cell": bounce,
-                "empty_cell": bounce
+                "wall_cell": nothing,
+                "empty_cell": nothing
             },
             "empty_cell": {
-                "empty_cell": bounce
+                "empty_cell": nothing
             },
 
             // floater vs. cell
@@ -505,10 +516,10 @@ var in_game_state = function (p, previous_state) {
             // floater vs. floater
             // no overlap?
             "floater": {
-                "cell": bounce,
-                "wall_cell": bounce,
-                "empty_cell": bounce,
-                "floater": bounce
+                "cell": nothing,
+                "wall_cell": nothing,
+                "empty_cell": nothing,
+                "floater": nothing
             },
                 
             "tkiller": {
@@ -531,7 +542,19 @@ var in_game_state = function (p, previous_state) {
                 "empty_cell": nothing,
                 "floater": nothing,
                 "tkiller": nothing
-            }
+            },
+			
+            "multiplier": {
+                // multiplier vs wall
+				// do nothing
+                "wall": function(mult, wall) {
+					//do nothing
+                }
+            },
+			
+			"wall_segment": {
+				//do nothing
+			}
         };
         return handlers;
     }());
