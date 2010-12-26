@@ -13,14 +13,11 @@ var in_game_state = function (p, previous_state) {
     var testing = true;
     obj.testing = function() { return testing; };
 
-    // --- constants ---
-    var num_of_render_levels = 5;
-    
     // --- private variables ---
 
 	var prev_state = previous_state;
-	//distance is the x-coordinate of the total distance traveled 
-	//The farthest right coordinate seen on the screen
+	// distance is the x-coordinate of the total distance traveled 
+    // increments with scroll
     var distance = 0;
     //var score = 0;
 	var active_cell = null;
@@ -57,17 +54,20 @@ var in_game_state = function (p, previous_state) {
     var game_over = false;
     
     //A mapping from game_object types to their rendering levels
+    var num_of_render_levels = 6;
     var type_to_level = {
         "background":0,
-        "particle":1, // general name for level
-        "cell":2, // general name for level
-        "wall_cell":2,
-        "empty_cell":2,
-        "enemy":3, // general name for level
-        "floater":3,
-        "tkiller":3,
-		"multiplier":4,
-        "info":5
+        "wall":1,
+        "wall_segment":1,
+        "particle":2, // general name for level
+        "cell":3, // general name for level
+        "wall_cell":3,
+        "empty_cell":3,
+        "enemy":4, // general name for level
+        "floater":4,
+        "tkiller":4,
+		"multiplier":5,
+        "info":6
     }; 
 
     // given a type returns the array of objects
@@ -163,6 +163,8 @@ var in_game_state = function (p, previous_state) {
         });
 
         obj.add_object(initial_par);
+
+        init_walls();
 		
 		//active_cell = initial_cell;
 		
@@ -563,6 +565,73 @@ var in_game_state = function (p, previous_state) {
         }
     };
 	
+    // adds a new wall segment if the rightmost wall
+    // segment is onscreen
+    var rightmost_top = null;
+    var rightmost_btm = null;
+    var add_wall = (function() {
+
+        // adds either a top or bottom wall
+        var add_one = function(rightmost) {
+            // if the rightmost has entered the screen 
+            if (!rightmost.is_off_right()) {
+                var new_spec = random_from(wall_specs);
+
+                var x = rightmost.get_pos().x
+                    + rightmost.get_width()/2
+                    + new_spec.width/2;
+
+                // set y for top wall
+                var y = new_spec.height/2;
+                // switch if it's a bottom wall
+                if (rightmost === rightmost_btm) {
+                    y = p.height - y;
+                }
+                new_spec.pos = new p.PVector(x, y);
+
+                // add the new segment
+                var new_seg = wall_segment(p, new_spec);
+                obj.add_object(new_seg);
+                
+                // update the corresponding rightmost
+                if (rightmost === rightmost_top) {
+                    rightmost_top = new_seg;
+                }
+                else {
+                    rightmost_btm = new_seg;
+                }
+            }
+        };
+
+        var add_both = function() {
+            add_one(rightmost_top);
+            add_one(rightmost_btm); 
+        };
+
+        return add_both;
+    }());
+
+    var init_walls = function() {
+        // add first empty segments
+        // the values used here are important so don't change them
+        rightmost_top = wall_segment(p, {
+                pos: new p.PVector(-10, 0),
+                width: 5
+        });
+
+        rightmost_btm = wall_segment(p, {
+                pos: new p.PVector(-10, p.height),
+                width: 5
+        });
+
+        // while both walls don't span the screen
+        while(!(rightmost_top.is_off_right()
+            && rightmost_btm.is_off_right())) {
+            // add new walls
+            add_wall();
+        }
+    };
+
     /*
     // DEPRECATED 
 	//Does a function to every object
@@ -610,7 +679,8 @@ var in_game_state = function (p, previous_state) {
     //Calls update() on every obj
     //after updating, calls remove_objs
     obj.update = (function() {
-        var game_types = ["background", "particle", "cell", "enemy", "multiplier"];
+        var game_types = ["background", "wall", "particle", 
+            "cell", "enemy", "multiplier"];
 
         var update_fun = function() {
 			if (!paused) {
@@ -635,9 +705,9 @@ var in_game_state = function (p, previous_state) {
 				
 				//Add any newly generated objs
 				generator.update();
-				
-				//if (scroll_counter <= 0) {
-				//scroll_counter = scroll_rate;
+
+                // adds a new segment of wall if necessary
+                add_wall();
 				
 				// scroll all objects
 				do_to_types(function(o){
@@ -647,12 +717,6 @@ var in_game_state = function (p, previous_state) {
 				// update distance travelled
 				// (negative because scrolling is negative)
 				distance += -scroll_dist;
-				
-				//}
-				//else {
-				//scroll_counter--;
-				//}
-				
 				
 				// update all objects
 				do_to_types(function(o){

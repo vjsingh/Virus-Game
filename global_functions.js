@@ -24,6 +24,13 @@ var for_each = function(arr, fun) {
 	}
 };
 
+// returns a random element from an array
+var random_from = function(arr) {
+    return arr[Math.floor(Math.random()*arr.length)];
+};
+
+// returns an array of the property names (keys)
+// of an object
 function keys(obj) {
     var k = [];
     for (key in obj) {

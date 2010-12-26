@@ -73,10 +73,11 @@ var make_generator = function(p, game) {
 
     // list of types of enemies
     var enemy_types = keys(gen_info);
-    var random_type = function() {
-        return enemy_types[p.floor(p.random(
-                        enemy_types.length))];
+    /*var random_type = function() {
+        return random_from(enemy_types);//[p.floor(p.random(
+                        //enemy_types.length))];
     };
+    */
 
     // just some wrappers
     var start = function(type) {
@@ -107,7 +108,7 @@ var make_generator = function(p, game) {
 		//game_objects = game.get_game_objects();
 		distance = game.get_distance();
 
-        var enemy_type = random_type();
+        var enemy_type = random_from(enemy_types);//random_type();
         var num_enemies = count_enemy(enemy_type);
 
         // if there aren't enough of that enemy on the board
