@@ -1,14 +1,15 @@
 // *** generator ***
 // generates random enemies
-// Takes one parameter:
-//		game - an in_game
+// spec:
+//		game : an in_game_state
 //			Is going to access: (through getters since we're so safe)
 //			game_objects - array
 //			distance - a num
 //			type_to_level - hash from type to level
 //			active_cell
+//		mutation : a mutation obj, so it can get current mutation color
 
-var make_generator = function(p, game) {
+var make_generator = function(p, spec) {
     // --- defaults ---
 
     // obj to return
@@ -19,6 +20,8 @@ var make_generator = function(p, game) {
 	//These will be updated at every call of update()
     var game_objects = null;
 	var distance = null;
+	var mutation = spec.mutation;
+	var game = spec.game;
 
     // structure that stores the generation settings
     // for each type of object
@@ -34,7 +37,8 @@ var make_generator = function(p, game) {
             make_new: function(en_pos) {
                 return cell(p, {
                     pos: en_pos,
-                    state: "alive"
+                    state: "alive",
+					mutation : mutation
                 });
             }
         },
@@ -114,7 +118,7 @@ var make_generator = function(p, game) {
         // if there aren't enough of that enemy on the board
         if (num_enemies < num(enemy_type)
                 // and some random factor
-                && p.random(100) < 2
+                && p.random(100) < 50///2
                 // and we are ready to start making this enemy
                 && distance >= start(enemy_type)) {
 

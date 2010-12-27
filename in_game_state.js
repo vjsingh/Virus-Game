@@ -13,6 +13,9 @@ var in_game_state = function (p, previous_state) {
     var testing = true;
     obj.testing = function() { return testing; };
 
+    // --- constants ---
+    //var num_of_render_levels = 5; Now auto-calculating in init so don't have to change
+    
     // --- private variables ---
 
 	var prev_state = previous_state;
@@ -22,7 +25,6 @@ var in_game_state = function (p, previous_state) {
     //var score = 0;
 	var active_cell = null;
     var game_objects = [];
-	var generator = make_generator(p, obj);
 	var paused = false;
 	var score = num_status_obj(p, {
 		pos : new p.PVector(p.width - 40, 20),
@@ -41,28 +43,28 @@ var in_game_state = function (p, previous_state) {
 		text : "Time:",
 		num : time_elapsed
 	});
-	var mutation_status = num_status_obj(p, {
-		pos : new p.PVector(150, 20),
-		text : "Mutation:",
-		num : 0,
-		bar : true
-	})
-	// Used to draw all of them
-	var all_status_objs = [score, mult, time_status, mutation_status];
+	var mutation = mutation_obj(p);
+	
+	// Used to draw all of the statuses (must implement draw)
+	var all_status_objs = [score, mult, time_status, mutation];
+	
+	var generator = make_generator(p, {
+		game : obj,
+		mutation : mutation
+	});
 	
     // temporary flag TODO
     var game_over = false;
     
     //A mapping from game_object types to their rendering levels
-    var num_of_render_levels = 6;
     var type_to_level = {
         "background":0,
         "wall":1,
         "wall_segment":1,
         "particle":2, // general name for level
         "cell":3, // general name for level
-        "wall_cell":3,
-        "empty_cell":3,
+        "wall_cell": 3,
+        "empty_cell": 3,
         "enemy":4, // general name for level
         "floater":4,
         "tkiller":4,
@@ -122,6 +124,15 @@ var in_game_state = function (p, previous_state) {
     // gets called at the bottom
 	var init = function() {
 		//Initialize game_objects to be a list of num_of_render_levels empty lists
+		var num_of_render_levels = 0;
+		for (var key in type_to_level){
+			if (type_to_level.hasOwnProperty(key)) {
+				var new_level = type_to_level[key];
+				if (new_level > num_of_render_levels) {
+					num_of_render_levels = new_level;
+				}
+			}
+		}
     	for (var i = 0; i < num_of_render_levels; i++) {
         	game_objects[i] = [];
     	}
@@ -135,22 +146,26 @@ var in_game_state = function (p, previous_state) {
             cell(p, {
                 pos: new p.PVector(startx, p.height/2),
                 vel: new p.PVector(0, 0),
-                state: "alive"
+                state: "alive",
+				mutation : mutation
             }),
             cell(p, {
                 pos: new p.PVector(startx+120, p.height/2-40),
                 vel: new p.PVector(0, 0),
-                state: "alive"
+                state: "alive",
+				mutation : mutation
             }),
             cell(p, {
                 pos: new p.PVector(startx+120, p.height/2),
                 vel: new p.PVector(0, 0),
-                state: "alive"
+                state: "alive",
+				mutation : mutation
             }),
             cell(p, {
                 pos: new p.PVector(startx+120, p.height/2+40),
                 vel: new p.PVector(0, 0),
-                state: "alive"
+                state: "alive",
+				mutation : mutation
             })
         ];
 		//var cell_level = type_to_level["cell"];
@@ -159,7 +174,8 @@ var in_game_state = function (p, previous_state) {
 
         var initial_par = particle(p, {
             pos: new p.PVector(0, p.height/2),
-            vel: new p.PVector(1, 0)
+            vel: new p.PVector(1, 0),
+			mutation : mutation
         });
 
         obj.add_object(initial_par);
@@ -181,8 +197,64 @@ var in_game_state = function (p, previous_state) {
     // sets active_cell to the leftmost infected cell
     // if there is one
     var next_active_cell = function() {
-        assert(active_cell === null, "A cell is already active!");
-
+		var sort_fun = function(active_c) { // don't care about active
+			return function(c1, c2) {
+				return c1.get_pos().x < c2.get_pos().x;
+			}
+		}
+		choose_cell(sort_fun);
+    };
+	
+	// Set the next-left or next-right cell to be active, and 
+	// if appropriate sets current active to be not active
+	
+	// Chooses the closest cell to the active cell in the direction of comp,
+	// i.e. such that comp(c1.x, active.x) is true
+	var choose_cell_helper = function(comp) {
+		var sort_fun = function(active_c) { //don't rename to active_cell
+			return function(c1, c2) {
+				c1x = c1.get_pos().x;
+				c2x = c2.get_pos().x;
+				actx = active_c.get_pos().x;
+				// If one is in the right dir and the other isnt,
+				// return the one that is
+				if (comp(c1x, actx) && !(comp(c2x, actx))) {
+					return true;
+				}
+				else if (!(comp(c1x, actx)) && comp(c2x, actx)) {
+					return false;
+				}
+				// If they are on the same side, return opposite of comp
+				else {
+					if (comp(c1x, c2x)) {
+						return false;
+					}
+					else {
+						return true;
+					}
+				}
+			}
+		};
+		choose_cell(sort_fun);
+	};
+	
+	// Chooses the next left cell to be active
+	var choose_left_cell = function() {
+		choose_cell_helper(function (x, y) {return x < y;});
+		
+	};
+	
+	// Same in the right dir
+	var choose_right_cell = function() {
+		choose_cell_helper(function (x, y) {return x > y;});
+	};
+	
+	// Sets a cell to be active based on sort_fun, and if this is diff
+	// from curr cell, sets curr cell to not be active
+	// sort_fun must take the currently active cell, and return a function
+	// that takes 2 cells, ad returns true if the first is 'better' than 
+	// the second
+	var choose_cell = function(sort_fun) {
         var cells = level("cell");//game_objects[type_to_level["cell"]];
         var infecteds = cells.filter(
                 function(cell) {
@@ -190,28 +262,28 @@ var in_game_state = function (p, previous_state) {
                     return cell.get_type() === "cell"
                         && cell.get_state() === "infected";
                 });
-        // sort fun should return:
-        // - if cell1 more left than cell2
-        // 0 if they are the same
-        // + if cell1 more right than cell2
-        infecteds.sort(
-                function(cell1, cell2) {
-                    return cell1.get_pos().x - cell2.get_pos().x;
-                });
+		var sort_f = sort_fun(active_cell);
+        infecteds.sort(sort_f);
 
+		var curr_active = active_cell;
         if (infecteds.length > 0) {
-            active_cell = infecteds[0];
+            active_cell = infecteds[infecteds.length-1];
+			//If same as current
+			if (curr_active) { // for the beginning
+				curr_active.set_state("infected"); //if same, about to change
+			}
             active_cell.set_state("active");
             // update the tkillers' targets
+			/*
             do_to_type(
                 function(obj) {
                     obj.set_target(active_cell);
                 },
                 "tkiller", true);
+            */
             //console.log("got next "+active_cell.to_string());
         }
-
-    };
+	}
 
     // kills the active cell and updates the targets
     // of all the tkillers
@@ -228,13 +300,6 @@ var in_game_state = function (p, previous_state) {
     //Checks whether any 2 objs are colliding, and if so calls handle_collision on them
     var check_collisions = (function() {
         // rendering levels to check collisions for:
-        // particle (1) vs. particle (1) (?)
-        // particle (1) vs. cell (2)
-        // particle (1) vs. enemy (3)
-		// particle (1) vs. multiplier (4)
-        // cell (2) vs. cell (2)
-        // cell (2) vs. enemy (3)
-        // enemy (3) vs. enemy (3)
         var to_check = [
             ["particle", "particle"],
             ["particle", "cell"],
@@ -242,7 +307,10 @@ var in_game_state = function (p, previous_state) {
             ["particle", "multiplier"],
             ["cell", "cell"],
             ["cell", "enemy"],
-            ["enemy", "enemy"]
+            ["enemy", "enemy"],
+			["particle", "wall"],
+			["multiplier", "wall"]
+			//["enemy", "wall"]
         ];
         
         // hey this looks like combinations!
@@ -279,14 +347,6 @@ var in_game_state = function (p, previous_state) {
                         lvl2, 0, lvl2.length-1, check);
             });
             //);
-			/* TODO: fix
-			do_comb(game_objects, 1, 1,
-				game_objects, 4, 4,
-	                function(lvl1, lvl2) {
-	                    do_comb(lvl1, 0, lvl1.length-1,
-	                        lvl2, 0, lvl2.length-1, check);
-							});
-            */
         };
 			
 
@@ -365,6 +425,33 @@ var in_game_state = function (p, previous_state) {
     // make it public
     obj.check_circle_collision = check_circle_collision;
 
+    // Reverses 2 objs appropriate velocities 
+    var bounce_collided = function(obj1, obj2) {
+		if (!(obj1.get_type() === "particle" && obj2.get_type() === "particle")) {
+			//offset adjusts how closely we check, since we can't check exactly when they collide every time
+			var offset = 5;
+			var onel = obj1.get_left(), oner = obj1.get_right();
+			var onet = obj1.get_top(), oneb = obj1.get_bottom();
+			var twol = obj2.get_left() + offset, twor = obj2.get_right() - offset;
+			var twot = obj2.get_top() + offset, twob = obj2.get_bottom() - offset;
+			
+			//When bouncing, check velocity to make sure they are 'incoming' to each other
+			//This avoids them getting stuck (makes sure they didn't just collide)
+			//bounce vertically
+			var y_vel = obj1.get_vel().y;
+			var x_vel = obj1.get_vel().x;
+			if ((onet >= twob && y_vel <= 0) || (oneb <= twot && y_vel >= 0)) {
+				obj1.reverse_y();
+				obj2.reverse_y();
+			}
+			else 
+				if ((oner <= twol && x_vel >= 0) || (onel > twor && x_vel <= 0)) { //bounce horizontally
+					obj1.reverse_x();
+					obj2.reverse_x();
+				}
+		}
+    };
+	
     // handles collisions between different object types
     var handle_collision = function(obj1, obj2) {
         var ot1 = obj1.get_type();
@@ -383,11 +470,14 @@ var in_game_state = function (p, previous_state) {
                 handler(obj2, obj1);
             }
             else {
-                throw "Unsupported collision type!";
+				//Not an error now?
+               	//throw "Unsupported collision type!";
             }
 			
         }
-		//bounce_collided(obj1, obj2);
+		
+		// Bounce if appropriate
+		bounce_collided(obj1, obj2);
     };
 	
     // object to store all the handlers
@@ -407,37 +497,14 @@ var in_game_state = function (p, previous_state) {
 				// Add 1 to score
 				score.incr(1 * mult.get_num());
 				// increase mutation
-				mutation_status.incr(1);
+				mutation.infected_cell();
             }
             else {
                 // otherwise deflect
-                bounce(par, cell);
+                //bounce(par, cell);
             }
         };
 
-        // Reverses 2 objs appropriate velocities 
-        var bounce = function(obj1, obj2) {
-            //offset adjusts how closely we check, since we can't check exactly when they collide every time
-            var offset = 5;
-            var onel = obj1.get_left(), oner = obj1.get_right();
-            var onet = obj1.get_top(), oneb = obj1.get_bottom();
-            var twol = obj2.get_left() + offset, twor = obj2.get_right() - offset;
-            var twot = obj2.get_top() + offset, twob = obj2.get_bottom() - offset;
-            
-            //When bouncing, check velocity to make sure they are 'incoming' to each other
-            //This avoids them getting stuck (makes sure they didn't just collide)
-            //bounce vertically
-            var y_vel = obj1.get_vel().y;
-            var x_vel = obj1.get_vel().x;
-            if ((onet >= twob && y_vel <= 0) || (oneb <= twot && y_vel >= 0)) {
-                    obj1.reverse_y();
-                    obj2.reverse_y();
-            }
-            else if ((oner <= twol && x_vel >= 0) || (onel > twor && x_vel <= 0)){ //bounce horizontally
-                    obj1.reverse_x();
-                    obj2.reverse_x();
-            }
-        };
 
         var handlers =
         {
@@ -453,7 +520,7 @@ var in_game_state = function (p, previous_state) {
                 // particle vs. wall_cell
                 // bounce particle off cell
                 // cell doesn't move
-                "wall_cell": bounce,
+                "wall_cell": nothing,
 
                 // particle vs. empty_cell
                 // infect the cell, kill the particle
@@ -468,7 +535,7 @@ var in_game_state = function (p, previous_state) {
                 
                 // particle vs. tkiller
                 // nothing?
-                "tkiller": bounce,
+                "tkiller": nothing,
 				
 				// particle vs. multiplier
 				// get rid of the mult and incr mult
@@ -476,6 +543,12 @@ var in_game_state = function (p, previous_state) {
 					//par.die();
 					mul.die();
 					mult.incr(1);
+				},
+				
+				// particle vs wall
+				// Kill particle
+				"wall_segment": function(par, wall) {
+					par.die();
 				}
             },
 
@@ -487,16 +560,16 @@ var in_game_state = function (p, previous_state) {
             // empty_cell vs. empty_cell
             // don't let them overlap (is bouncing necessary?)
             "cell": {
-                "cell": bounce,
-                "wall_cell": bounce,
-                "empty_cell": bounce
+                "cell": nothing,
+                "wall_cell": nothing,
+                "empty_cell": nothing
             },
             "wall_cell": {
-                "wall_cell": bounce,
-                "empty_cell": bounce
+                "wall_cell": nothing,
+                "empty_cell": nothing
             },
             "empty_cell": {
-                "empty_cell": bounce
+                "empty_cell": nothing
             },
 
             // floater vs. cell
@@ -505,10 +578,10 @@ var in_game_state = function (p, previous_state) {
             // floater vs. floater
             // no overlap?
             "floater": {
-                "cell": bounce,
-                "wall_cell": bounce,
-                "empty_cell": bounce,
-                "floater": bounce
+                "cell": nothing,
+                "wall_cell": nothing,
+                "empty_cell": nothing,
+                "floater": nothing
             },
                 
             "tkiller": {
@@ -531,7 +604,19 @@ var in_game_state = function (p, previous_state) {
                 "empty_cell": nothing,
                 "floater": nothing,
                 "tkiller": nothing
-            }
+            },
+			
+            "multiplier": {
+                // multiplier vs wall
+				// do nothing
+                "wall": function(mult, wall) {
+					//do nothing
+                }
+            },
+			
+			"wall_segment": {
+				//do nothing
+			}
         };
         return handlers;
     }());
@@ -789,6 +874,14 @@ var in_game_state = function (p, previous_state) {
 			paused = true;
 			var h_state = help_state(p, obj);
 			obj.set_next_state(h_state);
+		}
+		//right and left
+		k = p.keyCode;
+		if (k === p.LEFT) { //left
+			choose_left_cell();
+		}
+		else if (k === 39) { //right
+			choose_right_cell();
 		}
 	};
 	

@@ -3,6 +3,7 @@
 // spec:
 //  game_object spec +
 //  String state = "alive" or "dead" or "infected" or "active"
+//  mutation : Mutation_obj so cell can get current mutation color
 
 var cell = function(p, spec) {
     
@@ -24,6 +25,8 @@ var cell = function(p, spec) {
     var state = spec.state || "alive";
     var antibody_angle = 0;
     var antibody_dir = 1;
+	var mutation = spec.mutation;
+	var color = null; //set when infected, then static
 
     // --- public methods --- 
 
@@ -57,7 +60,8 @@ var cell = function(p, spec) {
             p.fill(175);
         }
         else if (state === "infected") {
-            p.fill(255);
+			color = mutation.get_color();
+            p.fill(color);
         }
         else if (state === "active") {
             p.fill(255);
@@ -122,7 +126,8 @@ var cell = function(p, spec) {
                 
                 particles.push(particle(p, {
                     pos: new p.PVector(x, y),
-                    vel: new_vel
+                    vel: new_vel,
+					mutation : mutation
                 }));
 
                 num_particles--;
