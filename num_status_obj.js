@@ -6,6 +6,7 @@
 //		text : Will display "<text> <num>"
 //		num : num to start at
 //		bar : bool (optional)
+//		max : num (required if bar)
 
 var num_status_obj = function(p, spec) {
 	
@@ -18,7 +19,9 @@ var num_status_obj = function(p, spec) {
 	var number = spec.num;
 	var txt = spec.text;
 	var bar = spec.bar || false;
+	var max = spec.max;
 	var height = 20;
+	var max_width = 100; //for the bar
 	
 	var get_obj_text = function() {
 		if (bar) {
@@ -49,12 +52,22 @@ var num_status_obj = function(p, spec) {
         rect.draw();
 		// Draw the bar separately, if appropriate
 		if (bar) {
+			// Draw empty rectangle first
+			p.fill(255);
+			p.noStroke();
+			var topy = pos.y - (height / 2);
+			var leftx = pos.x + (txt.length * 3);
+			p.rect(leftx, topy, max_width, height);
+			
+			// Then draw mutation status bar
 	        p.fill(0);
 	        p.noStroke();
 			
 			var topy = pos.y - (height / 2);
 			var leftx = pos.x + (txt.length * 3);
-			p.rect(leftx, topy, number, height);
+			var rect_width = (number / max) * max_width;
+			rect_width = rect_width > max_width ? max_width : rect_width;
+			p.rect(leftx, topy, rect_width, height);
 			
 			p.fill(255)
 		}

@@ -25,7 +25,6 @@ var in_game_state = function (p, previous_state) {
     //var score = 0;
 	var active_cell = null;
     var game_objects = [];
-	var generator = make_generator(p, obj);
 	var paused = false;
 	var score = num_status_obj(p, {
 		pos : new p.PVector(p.width - 40, 20),
@@ -44,14 +43,15 @@ var in_game_state = function (p, previous_state) {
 		text : "Time:",
 		num : time_elapsed
 	});
-	var mutation_status = num_status_obj(p, {
-		pos : new p.PVector(150, 20),
-		text : "Mutation:",
-		num : 0,
-		bar : true
-	})
-	// Used to draw all of them
-	var all_status_objs = [score, mult, time_status, mutation_status];
+	var mutation = mutation_obj(p);
+	
+	// Used to draw all of the statuses (must implement draw)
+	var all_status_objs = [score, mult, time_status, mutation];
+	
+	var generator = make_generator(p, {
+		game : obj,
+		mutation : mutation
+	});
 	
     // temporary flag TODO
     var game_over = false;
@@ -146,22 +146,26 @@ var in_game_state = function (p, previous_state) {
             cell(p, {
                 pos: new p.PVector(startx, p.height/2),
                 vel: new p.PVector(0, 0),
-                state: "alive"
+                state: "alive",
+				mutation : mutation
             }),
             cell(p, {
                 pos: new p.PVector(startx+120, p.height/2-40),
                 vel: new p.PVector(0, 0),
-                state: "alive"
+                state: "alive",
+				mutation : mutation
             }),
             cell(p, {
                 pos: new p.PVector(startx+120, p.height/2),
                 vel: new p.PVector(0, 0),
-                state: "alive"
+                state: "alive",
+				mutation : mutation
             }),
             cell(p, {
                 pos: new p.PVector(startx+120, p.height/2+40),
                 vel: new p.PVector(0, 0),
-                state: "alive"
+                state: "alive",
+				mutation : mutation
             })
         ];
 		//var cell_level = type_to_level["cell"];
@@ -170,7 +174,8 @@ var in_game_state = function (p, previous_state) {
 
         var initial_par = particle(p, {
             pos: new p.PVector(0, p.height/2),
-            vel: new p.PVector(1, 0)
+            vel: new p.PVector(1, 0),
+			mutation : mutation
         });
 
         obj.add_object(initial_par);
@@ -206,7 +211,6 @@ var in_game_state = function (p, previous_state) {
 	// Chooses the closest cell to the active cell in the direction of comp,
 	// i.e. such that comp(c1.x, active.x) is true
 	var choose_cell_helper = function(comp) {
-		console.log("BBBB");
 		var sort_fun = function(active_c) { //don't rename to active_cell
 			return function(c1, c2) {
 				c1x = c1.get_pos().x;
@@ -234,11 +238,13 @@ var in_game_state = function (p, previous_state) {
 		choose_cell(sort_fun);
 	};
 	
+	// Chooses the next left cell to be active
 	var choose_left_cell = function() {
 		choose_cell_helper(function (x, y) {return x < y;});
 		
 	};
 	
+	// Same in the right dir
 	var choose_right_cell = function() {
 		choose_cell_helper(function (x, y) {return x > y;});
 	};
@@ -246,7 +252,8 @@ var in_game_state = function (p, previous_state) {
 	// Sets a cell to be active based on sort_fun, and if this is diff
 	// from curr cell, sets curr cell to not be active
 	// sort_fun must take the currently active cell, and return a function
-	// that takes 2 cells, and decides which one is 'better'
+	// that takes 2 cells, ad returns true if the first is 'better' than 
+	// the second
 	var choose_cell = function(sort_fun) {
         var cells = level("cell");//game_objects[type_to_level["cell"]];
         var infecteds = cells.filter(
@@ -490,7 +497,7 @@ var in_game_state = function (p, previous_state) {
 				// Add 1 to score
 				score.incr(1 * mult.get_num());
 				// increase mutation
-				mutation_status.incr(1);
+				mutation.infected_cell();
             }
             else {
                 // otherwise deflect
