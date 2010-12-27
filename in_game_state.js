@@ -147,25 +147,25 @@ var in_game_state = function (p, previous_state) {
                 pos: new p.PVector(startx, p.height/2),
                 vel: new p.PVector(0, 0),
                 state: "alive",
-				mutation : mutation
+				//mutation : mutation
             }),
             cell(p, {
                 pos: new p.PVector(startx+120, p.height/2-40),
                 vel: new p.PVector(0, 0),
                 state: "alive",
-				mutation : mutation
+				//mutation : mutation
             }),
             cell(p, {
                 pos: new p.PVector(startx+120, p.height/2),
                 vel: new p.PVector(0, 0),
                 state: "alive",
-				mutation : mutation
+				//mutation : mutation
             }),
             cell(p, {
                 pos: new p.PVector(startx+120, p.height/2+40),
                 vel: new p.PVector(0, 0),
                 state: "alive",
-				mutation : mutation
+				//mutation : mutation
             })
         ];
 		//var cell_level = type_to_level["cell"];
@@ -175,7 +175,9 @@ var in_game_state = function (p, previous_state) {
         var initial_par = particle(p, {
             pos: new p.PVector(0, p.height/2),
             vel: new p.PVector(1, 0),
-			mutation : mutation
+            // start with some gray
+            color: mutation.get_color()//p.color(250, 250, 250)
+			//mutation : mutation
         });
 
         obj.add_object(initial_par);
@@ -371,6 +373,25 @@ var in_game_state = function (p, previous_state) {
 		var type1 = obj1.get_type();
 		var type2 = obj2.get_type();
 		
+        if (check_circle_collision(obj1, obj2)) {
+            var check_again = retrieve(extra_check, type1, type2);
+            if (check_again) {
+                return check_again(obj1, obj2);
+            }
+            else {
+                check_again = retrieve(extra_check, type2, type1);
+                if (check_again) {
+                    return check_again(obj2, obj1);
+                }
+                else {
+                    return true;
+                }
+            }
+        }
+        else {
+            return false;
+        }
+        /*
 		if ((type1 === "particle" && type2 === "wall_cell") ||
 				(type1 === "wall_cell" && type2 === "particle")) {
 			// Pass in circle as first arg, rect as 2nd
@@ -384,10 +405,23 @@ var in_game_state = function (p, previous_state) {
 		else {
 			return check_circle_collision(obj1, obj2);
 		}
+        */
 	};
+
+    // holds extra collision checking functions for certain
+    // pairs of types
+    var extra_check = {
+        "wall_segment": {
+            "particle": check_rectangle_collision,
+            "multiplier": check_rectangle_collision
+        },
+        "wall_cell": {
+            "particle": check_rectangle_collision
+        }
+    };
 	
-	// Checks for a collision between circle (obj1) and rectangle (obj2)
-	var check_rectangle_collision = function(circ, rect) {
+	// Checks for a collision between circle (obj2) and rectangle (obj1)
+	var check_rectangle_collision = function(rect, circ) {
 		return overlapping_vertically(circ, rect, 0) &&
 				overlapping_horizontally(circ, rect, 0);
 	};
@@ -458,14 +492,14 @@ var in_game_state = function (p, previous_state) {
         var ot2 = obj2.get_type();
 
         // try first with one order
-        var handler = collision_handlers[ot1][ot2];
+        var handler = retrieve(collision_handlers, ot1, ot2);
         if (handler) {
             handler(obj1, obj2);
         }
         // if it didn't work
         else {
             // try the other order
-            handler = collision_handlers[ot2][ot1];
+            handler = retrieve(collision_handlers, ot2, ot1);
             if (handler) {
                 handler(obj2, obj1);
             }
@@ -494,10 +528,13 @@ var in_game_state = function (p, previous_state) {
             if (cell.get_state() === "alive") {
                 par.die();
                 cell.set_state("infected");
+                // change color of cell to match particle
+                cell.set_color(par.get_color());
 				// Add 1 to score
 				score.incr(1 * mult.get_num());
-				// increase mutation
+				// increase mutation percentage
 				mutation.infected_cell();
+
             }
             else {
                 // otherwise deflect
@@ -506,8 +543,7 @@ var in_game_state = function (p, previous_state) {
         };
 
 
-        var handlers =
-        {
+        var handlers = {
             "particle": {
                 // particle vs. particle 
                 // do nothing?
@@ -780,7 +816,7 @@ var in_game_state = function (p, previous_state) {
 				// check for game over
 				// (if no particles are left and no active cell)
 				if (active_cell === null &&
-				level("particle").length === 0) {
+				        level("particle").length === 0) {
 					var go_state = game_over_state(p, previous_state);
 					obj.set_next_state(go_state);
 					
@@ -811,6 +847,16 @@ var in_game_state = function (p, previous_state) {
 				check_collisions();
 				
 				remove_objs();
+
+                // check for a new mutation
+                // if mutation occurred
+                if (mutation.has_new_mutation() && active_cell) {
+                    // set the new color
+                    active_cell.set_color(mutation.get_color());
+                    // reset the counters
+                    mutation.reset_mutation();
+                    console.log("mutation occurred!");
+                }
 			}
         };
         

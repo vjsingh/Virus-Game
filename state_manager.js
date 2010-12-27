@@ -76,24 +76,29 @@ var state_manager = function (p) {
             switch (state_type) {
                 case "splash":
                     is_overlay = false;
+                    p.noLoop();
                     break;
                 case "game":
                     is_overlay = false;
+                    p.loop();
                     break;
                 case "pause":
                     is_overlay = true;
+                    p.noLoop();
                     break;
                 case "help":
                     is_overlay = true;
+                    p.noLoop();
                     break;
 				case "game_over":
 					is_overlay = true;
+                    p.noLoop();
 					break;
             }
 			
 			//Error checking
 			if (is_overlay === -1) {
-				throw "error in mouse_click in state_manager";
+				throw "error in update in state_manager";
 			}
 			
 			//If overlay, add to displayed, otherwise reset displayed
@@ -109,17 +114,28 @@ var state_manager = function (p) {
 			curr_state.resume(); 
 		}
 		
-		 for (var i = 0; i < displayed_states.length; i++) {
+		for (var i = 0; i < displayed_states.length; i++) {
             displayed_states[i].render();
         }
+        
+        /*
+        if (curr_state.get_type() !== "game") {
+            p.noLoop();
+        }
+        else {
+            p.loop();
+        }
+        */
     }
     
     //Passes clicks on to curr_state
     obj.mouse_click = function (x, y) {
         curr_state.mouse_click_wrapper(x, y); 
+        obj.update();
     };
 	obj.key_pressed = function(k) {
 		curr_state.key_pressed(k);
+        obj.update();
 	};
     
     return obj;

@@ -11,6 +11,7 @@ var mutation_obj = function(p) {
 
 	var level = 1;
 	var cells_infected = 0;
+    var new_mutation = false;
 	
 	// Shows the probability of getting a mutation
 	var bar_status_obj = num_status_obj(p, {
@@ -26,7 +27,7 @@ var mutation_obj = function(p) {
 		pos : new p.PVector(350, 20),
 		text : "Mutation Level:",
 		num : 1,
-	})
+	});
 	
 	// --- private methods
 	
@@ -43,31 +44,42 @@ var mutation_obj = function(p) {
 		level_status_obj.draw();
 	};
 	
-	// Returns a bool saying if a mutation occurred
+    // increments the mutation percentage
 	obj.infected_cell = function() {
 		cells_infected += 1;
 		bar_status_obj.incr(1);
-		if (mutation_occured()) {
-			level += 1;
-			cells_infected = 0;
-			bar_status_obj.set_num(0);
-			level_status_obj.incr(1);
-			return true;
-		}
-		else {
-			return false;
-		}
+        // if a mutation occurs
+        if (mutation_occured()) {
+            // set the flag
+            new_mutation = true;
+        }
 	};
-	
+
+    // returns true if a new mutation is ready
+    obj.has_new_mutation = function() {
+        return new_mutation;
+    };
+
+    // resets the counters and the flag
+    // to be called after a mutation is enacted in the game
+    obj.reset_mutation = function() {
+		level += 1;
+        cells_infected = 0;
+        bar_status_obj.set_num(0);
+        level_status_obj.incr(1);
+        // reset the flag
+        new_mutation = false;
+    };
+
 	// Returns the current mutation color
 	obj.get_color = function() {
-		var new_color = 255 - level * 20
+		var new_color = p.color(255 - level * 20);
 		return new_color < 0 ? 0 : new_color;
-	}
+	};
 	
 	obj.get_level = function(n) {
 		return level;
-	}
+	};
 	
     return obj;
 };

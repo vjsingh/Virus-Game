@@ -8,6 +8,7 @@
 //  float radius = circle collision radius (will be auto-calced)
 //  p.PVector vel = initial velocity
 //  p.PVector accel = initial acceleration
+//  p.color color = main fill color for object
 
 var game_object = function (p, spec) {
 
@@ -29,6 +30,8 @@ var game_object = function (p, spec) {
     var accel = spec.accel || new p.PVector(0, 0);
     // used for circle collision testing
     var radius = spec.radius // default set at bottom of file
+    // used for mutation
+    var cur_color = spec.color || p.color(0, 0, 0);
 	
     // --- public methods ---
 
@@ -137,9 +140,13 @@ var game_object = function (p, spec) {
     };
 	
 	// Should only be used for collisions
-	obj.set_pos = function(p) {
-		pos = p;
+	obj.set_pos = function(posn) {
+		pos = posn;
 	}
+
+    obj.set_color = function(col) {
+        cur_color = col;
+    };
 
     // --- getters --- 
 
@@ -185,6 +192,10 @@ var game_object = function (p, spec) {
     
     obj.get_radius = function() {
         return radius;
+    };
+
+    obj.get_color = function() {
+        return cur_color;
     };
 
     obj.to_string = function() {

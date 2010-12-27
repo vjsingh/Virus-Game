@@ -42,7 +42,7 @@ var pause_state = function (p, prev_state) {
 	
 	obj.get_all_buttons = function() {
 		return all_buttons;
-	}
+	};
 	
     return obj;
 };

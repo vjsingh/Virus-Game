@@ -26,8 +26,8 @@ var game_state = function (p) {
 	//Wrapper for every states render function
 	//First draws all the buttons, then calls render
 	var render_wrapper = function() {
-		for_each(all_buttons, function(b) { b.draw()});
 		obj.render();
+		for_each(all_buttons, function(b) { b.draw()});
 	};
 	
     // --- public methods ---
