@@ -21,7 +21,7 @@ var num_status_obj = function(p, spec) {
 	var bar = spec.bar || false;
 	var max = spec.max;
 	var height = 20;
-	var max_width = 100; //for the bar
+	var max_width = 100; //for the bar, might need to be passed in
 	
 	var get_obj_text = function() {
 		if (bar) {
@@ -45,6 +45,13 @@ var num_status_obj = function(p, spec) {
 		number = n;
 		rect.update_text(get_obj_text());
 	}
+	var draw_full_rect = function(color) {
+			p.fill(color[0], color[1], color[2]);
+			p.noStroke();
+			var topy = pos.y - (height / 2);
+			var leftx = pos.x + (txt.length * 3);
+			p.rect(leftx, topy, max_width, height);
+	}
 	
     // --- public methods --- 
 
@@ -53,11 +60,7 @@ var num_status_obj = function(p, spec) {
 		// Draw the bar separately, if appropriate
 		if (bar) {
 			// Draw empty rectangle first
-			p.fill(255);
-			p.noStroke();
-			var topy = pos.y - (height / 2);
-			var leftx = pos.x + (txt.length * 3);
-			p.rect(leftx, topy, max_width, height);
+			draw_full_rect([255, 255, 255]);
 			
 			// Then draw mutation status bar
 	        p.fill(0);
@@ -72,6 +75,13 @@ var num_status_obj = function(p, spec) {
 			p.fill(255)
 		}
 	};
+	
+	// SHOULD ONLY BE CALLED IF bar IS TRUE
+	// Draws a full bar of the specified color
+	// color : 3 element rgb array
+	obj.draw_color = function(color) {
+		draw_full_rect(color);
+	}
 	
 	obj.incr = function(n) {
 		update(number + n);

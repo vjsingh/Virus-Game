@@ -11,10 +11,13 @@ var mutation_obj = function(p) {
 
 	var level = 1;
 	var cells_infected = 0;
+	var just_mutated = false; // used to flash mutation bar
+	var flash_color = null;
 	
 	// Shows the probability of getting a mutation
+	var barx = 150, bary = 20;
 	var bar_status_obj = num_status_obj(p, {
-		pos : new p.PVector(150, 20),
+		pos : new p.PVector(barx, bary),
 		text : "Mutation:",
 		num : 0,
 		bar : true,
@@ -36,10 +39,47 @@ var mutation_obj = function(p) {
 		return Math.random() + ( (cells_infected / 50) / level) > .95;
 	};
 	
+	// Flashes the mutation bar red and white
+	var flash_bar = function() {
+		just_mutated = true;
+		
+		// Flash red and white every half second
+		flash_red();
+		setTimeout(flash_white, 500);
+		setTimeout(flash_red, 1000);
+		setTimeout(flash_white, 1500);
+		setTimeout(flash_red, 2000);
+		setTimeout(flash_white, 2500);
+		// End flashing in 3 seconds
+		setInterval(end_flash, 3000);
+	}
+	
+	// updates the flash color
+	var flash_red = function() {
+		flash_color = [255, 0, 0];
+	}
+	var flash_white = function() {
+		flash_color = [255, 255, 255];
+	}
+	
+	// Draws the bar with the appropriate flashing color
+	var draw_flashing_bar = function() {
+		bar_status_obj.draw_color(flash_color);
+	}
+	// Ends the flashing
+	var end_flash = function() {
+		just_mutated = false;
+	}
+	
     // --- public methods --- 
 
 	obj.draw = function() {
-		bar_status_obj.draw();
+		if (just_mutated) {
+			draw_flashing_bar();
+		}
+		else {
+			bar_status_obj.draw();
+		}
 		level_status_obj.draw();
 	};
 	
@@ -52,6 +92,7 @@ var mutation_obj = function(p) {
 			cells_infected = 0;
 			bar_status_obj.set_num(0);
 			level_status_obj.incr(1);
+			flash_bar();
 			return true;
 		}
 		else {
