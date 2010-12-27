@@ -114,7 +114,7 @@ var make_generator = function(p, game) {
         // if there aren't enough of that enemy on the board
         if (num_enemies < num(enemy_type)
                 // and some random factor
-                && p.random(100) < 2
+                && p.random(100) < 50///2
                 // and we are ready to start making this enemy
                 && distance >= start(enemy_type)) {
 

@@ -192,8 +192,62 @@ var in_game_state = function (p, previous_state) {
     // sets active_cell to the leftmost infected cell
     // if there is one
     var next_active_cell = function() {
-        assert(active_cell === null, "A cell is already active!");
-
+		var sort_fun = function(active_c) { // don't care about active
+			return function(c1, c2) {
+				return c1.get_pos().x < c2.get_pos().x;
+			}
+		}
+		choose_cell(sort_fun);
+    };
+	
+	// Set the next-left or next-right cell to be active, and 
+	// if appropriate sets current active to be not active
+	
+	// Chooses the closest cell to the active cell in the direction of comp,
+	// i.e. such that comp(c1.x, active.x) is true
+	var choose_cell_helper = function(comp) {
+		console.log("BBBB");
+		var sort_fun = function(active_c) { //don't rename to active_cell
+			return function(c1, c2) {
+				c1x = c1.get_pos().x;
+				c2x = c2.get_pos().x;
+				actx = active_c.get_pos().x;
+				// If one is in the right dir and the other isnt,
+				// return the one that is
+				if (comp(c1x, actx) && !(comp(c2x, actx))) {
+					return true;
+				}
+				else if (!(comp(c1x, actx)) && comp(c2x, actx)) {
+					return false;
+				}
+				// If they are on the same side, return opposite of comp
+				else {
+					if (comp(c1x, c2x)) {
+						return false;
+					}
+					else {
+						return true;
+					}
+				}
+			}
+		};
+		choose_cell(sort_fun);
+	};
+	
+	var choose_left_cell = function() {
+		choose_cell_helper(function (x, y) {return x < y;});
+		
+	};
+	
+	var choose_right_cell = function() {
+		choose_cell_helper(function (x, y) {return x > y;});
+	};
+	
+	// Sets a cell to be active based on sort_fun, and if this is diff
+	// from curr cell, sets curr cell to not be active
+	// sort_fun must take the currently active cell, and return a function
+	// that takes 2 cells, and decides which one is 'better'
+	var choose_cell = function(sort_fun) {
         var cells = level("cell");//game_objects[type_to_level["cell"]];
         var infecteds = cells.filter(
                 function(cell) {
@@ -201,28 +255,28 @@ var in_game_state = function (p, previous_state) {
                     return cell.get_type() === "cell"
                         && cell.get_state() === "infected";
                 });
-        // sort fun should return:
-        // - if cell1 more left than cell2
-        // 0 if they are the same
-        // + if cell1 more right than cell2
-        infecteds.sort(
-                function(cell1, cell2) {
-                    return cell1.get_pos().x - cell2.get_pos().x;
-                });
+		var sort_f = sort_fun(active_cell);
+        infecteds.sort(sort_f);
 
+		var curr_active = active_cell;
         if (infecteds.length > 0) {
-            active_cell = infecteds[0];
+            active_cell = infecteds[infecteds.length-1];
+			//If same as current
+			if (curr_active) { // for the beginning
+				curr_active.set_state("infected"); //if same, about to change
+			}
             active_cell.set_state("active");
             // update the tkillers' targets
+			/*
             do_to_type(
                 function(obj) {
                     obj.set_target(active_cell);
                 },
                 "tkiller", true);
+            */
             //console.log("got next "+active_cell.to_string());
         }
-
-    };
+	}
 
     // kills the active cell and updates the targets
     // of all the tkillers
@@ -366,26 +420,29 @@ var in_game_state = function (p, previous_state) {
 
     // Reverses 2 objs appropriate velocities 
     var bounce_collided = function(obj1, obj2) {
-        //offset adjusts how closely we check, since we can't check exactly when they collide every time
-        var offset = 5;
-        var onel = obj1.get_left(), oner = obj1.get_right();
-        var onet = obj1.get_top(), oneb = obj1.get_bottom();
-        var twol = obj2.get_left() + offset, twor = obj2.get_right() - offset;
-        var twot = obj2.get_top() + offset, twob = obj2.get_bottom() - offset;
-        
-        //When bouncing, check velocity to make sure they are 'incoming' to each other
-        //This avoids them getting stuck (makes sure they didn't just collide)
-        //bounce vertically
-        var y_vel = obj1.get_vel().y;
-        var x_vel = obj1.get_vel().x;
-        if ((onet >= twob && y_vel <= 0) || (oneb <= twot && y_vel >= 0)) {
-                obj1.reverse_y();
-                obj2.reverse_y();
-        }
-        else if ((oner <= twol && x_vel >= 0) || (onel > twor && x_vel <= 0)){ //bounce horizontally
-                obj1.reverse_x();
-                obj2.reverse_x();
-        }
+		if (!(obj1.get_type() === "particle" && obj2.get_type() === "particle")) {
+			//offset adjusts how closely we check, since we can't check exactly when they collide every time
+			var offset = 5;
+			var onel = obj1.get_left(), oner = obj1.get_right();
+			var onet = obj1.get_top(), oneb = obj1.get_bottom();
+			var twol = obj2.get_left() + offset, twor = obj2.get_right() - offset;
+			var twot = obj2.get_top() + offset, twob = obj2.get_bottom() - offset;
+			
+			//When bouncing, check velocity to make sure they are 'incoming' to each other
+			//This avoids them getting stuck (makes sure they didn't just collide)
+			//bounce vertically
+			var y_vel = obj1.get_vel().y;
+			var x_vel = obj1.get_vel().x;
+			if ((onet >= twob && y_vel <= 0) || (oneb <= twot && y_vel >= 0)) {
+				obj1.reverse_y();
+				obj2.reverse_y();
+			}
+			else 
+				if ((oner <= twol && x_vel >= 0) || (onel > twor && x_vel <= 0)) { //bounce horizontally
+					obj1.reverse_x();
+					obj2.reverse_x();
+				}
+		}
     };
 	
     // handles collisions between different object types
@@ -484,8 +541,6 @@ var in_game_state = function (p, previous_state) {
 				// particle vs wall
 				// Kill particle
 				"wall_segment": function(par, wall) {
-					console.log(par.get_top());
-					console.log(wall.get_bottom());
 					par.die();
 				}
             },
@@ -812,6 +867,14 @@ var in_game_state = function (p, previous_state) {
 			paused = true;
 			var h_state = help_state(p, obj);
 			obj.set_next_state(h_state);
+		}
+		//right and left
+		k = p.keyCode;
+		if (k === p.LEFT) { //left
+			choose_left_cell();
+		}
+		else if (k === 39) { //right
+			choose_right_cell();
 		}
 	};
 	
