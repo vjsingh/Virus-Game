@@ -849,6 +849,8 @@ var in_game_state = function (p, previous_state) {
     
     //Calls draw() on every obj
     obj.render = function(){
+        p.background(200);
+
         for (var i=0; i<game_objects.length; i++) {
             for (var j=0; j<game_objects[i].length; j++) {
                 var o = game_objects[i][j];

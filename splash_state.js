@@ -62,8 +62,11 @@ var splash_state = function (p) {
 	
 	obj.get_all_buttons = function() {
 		return all_buttons;
-	}
-    
-	
+	};
+
+    obj.render = function() {
+        p.background(200);
+    };
+
     return obj;
 };
