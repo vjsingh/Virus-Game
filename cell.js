@@ -68,10 +68,6 @@ var cell = function(p, spec) {
         }
         else if (state === "active") {
             p.fill(obj.get_color());
-            // red outline for now
-            var r = p.color(0xFF0000);
-            p.stroke(r);
-            p.strokeWeight(3);
             drawAntibody();
         }
         else if (state === "dead") {
@@ -176,8 +172,10 @@ var cell = function(p, spec) {
         // move out to right edge of circle
         p.translate(w/2, 0);
 
+        // red outline for now
+        var r = p.color(0xFF0000);
+        p.stroke(255, 0, 0);
         p.strokeWeight(3);
-        p.stroke(150);
 
         var x1 = w/2;
         p.line(0, 0, x1, 0);
