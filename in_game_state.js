@@ -197,6 +197,41 @@ var in_game_state = function (p, previous_state) {
 		setInterval(update_time, 1000);
 	};
 
+	// Alerts the b cell (only one on screen at a time?) to a newly mutated
+	// obj.
+	// If b_cell is already at the highest mutation level, does nothing
+	// Else, if obj is closer than the b cells curr target (or if b cells curr
+	// target is null), updates b_cells curr target to be o
+	var alert_b_cell = function(o) {
+		var the_b_cell = null;
+		var cell_objs = game_objects[type_to_level["b_cell"]];
+		var cell_obj = null;
+		for (var i = 0; i < cell_objs.length; i++) {
+			cell_obj = cell_objs[i];
+			if (cell_obj.get_type() === "b_cell") {
+				the_b_cell = cell_obj;
+			}
+		}
+		
+		console.log('a');
+		if (the_b_cell) {
+			var old_target = the_b_cell.get_target();
+			
+			// Update target if curr target null, or if
+			// dist to curr target > distance to new target (o)
+			if (old_target) {
+				if (old_target.get_pos().dist(the_b_cell.get_pos()) >
+						o.get_pos().dist(the_b_cell.get_pos())) {
+					the_b_cell.set_target(o);
+				}
+			}
+			else {
+				the_b_cell.set_target(o);
+			}
+		}
+		console.log('b');
+	};
+
     // sets active_cell to the leftmost infected cell
     // if there is one
     var next_active_cell = function() {
@@ -551,7 +586,8 @@ var in_game_state = function (p, previous_state) {
 				// floater takes on color of particle
                 "floater": function(par, flo) {
                     par.die();
-					floater.set_color(par.get_color());
+					flo.set_mutation_info(par.get_mutation_info());
+					alert_b_cell(flo);
                 },
                 
                 // particle vs. tkiller
@@ -716,7 +752,7 @@ var in_game_state = function (p, previous_state) {
 
         return add_both;
     }());
-
+	
     var init_walls = function() {
         // add first empty segments
         // the values used here are important so don't change them
