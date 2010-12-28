@@ -57,8 +57,9 @@ var state_manager = function (p) {
 
     //Updates the current state and renders all appropriate states
     obj.update = function() {
+		// Update all the states, and get next_state from curr_state.update_wrapper();
 		var next_state = null;
-		var display_function = function(s) {
+		var update_function = function(s) {
 			if (s == curr_state) {
 				next_state = s.update_wrapper();
 			}
@@ -66,7 +67,7 @@ var state_manager = function (p) {
 				s.update_wrapper();
 			}
 		}
-		for_each(displayed_states, display_function);
+		for_each(displayed_states, update_function);
         
         //If we have a new state to go to
         if (next_state) {
