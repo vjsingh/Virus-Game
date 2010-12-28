@@ -72,7 +72,6 @@ var pCode = function(p) {
 
     // draw is called repeatedly
     p.draw = function() {
-        p.background(200);
 
         g.update(); // Also renders
     };
