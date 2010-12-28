@@ -684,7 +684,7 @@ var in_game_state = function (p, previous_state) {
 
                 var x = rightmost.get_pos().x
                     + rightmost.get_width()/2
-                    + new_spec.width/2;
+                    + new_spec.width/2 - 1;
 
                 // set y for top wall
                 var y = new_spec.height/2;

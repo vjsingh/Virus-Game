@@ -69,8 +69,8 @@ var cell = function(p, spec) {
         else if (state === "active") {
             p.fill(obj.get_color());
             // red outline for now
-            var r = p.color(0xFF0000);
-            p.stroke(r);
+            var r = p.color(255, 0, 0);//0xFF0000);
+            p.stroke(p.color(255, 0, 0));
             p.strokeWeight(3);
             drawAntibody();
         }
