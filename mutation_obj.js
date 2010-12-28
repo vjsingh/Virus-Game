@@ -194,13 +194,16 @@ var mutation_obj = function(p) {
 		new_mutation = false;
     };
 
-	// Returns the current mutation color
-	obj.get_color = function() {
+	// Returns the current mutation level and color
+	obj.get_info = function() {
 		// color level goes from 0 to 360
 		var new_color_level = (360 - (360 - level * 20));
 		//var hue = new_color_level / 360;
 		var rgb_arr = hsvToRgb(new_color_level, 50, 50);
-		return p.color(rgb_arr[0], rgb_arr[1], rgb_arr[2]);
+		return { 
+            level: level,
+            color: p.color(rgb_arr[0], rgb_arr[1], rgb_arr[2])
+        };
 	};
 	
 	obj.get_level = function(n) {
