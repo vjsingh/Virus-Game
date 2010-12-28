@@ -21,16 +21,16 @@ var game_state = function (p) {
 	var previous_state = null;
 	var all_buttons = null; //TODO: This is static but is updated every update()
 
-	// --- private methods ---
 	
+    // --- public methods ---
+    
 	//Wrapper for every states render function
 	//First draws all the buttons, then calls render
-	var render_wrapper = function() {
+	obj.render_wrapper = function() {
 		obj.render();
 		for_each(all_buttons, function(b) { b.draw()});
 	};
 	
-    // --- public methods ---
 	//Do not over-ride these methods
 	obj.set_next_state = function(ns) {
 		next_state = ns;
@@ -58,7 +58,7 @@ var game_state = function (p) {
 		}
 		//else
 		obj.update();
-		render_wrapper();
+		obj.render_wrapper();
 	};
 	
 	// Wrapper for mouse clicks

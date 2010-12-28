@@ -116,7 +116,7 @@ var state_manager = function (p) {
 		}
 		
 		for (var i = 0; i < displayed_states.length; i++) {
-            displayed_states[i].render();
+            displayed_states[i].render_wrapper();
         }
         
         /*
@@ -132,11 +132,11 @@ var state_manager = function (p) {
     //Passes clicks on to curr_state
     obj.mouse_click = function (x, y) {
         curr_state.mouse_click_wrapper(x, y); 
-        obj.update();
+        //obj.update();
     };
 	obj.key_pressed = function(k) {
 		curr_state.key_pressed(k);
-        obj.update();
+        //obj.update();
 	};
     
     return obj;
