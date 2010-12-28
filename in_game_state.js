@@ -375,12 +375,12 @@ var in_game_state = function (p, previous_state) {
 		
         if (check_circle_collision(obj1, obj2)) {
             var check_again = retrieve(extra_check, type1, type2);
-            if (check_again) {
+            if (check_again != undefined) {
                 return check_again(obj1, obj2);
             }
             else {
                 check_again = retrieve(extra_check, type2, type1);
-                if (check_again) {
+                if (check_again != undefined) {
                     return check_again(obj2, obj1);
                 }
                 else {
@@ -391,41 +391,13 @@ var in_game_state = function (p, previous_state) {
         else {
             return false;
         }
-        /*
-		if ((type1 === "particle" && type2 === "wall_cell") ||
-				(type1 === "wall_cell" && type2 === "particle")) {
-			// Pass in circle as first arg, rect as 2nd
-			if (type1 === "wall_cell") {
-				return check_rectangle_collision(obj2, obj1);
-			}
-			else {
-				return check_rectangle_collision(obj1, obj2);
-			}	
-		}
-		else {
-			return check_circle_collision(obj1, obj2);
-		}
-        */
 	};
 
-    // holds extra collision checking functions for certain
-    // pairs of types
-    var extra_check = {
-        "wall_segment": {
-            "particle": check_rectangle_collision,
-            "multiplier": check_rectangle_collision
-        },
-        "wall_cell": {
-            "particle": check_rectangle_collision
-        }
-    };
-	
 	// Checks for a collision between circle (obj2) and rectangle (obj1)
 	var check_rectangle_collision = function(rect, circ) {
 		return overlapping_vertically(circ, rect, 0) &&
 				overlapping_horizontally(circ, rect, 0);
 	};
-	
 	
 	// Rectangle and circle collision helper functions
 	// Returns whether the circle is overlapping the rectangle, horizontally,
@@ -446,6 +418,18 @@ var in_game_state = function (p, previous_state) {
 				 	(circlet >= rectt && circlet <= (rectb + offset)));
 	};
 
+    // holds extra collision checking functions for certain
+    // pairs of types
+    var extra_check = {
+        "wall_segment": {
+            "particle": check_rectangle_collision,
+            "multiplier": check_rectangle_collision
+        },
+        "wall_cell": {
+            "particle": check_rectangle_collision
+        }
+    };
+	
     // checks for collisions between two objects by
     // checking if their bounding circles are overlapping
     // returns true if they are colliding

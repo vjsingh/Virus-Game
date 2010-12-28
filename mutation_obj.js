@@ -13,6 +13,10 @@ var mutation_obj = function(p) {
 	var cells_infected = 0;
     var new_mutation = false;
 	
+	// Flashing
+	var flash_color = null;
+	var is_flashing = false;
+	
 	// Shows the probability of getting a mutation
 	var bar_status_obj = num_status_obj(p, {
 		pos : new p.PVector(150, 20),
@@ -39,7 +43,7 @@ var mutation_obj = function(p) {
 	
 	// Flashes the mutation bar red and white
 	var flash_bar = function() {
-		just_mutated = true;
+		is_flashing = true;
 		
 		// Flash red and white every half second
 		flash_red();
@@ -66,13 +70,13 @@ var mutation_obj = function(p) {
 	}
 	// Ends the flashing
 	var end_flash = function() {
-		just_mutated = false;
+		is_flashing = false;
 	}
 	
     // --- public methods --- 
 
 	obj.draw = function() {
-		if (just_mutated) {
+		if (is_flashing) {
 			draw_flashing_bar();
 		}
 		else {
@@ -89,6 +93,7 @@ var mutation_obj = function(p) {
         if (mutation_occured()) {
             // set the flag
             new_mutation = true;
+			flash_bar();
         }
 	};
 
@@ -104,8 +109,8 @@ var mutation_obj = function(p) {
         cells_infected = 0;
         bar_status_obj.set_num(0);
         level_status_obj.incr(1);
-        // reset the flag
-        new_mutation = false;
+		// reset flag
+		new_mutation = false;
     };
 
 	// Returns the current mutation color
