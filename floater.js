@@ -47,7 +47,7 @@ var floater = function(p, spec) {
         var h = obj.get_height();
         p.shapeMode(obj.mode);
 
-        p.fill(50);
+        p.fill(obj.get_color());
 
         p.stroke(0);
         p.strokeWeight(1);

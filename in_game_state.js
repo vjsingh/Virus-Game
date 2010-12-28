@@ -65,6 +65,7 @@ var in_game_state = function (p, previous_state) {
         "cell":3, // general name for level
         "wall_cell": 3,
         "empty_cell": 3,
+		"b_cell": 3,
         "enemy":4, // general name for level
         "floater":4,
         "tkiller":4,
@@ -548,9 +549,10 @@ var in_game_state = function (p, previous_state) {
                 
                 // particle vs. floater
                 // kill the particle
-                // (maybe floater does something? later)
+				// floater takes on color of particle
                 "floater": function(par, flo) {
                     par.die();
+					floater.set_color(par.get_color());
                 },
                 
                 // particle vs. tkiller

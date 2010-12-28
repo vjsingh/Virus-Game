@@ -93,6 +93,7 @@ var cell = function(p, spec) {
 	
 	// explodes this cell if it is active
     // takes number of particles to generate
+	// returns that many particles
 	obj.fire = function(num_particles) {
 		if (state === "active") {
             // TODO: need a slower death

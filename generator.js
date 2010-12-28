@@ -55,7 +55,7 @@ var make_generator = function(p, spec) {
             } 
         },
         "floater": {
-            start: 3000, num: 1, cap: 7, rate: 20000,
+            start: 0, num: 3, cap: 7, rate: 20000,
             make_new: function(en_pos) {
                 return floater(p, { pos: en_pos });
             } 
@@ -71,6 +71,12 @@ var make_generator = function(p, spec) {
 			start:0, num: 10, cap: 20, rate: 20000,
 			make_new: function(en_pos) {
 				return multiplier(p, { pos : en_pos });
+			}
+		},
+		"b_cell": {
+			start:0, num: 1, cap: 1, rate: 99999,
+			make_new: function(en_pos) {
+				return b_cell(p, { pos : en_pos});
 			}
 		}
     };
@@ -197,7 +203,7 @@ var make_generator = function(p, spec) {
         var get_em = function() {
             var enemies = { "cell":0, "wall_cell":0,
                 "empty_cell":0, "floater":0, "tkiller":0,
-				"multiplier":0};
+				"multiplier":0, "b_cell":0};
 
             // increment counter for each object
             var incr = function(o) {
