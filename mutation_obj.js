@@ -198,8 +198,8 @@ var mutation_obj = function(p) {
 	obj.get_color = function() {
 		// color level goes from 0 to 360
 		var new_color_level = (360 - (360 - level * 20));
-		var hue = new_color_level / 360;
-		var rgb_arr = hsvToRgb(new_color_level, hue, hue);
+		//var hue = new_color_level / 360;
+		var rgb_arr = hsvToRgb(new_color_level, 50, 50);
 		return p.color(rgb_arr[0], rgb_arr[1], rgb_arr[2]);
 	};
 	
