@@ -64,8 +64,8 @@ var cell = function(p, spec) {
             p.fill(obj.get_color());
         }
         else if (state === "active") {
-            p.fill(obj.get_color());
             drawAntibody();
+            p.fill(obj.get_color());
         }
         else if (state === "dead") {
             p.fill(0);
@@ -124,7 +124,7 @@ var cell = function(p, spec) {
                 particles.push(particle(p, {
                     pos: new p.PVector(x, y),
                     vel: new_vel,
-                    color: obj.get_color()
+                    mutation_info: obj.get_mutation_info()
                 }));
 
                 num_particles--;

@@ -176,7 +176,7 @@ var in_game_state = function (p, previous_state) {
             pos: new p.PVector(0, p.height/2),
             vel: new p.PVector(1, 0),
             // start with some gray
-            color: mutation.get_color()//p.color(250, 250, 250)
+            mutation_info: mutation.get_info()//p.color(250, 250, 250)
 			//mutation : mutation
         });
 
@@ -512,13 +512,12 @@ var in_game_state = function (p, previous_state) {
             if (cell.get_state() === "alive") {
                 par.die();
                 cell.set_state("infected");
-                // change color of cell to match particle
-                cell.set_color(par.get_color());
+                // change mutation of cell to match particle
+                cell.set_mutation_info(par.get_mutation_info());
 				// Add 1 to score
 				score.incr(1 * mult.get_num());
 				// increase mutation percentage
 				mutation.infected_cell();
-
             }
             else {
                 // otherwise deflect
@@ -835,8 +834,8 @@ var in_game_state = function (p, previous_state) {
                 // check for a new mutation
                 // if mutation occurred
                 if (mutation.has_new_mutation() && active_cell) {
-                    // set the new color
-                    active_cell.set_color(mutation.get_color());
+                    // set the new info
+                    active_cell.set_mutation_info(mutation.get_info());
                     // reset the counters
                     mutation.reset_mutation();
                     console.log("mutation occurred!");
@@ -856,7 +855,7 @@ var in_game_state = function (p, previous_state) {
                 var o = game_objects[i][j];
                 o.draw();
                 // to test collisions
-                o.draw_circle();
+                //o.draw_circle();
             }
         }
 

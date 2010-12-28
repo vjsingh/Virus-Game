@@ -8,7 +8,7 @@
 //  float radius = circle collision radius (will be auto-calced)
 //  p.PVector vel = initial velocity
 //  p.PVector accel = initial acceleration
-//  p.color color = main fill color for object
+//  mutation_info = object with level and color props
 
 var game_object = function (p, spec) {
 
@@ -31,7 +31,8 @@ var game_object = function (p, spec) {
     // used for circle collision testing
     var radius = spec.radius // default set at bottom of file
     // used for mutation
-    var cur_color = spec.color || p.color(0, 0, 0);
+    var mutation_info = spec.mutation_info ||
+            { level: 0, color: p.color(0, 0, 0) };
 	
     // --- public methods ---
 
@@ -62,13 +63,13 @@ var game_object = function (p, spec) {
             || right_edge < 0
             || top_edge > p.height
             || btm_edge < 0);
-    }
+    };
 	
 	// Returns if the obj is off the right of the screen
 	obj.is_off_right = function() {
 		var left_edge = pos.x - width;
 		return left_edge > p.width;
-	}
+	};
 	
 
 	// Bounces the object off a wall, if it is at one
@@ -89,21 +90,21 @@ var game_object = function (p, spec) {
 		if (right_edge >= p.width && vel.x > 0) {
 			vel.x = -vel.x;
 		}
-	}
+	};
 	
 	// reverses the y velocity
 	// used for bouncing vertically
 	obj.reverse_y = function() {
 		var vel = obj.get_vel();
 		obj.set_vel(new p.PVector(vel.x, -vel.y));
-	}
+	};
 
 	// reverses the x velocity
 	// used for bouncing horizontally
 	obj.reverse_x = function() {
 		var vel = obj.get_vel();
 		obj.set_vel(new p.PVector(- vel.x, vel.y));
-	}
+	};
 	
     // updates the position according to accel and vel
 	// Bounces off walls
@@ -142,10 +143,10 @@ var game_object = function (p, spec) {
 	// Should only be used for collisions
 	obj.set_pos = function(posn) {
 		pos = posn;
-	}
+	};
 
-    obj.set_color = function(col) {
-        cur_color = col;
+    obj.set_mutation_info = function(m) {
+        mutation_info = m;
     };
 
     // --- getters --- 
@@ -194,8 +195,16 @@ var game_object = function (p, spec) {
         return radius;
     };
 
+    obj.get_mutation_info = function() {
+        return mutation_info;
+    };
+
     obj.get_color = function() {
-        return cur_color;
+        return mutation_info.color;
+    };
+
+    obj.get_level = function() {
+        return mutation_info.level;
     };
 
     obj.to_string = function() {
