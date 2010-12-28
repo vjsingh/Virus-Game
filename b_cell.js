@@ -3,6 +3,7 @@
 //  game_object spec +
 //  speed = how fast the tkiller approaches the target
 //  target = cell to move towards
+//  state = just leave to be default (alive)
 
 var b_cell = function(p, spec) {
     
@@ -10,6 +11,7 @@ var b_cell = function(p, spec) {
 
     spec.width = spec.width || 30;
     spec.height = spec.height || 30;
+    spec.speed = spec.speed || 0.5;
 
     // obj to return
     var obj = seeker(p, spec);
@@ -20,9 +22,45 @@ var b_cell = function(p, spec) {
 
     // --- private variables ---
 
-    var alive = true;
+    // state can be "alive", "active", "shooting", "dead"
+    var state = spec.state || "alive";
 
     // --- public methods --- 
+
+    obj.make_antibodies = function() {
+        state = "shooting";
+        b.set_target(null);
+        // production will happen in update
+    };
+
+    // to be called on collision with floater
+    obj.activate = function() {
+        state = "active";
+        // send the bcell to the top
+        obj.set_target(game_object(p, {
+                pos: new p.PVector(p.width/2, 50)
+        })); 
+    };
+
+    obj.is_activated = function() {
+        return state === "active";
+    };
+
+    obj.is_alive = function() {
+        return state === "alive";
+    };
+
+    obj.should_scroll = function() {
+        return state === "alive";
+    };
+
+    obj.set_state = function(s) {
+        state = s;
+    };
+
+    obj.get_state = function() {
+        return state;
+    };
 
     // implementing game_object interface
     
@@ -43,23 +81,27 @@ var b_cell = function(p, spec) {
         p.translate(pos.x, pos.y);
         p.rotate(obj.get_target_angle());
 
-        p.fill(0);
+        p.fill(obj.get_color());
         p.noStroke();
 
         // rightward triangle
         p.triangle(-w/2, -h/2, -w/2, h/2, w/2, 0);
 
+        p.fill(255);
+        p.ellipse(-w/4, 0, 10, 10);
+
         p.popMatrix();
     };
 
+
     // is_dead just returns whether it isn't alive 
     obj.is_dead = function() {
-        return !alive;
+        return state === "dead";
     };
 
     // which means we need a way to die
     obj.die = function() {
-        alive = false;
+        state = "dead";
     };
 
     return obj;

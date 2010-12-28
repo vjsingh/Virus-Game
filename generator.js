@@ -38,7 +38,7 @@ var make_generator = function(p, spec) {
                 return cell(p, {
                     pos: en_pos,
                     state: "alive",
-					mutation : mutation
+					//mutation : mutation
                 });
             }
         },
@@ -76,7 +76,7 @@ var make_generator = function(p, spec) {
 		"b_cell": {
 			start:0, num: 1, cap: 1, rate: 99999,
 			make_new: function(en_pos) {
-				return b_cell(p, { pos : en_pos});
+				return b_cell(p, { pos : en_pos });
 			}
 		}
     };
@@ -129,6 +129,7 @@ var make_generator = function(p, spec) {
                 && distance >= start(enemy_type)) {
 
 			//Generate random y position
+            // TODO change hardcoded numbers
 			var enemy_y = p.random(30, p.height-30);
 			var enemy_pos = new p.PVector(p.width+30, enemy_y);
 			
@@ -179,6 +180,7 @@ var make_generator = function(p, spec) {
         game.do_to_type(check_overlap, "particle", false);
         game.do_to_type(check_overlap, "cell", false);
         game.do_to_type(check_overlap, "enemy", false);
+        // TODO add wall checking
         return overlap;
     };
 	

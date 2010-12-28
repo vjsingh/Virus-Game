@@ -32,7 +32,7 @@ var game_object = function (p, spec) {
     var radius = spec.radius // default set at bottom of file
     // used for mutation
     var mutation_info = spec.mutation_info ||
-            { level: 0, color: p.color(0, 0, 0) };
+            { level: -1, color: p.color(0, 0, 0) };
 	
     // --- public methods ---
 
@@ -41,6 +41,8 @@ var game_object = function (p, spec) {
     // void draw() - called each frame to display the object
     // boolean is_dead() - returns true if the object should be
     //                      removed from the game
+    // boolean should_scroll() - returns true if the object should
+    //                  be moved to the left each redraw
 
     // update moves obj by default
     obj.update = function() { obj.move(); };
@@ -50,6 +52,9 @@ var game_object = function (p, spec) {
     
     // is_dead returns false by default
     obj.is_dead = function() { return false; };
+
+    // should_scroll is true by default
+    obj.should_scroll = function() { return true; };
 
 	// Generic methods for all game_objects:
     // returns true if the object is completely offscreen

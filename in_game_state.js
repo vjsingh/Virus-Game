@@ -203,17 +203,26 @@ var in_game_state = function (p, previous_state) {
 	// Else, if obj is closer than the b cells curr target (or if b cells curr
 	// target is null), updates b_cells curr target to be o
 	var alert_b_cell = function(o) {
-		var the_b_cell = null;
-		var cell_objs = game_objects[type_to_level["b_cell"]];
-		var cell_obj = null;
-		for (var i = 0; i < cell_objs.length; i++) {
+		//var cell_objs = level("b_cell");
+		//var cell_obj = null;
+		/*for (var i = 0; i < cell_objs.length; i++) {
 			cell_obj = cell_objs[i];
 			if (cell_obj.get_type() === "b_cell") {
 				the_b_cell = cell_obj;
 			}
 		}
+        */
+
+		var the_b_cell = null;
+        do_to_type(function(b) {
+                // only want unactivated bcell
+                if (b.is_alive()) {
+                    the_b_cell = b; 
+                }
+            },
+            "b_cell", true);
 		
-		console.log('a');
+		//console.log('a');
 		if (the_b_cell) {
 			var old_target = the_b_cell.get_target();
 			
@@ -229,7 +238,7 @@ var in_game_state = function (p, previous_state) {
 				the_b_cell.set_target(o);
 			}
 		}
-		console.log('b');
+		//console.log('b');
 	};
 
     // sets active_cell to the leftmost infected cell
@@ -666,6 +675,7 @@ var in_game_state = function (p, previous_state) {
             "multiplier": {
                 // multiplier vs wall
 				// do nothing
+                // WALL IS NOT A TYPE
                 "wall": function(mult, wall) {
 					//do nothing
                 }
@@ -673,7 +683,21 @@ var in_game_state = function (p, previous_state) {
 			
 			"wall_segment": {
 				//do nothing
-			}
+			},
+
+            "b_cell": {
+                "floater": function(b, flo) {
+                    if (b.is_alive()) {
+                        b.set_mutation_info(flo.get_mutation_info());
+                        b.activate();
+                    }
+                },
+                "wall_segment": function(b, wall) {
+                    if (b.is_activated()) {
+                        b.make_antibodies();
+                    }
+                }
+            }
         };
         return handlers;
     }());
@@ -817,7 +841,6 @@ var in_game_state = function (p, previous_state) {
         return "game";
     };
 
-	//Scrolls if scroll_counter = 0, if so resets scroll_counter to scroll_rate
     //Calls update() on every obj
     //after updating, calls remove_objs
     obj.update = (function() {
@@ -853,7 +876,9 @@ var in_game_state = function (p, previous_state) {
 				
 				// scroll all objects
 				do_to_types(function(o){
-					o.scroll(scroll_dist);
+                    if (o.should_scroll()) {
+					    o.scroll(scroll_dist);
+                    }
 				}, game_types, false);
 				
 				// update distance travelled
