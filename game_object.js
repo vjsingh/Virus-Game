@@ -212,6 +212,10 @@ var game_object = function (p, spec) {
         return mutation_info.level;
     };
 
+    obj.is = function(type) {
+        return obj.get_type() === type;
+    };
+
     obj.to_string = function() {
         return obj.get_type()+" ("+pos.x+", "+pos.y+")";
     };

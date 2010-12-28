@@ -29,7 +29,7 @@ var b_cell = function(p, spec) {
 
     obj.make_antibodies = function() {
         state = "shooting";
-        b.set_target(null);
+        obj.set_target(null);
         // production will happen in update
     };
 
@@ -38,7 +38,7 @@ var b_cell = function(p, spec) {
         state = "active";
         // send the bcell to the top
         obj.set_target(game_object(p, {
-                pos: new p.PVector(p.width/2, 50)
+                pos: new p.PVector(p.width/2, 0)
         })); 
     };
 

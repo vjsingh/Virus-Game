@@ -356,8 +356,8 @@ var in_game_state = function (p, previous_state) {
             ["cell", "enemy"],
             ["enemy", "enemy"],
 			["particle", "wall"],
-			["multiplier", "wall"]
-			//["enemy", "wall"]
+			["multiplier", "wall"],
+			["enemy", "wall"]
         ];
         
         // hey this looks like combinations!
@@ -468,7 +468,8 @@ var in_game_state = function (p, previous_state) {
     var extra_check = {
         "wall_segment": {
             "particle": check_rectangle_collision,
-            "multiplier": check_rectangle_collision
+            "multiplier": check_rectangle_collision,
+            "b_cell": check_rectangle_collision
         },
         "wall_cell": {
             "particle": check_rectangle_collision
@@ -595,8 +596,12 @@ var in_game_state = function (p, previous_state) {
 				// floater takes on color of particle
                 "floater": function(par, flo) {
                     par.die();
-					flo.set_mutation_info(par.get_mutation_info());
-					alert_b_cell(flo);
+                    // TODO add state to floater
+                    // cuz this is a hack
+                    if (flo.get_level() === -1) {
+                        flo.set_mutation_info(par.get_mutation_info());
+                        alert_b_cell(flo);
+                    }
                 },
                 
                 // particle vs. tkiller
@@ -680,10 +685,6 @@ var in_game_state = function (p, previous_state) {
 					//do nothing
                 }
             },
-			
-			"wall_segment": {
-				//do nothing
-			},
 
             "b_cell": {
                 "floater": function(b, flo) {
@@ -693,6 +694,7 @@ var in_game_state = function (p, previous_state) {
                     }
                 },
                 "wall_segment": function(b, wall) {
+                    console.log("collision");
                     if (b.is_activated()) {
                         b.make_antibodies();
                     }
