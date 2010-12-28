@@ -27,12 +27,12 @@ var in_game_state = function (p, previous_state) {
     var game_objects = [];
 	var paused = false;
 	var score = num_status_obj(p, {
-		pos : new p.PVector(p.width - 40, 20),
+		pos : new p.PVector(p.width - 60, 20),
 		text : "Score:",
 		num : 0
 	});
 	var mult = num_status_obj(p, {
-		pos : new p.PVector(p.width - 100, 20),
+		pos : new p.PVector(p.width - 150, 20),
 		text : "Multiplier:",
 		num : 1
 	});
