@@ -28,8 +28,8 @@ var make_generator = function(p, spec) {
     // - start = distance after which to start generating
     // - num = how many total on screen
     // - cap = upper limit on num
-    // - rate = determines when to increment cap
-    //          when dist % rate = 0, cap increments
+    // - rate = determines when to increment num
+    //          when dist % rate = 0, num increments
     // - make_new = function that takes a pos and returns a new enemy
     var gen_info = {
         "cell": { 

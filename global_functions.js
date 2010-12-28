@@ -29,6 +29,13 @@ var random_from = function(arr) {
     return arr[Math.floor(Math.random()*arr.length)];
 };
 
+// to be used with objects within objects
+// returns a nested property if there is one
+// otherwise undefined
+var retrieve = function(obj, key1, key2) {
+    return obj[key1] ? obj[key1][key2] : undefined;
+};
+
 // returns an array of the property names (keys)
 // of an object
 function keys(obj) {

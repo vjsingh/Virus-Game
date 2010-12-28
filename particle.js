@@ -2,7 +2,6 @@
 // --- inherits from game_object
 // spec:
 //  game_object spec
-//  mutation : mutation_obj so particle can get current mutation color
 
 var particle = function(p, spec) {
 
@@ -21,7 +20,7 @@ var particle = function(p, spec) {
     // --- private variables ---
 
     var alive = true;
-	var mutation = spec.mutation;
+	//var mutation = spec.mutation;
 
     // --- public methods --- 
 
@@ -33,9 +32,9 @@ var particle = function(p, spec) {
     // (circle for now)
     obj.draw = function() {
         var pos = obj.get_pos();
-        p.shapeMode(obj.mode);
-		var color = mutation.get_color();
-        p.fill(color);
+        p.shapeMode(obj.get_mode());
+		//var color = mutation.get_color();
+        p.fill(obj.get_color());
         p.noStroke();
         p.ellipse(pos.x, pos.y,
                 obj.get_width(), obj.get_height());

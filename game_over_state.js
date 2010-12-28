@@ -48,8 +48,12 @@ var game_over_state = function (p, prev_state) {
 	
 	obj.get_all_buttons = function() {
 		return all_buttons;
-	}
-    
+	};
+
+    obj.render = function() {
+        p.fill(0, 100);
+        p.rect(0, 0, p.width, p.height);
+    };
 	
     return obj;
 };

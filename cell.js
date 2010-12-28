@@ -25,8 +25,8 @@ var cell = function(p, spec) {
     var state = spec.state || "alive";
     var antibody_angle = 0;
     var antibody_dir = 1;
-	var mutation = spec.mutation;
-	var color = null; //set when infected, then static
+	//var mutation = spec.mutation;
+	//var color = null; //set when infected, then static
 
     // --- public methods --- 
 
@@ -56,23 +56,27 @@ var cell = function(p, spec) {
         var pos = obj.get_pos();
         p.shapeMode(obj.mode);
 
+        p.stroke(0);
+        p.strokeWeight(1);
+
         if (state === "alive") {
             p.fill(175);
         }
         else if (state === "infected") {
-			color = mutation.get_color();
-            p.fill(color);
+			//color = mutation.get_color();
+            p.fill(obj.get_color());
         }
         else if (state === "active") {
-            p.fill(255);
+            p.fill(obj.get_color());
+            // red outline for now
+            var r = p.color(0xFF0000);
+            p.stroke(r);
+            p.strokeWeight(3);
             drawAntibody();
         }
         else if (state === "dead") {
             p.fill(0);
         }
-
-        p.stroke(0);
-        p.strokeWeight(1);
 
         p.ellipse(pos.x, pos.y,
                 obj.get_width(), obj.get_height());
@@ -127,7 +131,8 @@ var cell = function(p, spec) {
                 particles.push(particle(p, {
                     pos: new p.PVector(x, y),
                     vel: new_vel,
-					mutation : mutation
+                    color: obj.get_color()
+					//mutation : mutation
                 }));
 
                 num_particles--;
