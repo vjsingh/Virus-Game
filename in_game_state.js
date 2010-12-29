@@ -36,7 +36,6 @@ var in_game_state = function (p, previous_state) {
 		text : "Multiplier:",
 		num : 1
 	});
-	var start_time = (new Date()).getMilliseconds();
 	var time_elapsed = 0; // Time elapsed in seconds
 	var time_status = num_status_obj(p, {
 		pos : new p.PVector(40, 20),
@@ -187,14 +186,6 @@ var in_game_state = function (p, previous_state) {
 		
 		//active_cell = initial_cell;
 		
-		//Set interval to update time elapsed
-		var update_time = function() {
-			if (!paused) {
-				time_elapsed += 1;
-				time_status.set_num(time_elapsed);
-			}
-		}
-		setInterval(update_time, 1000);
 	};
 
 	// Alerts the b cell (only one on screen at a time?) to a newly mutated
@@ -851,6 +842,18 @@ var in_game_state = function (p, previous_state) {
             "cell", "enemy", "multiplier"];
 
         var update_fun = function() {
+			// Can't be set when object is initialized
+			// Takes time every update though to check
+			if (time_elapsed === 0) {
+				//Set interval to update time elapsed
+				var update_time = function() {
+					if (!paused) {
+						time_elapsed += 1;
+						time_status.set_num(time_elapsed);
+					}
+				}
+				setInterval(update_time, 1000);
+			}
 			if (!paused) {
 			
 				// if we don't have an active cell
