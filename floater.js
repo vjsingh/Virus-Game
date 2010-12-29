@@ -2,6 +2,7 @@
 // --- inherits from game_object
 // spec:
 //  game_object spec
+//  state = leave to be default "alive"
 
 var floater = function(p, spec) {
     
@@ -24,6 +25,8 @@ var floater = function(p, spec) {
     var range = 40;
     var btm_lim = obj.get_pos().y + range;
     var top_lim = obj.get_pos().y - range;
+    // state can be "alive", "activated", or "dead"
+    var state = spec.state || "alive";
 
     // --- public methods --- 
 
@@ -58,7 +61,23 @@ var floater = function(p, spec) {
     };
 
     obj.is_dead = function() {
-        return false;
+        return state === "dead";
+    };
+
+    obj.is_alive = function() {
+        return state === "alive";
+    };
+
+    obj.is_activated = function() {
+        return state === "active";
+    };
+
+    obj.get_state = function() {
+        return state;
+    };
+
+    obj.activate = function() {
+        state = "active";
     };
 
     return obj;

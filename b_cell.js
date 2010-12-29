@@ -65,7 +65,14 @@ var b_cell = function(p, spec) {
     // implementing game_object interface
     
     obj.my_update = function() {
-        obj.move();
+        if (state === "shooting") {
+            obj.stop();
+            // make it face downwards
+            obj.set_target_angle(p.PI/2);
+        }
+        else {
+            obj.move();
+        }
     }
 
     // should point towards target

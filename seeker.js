@@ -61,24 +61,28 @@ var seeker = function(p, spec) {
         new_vel.mult(speed_to_use);
         obj.set_vel(new_vel);
 		obj.my_update();
-    }
+    };
 	
 	// MUST BE OVERWRITTEN
 	obj.my_update = function() {
 		console.log("my_update (in seeker) not overwritten!");
-	}
+	};
 
-    // target should be the active cell
     obj.set_target = function(new_target) {
         target = new_target;
-    }
+    };
+
+    obj.set_target_angle = function(new_target_angle) {
+        target_angle = new_target_angle;
+    };
 	
 	obj.get_target = function() {
 		return target;
-	}
+	};
+
 	obj.get_target_angle = function() {
 		return target_angle;
-	}
+	};
 
     return obj;
 }

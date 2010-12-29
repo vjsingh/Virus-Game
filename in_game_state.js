@@ -65,7 +65,7 @@ var in_game_state = function (p, previous_state) {
         "cell":3, // general name for level
         "wall_cell": 3,
         "empty_cell": 3,
-		"b_cell": 3,
+		"b_cell": 4,
         "enemy":4, // general name for level
         "floater":4,
         "tkiller":4,
@@ -471,6 +471,9 @@ var in_game_state = function (p, previous_state) {
             "multiplier": check_rectangle_collision,
             "b_cell": check_rectangle_collision
         },
+        "floater": {
+            "b_cell": check_rectangle_collision
+        },
         "wall_cell": {
             "particle": check_rectangle_collision
         }
@@ -596,10 +599,9 @@ var in_game_state = function (p, previous_state) {
 				// floater takes on color of particle
                 "floater": function(par, flo) {
                     par.die();
-                    // TODO add state to floater
-                    // cuz this is a hack
-                    if (flo.get_level() === -1) {
+                    if (flo.is_alive()) {
                         flo.set_mutation_info(par.get_mutation_info());
+                        flo.activate();
                         alert_b_cell(flo);
                     }
                 },
@@ -680,15 +682,14 @@ var in_game_state = function (p, previous_state) {
             "multiplier": {
                 // multiplier vs wall
 				// do nothing
-                // WALL IS NOT A TYPE
-                "wall": function(mult, wall) {
+                "wall_segment": function(mult, wall) {
 					//do nothing
                 }
             },
 
             "b_cell": {
                 "floater": function(b, flo) {
-                    if (b.is_alive()) {
+                    if (b.is_alive() && flo.is_activated()) {
                         b.set_mutation_info(flo.get_mutation_info());
                         b.activate();
                     }
