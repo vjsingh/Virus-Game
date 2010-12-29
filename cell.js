@@ -152,7 +152,7 @@ var cell = function(p, spec) {
                 || antibody_angle < -p.PI/2) {
             antibody_dir = (2-antibody_dir)-2;
         }
-        antibody_angle += p.radians(1)*antibody_dir;
+        antibody_angle += p.radians(3)*antibody_dir;
     };
 
     // draw the Y-shaped antibody at the edge of the cell
