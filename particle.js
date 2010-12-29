@@ -37,10 +37,11 @@ var particle = function(p, spec) {
 		//var color = mutation.get_color();
         p.fill(obj.get_color());
         p.noStroke();
-        //p.ellipse(pos.x, pos.y,
-                //obj.get_width(), obj.get_height());
-        p.shape(par_shape, pos.x, pos.y, 
+        p.ellipse(pos.x, pos.y,
                 obj.get_width(), obj.get_height());
+        //p.shape(par_shape, pos.x, pos.y, 
+               // obj.get_width(), obj.get_height());
+
     };
 	
     // is_dead just returns whether it isn't alive 

@@ -2,10 +2,11 @@
 // later can include which image/shape to use
 // MUST HAVE WIDTH AND HEIGHT SPECIFIED
 var wall_specs = [
-    { width: 100, height: 30, fill: 0 },
-    { width: 200, height: 30, fill: 50 },
-    { width: 50, height: 30, fill: 100 },
-    { width: 150, height: 30, fill: 150 }
+    {}
+    //{ width: 100, height: 30, fill: 0 },
+    //{ width: 200, height: 30, fill: 50 },
+    //{ width: 50, height: 30, fill: 100 },
+    //{ width: 150, height: 30, fill: 150 }
 ];
 
 // *** wall_segment ***
@@ -18,10 +19,14 @@ var wall_specs = [
 
 var wall_segment = function(p, spec) {
 
+    //var wall_shape = p.loadShape("images/cellwall1draft.svg");
+    var wall_shape = p.loadImage("images/cellwall1.png");
+
     // --- defaults ---
 
-    spec.width = spec.width || 100;
+    spec.width = spec.width || 60;
     spec.height = spec.height || 30;
+    spec.fill = spec.fill || 150;
 
     // obj to return
     var obj = game_object(p, spec);
@@ -49,8 +54,10 @@ var wall_segment = function(p, spec) {
         p.noStroke();
         var w = obj.get_width();
         var h = obj.get_height();
-        p.rect(pos.x-w/2, pos.y-h/2, w, h);
+        //p.rect(pos.x-w/2, pos.y-h/2, w, h);
+        p.image(wall_shape, pos.x-w/2, pos.y-h/2, w, h); 
     };
+
     obj.draw_circle = function() {};
 
     // walls can't die
