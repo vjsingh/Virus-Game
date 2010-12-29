@@ -37,6 +37,7 @@ var in_game_state = function (p, previous_state) {
 		num : 1
 	});
 	var time_elapsed = 0; // Time elapsed in seconds
+	var set_time = false; //bool that says if we've started counting time
 	var time_status = num_status_obj(p, {
 		pos : new p.PVector(40, 20),
 		text : "Time:",
@@ -844,7 +845,7 @@ var in_game_state = function (p, previous_state) {
         var update_fun = function() {
 			// Can't be set when object is initialized
 			// Takes time every update though to check
-			if (time_elapsed === 0) {
+			if (!set_time) {
 				//Set interval to update time elapsed
 				var update_time = function() {
 					if (!paused) {
@@ -853,6 +854,7 @@ var in_game_state = function (p, previous_state) {
 					}
 				}
 				setInterval(update_time, 1000);
+				set_time = true;
 			}
 			if (!paused) {
 			

@@ -70,9 +70,14 @@ var pCode = function(p) {
         */
     };
 
+	//update_counter = 0;
+	// Set frameRate to 30
     // draw is called repeatedly
     p.draw = function() {
-
+		p.frameRate(60);
+		//console.log(p.frameRate);
+		//update_counter += 1;
+		//console.log(update_counter);
         g.update(); // Also renders
     };
 	
