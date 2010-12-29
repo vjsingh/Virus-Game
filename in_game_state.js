@@ -84,7 +84,7 @@ var in_game_state = function (p, previous_state) {
 	// Sets the rate of scrolling, every this # of frames will scroll
 	//var scroll_rate = 10;
 	//var scroll_counter = scroll_rate; //decremented every update till 0
-    var scroll_dist = -0.3; // how far to move each frame
+    var scroll_dist = -0.5; // how far to move each frame
 	
 /*	
 	// Buttons

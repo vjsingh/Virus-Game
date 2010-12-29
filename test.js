@@ -7,6 +7,11 @@ var pCode = function(p) {
     p.setup = function() {
         p.size(700, 600);
 
+        // deal with console issues
+        // TODO move this code
+        if (!console) { console = window.console; }
+        Processing.logger = console;
+
 		g = state_manager(p);
 		
 		p.frameRate(60);
