@@ -20,6 +20,7 @@ var particle = function(p, spec) {
     // --- private variables ---
 
     var alive = true;
+    var par_shape = p.loadShape("images/virusfinal.svg");
 	//var mutation = spec.mutation;
 
     // --- public methods --- 
@@ -36,14 +37,11 @@ var particle = function(p, spec) {
 		//var color = mutation.get_color();
         p.fill(obj.get_color());
         p.noStroke();
-        p.ellipse(pos.x, pos.y,
+        //p.ellipse(pos.x, pos.y,
+                //obj.get_width(), obj.get_height());
+        p.shape(par_shape, pos.x, pos.y, 
                 obj.get_width(), obj.get_height());
     };
-
-	// explodes this particle, if it is in the right state
-	obj.fire = function() {
-		
-	}
 	
     // is_dead just returns whether it isn't alive 
     obj.is_dead = function() {
