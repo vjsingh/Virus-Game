@@ -10,7 +10,7 @@ var antibody = function(p, spec) {
 
     spec.width = spec.width || 30;
     spec.height = spec.height || 30;
-	spec.speed = spec.speed || 5;
+	spec.speed = spec.speed || 2;
 	spec.no_target_speed = spec.no_target_speed || 1
 	
 	spec.vel = new p.PVector(Math.random() * 2 - 1,

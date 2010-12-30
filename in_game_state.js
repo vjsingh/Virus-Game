@@ -319,8 +319,6 @@ var in_game_state = function (p, previous_state) {
             active_cell.set_state("active");
             //update the tkillers' targets
 			
-			update_tkillers_targets();
-           
             //console.log("got next "+active_cell.to_string());
         }
 	}
@@ -958,6 +956,8 @@ var in_game_state = function (p, previous_state) {
 				// Make antibodies seek any infected cells they are near
 				make_antibodies_seek();
 				
+				update_tkillers_targets();
+           
 				var the_b_cell = get_b_cell();
 				if (the_b_cell) {
 					// Add antibodies generated from b cells
@@ -966,6 +966,8 @@ var in_game_state = function (p, previous_state) {
 
                 // adds a new segment of wall if necessary
                 add_wall();
+			update_tkillers_targets();
+           
 				
 				// scroll all objects
 				do_to_types(function(o){
