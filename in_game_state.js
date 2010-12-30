@@ -894,10 +894,11 @@ var in_game_state = function (p, previous_state) {
 				var antibody_pos = an_antibody.get_pos();
 				var the_dist = antibody_pos.dist(
 									infected_cell.get_pos());
-				if (the_dist < 50 && !infected_cell.get_targeted() &&
+				if (the_dist < 100 && !infected_cell.get_targeted() &&
 						(!an_antibody.get_target() ||
 						dist_less_than(an_antibody, infected_cell, 
 										an_antibody.get_target()))) {
+					console.log("setting antibody target");
 					an_antibody.set_target(infected_cell);
 				}
 			}

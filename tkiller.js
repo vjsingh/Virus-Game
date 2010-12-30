@@ -11,6 +11,7 @@ var tkiller = function(p, spec) {
 
     spec.width = spec.width || 30;
     spec.height = spec.height || 30;
+	spec.speed = spec.speed || 1;
 
     // obj to return
     var obj = seeker(p, spec);
