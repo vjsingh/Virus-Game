@@ -4,6 +4,7 @@
 // spec:
 //  game_object spec +
 //  speed = how fast the seeker approaches the target
+//	no_target_speed = how fast the object moves when there is no target
 //  target = object to move towards
 
 var seeker = function(p, spec) {
@@ -16,9 +17,10 @@ var seeker = function(p, spec) {
     // --- private variables ---
 
     var speed = spec.speed || 0.2;
+	var no_target_speed = spec.no_target_speed || 0.2;
     var alive = true;
     var target = spec.target || null;
-    var target_angle = p.PI;
+    var target_angle = Math.random() * (p.PI * 2) - p.PI; //random angle
 
     // --- public methods --- 
 
@@ -37,7 +39,7 @@ var seeker = function(p, spec) {
                 target_angle += p.random(-p.PI/16, p.PI/16);
             }
             // laze
-            speed_to_use = 0.02;
+            speed_to_use = no_target_speed;
         }
         else {
             tpos = target.get_pos();
@@ -46,12 +48,6 @@ var seeker = function(p, spec) {
             target_angle = p.atan2(tpos.y-pos.y,
                     tpos.x-pos.x); // y first!
                 
-	        // change velocity to point towards target
-	        var new_vel = new p.PVector(
-	                p.cos(target_angle), p.sin(target_angle));
-	        new_vel.mult(speed_to_use);
-	        obj.set_vel(new_vel);
-			
             // SHOULD BE HANDLED BY COLLISIONS
             // when we get there, stop
             /*
@@ -61,6 +57,12 @@ var seeker = function(p, spec) {
             */
         }
 
+        // change velocity to point towards target
+        var new_vel = new p.PVector(
+                p.cos(target_angle), p.sin(target_angle));
+        new_vel.mult(speed_to_use);
+        obj.set_vel(new_vel);
+			
 		obj.my_update();
     };
 	

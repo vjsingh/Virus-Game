@@ -884,7 +884,8 @@ var in_game_state = function (p, previous_state) {
 			
 		// Then, for each antibody and each infected cell,
 		// if the infected cell is closer than some constant, and is
-		// closer than the cell that the antibody is targeting (if any)
+		// closer than the cell that the antibody is targeting (if any),
+		// and has not already been targeted:
 		// set the antibody to seek that cell
 		for (var i = 0; i < all_antibodies.length; i++) {
 			var an_antibody = all_antibodies[i];
@@ -893,7 +894,7 @@ var in_game_state = function (p, previous_state) {
 				var antibody_pos = an_antibody.get_pos();
 				var the_dist = antibody_pos.dist(
 									infected_cell.get_pos());
-				if (the_dist < 50 &&
+				if (the_dist < 50 && !infected_cell.get_targeted() &&
 						(!an_antibody.get_target() ||
 						dist_less_than(an_antibody, infected_cell, 
 										an_antibody.get_target()))) {
