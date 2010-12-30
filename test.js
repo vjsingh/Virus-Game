@@ -98,5 +98,5 @@ var pCode = function(p) {
 
 // attaches the processing code to the canvas
 // note that we need to do this AFTER the canvas element is created
-var canvas = document.getElementById("test_canvas");
+canvas = document.getElementById("test_canvas");
 var pInstance = new Processing(canvas, pCode);

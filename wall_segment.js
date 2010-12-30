@@ -25,7 +25,7 @@ var wall_segment = function(p, spec) {
     // --- defaults ---
 
     spec.width = spec.width || 60;
-    spec.height = spec.height || 30;
+    spec.height = spec.height || 60;
     spec.fill = spec.fill || 150;
 
     // obj to return
@@ -46,7 +46,7 @@ var wall_segment = function(p, spec) {
     // update is default (move)
 
     // (flat rect for now)
-    obj.draw = function() {
+    obj.draw = function() {	
         var pos = obj.get_pos();
         p.shapeMode(obj.mode);
         // all diff colors for testing
@@ -56,6 +56,12 @@ var wall_segment = function(p, spec) {
         var h = obj.get_height();
         //p.rect(pos.x-w/2, pos.y-h/2, w, h);
         p.image(wall_shape, pos.x-w/2, pos.y-h/2, w, h); 
+		//draw(canvas.getContext('2d'));
+		//var d = new Date();
+		//console.log(d.getMilliseconds());
+		//canvas.getContext('2d').drawSvg("images/virusFinal.svg", 300, 10, 20, 20);
+		//console.log(d.getMilliseconds());
+		
     };
 
     obj.draw_circle = function() {};
@@ -67,3 +73,4 @@ var wall_segment = function(p, spec) {
 
     return obj;
 }
+

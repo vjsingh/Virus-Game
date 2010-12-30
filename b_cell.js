@@ -24,6 +24,22 @@ var b_cell = function(p, spec) {
 
     // state can be "alive", "active", "shooting", "dead"
     var state = spec.state || "alive";
+	
+	// Antibodies are created in update, and returned in get_antibodies()
+	var new_antibodies = null;
+
+	// --- private methods
+	
+	// Makes one antibody and adds it to new_antibodies
+	var make_antibody = function() {
+		if (!new_antibodies) {
+			new_antibodies = [];
+		}
+		new_antibodies.push(antibody(p, {
+			pos : obj.get_pos()
+		}));
+	}
+
 
     // --- public methods --- 
 
@@ -41,7 +57,19 @@ var b_cell = function(p, spec) {
                 pos: new p.PVector(p.width/2, 0)
         })); 
     };
-
+	
+	// Returns any newly created antibodies
+	obj.get_antibodies = function() {
+		if (new_antibodies) {
+			var to_return = new_antibodies;
+			new_antibodies = null;
+			return to_return;
+		}
+		else {
+			return [];
+		}
+	}
+	
     obj.is_activated = function() {
         return state === "active";
     };
@@ -69,6 +97,9 @@ var b_cell = function(p, spec) {
             obj.stop();
             // make it face downwards
             obj.set_target_angle(p.PI/2);
+			if (Math.random() < .2) {
+				make_antibody();
+			}
         }
         else {
             obj.move();

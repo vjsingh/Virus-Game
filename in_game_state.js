@@ -188,6 +188,19 @@ var in_game_state = function (p, previous_state) {
 		//active_cell = initial_cell;
 		
 	};
+	
+	// Returns the current b cell on the screen, if there is one
+	var get_b_cell = function() {
+		var the_b_cell = null;
+        do_to_type(function(b) {
+                // only want unactivated bcell
+                if (b.is_alive()) {
+                    the_b_cell = b; 
+                }
+            },
+            "b_cell", true);
+		return the_b_cell;
+	}
 
 	// Alerts the b cell (only one on screen at a time?) to a newly mutated
 	// obj.
@@ -205,14 +218,7 @@ var in_game_state = function (p, previous_state) {
 		}
         */
 
-		var the_b_cell = null;
-        do_to_type(function(b) {
-                // only want unactivated bcell
-                if (b.is_alive()) {
-                    the_b_cell = b; 
-                }
-            },
-            "b_cell", true);
+		var the_b_cell = get_b_cell();
 		
 		//console.log('a');
 		if (the_b_cell) {
@@ -878,6 +884,12 @@ var in_game_state = function (p, previous_state) {
 				
 				//Add any newly generated objs
 				generator.update();
+				
+				var the_b_cell = get_b_cell();
+				if (the_b_cell) {
+					// Add antibodies generated from b cells
+					obj.add_objects(the_b_cell.get_antibodies());
+				}
 
                 // adds a new segment of wall if necessary
                 add_wall();
