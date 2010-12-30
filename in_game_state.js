@@ -328,7 +328,7 @@ var in_game_state = function (p, previous_state) {
 	// Returns true if source is closer to target1 than target2 
 	// All 3 args are game_objs
 	var dist_less_than = function(source, target1, target2) {
-		var source_pos = sourc.get_pos();
+		var source_pos = source.get_pos();
 		return source_pos.dist(target1.get_pos()) <
 				source_pos.dist(target2.get_pos());
 	};
@@ -893,7 +893,7 @@ var in_game_state = function (p, previous_state) {
 				var antibody_pos = an_antibody.get_pos();
 				var the_dist = antibody_pos.dist(
 									infected_cell.get_pos());
-				if (the_dist < 30 &&
+				if (the_dist < 50 &&
 						(!an_antibody.get_target() ||
 						dist_less_than(an_antibody, infected_cell, 
 										an_antibody.get_target()))) {
