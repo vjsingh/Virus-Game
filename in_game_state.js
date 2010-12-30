@@ -676,6 +676,16 @@ var in_game_state = function (p, previous_state) {
                 "tkiller": nothing
             },
 			
+			"antibody": {
+				"cell": function(a, c) {
+					if (c.get_state() === "infected") {
+						console.log("B");
+						c.set_targeted();
+					}
+					a.die();
+				}
+			},
+			
             "multiplier": {
                 // multiplier vs wall
 				// do nothing

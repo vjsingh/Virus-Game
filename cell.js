@@ -29,6 +29,9 @@ var cell = function(p, spec) {
     var state = spec.state || "alive";
     var antibody_angle = 0;
     var antibody_dir = 1;
+	
+	// indicates whether has been hit by an antibody and is being targeted
+	var is_targeted = false;
 
     // --- public methods --- 
 
@@ -68,7 +71,13 @@ var cell = function(p, spec) {
         }
         else if (state === "infected") {
 			p.strokeWeight(0);
-            p.fill(obj.get_color());
+			if (is_targeted) {
+				console.log("is targeted");
+				p.fill(0);
+			}
+			else {
+				p.fill(obj.get_color());
+			}
 			p.ellipse(pos.x + obj.get_width() / 8, pos.y - obj.get_height() / 8, 
 						obj.get_width() / 2, obj.get_height() / 2);
 			
@@ -97,6 +106,12 @@ var cell = function(p, spec) {
     obj.set_state = function(s) {
         state = s;
     };
+	
+	// Indicates that this object has been hit by an antibody, and is
+	// now targeted fo destruction
+	obj.set_targeted = function() {
+		is_targeted = true;
+	}
 
     obj.get_state = function() {
         return state;

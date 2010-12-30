@@ -33,6 +33,8 @@ var game_object = function (p, spec) {
     // used for mutation
     var mutation_info = spec.mutation_info ||
             { level: -1, color: p.color(0, 0, 0) };
+			
+	var alive = true;
 	
     // --- public methods ---
 
@@ -115,9 +117,6 @@ var game_object = function (p, spec) {
 	// Bounces off walls
     obj.move = function() {
         vel.add(accel);
-		if (obj.is("antibody")) {
-			console.log(obj.get_vel().y);
-		}
         pos.add(vel);
     };
 
@@ -130,6 +129,10 @@ var game_object = function (p, spec) {
 	obj.scroll = function(scroll_x) {
         pos.add(new p.PVector(scroll_x, 0));
 	};
+	
+	obj.die = function() {
+		alive = false;
+	}
 
     // --- setters --- 
 
