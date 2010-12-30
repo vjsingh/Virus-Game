@@ -317,17 +317,38 @@ var in_game_state = function (p, previous_state) {
 				curr_active.set_state("infected"); //if same, about to change
 			}
             active_cell.set_state("active");
-            // update the tkillers' targets
-			/*
-            do_to_type(
-                function(obj) {
-                    obj.set_target(active_cell);
-                },
-                "tkiller", true);
-            */
+            //update the tkillers' targets
+			
+			update_tkillers_targets();
+           
             //console.log("got next "+active_cell.to_string());
         }
 	}
+	
+	// Returns true if source is closer to target1 than target2 
+	// All 3 args are game_objs
+	var dist_less_than = function(source, target1, target2) {
+		var source_pos = sourc.get_pos();
+		return source_pos.dist(target1.get_pos()) <
+				source_pos.dist(target2.get_pos());
+	};
+	
+	// Updates all tkillers targets
+	// Tkillers target the closest infected and targeted cell
+	var update_tkillers_targets = function(){
+		do_to_type(function(tkill){
+			var all_infected_cells = get_all_infected_cells();
+			for (var i = 0; i < all_infected_cells.length; i++) {
+				var infected_cell = all_infected_cells[i];
+				if (infected_cell.get_targeted() &&
+					(!tkill.get_target() ||
+					dist_less_than(tkill, infected_cell, tkill.get_target()))) {
+					tkill.set_target(infected_cell);
+				}
+			}
+		}, "tkiller", true);
+	}
+           
 
     // kills the active cell and updates the targets
     // of all the tkillers
@@ -656,11 +677,10 @@ var in_game_state = function (p, previous_state) {
                 
             "tkiller": {
                 // tkiller vs. cell
-                // if cell is active, kill it
                 "cell": function(tk, cell) {
-                    if (cell.get_state() === "active") {
-                        kill_active_cell();
-                        // just in case, kill again
+                    if ((cell.get_state() === "infected" ||
+							cell.get_state() === "active") &&
+						cell.get_targeted()) {
                         cell.die();
                     }
                 },
@@ -678,8 +698,8 @@ var in_game_state = function (p, previous_state) {
 			
 			"antibody": {
 				"cell": function(a, c) {
-					if (c.get_state() === "infected") {
-						console.log("B");
+					if (c.get_state() === "infected" ||
+						c.get_state() === "active") {
 						c.set_targeted();
 					}
 					a.die();
@@ -844,6 +864,15 @@ var in_game_state = function (p, previous_state) {
         }
     };
 	
+	// Returns all the infected cells
+	// NOTE: this includes the active cell
+	var get_all_infected_cells = function() {
+		var filter_fun = function(o) {return o.is("cell") 
+						&& (o.get_state() === "infected" ||
+							o.get_state() === "active");};
+		return game_objects[type_to_level["cell"]].filter(filter_fun);
+	}
+	
 	// Sets any antibodies on the screen to seek out any infected
 	// cells that they are close to
 	var make_antibodies_seek = function() {
@@ -851,10 +880,7 @@ var in_game_state = function (p, previous_state) {
 		var filter_fun = function(o) {return o.is("antibody");};
 		var all_antibodies = 
 			game_objects[type_to_level["antibody"]].filter(filter_fun);
-		filter_fun = function(o) {return o.is("cell") 
-						&& o.get_state() === "infected";};
-		var all_infected_cells =
-			game_objects[type_to_level["cell"]].filter(filter_fun);
+		var all_infected_cells = get_all_infected_cells();
 			
 		// Then, for each antibody and each infected cell,
 		// if the infected cell is closer than some constant, and is
@@ -869,8 +895,8 @@ var in_game_state = function (p, previous_state) {
 									infected_cell.get_pos());
 				if (the_dist < 30 &&
 						(!an_antibody.get_target() ||
-							an_antibody.get_target().get_pos().dist(antibody_pos) >
-								the_dist)) {
+						dist_less_than(an_antibody, infected_cell, 
+										an_antibody.get_target()))) {
 					an_antibody.set_target(infected_cell);
 				}
 			}

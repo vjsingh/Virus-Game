@@ -72,7 +72,6 @@ var cell = function(p, spec) {
         else if (state === "infected") {
 			p.strokeWeight(0);
 			if (is_targeted) {
-				console.log("is targeted");
 				p.fill(0);
 			}
 			else {
@@ -111,6 +110,10 @@ var cell = function(p, spec) {
 	// now targeted fo destruction
 	obj.set_targeted = function() {
 		is_targeted = true;
+	}
+	
+	obj.get_targeted = function() {
+		return is_targeted;
 	}
 
     obj.get_state = function() {
