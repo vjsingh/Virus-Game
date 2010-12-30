@@ -69,6 +69,7 @@ var in_game_state = function (p, previous_state) {
         "enemy":4, // general name for level
         "floater":4,
         "tkiller":4,
+		"antibody":4,
 		"multiplier":5,
         "info":6
     }; 
@@ -193,10 +194,10 @@ var in_game_state = function (p, previous_state) {
 	var get_b_cell = function() {
 		var the_b_cell = null;
         do_to_type(function(b) {
-                // only want unactivated bcell
-                if (b.is_alive()) {
-                    the_b_cell = b; 
-                }
+                // not anymore -- only want unactivated bcell
+                //if (b.is_alive()) {
+           		the_b_cell = b; 
+                //}
             },
             "b_cell", true);
 		return the_b_cell;
@@ -220,8 +221,7 @@ var in_game_state = function (p, previous_state) {
 
 		var the_b_cell = get_b_cell();
 		
-		//console.log('a');
-		if (the_b_cell) {
+		if (the_b_cell && the_b_cell.is_alive()) {
 			var old_target = the_b_cell.get_target();
 			
 			// Update target if curr target null, or if
@@ -236,7 +236,6 @@ var in_game_state = function (p, previous_state) {
 				the_b_cell.set_target(o);
 			}
 		}
-		//console.log('b');
 	};
 
     // sets active_cell to the leftmost infected cell
@@ -834,6 +833,39 @@ var in_game_state = function (p, previous_state) {
             do_to_type(f, types[i], strict);
         }
     };
+	
+	// Sets any antibodies on the screen to seek out any infected
+	// cells that they are close to
+	var make_antibodies_seek = function() {
+		// First, get all the antibodies and all the infected cells
+		var filter_fun = function(o) {return o.is("antibody");};
+		var all_antibodies = 
+			game_objects[type_to_level["antibody"]].filter(filter_fun);
+		filter_fun = function(o) {return o.is("cell") 
+						&& o.get_state() === "infected";};
+		var all_infected_cells =
+			game_objects[type_to_level["cell"]].filter(filter_fun);
+			
+		// Then, for each antibody and each infected cell,
+		// if the infected cell is closer than some constant, and is
+		// closer than the cell that the antibody is targeting (if any)
+		// set the antibody to seek that cell
+		for (var i = 0; i < all_antibodies.length; i++) {
+			var an_antibody = all_antibodies[i];
+			for (var j = 0; j < all_infected_cells.length; j++) {
+				var infected_cell = all_infected_cells[j];
+				var antibody_pos = an_antibody.get_pos();
+				var the_dist = antibody_pos.dist(
+									infected_cell.get_pos());
+				if (the_dist < 30 &&
+						(!an_antibody.get_target() ||
+							an_antibody.get_target().get_pos().dist(antibody_pos) >
+								the_dist)) {
+					an_antibody.set_target(infected_cell);
+				}
+			}
+		}
+	}
     
     
     // --- public methods ---
@@ -846,7 +878,7 @@ var in_game_state = function (p, previous_state) {
     //after updating, calls remove_objs
     obj.update = (function() {
         var game_types = ["background", "wall", "particle", 
-            "cell", "enemy", "multiplier"];
+            "cell", "enemy", "multiplier", "antibody"];
 
         var update_fun = function() {
 			// Can't be set when object is initialized
@@ -884,6 +916,9 @@ var in_game_state = function (p, previous_state) {
 				
 				//Add any newly generated objs
 				generator.update();
+				
+				// Make antibodies seek any infected cells they are near
+				make_antibodies_seek();
 				
 				var the_b_cell = get_b_cell();
 				if (the_b_cell) {

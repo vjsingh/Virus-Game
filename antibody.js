@@ -10,7 +10,9 @@ var antibody = function(p, spec) {
 
     spec.width = spec.width || 30;
     spec.height = spec.height || 30;
-
+	
+	spec.vel = new p.PVector(Math.random() * 2 - 1,
+										Math.random() * 2 - 1);
     // obj to return
     var obj = seeker(p, spec);
 
@@ -27,6 +29,11 @@ var antibody = function(p, spec) {
     // implementing game_object interface
     
     obj.my_update = function() {
+		//Meander randomly
+		var vel = obj.get_vel();
+		vel.add(Math.random() - .5, Math.random() - .5);
+		obj.set_vel(vel);
+		
         obj.move();
     }
 

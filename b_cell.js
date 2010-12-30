@@ -35,8 +35,9 @@ var b_cell = function(p, spec) {
 		if (!new_antibodies) {
 			new_antibodies = [];
 		}
+		var obj_pos = obj.get_pos();
 		new_antibodies.push(antibody(p, {
-			pos : obj.get_pos()
+			pos : new p.PVector(obj_pos.x, obj_pos.y + (obj.get_height() / 2))
 		}));
 	}
 
@@ -54,7 +55,7 @@ var b_cell = function(p, spec) {
         state = "active";
         // send the bcell to the top
         obj.set_target(game_object(p, {
-                pos: new p.PVector(p.width/2, 0)
+                pos: new p.PVector(p.width - (obj.get_width() / 2), 0)
         })); 
     };
 	
@@ -97,7 +98,7 @@ var b_cell = function(p, spec) {
             obj.stop();
             // make it face downwards
             obj.set_target_angle(p.PI/2);
-			if (Math.random() < .2) {
+			if (Math.random() < .005) {
 				make_antibody();
 			}
         }

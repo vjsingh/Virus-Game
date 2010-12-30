@@ -24,7 +24,7 @@ var wall_segment = function(p, spec) {
 
     // --- defaults ---
 
-    spec.width = spec.width; //|| 100;
+    spec.width = spec.width || 60;
     spec.height = spec.height || 60;
     spec.fill = spec.fill || 150;
 

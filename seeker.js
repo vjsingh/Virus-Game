@@ -46,6 +46,12 @@ var seeker = function(p, spec) {
             target_angle = p.atan2(tpos.y-pos.y,
                     tpos.x-pos.x); // y first!
                 
+	        // change velocity to point towards target
+	        var new_vel = new p.PVector(
+	                p.cos(target_angle), p.sin(target_angle));
+	        new_vel.mult(speed_to_use);
+	        obj.set_vel(new_vel);
+			
             // SHOULD BE HANDLED BY COLLISIONS
             // when we get there, stop
             /*
@@ -55,11 +61,6 @@ var seeker = function(p, spec) {
             */
         }
 
-        // change velocity to point towards target
-        var new_vel = new p.PVector(
-                p.cos(target_angle), p.sin(target_angle));
-        new_vel.mult(speed_to_use);
-        obj.set_vel(new_vel);
 		obj.my_update();
     };
 	
