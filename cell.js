@@ -9,8 +9,8 @@ var cell = function(p, spec) {
     
     // --- defaults ---
 
-    spec.width = spec.width || 30;
-    spec.height = spec.height || 30;
+    spec.width = spec.width || 40;
+    spec.height = spec.height || 40;
 
     // obj to return
     var obj = game_object(p, spec);
@@ -21,6 +21,10 @@ var cell = function(p, spec) {
 
     // --- private variables ---
 
+	// Image
+    var cell_image = p.loadImage("images/infected_cell_2_transparent.png");
+	cell_image.resize(1, 0); //obj.get_width(), obj.get_height());
+	
     // state can be "alive", "infected", "active", or "dead"
     var state = spec.state || "alive";
     var antibody_angle = 0;
@@ -52,27 +56,38 @@ var cell = function(p, spec) {
     // (circle for now)
     obj.draw = function() {
         var pos = obj.get_pos();
-        p.shapeMode(obj.mode);
+        p.shapeMode(obj.get_mode());
 
         p.stroke(0);
         p.strokeWeight(1);
 
         if (state === "alive") {
             p.fill(175);
+	        p.ellipse(pos.x, pos.y,
+	                obj.get_width(), obj.get_height());
         }
         else if (state === "infected") {
+			p.strokeWeight(0);
             p.fill(obj.get_color());
+			p.ellipse(pos.x + obj.get_width() / 8, pos.y - obj.get_height() / 8, 
+						obj.get_width() / 2, obj.get_height() / 2);
+			
+			//image
+			p.imageMode(obj.get_mode());
+			p.image(cell_image, pos.x, pos.y, obj.get_width(), obj.get_height());
         }
         else if (state === "active") {
             drawAntibody();
             p.fill(obj.get_color());
+	        p.ellipse(pos.x, pos.y,
+	                obj.get_width(), obj.get_height());
         }
         else if (state === "dead") {
             p.fill(0);
+	        p.ellipse(pos.x, pos.y,
+	                obj.get_width(), obj.get_height());
         }
 
-        p.ellipse(pos.x, pos.y,
-                obj.get_width(), obj.get_height());
     };
 
     obj.is_dead = function() {
