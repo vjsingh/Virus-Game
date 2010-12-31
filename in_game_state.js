@@ -201,8 +201,8 @@ var in_game_state = function (p, previous_state) {
 
 	// Alerts the b cell (only one on screen at a time?) to a newly mutated
 	// obj.
-	// If b_cell is already at the highest mutation level, does nothing
-	// Else, if obj is closer than the b cells curr target (or if b cells curr
+	// If o.mutation_level >= b cells current target.mutation_level and o is
+	// closer than the b cells curr target (or if b cells curr
 	// target is null), updates b_cells curr target to be o
 	var alert_b_cell = function(o) {
 		//var cell_objs = level("b_cell");
@@ -220,20 +220,21 @@ var in_game_state = function (p, previous_state) {
 		if (the_b_cell && the_b_cell.is_alive()) {
 			var old_target = the_b_cell.get_target();
 			
+			// NOT ANYMORE
 			// Update target only if new object.level ===
 			// mutation(highest).level
-			if (o.get_mutation_info().level == mutation.get_level()){
-				// Update target if curr target null, or if
-				// dist to curr target > distance to new target (o)
-				if (old_target) {
-					if (old_target.get_pos().dist(the_b_cell.get_pos()) >
-					o.get_pos().dist(the_b_cell.get_pos())) {
-						the_b_cell.set_target(o);
-					}
-				}
-				else {
+			//if (o.get_mutation_info().level == mutation.get_level()){
+			//
+			if (old_target) {
+				if (o.get_mutation_info.level >= 
+					old_target.get_mutation_info().level &&
+					old_target.get_pos().dist(the_b_cell.get_pos()) >
+				o.get_pos().dist(the_b_cell.get_pos())) {
 					the_b_cell.set_target(o);
 				}
+			}
+			else {
+				the_b_cell.set_target(o);
 			}
 		}
 	};
@@ -723,12 +724,13 @@ var in_game_state = function (p, previous_state) {
 			
 			"antibody": {
 				"cell": function(a, c) {
-                    // TODO make sure mutation levels match
-					if (!c.has_antibody()
-                        && (c.get_state() === "infected"
-                         || c.get_state() === "active")) {
-						c.set_antibody(a);
-					}
+					if (same_mutation_level(a, c)) {
+						if (!c.has_antibody() &&
+						(c.get_state() === "infected" ||
+						c.get_state() === "active")) {
+							c.set_antibody(a);
+						}
+					}	
 				}
 			},
 			
@@ -1033,6 +1035,8 @@ var in_game_state = function (p, previous_state) {
                     active_cell.set_mutation_info(mutation.get_info());
                     // reset the counters
                     mutation.reset_mutation();
+					// set b cell to be outdated
+					get_b_cell().outdated();
                     console.log("mutation occurred!");
                 }
 			}

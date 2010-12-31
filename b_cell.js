@@ -22,7 +22,7 @@ var b_cell = function(p, spec) {
 
     // --- private variables ---
 
-    // state can be "alive", "active", "shooting", "dead"
+    // state can be "alive", "active", "shooting", "outdated", "dead"
     var state = spec.state || "alive";
 	
 	// Antibodies are created in update, and returned in get_antibodies()
@@ -45,11 +45,20 @@ var b_cell = function(p, spec) {
 
     // --- public methods --- 
 
+	// Makes this target stop and begin producing antibodies
     obj.make_antibodies = function() {
         state = "shooting";
         obj.set_target(null);
         // production will happen in update
     };
+	
+	// Indicates that a mutation has occured and this object
+	// should float off the screen
+	// Makes this object stop and float off screen
+	obj.outdated = function() {
+		state = "outdated";
+		obj.set_vel(new p.PVector(0,0));
+	}
 
     // to be called on collision with floater
     obj.activate = function() {
@@ -81,8 +90,11 @@ var b_cell = function(p, spec) {
     };
 
     obj.get_scroll_dist = function() {
-        if (state != "alive") { // shooting or active
+        if (state === "shooting" || state === "alive") {
 			return 0;
+		}
+		else if (state === "outdated") {
+			return DEFAULT_SCROLL_DIST * 2;
 		}
 		else {
 			return DEFAULT_SCROLL_DIST;
@@ -90,7 +102,10 @@ var b_cell = function(p, spec) {
     };
 
     obj.set_state = function(s) {
-        state = s;
+		// If outdated, don't update state
+		if (state != "outdated") {
+			state = s;
+		}
     };
 
     obj.get_state = function() {
@@ -127,6 +142,10 @@ var b_cell = function(p, spec) {
         p.rotate(obj.get_target_angle());
 
         p.fill(obj.get_color());
+		// If outdated, draw differently?
+		if (state === "outdated") {
+			p.fill(0);
+		}
         p.noStroke();
 
         // rightward triangle
