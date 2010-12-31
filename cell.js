@@ -27,11 +27,14 @@ var cell = function(p, spec) {
 	
     // state can be "alive", "infected", "active", or "dead"
     var state = spec.state || "alive";
-    var antibody_angle = 0;
-    var antibody_dir = 1;
+    var arrow_angle = 0;
+    var arrow_dir = 1;
 	
-	// indicates whether has been hit by an antibody and is being targeted
-	var is_targeted = false;
+	// indicates whether has been hit by an arrow and is being targeted
+	//var is_targeted = false;
+
+    // holds an antibody that is attached to the cell, or null
+    var anti = null;
 
     // --- public methods --- 
 
@@ -47,8 +50,8 @@ var cell = function(p, spec) {
             // still chill
         }
         else if (state === "active") {
-            // spin the antibody
-            rotateAntibody();
+            // spin the arrow
+            rotateArrow();
         }
         else if (state === "dead") {
             // explode!!
@@ -71,12 +74,12 @@ var cell = function(p, spec) {
         }
         else if (state === "infected") {
 			p.strokeWeight(0);
-			if (is_targeted) {
-				p.fill(0);
-			}
-			else {
+			//if (is_targeted) {
+			//	p.fill(0);
+			//}
+			//else {
 				p.fill(obj.get_color());
-			}
+			//}
 			p.ellipse(pos.x + obj.get_width() / 8, pos.y - obj.get_height() / 8, 
 						obj.get_width() / 2, obj.get_height() / 2);
 			
@@ -85,7 +88,7 @@ var cell = function(p, spec) {
 			p.image(cell_image, pos.x, pos.y, obj.get_width(), obj.get_height());
         }
         else if (state === "active") {
-            drawAntibody();
+            drawArrow();
             p.fill(obj.get_color());
 	        p.ellipse(pos.x, pos.y,
 	                obj.get_width(), obj.get_height());
@@ -106,15 +109,14 @@ var cell = function(p, spec) {
         state = s;
     };
 	
-	// Indicates that this object has been hit by an antibody, and is
-	// now targeted fo destruction
-	obj.set_targeted = function() {
-		is_targeted = true;
-	}
+	obj.set_antibody = function(a) {
+        anti = a;
+        anti.attach();
+	};
 	
-	obj.get_targeted = function() {
-		return is_targeted;
-	}
+	obj.has_antibody = function() {
+		return (anti !== null);
+	};
 
     obj.get_state = function() {
         return state;
@@ -122,6 +124,9 @@ var cell = function(p, spec) {
 
     obj.die = function() {
         obj.set_state("dead");
+        if (anti) {
+            anti.die;
+        }
     };
 	
 	// explodes this cell if it is active
@@ -133,7 +138,7 @@ var cell = function(p, spec) {
 			obj.die();
 			
 			var pos = obj.get_pos();
-            var ang = antibody_angle;
+            var ang = arrow_angle;
             // use width cuz it's a circle
             var r = obj.get_width()/2;
 
@@ -147,7 +152,7 @@ var cell = function(p, spec) {
 
             var particles = [];
 
-            ang = antibody_angle - range/2;
+            ang = arrow_angle - range/2;
             while (num_particles > 0) {
                 var new_vel = new p.PVector(p.cos(ang), p.sin(ang));
                 // mult by speed scalar
@@ -178,18 +183,17 @@ var cell = function(p, spec) {
 
     // --- private functions ---
 
-    // rotates according to antibody_dir
+    // rotates according to arrow_dir
     // switches direction at certain angles
-    var rotateAntibody = function() {
-        if (antibody_angle > p.PI/2
-                || antibody_angle < -p.PI/2) {
-            antibody_dir = (2-antibody_dir)-2;
+    var rotateArrow = function() {
+        if (arrow_angle > p.PI/2
+                || arrow_angle < -p.PI/2) {
+            arrow_dir = (2-arrow_dir)-2;
         }
-        antibody_angle += p.radians(3)*antibody_dir;
+        arrow_angle += p.radians(3)*arrow_dir;
     };
 
-    // draw the Y-shaped antibody at the edge of the cell
-    var drawAntibody = function() {
+    var drawArrow = function() {
         p.pushMatrix();
 
         var pos = obj.get_pos();
@@ -198,7 +202,7 @@ var cell = function(p, spec) {
         // move to center of circle
         p.translate(pos.x, pos.y);
         // rotate first
-        p.rotate(antibody_angle);
+        p.rotate(arrow_angle);
         // move out to right edge of circle
         p.translate(w/2, 0);
 

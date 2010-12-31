@@ -338,7 +338,7 @@ var in_game_state = function (p, previous_state) {
 			var all_infected_cells = get_all_infected_cells();
 			for (var i = 0; i < all_infected_cells.length; i++) {
 				var infected_cell = all_infected_cells[i];
-				if (infected_cell.get_targeted() &&
+				if (infected_cell.has_antibody() &&
 					(!tkill.get_target() ||
 					dist_less_than(tkill, infected_cell, tkill.get_target()))) {
 					tkill.set_target(infected_cell);
@@ -678,7 +678,7 @@ var in_game_state = function (p, previous_state) {
                 "cell": function(tk, cell) {
                     if ((cell.get_state() === "infected" ||
 							cell.get_state() === "active") &&
-						cell.get_targeted()) {
+						cell.has_antibody()) {
                         cell.die();
 						tk.set_target(null);
                     }
@@ -699,9 +699,8 @@ var in_game_state = function (p, previous_state) {
 				"cell": function(a, c) {
 					if (c.get_state() === "infected" ||
 						c.get_state() === "active") {
-						c.set_targeted();
+						c.set_antibody(a);
 					}
-					a.die();
 				}
 			},
 			
@@ -869,7 +868,7 @@ var in_game_state = function (p, previous_state) {
 		var filter_fun = function(o) {return o.is("cell") 
 						&& (o.get_state() === "infected" ||
 							o.get_state() === "active");};
-		return game_objects[type_to_level["cell"]].filter(filter_fun);
+		return level("cell").filter(filter_fun);
 	}
 	
 	// Sets any antibodies on the screen to seek out any infected
@@ -877,8 +876,7 @@ var in_game_state = function (p, previous_state) {
 	var make_antibodies_seek = function() {
 		// First, get all the antibodies and all the infected cells
 		var filter_fun = function(o) {return o.is("antibody");};
-		var all_antibodies = 
-			game_objects[type_to_level["antibody"]].filter(filter_fun);
+		var all_antibodies = level("antibody").filter(filter_fun);
 		var all_infected_cells = get_all_infected_cells();
 			
 		// Then, for each antibody and each infected cell,
@@ -893,7 +891,7 @@ var in_game_state = function (p, previous_state) {
 				var antibody_pos = an_antibody.get_pos();
 				var the_dist = antibody_pos.dist(
 									infected_cell.get_pos());
-				if (the_dist < 100 && !infected_cell.get_targeted() &&
+				if (the_dist < 100 && !infected_cell.has_antibody() &&
 						(!an_antibody.get_target() ||
 						dist_less_than(an_antibody, infected_cell, 
 										an_antibody.get_target()))) {
@@ -902,7 +900,7 @@ var in_game_state = function (p, previous_state) {
 				}
 			}
 		}
-	}
+	};
     
     
     // --- public methods ---
