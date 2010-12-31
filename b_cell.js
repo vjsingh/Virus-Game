@@ -11,7 +11,7 @@ var b_cell = function(p, spec) {
 
     spec.width = spec.width || 30;
     spec.height = spec.height || 30;
-    spec.speed = spec.speed || 0.5;
+    spec.speed = spec.speed || 1;
 
     // obj to return
     var obj = seeker(p, spec);
@@ -80,7 +80,8 @@ var b_cell = function(p, spec) {
     };
 
     obj.get_scroll_dist = function() {
-        if (state === "alive") {
+        if (state != "alive") { // shooting or active
+			console.log("A");
 			return 0;
 		}
 		else {
