@@ -41,6 +41,10 @@ var antibody = function(p, spec) {
     obj.my_update = function() {
         if (!attached) {
             obj.move();
+            // don't want two antibodies attacking one cell
+            if (obj.get_target() && obj.get_target().has_antibody()) {
+                obj.set_target(null);
+            }
         }
     };
 

@@ -57,15 +57,16 @@ var b_cell = function(p, spec) {
 	// Makes this object stop and float off screen
 	obj.outdated = function() {
 		state = "outdated";
-		obj.set_vel(new p.PVector(0,0));
-	}
+		//obj.set_vel(new p.PVector(0,0));
+        obj.set_target(null);
+	};
 
     // to be called on collision with floater
     obj.activate = function() {
         state = "active";
         // send the bcell to the top
         obj.set_target(game_object(p, {
-                pos: new p.PVector(p.width - (obj.get_width() / 2), 0)
+            pos: new p.PVector(p.width - (obj.get_width() / 2), 0)
         })); 
     };
 	
@@ -79,7 +80,7 @@ var b_cell = function(p, spec) {
 		else {
 			return [];
 		}
-	}
+	};
 	
     obj.is_activated = function() {
         return state === "active";
@@ -87,6 +88,10 @@ var b_cell = function(p, spec) {
 
     obj.is_alive = function() {
         return state === "alive";
+    };
+
+    obj.is_outdated = function() {
+        return state === "outdated";
     };
 
     obj.get_scroll_dist = function() {
@@ -119,7 +124,7 @@ var b_cell = function(p, spec) {
             //obj.stop();
             // make it face downwards
             obj.set_target_angle(p.PI/2);
-			if (Math.random() < .005) {
+			if (Math.random() < .009) {
 				make_antibody();
 			}
         }

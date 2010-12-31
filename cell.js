@@ -129,7 +129,6 @@ var cell = function(p, spec) {
     obj.die = function() {
         if (anti) {
             anti.die();
-            console.log("dead antibody");
         }
         obj.set_state("dead");
     };
