@@ -41,8 +41,6 @@ var game_object = function (p, spec) {
     // all game_objects must implement this interface:
     // void update() - called each frame to move/update objects
     // void draw() - called each frame to display the object
-    // boolean is_dead() - returns true if the object should be
-    //                      removed from the game
     // boolean should_scroll() - returns true if the object should
     //                  be moved to the left each redraw
 
