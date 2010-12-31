@@ -724,12 +724,13 @@ var in_game_state = function (p, previous_state) {
 			
 			"antibody": {
 				"cell": function(a, c) {
-                    // TODO make sure mutation levels match
-					if (!c.has_antibody()
-                        && (c.get_state() === "infected"
-                         || c.get_state() === "active")) {
-						c.set_antibody(a);
-					}
+					if (same_mutation_level(a, c)) {
+						if (!c.has_antibody() &&
+						(c.get_state() === "infected" ||
+						c.get_state() === "active")) {
+							c.set_antibody(a);
+						}
+					}	
 				}
 			},
 			
