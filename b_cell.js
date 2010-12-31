@@ -11,7 +11,7 @@ var b_cell = function(p, spec) {
 
     spec.width = spec.width || 30;
     spec.height = spec.height || 30;
-    spec.speed = spec.speed || 1;
+    spec.speed = spec.speed || 0.5;
 
     // obj to return
     var obj = seeker(p, spec);
@@ -37,7 +37,8 @@ var b_cell = function(p, spec) {
 		}
 		var obj_pos = obj.get_pos();
 		new_antibodies.push(antibody(p, {
-			pos : new p.PVector(obj_pos.x, obj_pos.y + (obj.get_height() / 2))
+			pos : new p.PVector(obj_pos.x, obj_pos.y + (obj.get_height() / 2)),
+            mutation_info: obj.get_mutation_info()
 		}));
 	}
 
@@ -81,7 +82,6 @@ var b_cell = function(p, spec) {
 
     obj.get_scroll_dist = function() {
         if (state != "alive") { // shooting or active
-			console.log("A");
 			return 0;
 		}
 		else {

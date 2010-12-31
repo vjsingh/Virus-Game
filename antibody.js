@@ -25,7 +25,6 @@ var antibody = function(p, spec) {
 
     // --- private variables ---
 
-    var alive = true;
     // flag denoting whether the antibody is attached to a cell
     var attached = false;
 
@@ -34,7 +33,7 @@ var antibody = function(p, spec) {
     // should be called when an antibody attaches to a cell
     obj.attach = function() {
         attached = true;
-        obj.set_target(null);
+        //obj.set_target(null);
     };
 
     // implementing game_object interface
@@ -66,16 +65,6 @@ var antibody = function(p, spec) {
         p.line(w/3, 0, w, -h/2);
 
         p.popMatrix();
-    };
-
-    // is_dead just returns whether it isn't alive 
-    obj.is_dead = function() {
-        return !alive;
-    };
-
-    // which means we need a way to die
-    obj.die = function() {
-        alive = false;
     };
 
     return obj;
