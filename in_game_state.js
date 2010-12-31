@@ -65,11 +65,11 @@ var in_game_state = function (p, previous_state) {
         "cell":3, // general name for level
         "wall_cell": 3,
         "empty_cell": 3,
-		"b_cell": 4,
         "enemy":4, // general name for level
         "floater":4,
         "tkiller":4,
 		"antibody":4,
+		"b_cell": 4,
 		"multiplier":5,
         "info":6
     }; 
@@ -509,31 +509,51 @@ var in_game_state = function (p, previous_state) {
     obj.check_circle_collision = check_circle_collision;
 
     // Reverses 2 objs appropriate velocities 
-    var bounce_collided = function(obj1, obj2) {
-		if (!(obj1.get_type() === "particle" && obj2.get_type() === "particle")) {
-			//offset adjusts how closely we check, since we can't check exactly when they collide every time
-			var offset = 5;
-			var onel = obj1.get_left(), oner = obj1.get_right();
-			var onet = obj1.get_top(), oneb = obj1.get_bottom();
-			var twol = obj2.get_left() + offset, twor = obj2.get_right() - offset;
-			var twot = obj2.get_top() + offset, twob = obj2.get_bottom() - offset;
-			
-			//When bouncing, check velocity to make sure they are 'incoming' to each other
-			//This avoids them getting stuck (makes sure they didn't just collide)
-			//bounce vertically
-			var y_vel = obj1.get_vel().y;
-			var x_vel = obj1.get_vel().x;
-			if ((onet >= twob && y_vel <= 0) || (oneb <= twot && y_vel >= 0)) {
-				obj1.reverse_y();
-				obj2.reverse_y();
+    var bounce_collided = (function() {
+		// A list containing 2 element lists
+		// Inner lists represent object type pairs to not bounce off each other
+		var to_exclude = [["particle", "multiplier"], 
+							["particle", "particle"]];
+		var is_excluded = function(o1, o2) {
+			var is_excluded = false;
+			var type1 = o1.get_type(), type2 = o2.get_type();
+			var objs_in_list = function(list) {
+				return ((list[0] === type1 && list[1] === type2) ||
+						(list[0] === type2 && list[1] === type1));
 			}
-			else 
-				if ((oner <= twol && x_vel >= 0) || (onel > twor && x_vel <= 0)) { //bounce horizontally
-					obj1.reverse_x();
-					obj2.reverse_x();
+			for_each(to_exclude, function(l) {
+				if (objs_in_list(l)) {
+					is_excluded = true;
 				}
+				});
+			return is_excluded;
 		}
-    };
+		return function(obj1, obj2) {
+			if (!is_excluded(obj1, obj2)) {
+				//offset adjusts how closely we check, since we can't check exactly when they collide every time
+				var offset = 5;
+				var onel = obj1.get_left(), oner = obj1.get_right();
+				var onet = obj1.get_top(), oneb = obj1.get_bottom();
+				var twol = obj2.get_left() + offset, twor = obj2.get_right() - offset;
+				var twot = obj2.get_top() + offset, twob = obj2.get_bottom() - offset;
+				
+				//When bouncing, check velocity to make sure they are 'incoming' to each other
+				//This avoids them getting stuck (makes sure they didn't just collide)
+				//bounce vertically
+				var y_vel = obj1.get_vel().y;
+				var x_vel = obj1.get_vel().x;
+				if ((onet >= twob && y_vel <= 0) || (oneb <= twot && y_vel >= 0)) {
+					obj1.reverse_y();
+					obj2.reverse_y();
+				}
+				else 
+					if ((oner <= twol && x_vel >= 0) || (onel > twor && x_vel <= 0)) { //bounce horizontally
+						obj1.reverse_x();
+						obj2.reverse_x();
+					}
+			}
+	    }
+	}());
 	
     // handles collisions between different object types
     var handle_collision = function(obj1, obj2) {
