@@ -32,6 +32,10 @@ var seeker = function(p, spec) {
         var tpos;
         var speed_to_use = speed;
 
+        if (target && target.is_dead()) {
+            target = null;
+        }
+
         // if no target
         if (target === null) {
             // meander

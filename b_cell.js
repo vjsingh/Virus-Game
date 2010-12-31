@@ -37,7 +37,8 @@ var b_cell = function(p, spec) {
 		}
 		var obj_pos = obj.get_pos();
 		new_antibodies.push(antibody(p, {
-			pos : new p.PVector(obj_pos.x, obj_pos.y + (obj.get_height() / 2))
+			pos : new p.PVector(obj_pos.x, obj_pos.y + (obj.get_height() / 2)),
+            mutation_info: obj.get_mutation_info()
 		}));
 	}
 

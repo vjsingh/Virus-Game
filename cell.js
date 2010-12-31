@@ -89,6 +89,10 @@ var cell = function(p, spec) {
         }
         else if (state === "active") {
             drawArrow();
+            // red outline for now
+            p.stroke(255, 0, 0);
+            p.strokeWeight(3);
+
             p.fill(obj.get_color());
 	        p.ellipse(pos.x, pos.y,
 	                obj.get_width(), obj.get_height());
@@ -125,7 +129,7 @@ var cell = function(p, spec) {
     obj.die = function() {
         obj.set_state("dead");
         if (anti) {
-            anti.die;
+            anti.die();
         }
     };
 	
