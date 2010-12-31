@@ -8,8 +8,8 @@ var antibody = function(p, spec) {
     
     // --- defaults ---
 
-    spec.width = spec.width || 30;
-    spec.height = spec.height || 30;
+    spec.width = spec.width || 15;
+    spec.height = spec.height || 10;
 	spec.speed = spec.speed || 2;
 	spec.no_target_speed = spec.no_target_speed || 1
 	
@@ -26,17 +26,27 @@ var antibody = function(p, spec) {
     // --- private variables ---
 
     var alive = true;
+    // flag denoting whether the antibody is attached to a cell
+    var attached = false;
 
     // --- public methods --- 
+
+    // should be called when an antibody attaches to a cell
+    obj.attach = function() {
+        attached = true;
+        obj.set_target(null);
+    };
 
     // implementing game_object interface
     
     obj.my_update = function() {
-        obj.move();
-    }
+        if (!attached) {
+            obj.move();
+        }
+    };
 
     // should point towards target
-    // (triangle for now)
+    // Y-shaped (top of Y is front)
     obj.draw = function() {
         p.pushMatrix();
          
@@ -48,11 +58,12 @@ var antibody = function(p, spec) {
         p.translate(pos.x, pos.y);
         p.rotate(obj.get_target_angle());
 
-        p.fill(255);
-        p.noStroke();
+        p.stroke(obj.get_color());
+        p.strokeWeight(2);
 
-        // rightward triangle
-        p.triangle(-w/2, -h/2, -w/2, h/2, w/2, 0);
+        p.line(-w, 0, w/3, 0);
+        p.line(w/3, 0, w, h/2);
+        p.line(w/3, 0, w, -h/2);
 
         p.popMatrix();
     };
