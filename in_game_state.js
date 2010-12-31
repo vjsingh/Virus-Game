@@ -220,16 +220,20 @@ var in_game_state = function (p, previous_state) {
 		if (the_b_cell && the_b_cell.is_alive()) {
 			var old_target = the_b_cell.get_target();
 			
-			// Update target if curr target null, or if
-			// dist to curr target > distance to new target (o)
-			if (old_target) {
-				if (old_target.get_pos().dist(the_b_cell.get_pos()) >
-						o.get_pos().dist(the_b_cell.get_pos())) {
+			// Update target only if new object.level ===
+			// mutation(highest).level
+			if (o.get_mutation_info().level == mutation.get_level()){
+				// Update target if curr target null, or if
+				// dist to curr target > distance to new target (o)
+				if (old_target) {
+					if (old_target.get_pos().dist(the_b_cell.get_pos()) >
+					o.get_pos().dist(the_b_cell.get_pos())) {
+						the_b_cell.set_target(o);
+					}
+				}
+				else {
 					the_b_cell.set_target(o);
 				}
-			}
-			else {
-				the_b_cell.set_target(o);
 			}
 		}
 	};
@@ -632,9 +636,15 @@ var in_game_state = function (p, previous_state) {
                 "floater": function(par, flo) {
                     par.die();
                     if (flo.is_alive()) {
-                        flo.set_mutation_info(par.get_mutation_info());
-                        flo.activate();
-                        alert_b_cell(flo);
+						// update flo if not activated || level <
+						// par.level
+						if (!flo.is_activated() ||
+								flo.get_mutation_info().level <
+								par.get_mutation_info.level) {
+							flo.set_mutation_info(par.get_mutation_info());
+							flo.activate();
+							alert_b_cell(flo);
+						}
                     }
                 },
                 
@@ -775,6 +785,13 @@ var in_game_state = function (p, previous_state) {
         }
     };
 	
+	// Returns whether the 2 objects have the same mutation level
+	var same_mutation_level = function(o1, o2) {
+		o1level = o1.get_mutation_info().level;
+		o2level = o2.get_mutation_info().level;
+		return (o1level === o2level);
+	};
+	
     // adds a new wall segment if the rightmost wall
     // segment is onscreen
     var rightmost_top = null;
@@ -866,10 +883,7 @@ var in_game_state = function (p, previous_state) {
     // if strict is true, also checks to make sure 
     // the object has the specified type
     var do_to_type = function(f, type, strict) {
-        var lvl = level(type);//game_objects[type_to_level[type]];
-        if (type === "floater") {
-			console.log(lvl.length);
-		}
+        var lvl = level(type);
         for (var i=0; i<lvl.length; i++) {
             if (!strict || lvl[i].get_type() === type) {
                 f(lvl[i]);
