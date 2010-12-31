@@ -180,7 +180,7 @@ var make_generator = function(p, spec) {
         game.do_to_type(check_overlap, "particle", false);
         game.do_to_type(check_overlap, "cell", false);
         game.do_to_type(check_overlap, "enemy", false);
-        // TODO add wall checking
+        game.do_to_type(check_overlap, "wall_segment", false);
         return overlap;
     };
 	
