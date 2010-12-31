@@ -52,8 +52,8 @@ var game_object = function (p, spec) {
     // draw does nothing by default
     obj.draw = function() {};
     
-    // is_dead returns false by default
-    obj.is_dead = function() { return false; };
+    // by default returns the negated alive variable
+    obj.is_dead = function() { return !alive; };
 
 	// Generic methods for all game_objects:
     // returns true if the object is completely offscreen
@@ -130,7 +130,7 @@ var game_object = function (p, spec) {
 	
 	obj.die = function() {
 		alive = false;
-	}
+	};
 	
     // --- setters --- 
 
