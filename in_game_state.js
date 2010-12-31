@@ -802,7 +802,12 @@ var in_game_state = function (p, previous_state) {
         var add_one = function(rightmost) {
             // if the rightmost has entered the screen 
             if (!rightmost.is_off_right()) {
-                var new_spec = random_from(wall_specs);
+                var wall_spec = random_from(wall_specs);
+                // need to make a new copy
+                var new_spec = {
+                    width: wall_spec.width,
+                    height: wall_spec.height
+                };
 
                 var x = rightmost.get_pos().x
                     + rightmost.get_width()/2
@@ -813,6 +818,10 @@ var in_game_state = function (p, previous_state) {
                 // switch if it's a bottom wall
                 if (rightmost === rightmost_btm) {
                     y = p.height - y;
+                    new_spec.is_top = false;
+                }
+                else {
+                    new_spec.is_top = true;
                 }
                 new_spec.pos = new p.PVector(x, y);
 
@@ -867,7 +876,7 @@ var in_game_state = function (p, previous_state) {
                	f(game_objects[i][j]);
             }
         }
-	}
+	};
 
     // applies a function to every object
     // on the specified rendering level
