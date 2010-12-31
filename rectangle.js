@@ -5,7 +5,10 @@
 //  p.PVector pos = 'middle' x and y
 //  width
 //  height
-//  optionally: text : text to display
+//  optional:
+//  	text : text to display
+// 		text_color : color of text (defaults to black);
+//		rect_color : color of rectangle (defaults to white)
 
 var rectangle = function (p, spec) {
 
@@ -20,6 +23,8 @@ var rectangle = function (p, spec) {
 	var leftx = pos.x - half_width, rightx = pos.x + half_width;
 	var topy = pos.y - half_height, bottomy = pos.y + half_height;
 	var text = spec.text || "";
+	var text_color = spec.text_color || 0;
+	var rect_color = spec.rect_color || 255;
 
     // --- public methods ---
 
@@ -31,12 +36,12 @@ var rectangle = function (p, spec) {
 	obj.draw = function() {
         p.shapeMode(obj.mode);
 
-        p.fill(0);
+        p.fill(rect_color);
         p.noStroke();
 
 		p.rect(leftx, topy, width, height);
 		
-		p.fill(255)
+		p.fill(text_color);
         p.textAlign(p.CENTER);
         p.text(text, pos.x, pos.y);
 	};
