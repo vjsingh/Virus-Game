@@ -680,6 +680,7 @@ var in_game_state = function (p, previous_state) {
 							cell.get_state() === "active") &&
 						cell.get_targeted()) {
                         cell.die();
+						tk.set_target(null);
                     }
                 },
 
@@ -1039,6 +1040,7 @@ var in_game_state = function (p, previous_state) {
 		for (var i = 0; i < all_buttons.length; i++) {
 			var button = all_buttons[i];
 			var rectangle = button.rectangle;
+			// Should only be true for one button
 			if (rectangle.is_in(x, y)) {
 				obj.set_next_state(button.state);
 				break;
