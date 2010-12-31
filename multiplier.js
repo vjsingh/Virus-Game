@@ -37,6 +37,7 @@ var multiplier = function(p, spec) {
         p.shapeMode(obj.mode);
 
         p.fill(0, 255, 0);
+        p.noStroke();
 
         p.ellipse(pos.x, pos.y,
                 obj.get_width(), obj.get_height());
