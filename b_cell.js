@@ -95,7 +95,11 @@ var b_cell = function(p, spec) {
     };
 
     obj.get_scroll_dist = function() {
+<<<<<<< Updated upstream
         if (state === "shooting" || state === "alive") {
+=======
+        if (state === "active") {
+>>>>>>> Stashed changes
 			return 0;
 		}
 		else if (state === "outdated") {
