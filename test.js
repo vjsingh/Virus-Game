@@ -9,7 +9,9 @@ var pCode = function(p) {
 
         // deal with console issues
         // TODO move this code
-        if (!console) { console = window.console; }
+        if (!window.console) { 
+            console = { log: function() {} };
+        }
         Processing.logger = console;
 
 		g = state_manager(p);
