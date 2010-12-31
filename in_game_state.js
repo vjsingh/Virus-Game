@@ -82,10 +82,6 @@ var in_game_state = function (p, previous_state) {
         return lvl;
     };
 
-	// Sets the rate of scrolling, every this # of frames will scroll
-	//var scroll_rate = 10;
-	//var scroll_counter = scroll_rate; //decremented every update till 0
-    var scroll_dist = -0.5; // how far to move each frame
 	
 /*	
 	// Buttons
@@ -847,19 +843,15 @@ var in_game_state = function (p, previous_state) {
         }
     };
 
-    /*
-    // DEPRECATED 
 	//Does a function to every object
 	//Pass in a function that takes an object
 	var do_to_all_objs = function(f) {
         for (var i=0; i<game_objects.length; i++) {
             for (var j=0; j<game_objects[i].length; j++) {
-                var o = game_objects[i][j];
-                f(o);
+               	f(game_objects[i][j]);
             }
         }
 	}
-    */
 
     // applies a function to every object
     // on the specified rendering level
@@ -867,6 +859,9 @@ var in_game_state = function (p, previous_state) {
     // the object has the specified type
     var do_to_type = function(f, type, strict) {
         var lvl = level(type);//game_objects[type_to_level[type]];
+        if (type === "floater") {
+			console.log(lvl.length);
+		}
         for (var i=0; i<lvl.length; i++) {
             if (!strict || lvl[i].get_type() === type) {
                 f(lvl[i]);
@@ -987,24 +982,22 @@ var in_game_state = function (p, previous_state) {
 
                 // adds a new segment of wall if necessary
                 add_wall();
-			update_tkillers_targets();
+				update_tkillers_targets();
            
 				
 				// scroll all objects
-				do_to_types(function(o){
-                    if (o.should_scroll()) {
-					    o.scroll(scroll_dist);
-                    }
-				}, game_types, false);
+				do_to_all_objs(function(o){
+					o.scroll();
+				});
 				
 				// update distance travelled
 				// (negative because scrolling is negative)
-				distance += -scroll_dist;
+				distance -= DEFAULT_SCROLL_DIST;
 				
 				// update all objects
-				do_to_types(function(o){
+				do_to_all_objs(function(o){
 					o.update();
-				}, game_types, false);
+				});
 				
 				check_collisions();
 				

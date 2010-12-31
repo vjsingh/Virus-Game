@@ -79,8 +79,13 @@ var b_cell = function(p, spec) {
         return state === "alive";
     };
 
-    obj.should_scroll = function() {
-        return state === "alive";
+    obj.get_scroll_dist = function() {
+        if (state === "alive") {
+			return 0;
+		}
+		else {
+			return DEFAULT_SCROLL_DIST;
+		}
     };
 
     obj.set_state = function(s) {

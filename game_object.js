@@ -55,9 +55,6 @@ var game_object = function (p, spec) {
     // is_dead returns false by default
     obj.is_dead = function() { return false; };
 
-    // should_scroll is true by default
-    obj.should_scroll = function() { return true; };
-
 	// Generic methods for all game_objects:
     // returns true if the object is completely offscreen
     // i.e. checks pos + dimensions
@@ -126,14 +123,15 @@ var game_object = function (p, spec) {
     };
 	
 	// Scrolls the obj a specified distance left or right (positive is right)
-	obj.scroll = function(scroll_x) {
+	obj.scroll = function() {
+		var scroll_x = obj.get_scroll_dist();
         pos.add(new p.PVector(scroll_x, 0));
 	};
 	
 	obj.die = function() {
 		alive = false;
 	}
-
+	
     // --- setters --- 
 
     obj.set_accel = function(new_accel) {
@@ -159,6 +157,11 @@ var game_object = function (p, spec) {
     };
 
     // --- getters --- 
+	
+	// Override to set different scroll dist
+	obj.get_scroll_dist = function() {
+		return DEFAULT_SCROLL_DIST;
+	}
 
     obj.get_pos = function() {
         return pos;
