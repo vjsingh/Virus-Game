@@ -38,7 +38,7 @@ var mutation_obj = function(p) {
 	// Returns bool saying if a mutation should occur
 	// takes into account level, cells_infected, and a random probability
 	var mutation_occured = function() {
-		return Math.random() + ( (cells_infected / 50) / level) > .95;
+		return Math.random() + ( (cells_infected / 50) / (level + 1)) > .95;
 	};
 	
 	// Flashes the mutation bar red and white
