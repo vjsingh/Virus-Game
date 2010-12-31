@@ -222,7 +222,7 @@ var in_game_state = function (p, previous_state) {
 			
 			// Update target only if new object.level ===
 			// mutation(highest).level
-			if (o.get_mutation_info().level == mutation.level){
+			if (o.get_mutation_info().level == mutation.get_level()){
 				// Update target if curr target null, or if
 				// dist to curr target > distance to new target (o)
 				if (old_target) {
