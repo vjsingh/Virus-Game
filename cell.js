@@ -68,9 +68,11 @@ var cell = function(p, spec) {
         p.strokeWeight(1);
 
         if (state === "alive") {
-            p.fill(175);
-	        p.ellipse(pos.x, pos.y,
-	                obj.get_width(), obj.get_height());
+            //p.fill(175);
+	        //p.ellipse(pos.x, pos.y,
+	                //obj.get_width(), obj.get_height());
+			p.imageMode(obj.get_mode());
+			p.image(cell_image, pos.x, pos.y, obj.get_width(), obj.get_height());
         }
         else if (state === "infected") {
 			p.strokeWeight(0);
@@ -80,9 +82,11 @@ var cell = function(p, spec) {
 			//else {
 				p.fill(obj.get_color());
 			//}
-			p.ellipse(pos.x + obj.get_width() / 8, pos.y - obj.get_height() / 8, 
-						obj.get_width() / 2, obj.get_height() / 2);
+			//p.ellipse(pos.x + obj.get_width() / 8, pos.y - obj.get_height() / 8, 
+				//		obj.get_width() / 2, obj.get_height() / 2);
 			
+			p.fill(obj.get_color());
+			p.ellipse(pos.x, pos.y, obj.get_width(), obj.get_height());
 			//image
 			p.imageMode(obj.get_mode());
 			p.image(cell_image, pos.x, pos.y, obj.get_width(), obj.get_height());
