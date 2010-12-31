@@ -38,7 +38,8 @@ var mutation_obj = function(p) {
 	// Returns bool saying if a mutation should occur
 	// takes into account level, cells_infected, and a random probability
 	var mutation_occured = function() {
-		return Math.random() + ( (cells_infected / 50) / (level + 1)) > .95;
+		//return Math.random() + ( (cells_infected / 50) / (level + 1)) > .95;
+        return (Math.random() * (cells_infected / 50)) > .4;
 	};
 	
 	// Flashes the mutation bar red and white
@@ -197,9 +198,9 @@ var mutation_obj = function(p) {
 	// Returns the current mutation level and color
 	obj.get_info = function() {
 		// color level goes from 0 to 360
-		var new_color_level = (360 - (360 - level * 20));
+		var new_color_level = (360 - (360 - level * 30));
 		//var hue = new_color_level / 360;
-		var rgb_arr = hsvToRgb(new_color_level, 50, 50);
+		var rgb_arr = hsvToRgb(new_color_level, 75, 75);
 		return { 
             level: level,
             color: p.color(rgb_arr[0], rgb_arr[1], rgb_arr[2])

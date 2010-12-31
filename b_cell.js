@@ -124,7 +124,7 @@ var b_cell = function(p, spec) {
             //obj.stop();
             // make it face downwards
             obj.set_target_angle(p.PI/2);
-			if (Math.random() < .005) {
+			if (Math.random() < .009) {
 				make_antibody();
 			}
         }
