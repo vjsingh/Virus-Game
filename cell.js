@@ -127,10 +127,11 @@ var cell = function(p, spec) {
     };
 
     obj.die = function() {
-        obj.set_state("dead");
         if (anti) {
             anti.die();
+            console.log("dead antibody");
         }
+        obj.set_state("dead");
     };
 	
 	// explodes this cell if it is active

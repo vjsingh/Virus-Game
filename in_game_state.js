@@ -748,7 +748,7 @@ var in_game_state = function (p, previous_state) {
                     }
                 },
                 "wall_segment": function(b, wall) {
-                    console.log("collision");
+                    //console.log("collision");
                     if (b.is_activated()) {
                         b.make_antibodies();
                     }

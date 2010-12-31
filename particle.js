@@ -19,8 +19,7 @@ var particle = function(p, spec) {
 
     // --- private variables ---
 
-    var alive = true;
-    var par_shape = p.loadShape("images/virusfinal.svg");
+    //var par_shape = p.loadShape("images/virusfinal.svg");
 	//var mutation = spec.mutation;
 
     // --- public methods --- 
@@ -49,16 +48,6 @@ var particle = function(p, spec) {
 
     };
 	
-    // is_dead just returns whether it isn't alive 
-    obj.is_dead = function() {
-        return !alive;
-    };
-
-    // which means we need a way to die
-    obj.die = function() {
-        alive = false;
-    };
-
     // override for circular object
     obj.calc_radius = function() {
         return obj.get_width()/2;
