@@ -11,7 +11,7 @@ var tkiller = function(p, spec) {
 
     spec.width = spec.width || 30;
     spec.height = spec.height || 30;
-	spec.speed = spec.speed || 1;
+	spec.speed = spec.speed || 1.5;
 
     // obj to return
     var obj = seeker(p, spec);
@@ -23,6 +23,7 @@ var tkiller = function(p, spec) {
     // --- private variables ---
 
     var alive = true;
+	var t_image = p.loadImage("images/tcell1.png");
 
     // --- public methods --- 
 
@@ -36,9 +37,10 @@ var tkiller = function(p, spec) {
     // should point towards target
     // (triangle for now)
     obj.draw = function() {
+        var pos = obj.get_pos();
+		/*
         p.pushMatrix();
          
-        var pos = obj.get_pos();
         var w = obj.get_width();
         var h = obj.get_height();
         p.shapeMode(obj.mode);
@@ -53,6 +55,9 @@ var tkiller = function(p, spec) {
         p.triangle(-w/2, -h/2, -w/2, h/2, w/2, 0);
 
         p.popMatrix();
+        */
+		p.imageMode(obj.get_mode());
+		p.image(t_image, pos.x, pos.y, obj.get_width(), obj.get_height());
     };
 
     // is_dead just returns whether it isn't alive 

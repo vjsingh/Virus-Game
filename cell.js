@@ -21,9 +21,13 @@ var cell = function(p, spec) {
 
     // --- private variables ---
 
-	// Image
-    var cell_image = p.loadImage("images/infected_cell_2_transparent.png");
-	cell_image.resize(1, 0); //obj.get_width(), obj.get_height());
+	// images
+	var images = random_image_selector();
+    var image1 = p.loadImage("images/infectable1.png");
+    var image2 = p.loadImage("images/infectable2.png");
+    var image3 = p.loadImage("images/infectable3.png");
+	images.add(image1);images.add(image2);images.add(image3);
+	var cell_image = images.get_image();
 	
     // state can be "alive", "infected", "active", or "dead"
     var state = spec.state || "alive";
@@ -67,27 +71,27 @@ var cell = function(p, spec) {
         p.stroke(0);
         p.strokeWeight(1);
 
-        if (state === "alive") {
+        if (state === "alive" || state === "infected") {
             //p.fill(175);
 	        //p.ellipse(pos.x, pos.y,
 	                //obj.get_width(), obj.get_height());
-			p.imageMode(obj.get_mode());
-			p.image(cell_image, pos.x, pos.y, obj.get_width(), obj.get_height());
-        }
-        else if (state === "infected") {
-			p.strokeWeight(0);
-			//if (is_targeted) {
-			//	p.fill(0);
-			//}
-			//else {
+			if (state === "infected") {
+				p.strokeWeight(0);
+				//if (is_targeted) {
+				//	p.fill(0);
+				//}
+				//else {
+					p.fill(obj.get_color());
+				//}
+				//p.ellipse(pos.x + obj.get_width() / 8, pos.y - obj.get_height() / 8, 
+					//		obj.get_width() / 2, obj.get_height() / 2);
+				
 				p.fill(obj.get_color());
-			//}
-			//p.ellipse(pos.x + obj.get_width() / 8, pos.y - obj.get_height() / 8, 
-				//		obj.get_width() / 2, obj.get_height() / 2);
-			
-			p.fill(obj.get_color());
+			}
+			else { //alive
+				p.fill(p.color(200, 50, 50));
+			}
 			p.ellipse(pos.x, pos.y, obj.get_width(), obj.get_height());
-			//image
 			p.imageMode(obj.get_mode());
 			p.image(cell_image, pos.x, pos.y, obj.get_width(), obj.get_height());
         }

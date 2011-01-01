@@ -7,8 +7,8 @@ var particle = function(p, spec) {
 
     // --- defaults ---
 
-    spec.width = spec.width || 10;
-    spec.height = spec.height || 10;
+    spec.width = spec.width || 20;
+    spec.height = spec.height || 20;
 
     // obj to return
     var obj = game_object(p, spec);
@@ -20,6 +20,7 @@ var particle = function(p, spec) {
     // --- private variables ---
 
     //var par_shape = p.loadShape("images/virusfinal.svg");
+	var par_image = p.loadImage("images/virus1.png");
 	//var mutation = spec.mutation;
 
     // --- public methods --- 
@@ -37,7 +38,9 @@ var particle = function(p, spec) {
         p.fill(obj.get_color());
         p.noStroke();
         p.ellipse(pos.x, pos.y,
-                obj.get_width(), obj.get_height());
+                obj.get_width() * .75, obj.get_height() * .75);
+		p.imageMode(obj.get_mode());
+		p.image(par_image, pos.x, pos.y, obj.get_width(), obj.get_height());
 		//var d = new Date();
 		//console.log(d.getMilliseconds());
         //p.shape(par_shape, pos.x, pos.y, 
