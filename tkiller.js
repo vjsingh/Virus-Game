@@ -26,6 +26,13 @@ var tkiller = function(p, spec) {
 	/* @pjs preload="images/tcell2.png"; */
 	var t_image = p.loadImage("images/tcell2.png");
 
+	// Rect to fill in
+	var rectx_offset = -(8/30)*obj.get_width();
+	var recty_offset = -(7/30) * obj.get_height();
+	var rect_width = (13 / 30) * obj.get_width();
+	var rect_height = (17 / 30) * obj.get_height();
+	 
+	 
     // --- public methods --- 
 
     // implementing game_object interface
@@ -59,8 +66,12 @@ var tkiller = function(p, spec) {
         */
 		p.pushMatrix();
 		p.imageMode(obj.get_mode());
-		//p.rotate(obj.get_target_angle());
-		p.image(t_image, pos.x, pos.y, obj.get_width(), obj.get_height());
+        p.translate(pos.x, pos.y);
+		p.rotate(obj.get_target_angle() + p.PI / 2);
+		p.fill(obj.get_color());
+		p.noStroke();
+		p.rect(rectx_offset, recty_offset, rect_width, rect_height);
+		p.image(t_image, 0, 0, obj.get_width(), obj.get_height());
 		p.popMatrix();
     };
 
