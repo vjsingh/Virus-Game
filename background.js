@@ -36,6 +36,9 @@ var background = function(p, spec) {
 		//background_image.resize(p.width, p.height);
 		//p.image(background_image, 0, 0);
         p.image(background_image, obj.get_pos().x, 0);//obj.get_pos().y);
+        p.fill(255, 70);
+        p.noStroke();
+        p.rect(obj.get_pos().x, 0, obj.get_width(), obj.get_height());
     };
 
     // background can't go off screen or die
@@ -49,7 +52,7 @@ var background = function(p, spec) {
     */
     var count = 0;
     obj.get_scroll_dist = function() {
-        count += .2;
+        count += .25;
         if (count === 1) {
             count = 0;
             return -1;
