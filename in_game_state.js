@@ -188,6 +188,10 @@ var in_game_state = function (p, previous_state) {
 		
 		//active_cell = initial_cell;
 		
+		// Add background
+		var bg = background(p, { pos : new p.PVector(0, 0)});
+		obj.add_object(bg);	
+		console.log(level("background")[0]);
 	};
 	
 	// Returns the current b cell on the screen, if there is one
@@ -990,7 +994,6 @@ var in_game_state = function (p, previous_state) {
 				set_time = true;
 			}
 			if (!paused) {
-			
 				// if we don't have an active cell
 				if (active_cell === null) {
 					// try to find the next one
@@ -1069,7 +1072,6 @@ var in_game_state = function (p, previous_state) {
     //Calls draw() on every obj
     obj.render = function(){
         p.background(200);
-
         for (var i=0; i<game_objects.length; i++) {
             for (var j=0; j<game_objects[i].length; j++) {
                 var o = game_objects[i][j];
