@@ -21,7 +21,7 @@ var game_object = function (p, spec) {
         return "game_object";
     };
 
-    obj.DEFAULT_SCROLL_DIST = -.5;
+    obj.DEFAULT_SCROLL_DIST = -.8;
 
     // --- private variables ---
 
