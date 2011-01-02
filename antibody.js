@@ -14,7 +14,7 @@ var antibody = function(p, spec) {
 	spec.no_target_speed = spec.no_target_speed || 1
 	
 	spec.vel = new p.PVector(Math.random() * 2 - 1,
-										Math.random() * 2 - 1);
+										Math.random());
 										
     // obj to return
     var obj = seeker(p, spec);
