@@ -23,7 +23,8 @@ var tkiller = function(p, spec) {
     // --- private variables ---
 
     var alive = true;
-	var t_image = p.loadImage("images/tcell1.png");
+	/* @pjs preload="images/tcell2.png"; */
+	var t_image = p.loadImage("images/tcell2.png");
 
     // --- public methods --- 
 
@@ -56,8 +57,11 @@ var tkiller = function(p, spec) {
 
         p.popMatrix();
         */
+		p.pushMatrix();
 		p.imageMode(obj.get_mode());
+		//p.rotate(obj.get_target_angle());
 		p.image(t_image, pos.x, pos.y, obj.get_width(), obj.get_height());
+		p.popMatrix();
     };
 
     // is_dead just returns whether it isn't alive 

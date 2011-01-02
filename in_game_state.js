@@ -714,6 +714,9 @@ var in_game_state = function (p, previous_state) {
 						cell.has_antibody()) {
                         cell.die();
 						tk.set_target(null);
+						if (active_cell === cell) {
+							active_cell = null;
+						}
                     }
                 },
 
@@ -931,7 +934,8 @@ var in_game_state = function (p, previous_state) {
 		var all_infected_cells = get_all_infected_cells();
 			
 		// Then, for each antibody and each infected cell,
-		// if the infected cell is closer than some constant, and is
+		// if the infected cell is closer than some constant, and is the
+		// same mutation level as the antibody, and is
 		// closer than the cell that the antibody is targeting (if any),
 		// and has not already been targeted:
 		// set the antibody to seek that cell
@@ -942,7 +946,8 @@ var in_game_state = function (p, previous_state) {
 				var antibody_pos = an_antibody.get_pos();
 				var the_dist = antibody_pos.dist(
 									infected_cell.get_pos());
-				if (the_dist < 100 && !infected_cell.has_antibody() &&
+				if (same_mutation_level(an_antibody, infected_cell) &&
+					the_dist < 100 && !infected_cell.has_antibody() &&
 						(!an_antibody.get_target() ||
 						dist_less_than(an_antibody, infected_cell, 
 										an_antibody.get_target()))) {
@@ -991,6 +996,7 @@ var in_game_state = function (p, previous_state) {
 				
 				// check for game over
 				// (if no particles are left and no active cell)
+				console.log("num of particles: " + level("particle").length);
 				if (active_cell === null &&
 				        level("particle").length === 0) {
 					var go_state = game_over_state(p, previous_state);
