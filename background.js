@@ -5,10 +5,14 @@
 
 var background = function(p, spec) {
 
+	var background_image = p.loadImage("images/background.jpg");
 
     // --- defaults ---
 
     spec.mode = p.CORNERS;
+    // THESE MUST BE UPDATED BY HAND TO MATCH IMAGE DIMENSIONS
+    spec.width = 700;
+    spec.height = 600;
 
     // obj to return
     var obj = game_object(p, spec);
@@ -19,7 +23,6 @@ var background = function(p, spec) {
 
     // --- private variables ---
 
-	var background_image = p.loadImage("images/background.jpg");
 	
     // --- public methods --- 
 
@@ -31,19 +34,27 @@ var background = function(p, spec) {
     obj.draw = function() {	
 		p.imageMode(obj.get_mode());
 		//background_image.resize(p.width, p.height);
-		p.image(background_image, 0, 0)
+		//p.image(background_image, 0, 0);
+        p.image(background_image, obj.get_pos().x, 0);//obj.get_pos().y);
     };
 
     // background can't go off screen or die
     obj.is_dead = function() {
         return false;
     };
+    /*
 	obj.is_offscreen = function() {
 		return false;
-	}
-
+	};
+    */
+    var count = 0;
     obj.get_scroll_dist = function() {
-        return -.3;
+        count += .2;
+        if (count === 1) {
+            count = 0;
+            return -1;
+        }
+        return 0;
     };
 
     return obj;

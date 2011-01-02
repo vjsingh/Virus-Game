@@ -185,12 +185,13 @@ var in_game_state = function (p, previous_state) {
         obj.add_object(initial_par);
 
         init_walls();
-		
+        init_back();
+
 		//active_cell = initial_cell;
 		
 		// Add background
-		var bg = background(p, { pos : new p.PVector(0, 0)});
-		obj.add_object(bg);	
+		//var bg = background(p, { pos : new p.PVector(0, 0)});
+		//obj.add_object(bg);	
 		console.log(level("background")[0]);
 	};
 	
@@ -816,6 +817,48 @@ var in_game_state = function (p, previous_state) {
 		return (o1level === o2level);
 	};
 	
+
+    // adds a new background tile if the rightmost is onscreen
+    // ASSUMES ALL WALL TILES ARE SAME SIZE
+    var rightmost_back = null;
+    var add_back = function() {
+        if (!goes_off_right(rightmost_back)) {
+            var x = rightmost_back.get_pos().x
+                + rightmost_back.get_width() - 1;
+
+            var new_tile = background(p, {
+                    pos: new p.PVector(x, 0)
+            });
+
+            obj.add_object(new_tile);
+
+            // set the rightmost
+            rightmost_back = new_tile;
+            console.log("added tile "+new_tile.to_string());
+        }
+    };
+
+    // initialized the background
+    var init_back = function() {
+        // initial tile
+        rightmost_back = background(p, {
+                pos: new p.PVector(-10, 0),
+        });
+        obj.add_object(rightmost_back);
+
+        // while the whole screen isn't covered
+        //while(!goes_off_right(rightmost_back)) {
+            // add new tile
+            add_back();
+            console.log("init_back");
+        //}
+    };
+
+    // tells if a background tile goes off the right of the screen
+    var goes_off_right = function(tile) {
+        return tile.get_pos().x + tile.get_width() > p.width;
+    };
+
     // adds a new wall segment if the rightmost wall
     // segment is onscreen
     var rightmost_top = null;
@@ -1003,7 +1046,7 @@ var in_game_state = function (p, previous_state) {
 				
 				// check for game over
 				// (if no particles are left and no active cell)
-				console.log("num of particles: " + level("particle").length);
+				//console.log("num of particles: " + level("particle").length);
 				if (active_cell === null &&
 				        level("particle").length === 0) {
 					var go_state = game_over_state(p, previous_state);
@@ -1029,6 +1072,9 @@ var in_game_state = function (p, previous_state) {
 
                 // adds a new segment of wall if necessary
                 add_wall();
+                // adds a new background tile if necessary
+                add_back();
+
 				update_tkillers_targets();
 				
 				// scroll all objects
