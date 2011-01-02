@@ -1118,7 +1118,7 @@ var in_game_state = function (p, previous_state) {
 					// Set all applicable enemies to be outdated
 					set_all_outdated();
                     // update the scroll factor
-                    scroll_factor += 0.1;
+                    //scroll_factor += 0.1;
                     console.log("mutation occurred!");
                 }
 			}
