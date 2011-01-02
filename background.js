@@ -8,7 +8,7 @@ var background = function(p, spec) {
 
     // --- defaults ---
 
-    spec.mode = p.CORNER;
+    spec.mode = p.CORNERS;
 
     // obj to return
     var obj = game_object(p, spec);
@@ -20,7 +20,6 @@ var background = function(p, spec) {
     // --- private variables ---
 
 	var background_image = p.loadImage("images/background.jpg");
-	background_image.resize(500, 500);
 	
     // --- public methods --- 
 
@@ -31,7 +30,7 @@ var background = function(p, spec) {
     // (flat rect for now)
     obj.draw = function() {	
 		p.imageMode(obj.get_mode());
-		background_image.resize(500, 500);
+		//background_image.resize(p.width, p.height);
 		p.image(background_image, 0, 0)
     };
 
