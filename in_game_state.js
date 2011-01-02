@@ -924,6 +924,13 @@ var in_game_state = function (p, previous_state) {
         }
     };
 	
+	var get_all_of_type = function(t) {
+		var filter_fun = function(o){
+			return o.is(t);
+		};
+		return level(t).filter(filter_fun);
+	}
+	
 	// Returns all the infected cells
 	// NOTE: this includes the active cell
 	var get_all_infected_cells = function() {
@@ -966,13 +973,18 @@ var in_game_state = function (p, previous_state) {
 		}
 	};
     
+	var set_all_outdated = function() {
+		get_b_cell().outdated();
+		for_each(get_all_of_type("tkiller"), function(o) {o.outdated();});
+	}
+
     
     // --- public methods ---
     
     obj.get_type = function() {
         return "game";
     };
-
+	
     //Calls update() on every obj
     //after updating, calls remove_objs
     obj.update = (function() {
@@ -1057,8 +1069,8 @@ var in_game_state = function (p, previous_state) {
                     active_cell.set_mutation_info(mutation.get_info());
                     // reset the counters
                     mutation.reset_mutation();
-					// set b cell to be outdated
-					get_b_cell().outdated();
+					// Set all applicable enemies to be outdated
+					set_all_outdated();
                     // update the scroll factor
                     scroll_factor += 0.1;
                     console.log("mutation occurred!");

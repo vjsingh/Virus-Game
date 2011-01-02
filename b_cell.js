@@ -23,7 +23,6 @@ var b_cell = function(p, spec) {
     // --- private variables ---
 
     // state can be "alive", "active", "shooting", "outdated"
-    var state = spec.state || "alive";
 	
 	// Antibodies are created in update, and returned in get_antibodies()
 	var new_antibodies = null;
@@ -47,23 +46,14 @@ var b_cell = function(p, spec) {
 
 	// Makes this target stop and begin producing antibodies
     obj.make_antibodies = function() {
-        state = "shooting";
+        obj.set_state("shooting");
         obj.set_target(null);
         // production will happen in update
     };
 	
-	// Indicates that a mutation has occured and this object
-	// should float off the screen
-	// Makes this object stop and float off screen
-	obj.outdated = function() {
-		state = "outdated";
-		//obj.set_vel(new p.PVector(0,0));
-        obj.set_target(null);
-	};
-
     // to be called on collision with floater
     obj.activate = function() {
-        state = "active";
+        obj.set_state("active");
         // send the bcell to the top
         obj.set_target(game_object(p, {
             pos: new p.PVector(p.width - (obj.get_width() / 2), 0)
@@ -83,18 +73,15 @@ var b_cell = function(p, spec) {
 	};
 	
     obj.is_activated = function() {
-        return state === "active";
+        return obj.get_state() === "active";
     };
 
     obj.is_alive = function() {
-        return state === "alive";
-    };
-
-    obj.is_outdated = function() {
-        return state === "outdated";
+        return obj.get_state() === "alive";
     };
 
     obj.get_scroll_dist = function() {
+		var state = obj.get_state();
         if (state === "shooting" || state === "alive") {
 			return 0;
 		}
@@ -106,21 +93,10 @@ var b_cell = function(p, spec) {
 		}
     };
 
-    obj.set_state = function(s) {
-		// If outdated, don't update state
-		if (state != "outdated") {
-			state = s;
-		}
-    };
-
-    obj.get_state = function() {
-        return state;
-    };
-
     // implementing game_object interface
     
     obj.my_update = function() {
-        if (state === "shooting") {
+        if (obj.get_state() === "shooting") {
             //obj.stop();
             // make it face downwards
             obj.set_target_angle(p.PI/2);
@@ -148,7 +124,7 @@ var b_cell = function(p, spec) {
 
         p.fill(obj.get_color());
 		// If outdated, draw differently?
-		if (state === "outdated") {
+		if (obj.get_state() === "outdated") {
 			p.fill(0);
 		}
         p.noStroke();

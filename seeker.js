@@ -1,6 +1,6 @@
 // ABSTRACT class for game objects that seek other game objects
 // Classes that implement must override "my_update" instead of "update"
-// --- inherits from game_object
+// --- inherits from object_with_states
 // spec:
 //  game_object spec +
 //  speed = how fast the seeker approaches the target
@@ -12,7 +12,7 @@ var seeker = function(p, spec) {
     // --- defaults ---
 
     // obj to return
-    var obj = game_object(p, spec);
+    var obj = object_with_states(p, spec);
 
     // --- private variables ---
 
@@ -75,8 +75,24 @@ var seeker = function(p, spec) {
 		console.log("my_update (in seeker) not overwritten!");
 	};
 
+	// Indicates that a mutation has occured and this object
+	// should float off the screen
+	// Makes this object stop and float off screen
+	obj.outdated = function() {
+		obj.set_state("outdated");
+		obj.set_vel(new p.PVector(0,0));
+        obj.set_target(null);
+	};
+	
+    obj.is_outdated = function() {
+        return obj.get_state() === "outdated";
+    };
+
+
     obj.set_target = function(new_target) {
-        target = new_target;
+		if (obj.get_state() !== "outdated") {
+			target = new_target;
+		}
     };
 
     obj.set_target_angle = function(new_target_angle) {
