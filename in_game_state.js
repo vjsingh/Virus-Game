@@ -1188,6 +1188,11 @@ var in_game_state = function (p, previous_state) {
 		obj.distance = n;
 	};
 	
+	// Gets the current highest mutation info
+	obj.get_mutation_info = function() {
+		return mutation.get_info();
+	}
+	
 	/*
     // DANGEROUS
     obj.set_game_objects = function(go) {

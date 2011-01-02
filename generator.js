@@ -64,7 +64,10 @@ var make_generator = function(p, spec) {
             start: 1000, num: 1, cap: 5, rate: 20000,
             make_new: function(en_pos) {
                 // target will get set later
-                return tkiller(p, { pos: en_pos });
+                return tkiller(p, { 
+					pos: en_pos, 
+					mutation_info: game.get_mutation_info()
+					});
             }
         },
 		"multiplier": {
