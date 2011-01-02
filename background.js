@@ -35,11 +35,11 @@ var background = function(p, spec) {
 		p.imageMode(obj.get_mode());
 		//background_image.resize(p.width, p.height);
 		//p.image(background_image, 0, 0);
-		console.log(obj.get_pos().x);
-        p.image(background_image, obj.get_pos().x, 0);//obj.get_pos().y);
+		//console.log(obj.get_pos().x);
+        //p.image(background_image, obj.get_pos().x, 0);//obj.get_pos().y);
         p.fill(255, 70);
         p.noStroke();
-        p.rect(obj.get_pos().x, 0, obj.get_width(), obj.get_height());
+        //p.rect(obj.get_pos().x, 0, obj.get_width(), obj.get_height());
     };
 
     // background can't go off screen or die

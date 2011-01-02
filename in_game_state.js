@@ -176,7 +176,7 @@ var in_game_state = function (p, previous_state) {
 
         var initial_par = particle(p, {
             pos: new p.PVector(0, p.height/2),
-            vel: new p.PVector(1, 0),
+            vel: new p.PVector(3, 0),
             // start with some gray
             mutation_info: mutation.get_info()//p.color(250, 250, 250)
 			//mutation : mutation
