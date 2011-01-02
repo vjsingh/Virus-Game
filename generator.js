@@ -147,6 +147,11 @@ var make_generator = function(p, spec) {
 			
 			//Add the new enemy to game_objects
             game.add_object(new_enemy);
+			
+			// If b cell, must update b cells targets
+			if (new_enemy.get_type() === "b_cell") {
+				game.set_b_cell_target(new_enemy);
+			}
 		}
 
         // update nums for types based on rate

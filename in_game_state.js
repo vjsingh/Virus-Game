@@ -206,7 +206,7 @@ var in_game_state = function (p, previous_state) {
             "b_cell", true);
 		return the_b_cell;
 	}
-
+	
 	// Alerts the b cell (only one on screen at a time?) to a newly mutated
 	// obj.
 	// If o.mutation_level >= b cells current target.mutation_level and o is
@@ -234,7 +234,7 @@ var in_game_state = function (p, previous_state) {
 			//if (o.get_mutation_info().level == mutation.get_level()){
 			//
 			if (old_target) {
-				if (o.get_mutation_info.level >= 
+				if (o.get_mutation_info().level >= 
 					old_target.get_mutation_info().level &&
 					old_target.get_pos().dist(the_b_cell.get_pos()) >
 				o.get_pos().dist(the_b_cell.get_pos())) {
@@ -1151,6 +1151,14 @@ var in_game_state = function (p, previous_state) {
 		}
 	};
 	
+	obj.set_b_cell_target = function(the_b_cell) {
+		for_each(get_all_of_type("floater"), function(o){
+			if (o.is_activated()) {
+				alert_b_cell(o);
+			}
+		});
+	}
+
 	obj.resume = function() {
 		paused = false;
 	}
