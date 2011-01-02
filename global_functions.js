@@ -1,5 +1,5 @@
 // ** Global Constants
-DEFAULT_SCROLL_DIST = -0.8
+//DEFAULT_SCROLL_DIST = -0.8;
 
 // *** global_functions ***
 // Holds functions used in the whole project

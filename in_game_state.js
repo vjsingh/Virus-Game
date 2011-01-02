@@ -24,8 +24,12 @@ var in_game_state = function (p, previous_state) {
     var distance = 0;
     //var score = 0;
 	var active_cell = null;
+    // multiply each object's scroll amount by this
+    // factor, which increases throughout the game
+    var scroll_factor = 1;
     var game_objects = [];
 	var paused = false;
+
 	var score = num_status_obj(p, {
 		pos : new p.PVector(p.width - 60, 20),
 		text : "Score:",
@@ -54,7 +58,7 @@ var in_game_state = function (p, previous_state) {
 	});
 	
     // temporary flag TODO
-    var game_over = false;
+    //var game_over = false;
     
     //A mapping from game_object types to their rendering levels
     var type_to_level = {
@@ -1023,16 +1027,16 @@ var in_game_state = function (p, previous_state) {
                 // adds a new segment of wall if necessary
                 add_wall();
 				update_tkillers_targets();
-           
 				
 				// scroll all objects
 				do_to_all_objs(function(o){
-					o.scroll();
+					o.scroll(scroll_factor);
 				});
 				
 				// update distance travelled
-				// (negative because scrolling is negative)
-				distance -= DEFAULT_SCROLL_DIST;
+                distance += scroll_factor;   
+			//	distance -= DEFAULT_SCROLL_DIST;
+                
 				
 				// update all objects
 				do_to_all_objs(function(o){
@@ -1052,6 +1056,8 @@ var in_game_state = function (p, previous_state) {
                     mutation.reset_mutation();
 					// set b cell to be outdated
 					get_b_cell().outdated();
+                    // update the scroll factor
+                    scroll_factor += 0.1;
                     console.log("mutation occurred!");
                 }
 			}

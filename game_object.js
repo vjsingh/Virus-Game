@@ -12,6 +12,7 @@
 
 var game_object = function (p, spec) {
 
+
     // object to return
     var obj = {};
 
@@ -19,6 +20,8 @@ var game_object = function (p, spec) {
     obj.get_type = function() {
         return "game_object";
     };
+
+    obj.DEFAULT_SCROLL_DIST = -.5;
 
     // --- private variables ---
 
@@ -41,8 +44,7 @@ var game_object = function (p, spec) {
     // all game_objects must implement this interface:
     // void update() - called each frame to move/update objects
     // void draw() - called each frame to display the object
-    // boolean should_scroll() - returns true if the object should
-    //                  be moved to the left each redraw
+    // void scroll() - moves the object left by a certain amount
 
     // update moves obj by default
     obj.update = function() { obj.move(); };
@@ -121,9 +123,12 @@ var game_object = function (p, spec) {
     };
 	
 	// Scrolls the obj a specified distance left or right (positive is right)
-	obj.scroll = function() {
+	obj.scroll = function(scroll_factor) {
 		var scroll_x = obj.get_scroll_dist();
-        pos.add(new p.PVector(scroll_x, 0));
+        if (!scroll_x) {
+            scroll_x = obj.DEFAULT_SCROLL_DIST;
+        }
+        pos.add(new p.PVector(scroll_x*scroll_factor, 0));
 	};
 	
 	obj.die = function() {
@@ -157,9 +162,10 @@ var game_object = function (p, spec) {
     // --- getters --- 
 	
 	// Override to set different scroll dist
+    // or leave as null to use default
 	obj.get_scroll_dist = function() {
-		return DEFAULT_SCROLL_DIST;
-	}
+		return null;
+	};
 
     obj.get_pos = function() {
         return pos;

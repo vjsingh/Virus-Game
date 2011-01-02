@@ -22,7 +22,7 @@ var b_cell = function(p, spec) {
 
     // --- private variables ---
 
-    // state can be "alive", "active", "shooting", "outdated", "dead"
+    // state can be "alive", "active", "shooting", "outdated"
     var state = spec.state || "alive";
 	
 	// Antibodies are created in update, and returned in get_antibodies()
@@ -40,7 +40,7 @@ var b_cell = function(p, spec) {
 			pos : new p.PVector(obj_pos.x, obj_pos.y + (obj.get_height() / 2)),
             mutation_info: obj.get_mutation_info()
 		}));
-	}
+	};
 
 
     // --- public methods --- 
@@ -99,10 +99,10 @@ var b_cell = function(p, spec) {
 			return 0;
 		}
 		else if (state === "outdated") {
-			return DEFAULT_SCROLL_DIST * 2;
+			return obj.DEFAULT_SCROLL_DIST * 2;
 		}
 		else {
-			return DEFAULT_SCROLL_DIST;
+			return obj.DEFAULT_SCROLL_DIST;
 		}
     };
 
@@ -160,17 +160,6 @@ var b_cell = function(p, spec) {
         p.ellipse(-w/4, 0, 10, 10);
 
         p.popMatrix();
-    };
-
-
-    // is_dead just returns whether it isn't alive 
-    obj.is_dead = function() {
-        return state === "dead";
-    };
-
-    // which means we need a way to die
-    obj.die = function() {
-        state = "dead";
     };
 
     return obj;
