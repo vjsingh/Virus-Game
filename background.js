@@ -52,7 +52,7 @@ var background = function(p, spec) {
     */
     var count = 0;
     obj.get_scroll_dist = function() {
-        count += .25;
+        count += 1;
         if (count === 1) {
             count = 0;
             return -1;

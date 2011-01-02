@@ -85,7 +85,7 @@ var wall_segment = function(p, spec) {
     };
 
     obj.get_scroll_dist = function() {
-        return -.25;
+        return -1;//.5;//-.25;
     };
 
     return obj;
