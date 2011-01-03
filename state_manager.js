@@ -65,19 +65,16 @@ var state_manager = function (p) {
 		var update_function = function(s) {
 			if (s === curr_state) {
 				next_state = s.update_wrapper();
-                console.log("curr wrapper "+s.get_type());
 			}
 			else {
                 // i see no reason to update not current states
 				//s.update_wrapper();
-                console.log("wrapper "+s.get_type());
 			}
 		};
 		for_each(displayed_states, update_function);
         
         //If we have a new state to go to
         if (next_state) {
-            console.log("manager has a next state");
             //Figure out if next state is an overlay
             var state_type = next_state.get_type();
             var is_overlay = -1;

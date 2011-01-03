@@ -50,13 +50,7 @@ var game_state = function (p) {
 	// Goes to the next state (by returning it) if next_state has been set
 	obj.update_wrapper = function() {
 		all_buttons = obj.get_all_buttons();
-        console.log(obj.get_type()+" wrapper, next is ");
-        if (next_state)
-            console.log( next_state.get_type());
-        else
-            console.log("null");
 		if (next_state !== null) {
-            console.log("we have a next state");
 			var to_return = next_state;
 			//in case we return to this state (CURRENTLY, SHOULDN'T EVER HAPPEN I THINK)
 			next_state = null; 
@@ -74,7 +68,6 @@ var game_state = function (p) {
 			var next_state = b.is_clicked(x, y);
 			if (next_state !== null) {
 				obj.set_next_state(next_state);
-                console.log("got a next in mouse click "+next_state.get_type());
 			}
 		}
 		for_each(all_buttons, click_function);

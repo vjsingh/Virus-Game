@@ -8,7 +8,6 @@ var splash_state = function (p) {
 	// Buttons
 	// Have a rectangle representing their position and
 	// a state to go to when pressed
-    console.log("making splash state");
 	var start_button = button(p, {
 		state : function() { return in_game_state(p, obj); },
 		rect : rectangle(p, {

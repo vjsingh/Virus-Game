@@ -846,12 +846,8 @@ var in_game_state = function (p, previous_state) {
         });
         obj.add_object(rightmost_back);
 
-        // while the whole screen isn't covered
-        //while(!goes_off_right(rightmost_back)) {
-            // add new tile
-            add_back();
-            console.log("init_back");
-        //}
+        // add one more tile to fill screen
+        add_back();
     };
 
     // tells if a background tile goes off the right of the screen
