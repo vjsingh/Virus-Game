@@ -168,7 +168,7 @@ var cell = function(p, spec) {
             while (num_particles > 0) {
                 var new_vel = new p.PVector(p.cos(ang), p.sin(ang));
                 // mult by speed scalar
-                new_vel.mult(3);
+                new_vel.mult(7);
                 // if we want to add velocity of cell
                 new_vel.add(obj.get_vel());
                 
@@ -202,7 +202,7 @@ var cell = function(p, spec) {
                 || arrow_angle < -p.PI/2) {
             arrow_dir = (2-arrow_dir)-2;
         }
-        arrow_angle += p.radians(3)*arrow_dir;
+        arrow_angle += p.radians(5)*arrow_dir;
     };
 
     var drawArrow = function() {

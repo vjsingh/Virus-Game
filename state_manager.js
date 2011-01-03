@@ -11,12 +11,15 @@ var state_manager = function (p) {
     // --- private variables ---
 
     var curr_state = splash_state(p); //The currently active state
+    // shouldn't loop on splash
+    p.noLoop();
     var displayed_states = [curr_state]; //THIS MUST ALWAYS BE SORTED BY RENDERING LEVEL
     
     //A mapping from game states to their rendering levels
     var type_to_level = {
         "splash": 0,
         "game": 1,
+        "game_over": 2,
         "pause": 2,
         "help": 2
     };
@@ -60,17 +63,21 @@ var state_manager = function (p) {
 		// Update all the states, and get next_state from curr_state.update_wrapper();
 		var next_state = null;
 		var update_function = function(s) {
-			if (s == curr_state) {
+			if (s === curr_state) {
 				next_state = s.update_wrapper();
+                console.log("curr wrapper "+s.get_type());
 			}
 			else {
-				s.update_wrapper();
+                // i see no reason to update not current states
+				//s.update_wrapper();
+                console.log("wrapper "+s.get_type());
 			}
-		}
+		};
 		for_each(displayed_states, update_function);
         
         //If we have a new state to go to
         if (next_state) {
+            console.log("manager has a next state");
             //Figure out if next state is an overlay
             var state_type = next_state.get_type();
             var is_overlay = -1;
@@ -113,7 +120,8 @@ var state_manager = function (p) {
 			curr_state = next_state;
 			//Potentially a problem, we do this even if not returning to a state
 			curr_state.resume(); 
-			p.redraw();
+            // updating its buttons
+            curr_state.update_wrapper();
 		}
 		
 		for (var i = 0; i < displayed_states.length; i++) {
@@ -128,13 +136,14 @@ var state_manager = function (p) {
             p.loop();
         }
         */
-    }
+    };
     
     //Passes clicks on to curr_state
     obj.mouse_click = function (x, y) {
         curr_state.mouse_click_wrapper(x, y); 
         obj.update();
     };
+
 	obj.key_pressed = function(k) {
 		curr_state.key_pressed(k);
         obj.update();

@@ -7,9 +7,10 @@ var game_over_state = function (p, prev_state) {
 	
     // --- private variables ---
 
+    console.log("making restart button");
 	// Buttons
 	var restart_button = button(p, {
-		state : in_game_state(p, prev_state),
+		state : function() { return in_game_state(p, prev_state); },
 		rect : rectangle(p, {
 			pos : new p.PVector(p.width / 2, 20),
 			width : 80,
@@ -17,8 +18,9 @@ var game_over_state = function (p, prev_state) {
 			text : "Restart Game"
 		})
 	});
+    console.log("made restart button");
 	var splash_button  = button(p, {
-		state : splash_state(p),
+		state : function() { return splash_state(p); },
 		rect : rectangle(p, {
 			pos : new p.PVector(p.width / 2, 60),
 			width : 80,

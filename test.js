@@ -16,7 +16,7 @@ var pCode = function(p) {
 
 		g = state_manager(p);
 		
-		p.frameRate(60);
+		p.frameRate(40);
         //g = in_game_state(p, null); 
 
         /*
@@ -79,12 +79,14 @@ var pCode = function(p) {
         */
     };
 
-	//update_counter = 0;
+	update_counter = 0;
     // draw is called repeatedly
     p.draw = function() {
-		//console.log(p.frameRate);
-		//update_counter += 1;
-		//console.log(update_counter);
+		update_counter += 1;
+        if (update_counter === 60) {
+		    //console.log("frame");
+            update_counter = 0;
+        }
         g.update(); // Also renders
     };
 	
@@ -94,7 +96,7 @@ var pCode = function(p) {
 	};
 	p.mousePressed = function() {
 		g.mouse_click(p.mouseX, p.mouseY);
-	}
+	};
 }
 
 

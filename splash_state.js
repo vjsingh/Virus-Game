@@ -8,8 +8,9 @@ var splash_state = function (p) {
 	// Buttons
 	// Have a rectangle representing their position and
 	// a state to go to when pressed
+    console.log("making splash state");
 	var start_button = button(p, {
-		state : in_game_state(p, obj),
+		state : function() { return in_game_state(p, obj); },
 		rect : rectangle(p, {
 			pos : new p.PVector(p.width / 2, 20),
 			width : 80,
@@ -19,7 +20,7 @@ var splash_state = function (p) {
 	});
 		
 	var help_button = button(p, {
-		state : help_state(p, obj),
+		state : function() { return help_state(p, obj); },
 		rect : rectangle(p, {
 			pos : new p.PVector(p.width / 2, 60),
 			width : 80,

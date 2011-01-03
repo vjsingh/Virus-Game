@@ -67,7 +67,8 @@ var wall_segment = function(p, spec) {
             
         //p.rect(-w/2, -h/2, w, h);
         p.imageMode(obj.get_mode());
-        p.image(wall_shape, 0, 0, w, h); 
+        //p.image(wall_shape, 0, 0, w, h); 
+        //p.set(0, 0, wall_shape);
 		//draw(canvas.getContext('2d'));
 		//var d = new Date();
 		//console.log(d.getMilliseconds());

@@ -36,7 +36,8 @@ var background = function(p, spec) {
 		//background_image.resize(p.width, p.height);
 		//p.image(background_image, 0, 0);
 		//console.log(obj.get_pos().x);
-        //p.image(background_image, obj.get_pos().x, 0);//obj.get_pos().y);
+        p.image(background_image, obj.get_pos().x, 0);//obj.get_pos().y);
+        //p.set(obj.get_pos().x, 0, background_image);
         p.fill(255, 70);
         p.noStroke();
         //p.rect(obj.get_pos().x, 0, obj.get_width(), obj.get_height());
@@ -53,11 +54,11 @@ var background = function(p, spec) {
     */
     var count = 0;
     obj.get_scroll_dist = function() {
-        count += 1;
-        if (count === 1) {
-            count = 0;
-            return -1;
-        }
+        //count += 1;
+        //if (count === 1) {
+            //count = 0;
+            return -.3;
+        //}
         return 0;
     };
 

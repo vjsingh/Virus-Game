@@ -192,7 +192,7 @@ var in_game_state = function (p, previous_state) {
 		// Add background
 		//var bg = background(p, { pos : new p.PVector(0, 0)});
 		//obj.add_object(bg);	
-		console.log(level("background")[0]);
+		//console.log(level("background")[0]);
 	};
 	
 	// Returns the current b cell on the screen, if there is one
@@ -834,7 +834,7 @@ var in_game_state = function (p, previous_state) {
 
             // set the rightmost
             rightmost_back = new_tile;
-            console.log("added tile "+new_tile.to_string());
+            //console.log("added tile "+new_tile.to_string());
         }
     };
 
@@ -1061,8 +1061,10 @@ var in_game_state = function (p, previous_state) {
 				//console.log("num of particles: " + level("particle").length);
 				if (active_cell === null &&
 				        level("particle").length === 0) {
+                    console.log("setting next to go");
 					var go_state = game_over_state(p, previous_state);
 					obj.set_next_state(go_state);
+                    console.log("set next to go");
 					
 					// simply don't do the rest of update
 					return;
@@ -1154,7 +1156,8 @@ var in_game_state = function (p, previous_state) {
 		//Draw the status labels
 		for_each(all_status_objs, function(o) {o.draw();});
     };
-    
+   
+    /* 
     obj.mouse_click = function (x, y) {
 		//For every button, if the mouse click is in the button, then
 		//set next state to be the state specified by the button
@@ -1168,6 +1171,7 @@ var in_game_state = function (p, previous_state) {
 			}
 		}
     };
+    */
 	
 	obj.key_pressed = function(k) {
 		if (k === 32) { //spacebar
@@ -1203,11 +1207,11 @@ var in_game_state = function (p, previous_state) {
 				alert_b_cell(o);
 			}
 		});
-	}
+	};
 
 	obj.resume = function() {
 		paused = false;
-	}
+	};
     
     //Adds a game_object to the game world
     obj.add_object = function(o) {
@@ -1226,7 +1230,7 @@ var in_game_state = function (p, previous_state) {
 	
 	obj.get_all_buttons = function() {
 		return all_buttons;
-	}
+	};
     
     // --- getters --- 
 

@@ -19,7 +19,7 @@ var game_state = function (p) {
 	// --- private variables ---
 	var next_state = null;
 	var previous_state = null;
-	var all_buttons = null; //TODO: This is static but is updated every update()
+	var all_buttons = []; //TODO: This is static but is updated every update()
 
 	
     // --- public methods ---
@@ -39,10 +39,10 @@ var game_state = function (p) {
 		previous_state = ps;
 	};
 	obj.exit_state = function() {
-		if (previous_state == null) {
+		if (previous_state === null) {
 			throw "error previous state not set in game_state";
 		}
-		assert(previous_state != null, "Previous state was null in game_state.exit_state");
+		assert(previous_state !== null, "Previous state was null in game_state.exit_state");
 		next_state = previous_state;
 	};
 	
@@ -50,7 +50,13 @@ var game_state = function (p) {
 	// Goes to the next state (by returning it) if next_state has been set
 	obj.update_wrapper = function() {
 		all_buttons = obj.get_all_buttons();
+        console.log(obj.get_type()+" wrapper, next is ");
+        if (next_state)
+            console.log( next_state.get_type());
+        else
+            console.log("null");
 		if (next_state !== null) {
+            console.log("we have a next state");
 			var to_return = next_state;
 			//in case we return to this state (CURRENTLY, SHOULDN'T EVER HAPPEN I THINK)
 			next_state = null; 
@@ -66,8 +72,9 @@ var game_state = function (p) {
 	obj.mouse_click_wrapper = function(x, y) {
 		var click_function = function(b) {
 			var next_state = b.is_clicked(x, y);
-			if (next_state != null) {
+			if (next_state !== null) {
 				obj.set_next_state(next_state);
+                console.log("got a next in mouse click "+next_state.get_type());
 			}
 		}
 		for_each(all_buttons, click_function);
