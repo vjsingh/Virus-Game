@@ -82,7 +82,9 @@ var b_cell = function(p, spec) {
 
     obj.get_scroll_dist = function() {
 		var state = obj.get_state();
-        if (state === "shooting" || state === "alive") {
+        if (state === "shooting"
+                || state === "alive"
+                || state === "active" ) {
 			return 0;
 		}
 		else if (state === "outdated") {
