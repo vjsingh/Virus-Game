@@ -5,7 +5,8 @@
 
 var background = function(p, spec) {
 
-	var background_image = p.loadImage("images/background.jpg");
+	//var background_image = p.loadImage("images/background.jpg");
+    var background_image = p.loadImage("images/jback1.png");
 
     // --- defaults ---
 
@@ -53,13 +54,17 @@ var background = function(p, spec) {
 	};
     */
     var count = 0;
+
+    obj.scroll = function(scroll_factor) {
+        count += 1;
+        if (count === 1) {
+            count = 0;
+            obj.get_pos().add(new p.PVector(obj.get_scroll_dist()*scroll_factor, 0));
+        }
+    };
+
     obj.get_scroll_dist = function() {
-        //count += 1;
-        //if (count === 1) {
-            //count = 0;
-            return -.3;
-        //}
-        return 0;
+        return -1;
     };
 
     return obj;

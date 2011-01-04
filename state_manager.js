@@ -75,6 +75,7 @@ var state_manager = function (p) {
         
         //If we have a new state to go to
         if (next_state) {
+        console.log("next is "+next_state.get_type());
             //Figure out if next state is an overlay
             var state_type = next_state.get_type();
             var is_overlay = -1;
@@ -108,7 +109,14 @@ var state_manager = function (p) {
 			
 			//If overlay, add to displayed, otherwise reset displayed
 			if (is_overlay) {
-				add_to_displayed_states(next_state);
+                // account for multiple overlays
+                // so we can go back to an overlay
+                if (member(displayed_states, next_state)) {
+				    remove_from_displayed(curr_state);
+                }
+                else {
+                    add_to_displayed_states(next_state);
+                }
 			}
 			else {
 				remove_from_displayed(curr_state);

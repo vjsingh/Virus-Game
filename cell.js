@@ -68,48 +68,33 @@ var cell = function(p, spec) {
         var pos = obj.get_pos();
         p.shapeMode(obj.get_mode());
 
-        p.stroke(0);
-        p.strokeWeight(1);
+        p.noStroke();
 
-        if (state === "alive" || state === "infected") {
-            //p.fill(175);
-	        //p.ellipse(pos.x, pos.y,
-	                //obj.get_width(), obj.get_height());
-			if (state === "infected") {
-				p.strokeWeight(0);
-				//if (is_targeted) {
-				//	p.fill(0);
-				//}
-				//else {
-					p.fill(obj.get_color());
-				//}
-				//p.ellipse(pos.x + obj.get_width() / 8, pos.y - obj.get_height() / 8, 
-					//		obj.get_width() / 2, obj.get_height() / 2);
-				
-				p.fill(obj.get_color());
-			}
-			else { //alive
-				p.fill(p.color(200, 50, 50));
-			}
-			p.ellipse(pos.x, pos.y, obj.get_width(), obj.get_height());
-			p.imageMode(obj.get_mode());
-			p.image(cell_image, pos.x, pos.y, obj.get_width(), obj.get_height());
+        if (state === "alive") {
+            p.fill(p.color(200, 50, 50));
+        }
+        if (state === "infected") {
+            p.fill(obj.get_color());
         }
         else if (state === "active") {
             drawArrow();
             // red outline for now
             p.stroke(255, 0, 0);
-            p.strokeWeight(3);
-
+            p.strokeWeight(4);
             p.fill(obj.get_color());
-	        p.ellipse(pos.x, pos.y,
-	                obj.get_width(), obj.get_height());
         }
+
+        p.ellipse(pos.x, pos.y, obj.get_width(), obj.get_height());
+        p.imageMode(obj.get_mode());
+        p.image(cell_image, pos.x, pos.y, obj.get_width(), obj.get_height());
+
+        /*
         else if (state === "dead") {
             p.fill(0);
 	        p.ellipse(pos.x, pos.y,
 	                obj.get_width(), obj.get_height());
         }
+        */
 
     };
 
@@ -220,12 +205,20 @@ var cell = function(p, spec) {
 
         // red outline for now
         p.stroke(255, 0, 0);
-        p.strokeWeight(3);
+        p.strokeWeight(2);
+        p.fill(obj.get_color());
 
         var x1 = w/2;
-        p.line(0, 0, x1, 0);
-        p.line(x1, 0, x1+w/3, w/3);
-        p.line(x1, 0, x1+w/3, -w/3);
+        // draw facing out to right
+        p.beginShape();
+        p.vertex(0, -5);
+        p.vertex(x1, -5);
+        p.vertex(x1, -10);
+        p.vertex(x1+15, 0);
+        p.vertex(x1, 10);
+        p.vertex(x1, 5);
+        p.vertex(0, 5);
+        p.endShape();
 
         p.popMatrix();
     };

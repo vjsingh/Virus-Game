@@ -14,9 +14,12 @@ var pCode = function(p) {
         }
         Processing.logger = console;
 
+        var f = new p.loadFont("_sans");
+        p.textFont(f, 14);
+
 		g = state_manager(p);
 		
-		p.frameRate(40);
+		p.frameRate(30);
         //g = in_game_state(p, null); 
 
         /*
@@ -83,8 +86,9 @@ var pCode = function(p) {
     // draw is called repeatedly
     p.draw = function() {
 		update_counter += 1;
-        if (update_counter === 60) {
-		    //console.log("frame");
+        if (update_counter === 30) {
+		    console.log("frame "+p.millis());
+            console.log(p.__frameRate);
             update_counter = 0;
         }
         g.update(); // Also renders
@@ -103,4 +107,30 @@ var pCode = function(p) {
 // attaches the processing code to the canvas
 // note that we need to do this AFTER the canvas element is created
 var canvas = document.getElementById("test_canvas");
-var pInstance = new Processing(canvas, pCode);
+var sketch = new Processing.Sketch(pCode);
+sketch.options.isTransparent = true;
+var pInstance = new Processing(canvas, sketch);
+
+var back_code = function(p) {
+    var tiles = [];
+    p.setup = function() {
+        p.size(700, 600); 
+        p.frameRate(30);
+        tiles.push(background(p, {
+            pos: new p.PVector(0, 0)
+        }));
+        tiles.push(background(p, {
+            pos: new p.PVector(700, 0)
+        }));
+    };
+    p.draw = function() {
+        p.background(200);
+        for_each(tiles, function(tile) {
+            tile.update();
+            tile.scroll(1);
+            tile.draw();
+        });
+    };
+};
+var back_canvas = document.getElementById("back_canvas");
+//var backInstance = new Processing(back_canvas, back_code);

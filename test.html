@@ -31,7 +31,10 @@
 <script src="canvg.js"></script> --> 
 
 <h1>Virus Game Test</h1>
-<canvas id="test_canvas"></canvas>
+<div style="position:relative;">
+<canvas id="test_canvas" style="z-index: 2; position: absolute; left: 0px; top: 0px"></canvas>
+<canvas id="back_canvas" style="z-index: 1; position: absolute; left: 0px; top: 0px"></canvas>
+</div>
 
 <script src="test.js"></script>
 

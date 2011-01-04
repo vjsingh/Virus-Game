@@ -876,15 +876,15 @@ var in_game_state = function (p, previous_state) {
                     + rightmost.get_width()/2
                     + new_spec.width/2 - 1;
 
-                // set y for top wall
-                var y = new_spec.height/2;
+                // set y for bottom wall
+                var y = p.height - new_spec.height/2 + 5;
                 // switch if it's a bottom wall
-                if (rightmost === rightmost_btm) {
-                    y = p.height - y;
-                    new_spec.is_top = false;
+                if (rightmost === rightmost_top) {
+                    y = p.height - y + 40;
+                    new_spec.is_top = true;
                 }
                 else {
-                    new_spec.is_top = true;
+                    new_spec.is_top = false;
                 }
                 new_spec.pos = new p.PVector(x, y);
 
@@ -1017,6 +1017,21 @@ var in_game_state = function (p, previous_state) {
 		for_each(get_all_of_type("tkiller"), function(o) {o.outdated();});
 	}
 
+    var dynamic_scroll = function() {
+        do_to_types(function(o) { o.scroll(1); },
+                ["background", "wall_segment"], true);
+
+        if (active_cell) {
+            var ac = active_cell.get_pos();
+            var dist = ac.x - 75;
+            if (! (dist <= 1 && dist >= 0) ) {
+                do_to_all_objs(function(o) { o.get_pos().add(
+                            new p.PVector(-dist/10, 0)); });
+                        //["particle", "cell", "enemy"], false);
+            }
+        }
+    };
+
     
     // --- public methods ---
     
@@ -1057,10 +1072,8 @@ var in_game_state = function (p, previous_state) {
 				//console.log("num of particles: " + level("particle").length);
 				if (active_cell === null &&
 				        level("particle").length === 0) {
-                    console.log("setting next to go");
 					var go_state = game_over_state(p, previous_state);
 					obj.set_next_state(go_state);
-                    console.log("set next to go");
 					
 					// simply don't do the rest of update
 					return;
@@ -1088,9 +1101,12 @@ var in_game_state = function (p, previous_state) {
 				update_tkillers_targets();
 				
 				// scroll all objects
+               
 				do_to_all_objs(function(o){
 					o.scroll(scroll_factor);
 				});
+                
+                //dynamic_scroll();
 				
 				// update distance travelled
                 distance += scroll_factor;   
@@ -1127,7 +1143,8 @@ var in_game_state = function (p, previous_state) {
     
     //Calls draw() on every obj
     obj.render = function(){
-        p.background(200);
+        p.background(142, 6, 29);
+        //p.background(0, 0);
         for (var i=0; i<game_objects.length; i++) {
             for (var j=0; j<game_objects[i].length; j++) {
                 var o = game_objects[i][j];
@@ -1149,6 +1166,10 @@ var in_game_state = function (p, previous_state) {
         }
         */	
 	   
+        // draw a rect under status labels
+        p.noStroke();
+        p.fill(180);
+        p.rect(0, 0, p.width, 40);
 		//Draw the status labels
 		for_each(all_status_objs, function(o) {o.draw();});
     };
@@ -1177,16 +1198,18 @@ var in_game_state = function (p, previous_state) {
                 kill_active_cell();
             }
 		}
-		else if (k === 112) { //p
+		else if (k === 112 || p.keyCode === 13) { //p, enter
 			paused = true;
 			var p_state = pause_state(p, obj);
 			obj.set_next_state(p_state);
 		}
+        /*
 		else if (k === 104) { //h
 			paused = true;
 			var h_state = help_state(p, obj);
 			obj.set_next_state(h_state);
 		}
+        */
 		//right and left
 		k = p.keyCode;
 		if (k === p.LEFT) { //left

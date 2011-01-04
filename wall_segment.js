@@ -2,7 +2,7 @@
 // later can include which image/shape to use
 // MUST HAVE WIDTH AND HEIGHT SPECIFIED
 var wall_specs = [
-    { width: 100, height: 40 }
+    { width: 100, height: 51 }
     //{ width: 100, height: 30, fill: 0 },
     //{ width: 200, height: 30, fill: 50 },
     //{ width: 50, height: 30, fill: 100 },
@@ -67,7 +67,7 @@ var wall_segment = function(p, spec) {
             
         //p.rect(-w/2, -h/2, w, h);
         p.imageMode(obj.get_mode());
-        //p.image(wall_shape, 0, 0, w, h); 
+        p.image(wall_shape, 0, 0);//, w, h); 
         //p.set(0, 0, wall_shape);
 		//draw(canvas.getContext('2d'));
 		//var d = new Date();
@@ -85,8 +85,17 @@ var wall_segment = function(p, spec) {
         return false;
     };
 
+    var count = 0;
+    obj.scroll = function(scroll_factor) {
+        count += 1;
+        if (count === 1) {
+            count = 0;
+            obj.get_pos().add(new p.PVector(obj.get_scroll_dist()*scroll_factor, 0));
+        }
+    };
+
     obj.get_scroll_dist = function() {
-        return -1;//.5;//-.25;
+        return -1;
     };
 
     return obj;

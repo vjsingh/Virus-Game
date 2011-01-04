@@ -27,6 +27,17 @@ var for_each = function(arr, fun) {
 	}
 };
 
+var member = function(arr, elt) {
+    for (var i=0; i<arr.length; i++) {
+        if (arr[i] === elt) {
+            console.log("returning "+i);
+            return i;
+        }
+    }
+            console.log("returning -1");
+    return false;
+};
+
 // returns a random element from an array
 var random_from = function(arr) {
     return arr[Math.floor(Math.random()*arr.length)];

@@ -47,9 +47,10 @@ var num_status_obj = function(p, spec) {
 	}
 	var draw_full_rect = function(color) {
 			p.fill(color[0], color[1], color[2]);
-			p.noStroke();
+            p.strokeWeight(1);
+            p.stroke(0);
 			var topy = pos.y - (height / 2);
-			var leftx = pos.x + (txt.length * 3);
+			var leftx = pos.x + (txt.length * 4);
 			p.rect(leftx, topy, max_width, height);
 	}
 	
@@ -67,7 +68,7 @@ var num_status_obj = function(p, spec) {
 	        p.noStroke();
 			
 			var topy = pos.y - (height / 2);
-			var leftx = pos.x + (txt.length * 3);
+			var leftx = pos.x + (txt.length * 4);
 			var rect_width = (number / max) * max_width;
 			rect_width = rect_width > max_width ? max_width : rect_width;
 			p.rect(leftx, topy, rect_width, height);

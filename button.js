@@ -2,17 +2,21 @@
 // spec:
 //		state : function that returns a new state to go to when clicked
 //		        (think of it like a thunk)
-//		rect : rectangle representing the button
+//		rect : spec for a rectangle representing the button
 
 var button = function(p, spec) {
 	
+    // --- defaults ---
+    spec.rect.width = 100;
+    spec.rect.height = 35;
+
     // obj to return
     var obj = {};
 
     // --- private variables ---
 
 	var next_state_fun = spec.state;
-	var rect = spec.rect;
+	var rect = rectangle(p, spec.rect);
 
     // --- public methods --- 
 

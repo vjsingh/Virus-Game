@@ -10,21 +10,21 @@ var game_over_state = function (p, prev_state) {
 	// Buttons
 	var restart_button = button(p, {
 		state : function() { return in_game_state(p, prev_state); },
-		rect : rectangle(p, {
-			pos : new p.PVector(p.width / 2, 20),
-			width : 80,
-			height : 20,
-			text : "Restart Game"
-		})
+		rect : {
+			pos : new p.PVector(p.width / 2, p.height/2),
+			width : 100,
+			height : 30,
+			text : "Restart"
+		}
 	});
 	var splash_button  = button(p, {
 		state : function() { return splash_state(p); },
-		rect : rectangle(p, {
-			pos : new p.PVector(p.width / 2, 60),
-			width : 80,
-			height : 20,
+		rect : {
+			pos : new p.PVector(p.width / 2, p.height/2 + 50),
+			width : 100,
+			height : 30,
 			text : "Main Menu"
-		})
+		}
 	});
 		
 	//Not ordered
@@ -41,7 +41,7 @@ var game_over_state = function (p, prev_state) {
     };
     
 	obj.key_pressed = function(k) {
-		if (k === 114) { //r
+		if (k === 114 || p.keyCode === 13) { //r, enter
 			obj.set_next_state(restart_button.get_state());
 		}
 	};

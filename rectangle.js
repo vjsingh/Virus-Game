@@ -42,7 +42,7 @@ var rectangle = function (p, spec) {
 		p.rect(leftx, topy, width, height);
 		
 		p.fill(text_color);
-        p.textAlign(p.CENTER);
+        p.textAlign(p.CENTER, p.CENTER);
         p.text(text, pos.x, pos.y);
 	};
 	
