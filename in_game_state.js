@@ -605,8 +605,10 @@ var in_game_state = function (p, previous_state) {
             // only if cell is "alive"
             // (ie only one particle per cell)
             assert(cell, "Not a cell in infect!");
-            if (cell.get_state() === "alive") {
+            if (cell.get_state() !== "dead") {
                 par.die();
+            }
+            if (cell.get_state() === "alive") {
                 cell.set_state("infected");
                 // change mutation of cell to match particle
                 cell.set_mutation_info(par.get_mutation_info());

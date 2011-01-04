@@ -10,7 +10,7 @@ var floater = function(p, spec) {
 
     spec.width = spec.width || 30;
     spec.height = spec.height || 50;
-    spec.vel = new p.PVector(0, 0.1);
+    spec.vel = new p.PVector(0, 0.3);
 
     // obj to return
     var obj = game_object(p, spec);
@@ -22,7 +22,7 @@ var floater = function(p, spec) {
     // --- private variables ---
     
     // how far up or down it can move
-    var range = 40;
+    var range = 50;
     var btm_lim = obj.get_pos().y + range;
     var top_lim = obj.get_pos().y - range;
     // state can be "alive", "activated", or "dead"
