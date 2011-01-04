@@ -31,8 +31,10 @@ var cell = function(p, spec) {
 	
     // state can be "alive", "infected", "active", or "dead"
     var state = spec.state || "alive";
-    var arrow_angle = 0;
-    var arrow_dir = 1;
+    // random initial angle
+    var arrow_angle = p.random(-p.PI/2, p.PI/2);
+    // random dir (1 or -1)
+    var arrow_dir = p.random() >= 0.5 ? 1 : -1;
 	
 	// indicates whether has been hit by an arrow and is being targeted
 	//var is_targeted = false;
@@ -73,18 +75,20 @@ var cell = function(p, spec) {
         if (state === "alive") {
             p.fill(p.color(200, 50, 50));
         }
-        if (state === "infected") {
-            p.fill(obj.get_color());
-        }
-        else if (state === "active") {
-            drawArrow();
-            // red outline for now
-            p.stroke(255, 0, 0);
-            p.strokeWeight(4);
-            p.fill(obj.get_color());
+        else {
+            if (state === "infected") {
+                p.fill(obj.get_color());
+            }
+            else if (state === "active") {
+                drawArrow();
+                // red outline for now
+                p.stroke(255, 0, 0);
+                p.strokeWeight(4);
+                p.fill(obj.get_color());
+            }
+            p.ellipse(pos.x, pos.y, obj.get_width(), obj.get_height());
         }
 
-        p.ellipse(pos.x, pos.y, obj.get_width(), obj.get_height());
         p.imageMode(obj.get_mode());
         p.image(cell_image, pos.x, pos.y, obj.get_width(), obj.get_height());
 
@@ -127,9 +131,7 @@ var cell = function(p, spec) {
     };
 	
 	// explodes this cell if it is active
-    // takes number of particles to generate
-	// returns that many particles
-	obj.fire = function(num_particles) {
+	obj.fire = function() {
 		if (state === "active") {
             // TODO: need a slower death
 			obj.die();
@@ -143,6 +145,7 @@ var cell = function(p, spec) {
             var x = r*p.cos(ang) + pos.x;
             var y = r*p.sin(ang) + pos.y;
 
+            var num_particles = get_num_particles();
             // angle between all the shots
             var range = p.PI/6;
             var incr = range/num_particles;
@@ -150,6 +153,10 @@ var cell = function(p, spec) {
             var particles = [];
 
             ang = arrow_angle - range/2;
+            // special case
+            if (num_particles === 1) {
+                ang = arrow_angle;
+            }
             while (num_particles > 0) {
                 var new_vel = new p.PVector(p.cos(ang), p.sin(ang));
                 // mult by speed scalar
@@ -221,6 +228,10 @@ var cell = function(p, spec) {
         p.endShape();
 
         p.popMatrix();
+    };
+
+    var get_num_particles = function() {
+        return obj.get_mutation_info().particles;
     };
 
     return obj;

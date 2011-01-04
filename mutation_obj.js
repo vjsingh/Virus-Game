@@ -203,7 +203,9 @@ var mutation_obj = function(p) {
 		var rgb_arr = hsvToRgb(new_color_level, 75, 75);
 		return { 
             level: level,
-            color: p.color(rgb_arr[0], rgb_arr[1], rgb_arr[2])
+            color: p.color(rgb_arr[0], rgb_arr[1], rgb_arr[2]),
+            // get one new particle every 10 levels
+            particles: 2+p.floor(level/5)
         };
 	};
 	

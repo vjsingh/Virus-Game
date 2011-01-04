@@ -10,7 +10,7 @@ var in_game_state = function (p, previous_state) {
 
     // whether or not we are testing
     // use it wherever
-    var testing = true;
+    var testing = false;
     obj.testing = function() { return testing; };
 
     // --- constants ---
@@ -27,6 +27,7 @@ var in_game_state = function (p, previous_state) {
     // multiply each object's scroll amount by this
     // factor, which increases throughout the game
     var scroll_factor = 1;
+
     var game_objects = [];
 	var paused = false;
 
@@ -141,7 +142,7 @@ var in_game_state = function (p, previous_state) {
 		
         var startx = p.width-120;
         if (testing) {
-            var startx = 100;
+            var startx = 150;
         }
 
 		var initial_cells = [
@@ -149,25 +150,21 @@ var in_game_state = function (p, previous_state) {
                 pos: new p.PVector(startx, p.height/2),
                 vel: new p.PVector(0, 0),
                 state: "alive",
-				//mutation : mutation
             }),
             cell(p, {
                 pos: new p.PVector(startx+120, p.height/2-40),
                 vel: new p.PVector(0, 0),
                 state: "alive",
-				//mutation : mutation
             }),
             cell(p, {
                 pos: new p.PVector(startx+120, p.height/2),
                 vel: new p.PVector(0, 0),
                 state: "alive",
-				//mutation : mutation
             }),
             cell(p, {
                 pos: new p.PVector(startx+120, p.height/2+40),
                 vel: new p.PVector(0, 0),
                 state: "alive",
-				//mutation : mutation
             })
         ];
 		//var cell_level = type_to_level["cell"];
@@ -176,7 +173,7 @@ var in_game_state = function (p, previous_state) {
 
         var initial_par = particle(p, {
             pos: new p.PVector(0, p.height/2),
-            vel: new p.PVector(3, 0),
+            vel: new p.PVector(8, 0),
             // start with some gray
             mutation_info: mutation.get_info()//p.color(250, 250, 250)
 			//mutation : mutation
@@ -327,11 +324,9 @@ var in_game_state = function (p, previous_state) {
 				curr_active.set_state("infected"); //if same, about to change
 			}
             active_cell.set_state("active");
-            //update the tkillers' targets
-			
             //console.log("got next "+active_cell.to_string());
         }
-	}
+	};
 	
 	// Returns true if source is closer to target1 than target2 
 	// All 3 args are game_objs
@@ -1132,7 +1127,7 @@ var in_game_state = function (p, previous_state) {
 					// Set all applicable enemies to be outdated
 					set_all_outdated();
                     // update the scroll factor
-                    //scroll_factor += 0.1;
+                    scroll_factor += 0.1;
                     console.log("mutation occurred!");
                 }
 			}
@@ -1143,6 +1138,15 @@ var in_game_state = function (p, previous_state) {
     
     //Calls draw() on every obj
     obj.render = function(){
+
+        // put the active cell at the end of the list
+        // so it is drawn on top
+        if (active_cell) {
+            var cells = level("cell");
+            remove_elt(cells, active_cell);
+            cells.push(active_cell);
+        }
+
         p.background(142, 6, 29);
         //p.background(0, 0);
         for (var i=0; i<game_objects.length; i++) {
@@ -1193,7 +1197,7 @@ var in_game_state = function (p, previous_state) {
 	obj.key_pressed = function(k) {
 		if (k === 32) { //spacebar
             if (active_cell !== null) {
-                var particles = active_cell.fire(5);
+                var particles = active_cell.fire();
                 obj.add_objects(particles);
                 kill_active_cell();
             }

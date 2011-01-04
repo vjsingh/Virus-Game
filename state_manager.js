@@ -75,7 +75,7 @@ var state_manager = function (p) {
         
         //If we have a new state to go to
         if (next_state) {
-        console.log("next is "+next_state.get_type());
+        //console.log("next is "+next_state.get_type());
             //Figure out if next state is an overlay
             var state_type = next_state.get_type();
             var is_overlay = -1;
