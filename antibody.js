@@ -31,6 +31,11 @@ var antibody = function(p, spec) {
     // should be called when an antibody attaches to a cell
     obj.attach = function() {
         attached = true;
+        // scoot it out just a bit
+        obj.get_vel().mult(-1);
+        obj.move();
+        obj.move();
+
         //obj.set_target(null);
     };
 
