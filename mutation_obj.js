@@ -12,6 +12,15 @@ var mutation_obj = function(p) {
 	var level = 1;
 	var cells_infected = 0;
     var new_mutation = false;
+	// Color array for all the mutation levels
+	var color_array = [
+		p.color(250, 250, 40),
+		p.color(100, 250, 110),
+		p.color(60, 240, 240),
+		p.color(13, 28, 171),
+		p.color(167, 17, 161),
+		p.color(118, 12, 25)
+	];
 	
 	// Flashing
 	var flash_color = null;
@@ -198,12 +207,13 @@ var mutation_obj = function(p) {
 	// Returns the current mutation level and color
 	obj.get_info = function() {
 		// color level goes from 0 to 360
-		var new_color_level = (360 - (360 - level * 30));
+		//var new_color_level = (360 - (360 - level * 30));
 		//var hue = new_color_level / 360;
-		var rgb_arr = hsvToRgb(new_color_level, 75, 75);
+		//var rgb_arr = hsvToRgb(new_color_level, 75, 75);
 		return { 
             level: level,
-            color: p.color(rgb_arr[0], rgb_arr[1], rgb_arr[2]),
+            //color: p.color(rgb_arr[0], rgb_arr[1], rgb_arr[2]),
+			color : color_array[level % color_array.length], //% color_array.size],
             // get one new particle every 10 levels
             particles: 3+p.floor(level/5)
         };
