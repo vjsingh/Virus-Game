@@ -209,7 +209,7 @@ var mutation_obj = function(p) {
         };
 	};
 	
-	obj.get_level = function(n) {
+	obj.get_level = function() {
 		return level;
 	};
 

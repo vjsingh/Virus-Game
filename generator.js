@@ -48,7 +48,7 @@ var make_generator = function(p, spec) {
             } 
         },
         "empty_cell": {
-            start: 5000, num: 1, cap: 10, rate: 20000,
+            start: /* 5000 */ 0, num: 1, cap: 10, rate: 20000,
             make_new: function(en_pos) {
                 return empty_cell(p, { pos: en_pos });
             } 

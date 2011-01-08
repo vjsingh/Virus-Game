@@ -6,7 +6,7 @@
 var background = function(p, spec) {
 
 	//var background_image = p.loadImage("images/background.jpg");
-    var background_image = p.loadImage("images/jback1.png");
+    var background_image = p.loadImage("images/background1.png");
 
     // --- defaults ---
 
@@ -39,8 +39,8 @@ var background = function(p, spec) {
 		//console.log(obj.get_pos().x);
         p.image(background_image, obj.get_pos().x, 0);//obj.get_pos().y);
         //p.set(obj.get_pos().x, 0, background_image);
-        p.fill(255, 70);
-        p.noStroke();
+        //p.fill(255, 70);
+        //p.noStroke();
         //p.rect(obj.get_pos().x, 0, obj.get_width(), obj.get_height());
     };
 

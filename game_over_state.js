@@ -1,4 +1,8 @@
-var game_over_state = function (p, prev_state, score) { 
+// spec:
+//	score : num representing score of game
+//	mutation_level : num representing mutation level at end of game
+
+var game_over_state = function (p, prev_state, spec) { 
 	//right now, prev_state is not used
 	
     // object to return
@@ -12,7 +16,16 @@ var game_over_state = function (p, prev_state, score) {
 		pos : new p.PVector(p.width / 2, 150),
 		width : 0,
 		height : 0,
-		text : "Score : " + score,
+		text : "Score : " + spec.score,
+		text_size : 30,
+		text_color : 255
+	});
+
+	var mutation_rect  = rectangle(p, {
+		pos : new p.PVector(p.width / 2,200),
+		width : 0,
+		height : 0,
+		text : "Mutation Level : " + spec.mutation_level,
 		text_size : 30,
 		text_color : 255
 	});
@@ -39,6 +52,7 @@ var game_over_state = function (p, prev_state, score) {
 		
 	//Not ordered
 	var all_buttons = [restart_button, splash_button];
+	var all_rectangles = [score_rect, mutation_rect];
 
     // --- public methods ---
     
@@ -63,7 +77,7 @@ var game_over_state = function (p, prev_state, score) {
     obj.render = function() {
         p.fill(0, 100);
         p.rect(0, 0, p.width, p.height);
-		score_rect.draw();
+		for_each(all_rectangles, function(r) {r.draw();});
     };
 	
     return obj;

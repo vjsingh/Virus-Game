@@ -20,6 +20,8 @@ var empty_cell = function(p, spec) {
     // state can be "alive", "infected", or "dead"
     //var state = spec.state || "alive";
 
+    var empty_image = p.loadImage("images/noninfectable1.png");
+	
     // --- public methods --- 
 
     // implementing game_object interface
@@ -40,7 +42,6 @@ var empty_cell = function(p, spec) {
 
     // draw makes a cell with a different color depending on state
     // just an outline for empty cell
-    // (circle for now)
     obj.draw = function() {
         var pos = obj.get_pos();
         p.shapeMode(obj.mode);
@@ -59,8 +60,8 @@ var empty_cell = function(p, spec) {
             p.fill(0);
         }
 
-        p.ellipse(pos.x, pos.y,
-                obj.get_width(), obj.get_height());
+        p.imageMode(obj.get_mode());
+        p.image(empty_image, pos.x, pos.y, obj.get_width(), obj.get_height());
     };
 
     obj.is_dead = function() {
