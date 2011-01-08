@@ -81,12 +81,18 @@ var cell = function(p, spec) {
             }
             else if (state === "active") {
                 drawArrow();
+				
+				// Draw a separate circle for the red outline
+				// so that we can more accurately fill in the cell
                 // red outline for now
                 p.stroke(255, 0, 0);
                 p.strokeWeight(4);
+				p.ellipse(pos.x, pos.y, obj.get_width(), obj.get_height());
+				
+				p.noStroke();
                 p.fill(obj.get_color());
             }
-            p.ellipse(pos.x, pos.y, obj.get_width(), obj.get_height());
+            p.ellipse(pos.x, pos.y, obj.get_width() * 4/5, obj.get_height() * 4/5);
         }
 
         p.imageMode(obj.get_mode());
