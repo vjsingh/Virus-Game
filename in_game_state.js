@@ -1069,7 +1069,7 @@ var in_game_state = function (p, previous_state) {
 				//console.log("num of particles: " + level("particle").length);
 				if (active_cell === null &&
 				        level("particle").length === 0) {
-					var go_state = game_over_state(p, previous_state);
+					var go_state = game_over_state(p, previous_state, score.get_num());
 					obj.set_next_state(go_state);
 					
 					// simply don't do the rest of update

@@ -8,6 +8,7 @@
 //  optional:
 //  	text : text to display
 // 		text_color : color of text (defaults to black);
+//		text_size : size of text (default to processings default)
 //		rect_color : color of rectangle (defaults to white)
 
 var rectangle = function (p, spec) {
@@ -24,6 +25,7 @@ var rectangle = function (p, spec) {
 	var topy = pos.y - half_height, bottomy = pos.y + half_height;
 	var text = spec.text || "";
 	var text_color = spec.text_color || 0;
+	var text_size = spec.text_size || 12;
 	var rect_color = spec.rect_color || 255;
 
     // --- public methods ---
@@ -43,6 +45,7 @@ var rectangle = function (p, spec) {
 		
 		p.fill(text_color);
         p.textAlign(p.CENTER, p.CENTER);
+		p.textSize(text_size);
         p.text(text, pos.x, pos.y);
 	};
 	

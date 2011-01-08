@@ -1,4 +1,4 @@
-var game_over_state = function (p, prev_state) { 
+var game_over_state = function (p, prev_state, score) { 
 	//right now, prev_state is not used
 	
     // object to return
@@ -6,6 +6,15 @@ var game_over_state = function (p, prev_state) {
 	obj.set_previous_state(prev_state);
 	
     // --- private variables ---
+
+	// Score display
+	var score_rect = rectangle(p, {
+		pos : new p.PVector(p.width / 2, 100),
+		width : 0,
+		height : 0,
+		text : "Score : " + score,
+		text_size : 30
+	});
 
 	// Buttons
 	var restart_button = button(p, {
@@ -28,7 +37,7 @@ var game_over_state = function (p, prev_state) {
 	});
 		
 	//Not ordered
-	var all_buttons = [restart_button, splash_button];
+	var all_buttons = [restart_button, splash_button, score_rect];
 
     // --- public methods ---
     
