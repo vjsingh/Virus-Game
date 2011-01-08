@@ -126,6 +126,9 @@ var in_game_state = function (p, previous_state) {
     // initialization code goes here
     // gets called at the bottom
 	var init = function() {
+		// Start playing the game music
+		play_sound("heart_loop1");
+		
 		//Initialize game_objects to be a list of num_of_render_levels empty lists
 		var num_of_render_levels = 0;
 		for (var key in type_to_level){
