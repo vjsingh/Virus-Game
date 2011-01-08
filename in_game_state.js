@@ -1183,22 +1183,6 @@ var in_game_state = function (p, previous_state) {
 		for_each(all_status_objs, function(o) {o.draw();});
     };
    
-    /* 
-    obj.mouse_click = function (x, y) {
-		//For every button, if the mouse click is in the button, then
-		//set next state to be the state specified by the button
-		for (var i = 0; i < all_buttons.length; i++) {
-			var button = all_buttons[i];
-			var rectangle = button.rectangle;
-			// Should only be true for one button
-			if (rectangle.is_in(x, y)) {
-				obj.set_next_state(button.state);
-				break;
-			}
-		}
-    };
-    */
-	
 	obj.key_pressed = function(k) {
 		if (k === 32) { //spacebar
             if (active_cell !== null) {
@@ -1228,6 +1212,11 @@ var in_game_state = function (p, previous_state) {
 			choose_right_cell();
 		}
 	};
+	
+	// Press spacebar
+    obj.mouse_click = function (x, y) {
+		obj.key_pressed(32);
+    };
 	
 	obj.set_b_cell_target = function(the_b_cell) {
 		for_each(get_all_of_type("floater"), function(o){
