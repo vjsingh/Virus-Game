@@ -9,11 +9,12 @@ var game_over_state = function (p, prev_state, score) {
 
 	// Score display
 	var score_rect = rectangle(p, {
-		pos : new p.PVector(p.width / 2, 100),
+		pos : new p.PVector(p.width / 2, 150),
 		width : 0,
 		height : 0,
 		text : "Score : " + score,
-		text_size : 30
+		text_size : 30,
+		text_color : 255
 	});
 
 	// Buttons
@@ -37,7 +38,7 @@ var game_over_state = function (p, prev_state, score) {
 	});
 		
 	//Not ordered
-	var all_buttons = [restart_button, splash_button, score_rect];
+	var all_buttons = [restart_button, splash_button];
 
     // --- public methods ---
     
@@ -62,6 +63,7 @@ var game_over_state = function (p, prev_state, score) {
     obj.render = function() {
         p.fill(0, 100);
         p.rect(0, 0, p.width, p.height);
+		score_rect.draw();
     };
 	
     return obj;
