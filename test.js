@@ -76,3 +76,8 @@ var back_code = function(p) {
 };
 var back_canvas = document.getElementById("back_canvas");
 //var backInstance = new Processing(back_canvas, back_code);
+
+// Make spacebar not move the window down
+window.onkeydown = function(e) { 
+  return !(e.keyCode == 32);
+};
