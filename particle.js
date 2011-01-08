@@ -7,8 +7,8 @@ var particle = function(p, spec) {
 
     // --- defaults ---
 
-    spec.width = spec.width || 20;
-    spec.height = spec.height || 20;
+    spec.width = spec.width || 15;
+    spec.height = spec.height || 15;
 
     // obj to return
     var obj = game_object(p, spec);

@@ -10,12 +10,10 @@ var antibody = function(p, spec) {
 
     spec.width = spec.width || 15;
     spec.height = spec.height || 10;
-	spec.speed = spec.speed || 2;
-	spec.no_target_speed = spec.no_target_speed || 1
+	spec.speed = spec.speed || 4;
+	spec.no_target_speed = spec.no_target_speed || 2
 	
-	spec.vel = new p.PVector(Math.random() * 2 - 1,
-										Math.random());
-										
+	//spec.vel = random_vel();										
     // obj to return
     var obj = seeker(p, spec);
 
@@ -33,6 +31,11 @@ var antibody = function(p, spec) {
     // should be called when an antibody attaches to a cell
     obj.attach = function() {
         attached = true;
+        // scoot it out just a bit
+        obj.get_vel().mult(-1);
+        obj.move();
+        obj.move();
+
         //obj.set_target(null);
     };
 
@@ -70,6 +73,12 @@ var antibody = function(p, spec) {
 
         p.popMatrix();
     };
+
+    // always facing down since b_cell at top of screen
+    obj.random_target_angle = function() {
+        return p.random(0, p.PI);
+    };
+    obj.set_target_angle(obj.random_target_angle());
 
     return obj;
 }

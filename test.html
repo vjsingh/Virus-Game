@@ -1,4 +1,5 @@
 <script src="processing-1.0.0.min.js"></script>
+<script src="image_list.js"></script>
 <script src="game_object.js"></script>
 <script src="wall_segment.js"></script>
 <script src="particle.js"></script>
@@ -31,7 +32,12 @@
 <script src="canvg.js"></script> --> 
 
 <h1>Virus Game Test</h1>
-<canvas id="test_canvas"></canvas>
+<div style="position:relative;">
+    <canvas id="test_canvas" style="z-index: 2; position: absolute; left: 0px; top: 0px">
+        Your browser does not support the HTML5 canvas element. Upgrade to Chrome, Firefox, or Opera. 
+    </canvas>
+<canvas id="back_canvas" style="z-index: 1; position: absolute; left: 0px; top: 0px"></canvas>
+</div>
 
 <script src="test.js"></script>
 

@@ -33,17 +33,16 @@ var make_generator = function(p, spec) {
     // - make_new = function that takes a pos and returns a new enemy
     var gen_info = {
         "cell": { 
-            start: 0, num: 10, cap: 20, rate: 5000,
+            start: 0, num: 8, cap: 15, rate: 5000,
             make_new: function(en_pos) {
                 return cell(p, {
                     pos: en_pos,
                     state: "alive",
-					//mutation : mutation
                 });
             }
         },
         "wall_cell": {
-            start: 0, num: 1, cap: 7, rate: 20000, //non testing value: 1000
+            start: 0, num: 3, cap: 7, rate: 20000, //non testing value: 1000
             make_new: function(en_pos) {
                 return wall_cell(p, { pos: en_pos });
             } 
@@ -67,7 +66,7 @@ var make_generator = function(p, spec) {
                 return tkiller(p, { 
 					pos: en_pos, 
 					mutation_info: game.get_mutation_info()
-					});
+				});
             }
         },
 		"multiplier": {
@@ -133,8 +132,8 @@ var make_generator = function(p, spec) {
 
 			//Generate random y position
             // TODO change hardcoded numbers
-			var enemy_y = p.random(30, p.height-30);
-			var enemy_pos = new p.PVector(p.width+30, enemy_y);
+			var enemy_y = p.random(90, p.height-50);
+			var enemy_pos = new p.PVector(p.width+50, enemy_y);
 			
 			var new_enemy = make_new(enemy_type)(enemy_pos);
 			assert(new_enemy, "Error in generator.update()");

@@ -5,7 +5,8 @@
 
 var background = function(p, spec) {
 
-	var background_image = p.loadImage("images/background.jpg");
+	//var background_image = p.loadImage("images/background.jpg");
+    var background_image = p.loadImage("images/jback1.png");
 
     // --- defaults ---
 
@@ -37,8 +38,9 @@ var background = function(p, spec) {
 		//p.image(background_image, 0, 0);
 		//console.log(obj.get_pos().x);
         p.image(background_image, obj.get_pos().x, 0);//obj.get_pos().y);
-        //p.fill(255, 70);
-        //p.noStroke();
+        //p.set(obj.get_pos().x, 0, background_image);
+        p.fill(255, 70);
+        p.noStroke();
         //p.rect(obj.get_pos().x, 0, obj.get_width(), obj.get_height());
     };
 
@@ -52,13 +54,17 @@ var background = function(p, spec) {
 	};
     */
     var count = 0;
-    obj.get_scroll_dist = function() {
-        count += .2;
+
+    obj.scroll = function(scroll_factor) {
+        count += 1;
         if (count === 1) {
             count = 0;
-            return -1;
+            obj.get_pos().add(new p.PVector(obj.get_scroll_dist()*scroll_factor, 0));
         }
-        return 0;
+    };
+
+    obj.get_scroll_dist = function() {
+        return -1;
     };
 
     return obj;

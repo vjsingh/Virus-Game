@@ -35,7 +35,7 @@ var wall_cell = function(p, spec) {
         var pos = obj.get_pos();
         p.shapeMode(obj.mode);
 
-        p.fill(0);
+        p.fill(100);
         p.noStroke();
 
         var w = obj.get_width();

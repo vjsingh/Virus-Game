@@ -31,8 +31,10 @@ var cell = function(p, spec) {
 	
     // state can be "alive", "infected", "active", or "dead"
     var state = spec.state || "alive";
-    var arrow_angle = 0;
-    var arrow_dir = 1;
+    // random initial angle
+    var arrow_angle = p.random(-p.PI/2, p.PI/2);
+    // random dir (1 or -1)
+    var arrow_dir = p.random() >= 0.5 ? 1 : -1;
 	
 	// indicates whether has been hit by an arrow and is being targeted
 	//var is_targeted = false;
@@ -68,48 +70,35 @@ var cell = function(p, spec) {
         var pos = obj.get_pos();
         p.shapeMode(obj.get_mode());
 
-        p.stroke(0);
-        p.strokeWeight(1);
+        p.noStroke();
 
-        if (state === "alive" || state === "infected") {
-            //p.fill(175);
-	        //p.ellipse(pos.x, pos.y,
-	                //obj.get_width(), obj.get_height());
-			if (state === "infected") {
-				p.strokeWeight(0);
-				//if (is_targeted) {
-				//	p.fill(0);
-				//}
-				//else {
-					p.fill(obj.get_color());
-				//}
-				//p.ellipse(pos.x + obj.get_width() / 8, pos.y - obj.get_height() / 8, 
-					//		obj.get_width() / 2, obj.get_height() / 2);
-				
-				p.fill(obj.get_color());
-			}
-			else { //alive
-				p.fill(p.color(200, 50, 50));
-			}
-			p.ellipse(pos.x, pos.y, obj.get_width(), obj.get_height());
-			p.imageMode(obj.get_mode());
-			p.image(cell_image, pos.x, pos.y, obj.get_width(), obj.get_height());
+        if (state === "alive") {
+            p.fill(p.color(200, 50, 50));
         }
-        else if (state === "active") {
-            drawArrow();
-            // red outline for now
-            p.stroke(255, 0, 0);
-            p.strokeWeight(3);
+        else {
+            if (state === "infected") {
+                p.fill(obj.get_color());
+            }
+            else if (state === "active") {
+                drawArrow();
+                // red outline for now
+                p.stroke(255, 0, 0);
+                p.strokeWeight(4);
+                p.fill(obj.get_color());
+            }
+            p.ellipse(pos.x, pos.y, obj.get_width(), obj.get_height());
+        }
 
-            p.fill(obj.get_color());
-	        p.ellipse(pos.x, pos.y,
-	                obj.get_width(), obj.get_height());
-        }
+        p.imageMode(obj.get_mode());
+        p.image(cell_image, pos.x, pos.y, obj.get_width(), obj.get_height());
+
+        /*
         else if (state === "dead") {
             p.fill(0);
 	        p.ellipse(pos.x, pos.y,
 	                obj.get_width(), obj.get_height());
         }
+        */
 
     };
 
@@ -142,9 +131,7 @@ var cell = function(p, spec) {
     };
 	
 	// explodes this cell if it is active
-    // takes number of particles to generate
-	// returns that many particles
-	obj.fire = function(num_particles) {
+	obj.fire = function() {
 		if (state === "active") {
             // TODO: need a slower death
 			obj.die();
@@ -158,6 +145,7 @@ var cell = function(p, spec) {
             var x = r*p.cos(ang) + pos.x;
             var y = r*p.sin(ang) + pos.y;
 
+            var num_particles = get_num_particles();
             // angle between all the shots
             var range = p.PI/6;
             var incr = range/num_particles;
@@ -165,10 +153,14 @@ var cell = function(p, spec) {
             var particles = [];
 
             ang = arrow_angle - range/2;
+            // special case
+            if (num_particles === 1) {
+                ang = arrow_angle;
+            }
             while (num_particles > 0) {
                 var new_vel = new p.PVector(p.cos(ang), p.sin(ang));
                 // mult by speed scalar
-                new_vel.mult(3);
+                new_vel.mult(7);
                 // if we want to add velocity of cell
                 new_vel.add(obj.get_vel());
                 
@@ -202,7 +194,7 @@ var cell = function(p, spec) {
                 || arrow_angle < -p.PI/2) {
             arrow_dir = (2-arrow_dir)-2;
         }
-        arrow_angle += p.radians(3)*arrow_dir;
+        arrow_angle += p.radians(5)*arrow_dir;
     };
 
     var drawArrow = function() {
@@ -220,14 +212,26 @@ var cell = function(p, spec) {
 
         // red outline for now
         p.stroke(255, 0, 0);
-        p.strokeWeight(3);
+        p.strokeWeight(2);
+        p.fill(obj.get_color());
 
         var x1 = w/2;
-        p.line(0, 0, x1, 0);
-        p.line(x1, 0, x1+w/3, w/3);
-        p.line(x1, 0, x1+w/3, -w/3);
+        // draw facing out to right
+        p.beginShape();
+        p.vertex(0, -5);
+        p.vertex(x1, -5);
+        p.vertex(x1, -10);
+        p.vertex(x1+15, 0);
+        p.vertex(x1, 10);
+        p.vertex(x1, 5);
+        p.vertex(0, 5);
+        p.endShape();
 
         p.popMatrix();
+    };
+
+    var get_num_particles = function() {
+        return obj.get_mutation_info().particles;
     };
 
     return obj;

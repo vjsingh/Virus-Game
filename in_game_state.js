@@ -10,7 +10,7 @@ var in_game_state = function (p, previous_state) {
 
     // whether or not we are testing
     // use it wherever
-    var testing = true;
+    var testing = false;
     obj.testing = function() { return testing; };
 
     // --- constants ---
@@ -27,6 +27,7 @@ var in_game_state = function (p, previous_state) {
     // multiply each object's scroll amount by this
     // factor, which increases throughout the game
     var scroll_factor = 1;
+
     var game_objects = [];
 	var paused = false;
 
@@ -141,7 +142,7 @@ var in_game_state = function (p, previous_state) {
 		
         var startx = p.width-120;
         if (testing) {
-            var startx = 100;
+            var startx = 150;
         }
 
 		var initial_cells = [
@@ -149,25 +150,21 @@ var in_game_state = function (p, previous_state) {
                 pos: new p.PVector(startx, p.height/2),
                 vel: new p.PVector(0, 0),
                 state: "alive",
-				//mutation : mutation
             }),
             cell(p, {
                 pos: new p.PVector(startx+120, p.height/2-40),
                 vel: new p.PVector(0, 0),
                 state: "alive",
-				//mutation : mutation
             }),
             cell(p, {
                 pos: new p.PVector(startx+120, p.height/2),
                 vel: new p.PVector(0, 0),
                 state: "alive",
-				//mutation : mutation
             }),
             cell(p, {
                 pos: new p.PVector(startx+120, p.height/2+40),
                 vel: new p.PVector(0, 0),
                 state: "alive",
-				//mutation : mutation
             })
         ];
 		//var cell_level = type_to_level["cell"];
@@ -176,7 +173,7 @@ var in_game_state = function (p, previous_state) {
 
         var initial_par = particle(p, {
             pos: new p.PVector(0, p.height/2),
-            vel: new p.PVector(3, 0),
+            vel: new p.PVector(8, 0),
             // start with some gray
             mutation_info: mutation.get_info()//p.color(250, 250, 250)
 			//mutation : mutation
@@ -192,7 +189,7 @@ var in_game_state = function (p, previous_state) {
 		// Add background
 		//var bg = background(p, { pos : new p.PVector(0, 0)});
 		//obj.add_object(bg);	
-		console.log(level("background")[0]);
+		//console.log(level("background")[0]);
 	};
 	
 	// Returns the current b cell on the screen, if there is one
@@ -327,11 +324,9 @@ var in_game_state = function (p, previous_state) {
 				curr_active.set_state("infected"); //if same, about to change
 			}
             active_cell.set_state("active");
-            //update the tkillers' targets
-			
             //console.log("got next "+active_cell.to_string());
         }
-	}
+	};
 	
 	// Returns true if source is closer to target1 than target2 
 	// All 3 args are game_objs
@@ -610,8 +605,10 @@ var in_game_state = function (p, previous_state) {
             // only if cell is "alive"
             // (ie only one particle per cell)
             assert(cell, "Not a cell in infect!");
-            if (cell.get_state() === "alive") {
+            if (cell.get_state() !== "dead") {
                 par.die();
+            }
+            if (cell.get_state() === "alive") {
                 cell.set_state("infected");
                 // change mutation of cell to match particle
                 cell.set_mutation_info(par.get_mutation_info());
@@ -834,7 +831,7 @@ var in_game_state = function (p, previous_state) {
 
             // set the rightmost
             rightmost_back = new_tile;
-            console.log("added tile "+new_tile.to_string());
+            //console.log("added tile "+new_tile.to_string());
         }
     };
 
@@ -846,12 +843,8 @@ var in_game_state = function (p, previous_state) {
         });
         obj.add_object(rightmost_back);
 
-        // while the whole screen isn't covered
-        //while(!goes_off_right(rightmost_back)) {
-            // add new tile
-            add_back();
-            console.log("init_back");
-        //}
+        // add one more tile to fill screen
+        add_back();
     };
 
     // tells if a background tile goes off the right of the screen
@@ -880,15 +873,15 @@ var in_game_state = function (p, previous_state) {
                     + rightmost.get_width()/2
                     + new_spec.width/2 - 1;
 
-                // set y for top wall
-                var y = new_spec.height/2;
+                // set y for bottom wall
+                var y = p.height - new_spec.height/2 + 5;
                 // switch if it's a bottom wall
-                if (rightmost === rightmost_btm) {
-                    y = p.height - y;
-                    new_spec.is_top = false;
+                if (rightmost === rightmost_top) {
+                    y = p.height - y + 40;
+                    new_spec.is_top = true;
                 }
                 else {
-                    new_spec.is_top = true;
+                    new_spec.is_top = false;
                 }
                 new_spec.pos = new p.PVector(x, y);
 
@@ -1021,6 +1014,21 @@ var in_game_state = function (p, previous_state) {
 		for_each(get_all_of_type("tkiller"), function(o) {o.outdated();});
 	}
 
+    var dynamic_scroll = function() {
+        do_to_types(function(o) { o.scroll(1); },
+                ["background", "wall_segment"], true);
+
+        if (active_cell) {
+            var ac = active_cell.get_pos();
+            var dist = ac.x - 75;
+            if (! (dist <= 1 && dist >= 0) ) {
+                do_to_all_objs(function(o) { o.get_pos().add(
+                            new p.PVector(-dist/10, 0)); });
+                        //["particle", "cell", "enemy"], false);
+            }
+        }
+    };
+
     
     // --- public methods ---
     
@@ -1090,9 +1098,12 @@ var in_game_state = function (p, previous_state) {
 				update_tkillers_targets();
 				
 				// scroll all objects
+               
 				do_to_all_objs(function(o){
 					o.scroll(scroll_factor);
 				});
+                
+                //dynamic_scroll();
 				
 				// update distance travelled
                 distance += scroll_factor;   
@@ -1118,7 +1129,7 @@ var in_game_state = function (p, previous_state) {
 					// Set all applicable enemies to be outdated
 					set_all_outdated();
                     // update the scroll factor
-                    //scroll_factor += 0.1;
+                    scroll_factor += 0.1;
                     console.log("mutation occurred!");
                 }
 			}
@@ -1129,7 +1140,17 @@ var in_game_state = function (p, previous_state) {
     
     //Calls draw() on every obj
     obj.render = function(){
-        p.background(200);
+
+        // put the active cell at the end of the list
+        // so it is drawn on top
+        if (active_cell) {
+            var cells = level("cell");
+            remove_elt(cells, active_cell);
+            cells.push(active_cell);
+        }
+
+        p.background(142, 6, 29);
+        //p.background(0, 0);
         for (var i=0; i<game_objects.length; i++) {
             for (var j=0; j<game_objects[i].length; j++) {
                 var o = game_objects[i][j];
@@ -1151,10 +1172,15 @@ var in_game_state = function (p, previous_state) {
         }
         */	
 	   
+        // draw a rect under status labels
+        p.noStroke();
+        p.fill(180);
+        p.rect(0, 0, p.width, 40);
 		//Draw the status labels
 		for_each(all_status_objs, function(o) {o.draw();});
     };
-    
+   
+    /* 
     obj.mouse_click = function (x, y) {
 		//For every button, if the mouse click is in the button, then
 		//set next state to be the state specified by the button
@@ -1168,25 +1194,28 @@ var in_game_state = function (p, previous_state) {
 			}
 		}
     };
+    */
 	
 	obj.key_pressed = function(k) {
 		if (k === 32) { //spacebar
             if (active_cell !== null) {
-                var particles = active_cell.fire(5);
+                var particles = active_cell.fire();
                 obj.add_objects(particles);
                 kill_active_cell();
             }
 		}
-		else if (k === 112) { //p
+		else if (k === 112 || p.keyCode === 13) { //p, enter
 			paused = true;
 			var p_state = pause_state(p, obj);
 			obj.set_next_state(p_state);
 		}
+        /*
 		else if (k === 104) { //h
 			paused = true;
 			var h_state = help_state(p, obj);
 			obj.set_next_state(h_state);
 		}
+        */
 		//right and left
 		k = p.keyCode;
 		if (k === p.LEFT) { //left
@@ -1203,11 +1232,11 @@ var in_game_state = function (p, previous_state) {
 				alert_b_cell(o);
 			}
 		});
-	}
+	};
 
 	obj.resume = function() {
 		paused = false;
-	}
+	};
     
     //Adds a game_object to the game world
     obj.add_object = function(o) {
@@ -1226,7 +1255,7 @@ var in_game_state = function (p, previous_state) {
 	
 	obj.get_all_buttons = function() {
 		return all_buttons;
-	}
+	};
     
     // --- getters --- 
 

@@ -8,7 +8,7 @@
 //  float radius = circle collision radius (will be auto-calced)
 //  p.PVector vel = initial velocity
 //  p.PVector accel = initial acceleration
-//  mutation_info = object with level and color props
+//  mutation_info = object with level, num_particles and color props
 
 var game_object = function (p, spec) {
 
@@ -21,7 +21,7 @@ var game_object = function (p, spec) {
         return "game_object";
     };
 
-    obj.DEFAULT_SCROLL_DIST = -.8;
+    obj.DEFAULT_SCROLL_DIST = -1.5;
 
     // --- private variables ---
 
@@ -35,7 +35,7 @@ var game_object = function (p, spec) {
     var radius = spec.radius // default set at bottom of file
     // used for mutation
     var mutation_info = spec.mutation_info ||
-            { level: -1, color: p.color(0, 0, 0) };
+            { level: -1, color: p.color(0, 0, 0), particles: 0 };
 			
 	var alive = true;
 	
@@ -136,6 +136,10 @@ var game_object = function (p, spec) {
 	};
 	
     // --- setters --- 
+    
+    obj.set_pos = function(new_pos) {
+        pos = new_pos;
+    };
 
     obj.set_accel = function(new_accel) {
         accel = new_accel;

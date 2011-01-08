@@ -11,7 +11,7 @@ var b_cell = function(p, spec) {
 
     spec.width = spec.width || 30;
     spec.height = spec.height || 30;
-    spec.speed = spec.speed || 1.5;
+    spec.speed = spec.speed || 3.5;
 
     // obj to return
     var obj = seeker(p, spec);
@@ -82,7 +82,9 @@ var b_cell = function(p, spec) {
 
     obj.get_scroll_dist = function() {
 		var state = obj.get_state();
-        if (state === "shooting" || state === "alive") {
+        if (state === "shooting"
+                || state === "alive"
+                || state === "active" ) {
 			return 0;
 		}
 		else if (state === "outdated") {
@@ -100,7 +102,7 @@ var b_cell = function(p, spec) {
             //obj.stop();
             // make it face downwards
             obj.set_target_angle(p.PI/2);
-			if (Math.random() < .009) {
+			if (Math.random() < .019) {
 				make_antibody();
 			}
         }

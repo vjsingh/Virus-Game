@@ -20,7 +20,8 @@ var seeker = function(p, spec) {
 	var no_target_speed = spec.no_target_speed || 0.2;
     var alive = true;
     var target = spec.target || null;
-    var target_angle = Math.random() * (p.PI * 2) - p.PI; //random angle
+    // initialized to random val at bottom
+    var target_angle = 0;
 
     // --- public methods --- 
 
@@ -106,6 +107,14 @@ var seeker = function(p, spec) {
 	obj.get_target_angle = function() {
 		return target_angle;
 	};
+
+    // creates a random angle for init'ing
+    obj.random_target_angle = function() {
+        return p.random(-p.PI, p.PI); 
+            //Math.random() * (p.PI * 2) - p.PI; //random angle
+    };
+    target_angle = obj.random_target_angle();
+
 
     return obj;
 }

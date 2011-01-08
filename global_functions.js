@@ -27,6 +27,27 @@ var for_each = function(arr, fun) {
 	}
 };
 
+// returns the index of an element in a list,
+// otherwise false
+var member = function(arr, elt) {
+    for (var i=0; i<arr.length; i++) {
+        if (arr[i] === elt) {
+            return i;
+        }
+    }
+    return false;
+};
+
+// removes the first instance of elt from the array
+var remove_elt = function(arr, elt) {
+    remove_index(arr, arr.indexOf(elt));
+};
+
+// removes the element at index i from the array and returns it
+var remove_index = function(arr, i) {
+    return arr.splice(i, 1)[0];
+};
+
 // returns a random element from an array
 var random_from = function(arr) {
     return arr[Math.floor(Math.random()*arr.length)];
