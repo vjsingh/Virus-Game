@@ -1152,7 +1152,7 @@ var in_game_state = function (p, previous_state) {
             cells.push(active_cell);
         }
 
-        p.background(142, 6, 29);
+        //p.background(142, 6, 29);
         //p.background(0, 0);
         for (var i=0; i<game_objects.length; i++) {
             for (var j=0; j<game_objects[i].length; j++) {
