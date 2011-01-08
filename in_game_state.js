@@ -609,6 +609,9 @@ var in_game_state = function (p, previous_state) {
                 par.die();
             }
             if (cell.get_state() === "alive") {
+				//Play sound
+				play_sound("cell_infect");
+			
                 cell.set_state("infected");
                 // change mutation of cell to match particle
                 cell.set_mutation_info(par.get_mutation_info());
