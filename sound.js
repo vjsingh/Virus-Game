@@ -11,7 +11,7 @@ var play_sound = (function() {
 		for (a = 0; a < audiochannels.length; a++) {
 			thistime = new Date();
 			if (audiochannels[a]['finished'] < thistime.getTime()) { // is this channel finished?
-				audiochannels[a]['finished'] = thistime.getTime() + document.getElementById(s).duration * 1000;
+				audiochannels[a]['finished'] = thistime.getTime() + document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
 				audiochannels[a]['channel'].src = document.getElementById(s).src;
 				audiochannels[a]['channel'].load();
 				audiochannels[a]['channel'].play();
