@@ -21,6 +21,9 @@ var floater = function(p, spec) {
 
     // --- private variables ---
     
+	var macrophage_image = p.loadImage("images/macrophage1.png");
+	var macrophage_active = p.loadImage("images/macrophage_active.png");
+	
     // how far up or down it can move
     var range = 50;
     var btm_lim = obj.get_pos().y + range;
@@ -45,6 +48,7 @@ var floater = function(p, spec) {
 
     // (rectangle for now)
     obj.draw = function() {
+		/*
         var pos = obj.get_pos();
         var w = obj.get_width();
         var h = obj.get_height();
@@ -58,6 +62,21 @@ var floater = function(p, spec) {
         // had to hack to center rect
         // might need to change
         p.rect(pos.x-w/2, pos.y-h/2, w, h);
+        */
+        var pos = obj.get_pos();
+		p.imageMode(obj.get_mode());
+		if (state === "active") {
+			var w = obj.get_width();
+			var h = obj.get_height();
+			p.shapeMode(obj.mode);
+			p.fill(obj.get_color());
+			p.noStroke();
+			p.ellipse(pos.x + w / 8, pos.y - w / 8 + 1, 15, 15);
+			p.image(macrophage_active, pos.x, pos.y, w, h);
+		}
+		else {
+			p.image(macrophage_image, pos.x, pos.y, obj.get_width(), obj.get_height());
+		}
     };
 
     obj.is_dead = function() {

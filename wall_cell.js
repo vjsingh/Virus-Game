@@ -18,7 +18,8 @@ var wall_cell = function(p, spec) {
     };
 
     // --- private variables ---
-
+	
+	var wall_image = p.loadImage("images/wallcell1.png");
     var alive = true;
 
     // --- public methods --- 
@@ -33,6 +34,7 @@ var wall_cell = function(p, spec) {
     // (rect for now)
     obj.draw = function() {
         var pos = obj.get_pos();
+		/*
         p.shapeMode(obj.mode);
 
         p.fill(100);
@@ -41,6 +43,9 @@ var wall_cell = function(p, spec) {
         var w = obj.get_width();
         var h = obj.get_height();
         p.rect(pos.x-w/2, pos.y-h/2, w, h);
+        */
+		p.imageMode(obj.get_mode());
+		p.image(wall_image, pos.x, pos.y, obj.get_width(), obj.get_height());
     };
 
     obj.is_dead = function() {

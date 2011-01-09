@@ -22,6 +22,8 @@ var b_cell = function(p, spec) {
 
     // --- private variables ---
 
+	var b_image = p.loadImage("images/bcell1.png");
+
     // state can be "alive", "active", "shooting", "outdated"
 	
 	// Antibodies are created in update, and returned in get_antibodies()
@@ -114,6 +116,7 @@ var b_cell = function(p, spec) {
     // should point towards target
     // (triangle for now)
     obj.draw = function() {
+		/*
         p.pushMatrix();
          
         var pos = obj.get_pos();
@@ -138,6 +141,18 @@ var b_cell = function(p, spec) {
         p.ellipse(-w/4, 0, 10, 10);
 
         p.popMatrix();
+		*/
+		var pos = obj.get_pos();
+		
+		p.pushMatrix();
+		p.imageMode(obj.get_mode());
+        p.translate(pos.x, pos.y);
+		p.rotate(obj.get_target_angle() + p.PI / 2);
+		p.fill(obj.get_color());
+		p.noStroke();
+		//p.rect(rectx_offset, recty_offset, rect_width, rect_height);
+		p.image(b_image, 0, 0, obj.get_width(), obj.get_height());
+		p.popMatrix();
     };
 
     return obj;
