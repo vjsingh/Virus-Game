@@ -21,3 +21,14 @@ var play_sound = (function() {
 	}
 	return to_return;
 }());
+
+var background_music = new Audio();
+var play_background_music = function(s) {
+	stop_background_music();
+	background_music.src = document.getElementById(s).src;
+	background_music.load();
+	background_music.play();
+}
+var stop_background_music = function() {
+	background_music.pause();
+}

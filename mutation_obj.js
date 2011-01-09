@@ -215,7 +215,7 @@ var mutation_obj = function(p) {
             //color: p.color(rgb_arr[0], rgb_arr[1], rgb_arr[2]),
 			color : color_array[level % color_array.length], //% color_array.size],
             // get one new particle every 10 levels
-            particles: 3+p.floor(level/5)
+            particles: 2+p.floor(level/3)
         };
 	};
 	
