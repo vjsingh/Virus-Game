@@ -20,7 +20,8 @@ var particle = function(p, spec) {
     // --- private variables ---
 
     //var par_shape = p.loadShape("images/virusfinal.svg");
-	var par_image = p.loadImage("images/virus1.png");
+	//var par_image = p.loadImage("images/virus1.png");
+	var par_image = p.loadImage("images/new/particle.png");
 	//var mutation = spec.mutation;
 
     // --- public methods --- 

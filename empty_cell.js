@@ -20,7 +20,8 @@ var empty_cell = function(p, spec) {
     // state can be "alive", "infected", or "dead"
     //var state = spec.state || "alive";
 
-    var empty_image = p.loadImage("images/noninfectable1.png");
+    //var empty_image = p.loadImage("images/noninfectable1.png");
+    var empty_image = p.loadImage("images/new/noninfectable.png");
 	
     // --- public methods --- 
 

@@ -23,9 +23,12 @@ var cell = function(p, spec) {
 
 	// images
 	var images = random_image_selector();
-    var image1 = p.loadImage("images/infectable1.png");
-    var image2 = p.loadImage("images/infectable2.png");
-    var image3 = p.loadImage("images/infectable3.png");
+    //var image1 = p.loadImage("images/infectable1.png");
+    //var image2 = p.loadImage("images/infectable2.png");
+    //var image3 = p.loadImage("images/infectable3.png");
+    var image1 = p.loadImage("images/new/infectable1.png");
+    var image2 = p.loadImage("images/new/infectable2.png");
+    var image3 = p.loadImage("images/new/infectable3.png");
 	images.add(image1);images.add(image2);images.add(image3);
 	var cell_image = images.get_image();
 	
