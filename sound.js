@@ -1,4 +1,4 @@
-// Taken from
+// Taken from http://www.storiesinflight.com/html5/audio.html
 var play_sound = (function() {
 	var channel_max = 10;										// number of channels
 	audiochannels = new Array();
@@ -12,7 +12,8 @@ var play_sound = (function() {
 			thistime = new Date();
 			if (audiochannels[a]['finished'] < thistime.getTime()) { // is this channel finished?
 				audiochannels[a]['finished'] = thistime.getTime() + document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
-				audiochannels[a]['channel'].src = document.getElementById(s).src;
+				// Audio is encoded as base64
+				audiochannels[a]['channel'].src = g_soundDataMap[s]; //document.getElementById(s).src;
 				audiochannels[a]['channel'].load();
 				audiochannels[a]['channel'].play();
 				break;
@@ -32,3 +33,4 @@ var play_background_music = function(s) {
 var stop_background_music = function() {
 	background_music.pause();
 }
+

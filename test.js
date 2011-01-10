@@ -27,8 +27,8 @@ var p_code = function(p) {
     p.draw = function() {
 		update_counter += 1;
         if (update_counter === 30) {
-		    console.log("frame "+p.millis());
-            console.log(p.__frameRate);
+		    //console.log("frame "+p.millis());
+            //console.log(p.__frameRate);
             update_counter = 0;
         }
         g.update(); // Also renders
