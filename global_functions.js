@@ -74,3 +74,5 @@ function keys(obj) {
 
 
 
+// TAKEOUT
+on_server = false; 

@@ -23,6 +23,7 @@ var make_generator = function(p, spec) {
 	var mutation = spec.mutation;
 	var game = spec.game;
 
+	var default_gen_speed = 10;
     // structure that stores the generation settings
     // for each type of object
     // - start = distance after which to start generating
@@ -30,10 +31,13 @@ var make_generator = function(p, spec) {
     // - cap = upper limit on num
     // - rate = determines when to increment num
     //          when dist % rate = 0, num increments
+	// - gen_speed = speed with which to generate the object
+	//				1 (1/100 frames) to 100 (100/100 frames)
+	//				If not specified, defaults to DEFAULT_GEN_SPEED
     // - make_new = function that takes a pos and returns a new enemy
     var gen_info = {
         "cell": { 
-            start: 0, num: 8, cap: 15, rate: 5000,
+            start: 0, num: 8, cap: 15, rate: 5000, gen_speed: 25,
             make_new: function(en_pos) {
                 return cell(p, {
                     pos: en_pos,
@@ -104,6 +108,9 @@ var make_generator = function(p, spec) {
     var rate = function(type) {
         return gen_info[type].rate;
     };
+    var gen_speed = function(type) {
+        return gen_info[type].gen_speed;
+    };
     var make_new = function(type) {
         return gen_info[type].make_new;
     };
@@ -126,7 +133,7 @@ var make_generator = function(p, spec) {
         // if there aren't enough of that enemy on the board
         if (num_enemies < num(enemy_type)
                 // and some random factor
-                && p.random(100) < 50///2
+                && p.random(100) < (gen_speed(enemy_type) || default_gen_speed )
                 // and we are ready to start making this enemy
                 && distance >= start(enemy_type)) {
 

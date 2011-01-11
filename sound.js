@@ -13,9 +13,14 @@ var play_sound = (function() {
 			if (audiochannels[a]['finished'] < thistime.getTime()) { // is this channel finished?
 				audiochannels[a]['finished'] = thistime.getTime() + document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
 				// Audio is encoded as base64
-				audiochannels[a]['channel'].src = g_soundDataMap[s]; //document.getElementById(s).src;
-				audiochannels[a]['channel'].load();
-				audiochannels[a]['channel'].play();
+				
+				// SO IT WILL WORK LOCALLY
+				// TODO: take out
+				if (on_server) {
+					audiochannels[a]['channel'].src = g_soundDataMap[s]; //document.getElementById(s).src;
+					audiochannels[a]['channel'].load();
+					audiochannels[a]['channel'].play();
+				}
 				break;
 			}
 		}
