@@ -520,9 +520,10 @@ var in_game_state = function (p, previous_state) {
     var bounce_collided = (function() {
 		// A list containing 2 element lists
 		// Inner lists represent object type pairs to not bounce off each other
-		var to_exclude = [["particle", "multiplier"], 
+		var to_exclude = [  ["particle", "multiplier"], 
 							["particle", "particle"],
-                            ["wall_segment", "b_cell"]];
+                            ["wall_segment", "b_cell"],
+							["particle", "antibody"]];
 
 		var is_excluded = function(o1, o2) {
 			var is_excluded = false;
