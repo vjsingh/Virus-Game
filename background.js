@@ -32,7 +32,11 @@ var background = function(p, spec) {
     // update is default (move)
 
     // (flat rect for now)
-    obj.draw = function() {	
+    obj.draw = function() {
+		var x_pos = obj.get_pos().x;
+			
+		p.fill(p.color(49, 0, 0));
+        p.rect(x_pos, 0, obj.get_width() - x_pos, obj.get_height());
 		p.imageMode(obj.get_mode());
 		//background_image.resize(p.width, p.height);
 		//p.image(background_image, 0, 0);

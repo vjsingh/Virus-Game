@@ -29,12 +29,22 @@ var play_sound = (function() {
 }());
 
 var background_music = new Audio();
-var play_background_music = function(s) {
+var play_background_music = (function() {
+	// Load all the audio loops
+	var loop1 = new Audio();
+	loop1.src = "sounds/heart_loop1.mp3";
+	var loop2 = new Audio();
+	loop2.src = "sounds/sinister.mp3";
+	var loops = [loop1, loop2];
+	for_each(loops, function(l) {l.load();});
+	
+	return function() {
 	stop_background_music();
-	background_music.src = document.getElementById(s).src;
-	background_music.load();
+	background_music = loops[Math.floor(Math.random() * loops.length)];
+	//background_music.load(); //already loaded
 	background_music.play();
-}
+	}
+}());
 var stop_background_music = function() {
 	background_music.pause();
 }

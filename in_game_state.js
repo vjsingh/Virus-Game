@@ -53,6 +53,8 @@ var in_game_state = function (p, previous_state) {
 	// Used to draw all of the statuses (must implement draw)
 	var all_status_objs = [score, mult, time_status, mutation];
 	
+	var all_notifications = [];
+	
 	var generator = make_generator(p, {
 		game : obj,
 		mutation : mutation
@@ -127,7 +129,7 @@ var in_game_state = function (p, previous_state) {
     // gets called at the bottom
 	var init = function() {
 		// Start playing the game music
-		//play_background_music("heart_loop1");
+		play_background_music();
 		
 		//Initialize game_objects to be a list of num_of_render_levels empty lists
 		var num_of_render_levels = 0;
@@ -673,6 +675,7 @@ var in_game_state = function (p, previous_state) {
 							flo.activate();
 							alert_b_cell(flo);
 						}
+						all_notifications.push(notification(p, {text : "Macrophage Activated"}));
                     }
                 },
                 
@@ -777,12 +780,14 @@ var in_game_state = function (p, previous_state) {
                     if (b.is_alive() && flo.is_activated()) {
                         b.set_mutation_info(flo.get_mutation_info());
                         b.activate();
+						all_notifications.push(notification(p, {text : "B Cell Activated"}));
                     }
                 },
                 "wall_segment": function(b, wall) {
                     //console.log("collision");
                     if (b.is_activated()) {
                         b.make_antibodies();
+						all_notifications.push(notification(p, {text : "B Cell is producing Antibodies, watch out!"}));
                     }
                     else if (b.is_alive() || b.is_outdated()) {
                         bounce(b, wall);
@@ -1147,6 +1152,9 @@ var in_game_state = function (p, previous_state) {
 					set_all_outdated();
                     // update the scroll factor
                     scroll_factor += 0.1;
+					
+					all_notifications.push(notification(p, {text : "New Mutation! Your new mutation is: <Insert new ability here>"}));
+					
                     console.log("mutation occurred!");
                 }
 			}
@@ -1195,7 +1203,15 @@ var in_game_state = function (p, previous_state) {
         p.rect(0, 0, p.width, 40);
 		//Draw the status labels
 		for_each(all_status_objs, function(o) {o.draw();});
+		
+		// Draw all the notifications, removing if finishing
+		for_each(all_notifications, function(n) {
+			if (!n.draw()) {
+				remove_elt(all_notifications, n);
+			}
+		})
     };
+	
    
 	obj.key_pressed = function(k) {
 		if (k === 32) { //spacebar
