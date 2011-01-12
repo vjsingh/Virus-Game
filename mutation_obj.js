@@ -64,7 +64,7 @@ var mutation_obj = function(p) {
 		setTimeout(flash_red, 2000);
 		setTimeout(flash_white, 2500);
 		// End flashing in 3 seconds
-		setInterval(end_flash, 3000);
+		setTimeout(end_flash, 3000);
 	}
 	
 	// updates the flash color
