@@ -616,13 +616,17 @@ var in_game_state = function (p, previous_state) {
 				//Play sound
 				play_sound("cell_infect");
 			
+				// increase mutation percentage
+				// must be done before setting state of infected cell
+				mutation.infected_cell();
+				
                 cell.set_state("infected");
-                // change mutation of cell to match particle
-                cell.set_mutation_info(par.get_mutation_info());
+                // change mutation of cell to match particle,
+				// or new mutation info if mutated
+				cell.set_mutation_info(mutation.get_info());
+                //cell.set_mutation_info(par.get_mutation_info());
 				// Add 1 to score
 				score.incr(1 * mult.get_num());
-				// increase mutation percentage
-				mutation.infected_cell();
             }
             else {
                 // otherwise deflect
@@ -1017,7 +1021,7 @@ var in_game_state = function (p, previous_state) {
 	};
     
 	var set_all_outdated = function() {
-		get_b_cell().outdated();
+		for_each(get_all_of_type("b_cell"), function(o) {o.outdated();});
 		for_each(get_all_of_type("tkiller"), function(o) {o.outdated();});
 	}
 
@@ -1133,8 +1137,6 @@ var in_game_state = function (p, previous_state) {
                 // check for a new mutation
                 // if mutation occurred
                 if (mutation.has_new_mutation() && active_cell) {
-                    // set the new info
-                    active_cell.set_mutation_info(mutation.get_info());
                     // reset the counters
                     mutation.reset_mutation();
 					// Set all applicable enemies to be outdated

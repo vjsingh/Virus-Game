@@ -185,6 +185,8 @@ var mutation_obj = function(p) {
             // set the flag
             new_mutation = true;
 			flash_bar();
+			level += 1;
+	        level_status_obj.incr(1);
         }
 	};
 
@@ -196,10 +198,8 @@ var mutation_obj = function(p) {
     // resets the counters and the flag
     // to be called after a mutation is enacted in the game
     obj.reset_mutation = function() {
-		level += 1;
         cells_infected = 0;
         bar_status_obj.set_num(0);
-        level_status_obj.incr(1);
 		// reset flag
 		new_mutation = false;
     };
@@ -213,7 +213,8 @@ var mutation_obj = function(p) {
 		return { 
             level: level,
             //color: p.color(rgb_arr[0], rgb_arr[1], rgb_arr[2]),
-			color : color_array[level % color_array.length], //% color_array.size],
+			// level starts at 1, so have to subtract 1
+			color : color_array[(level - 1) % color_array.length], //% color_array.size],
             // get one new particle every 10 levels
             particles: 2+p.floor(level/3)
         };
