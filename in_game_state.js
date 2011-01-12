@@ -129,7 +129,9 @@ var in_game_state = function (p, previous_state) {
     // gets called at the bottom
 	var init = function() {
 		// Start playing the game music
-		play_background_music();
+		if (g_music_on()) {
+			play_background_music();
+		}
 		
 		//Initialize game_objects to be a list of num_of_render_levels empty lists
 		var num_of_render_levels = 0;
@@ -1212,14 +1214,18 @@ var in_game_state = function (p, previous_state) {
 		})
     };
 	
-   
+   	var do_fire = function() {
+        if (active_cell !== null) {
+            var particles = active_cell.fire();
+            obj.add_objects(particles);
+            kill_active_cell();
+        }
+	}
 	obj.key_pressed = function(k) {
 		if (k === 32) { //spacebar
-            if (active_cell !== null) {
-                var particles = active_cell.fire();
-                obj.add_objects(particles);
-                kill_active_cell();
-            }
+			if (g_spacebar_to_fire()) {
+				do_fire();
+			}
 		}
 		else if (k === 112 || p.keyCode === 13) { //p, enter
 			paused = true;
@@ -1243,9 +1249,11 @@ var in_game_state = function (p, previous_state) {
 		}
 	};
 	
-	// Press spacebar
+	// Fire
     obj.mouse_click = function (x, y) {
-		obj.key_pressed(32);
+		if (g_click_to_fire()) {
+			do_fire();
+		}
     };
 	
 	obj.set_b_cell_target = function(the_b_cell) {

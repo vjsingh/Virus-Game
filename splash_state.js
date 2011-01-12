@@ -17,11 +17,21 @@ var splash_state = function (p) {
 			text : "Start Game"
 		}
 	});
+	
+	var options_button = button(p, {
+		state : function() { return options_state(p, obj); },
+		rect :  {
+			pos : new p.PVector(p.width / 2, 300),
+			width : 100,
+			height : 40,
+			text : "Options"
+		}
+	});	
 		
 	var help_button = button(p, {
 		state : function() { return help_state(p, obj); },
 		rect :  {
-			pos : new p.PVector(p.width / 2, 300),
+			pos : new p.PVector(p.width / 2, 350),
 			width : 100,
 			height : 40,
 			text : "Help"
@@ -39,7 +49,7 @@ var splash_state = function (p) {
 	*/
 	
 	//Not ordered
-	var all_buttons = [start_button, help_button];
+	var all_buttons = [start_button, options_button, help_button];
 
     // --- public methods ---
     

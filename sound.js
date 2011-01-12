@@ -8,20 +8,22 @@ var play_sound = (function() {
 		audiochannels[a]['finished'] = -1;							// expected end time for this channel
 	}
 	var to_return = function(s){
-		for (a = 0; a < audiochannels.length; a++) {
-			thistime = new Date();
-			if (audiochannels[a]['finished'] < thistime.getTime()) { // is this channel finished?
-				audiochannels[a]['finished'] = thistime.getTime() + document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
-				// Audio is encoded as base64
-				
-				// SO IT WILL WORK LOCALLY
-				// TODO: take out
-				if (on_server) {
-					audiochannels[a]['channel'].src = g_soundDataMap[s]; //document.getElementById(s).src;
-					audiochannels[a]['channel'].load();
-					audiochannels[a]['channel'].play();
+		if (g_sound_fx_on()) {
+			for (a = 0; a < audiochannels.length; a++) {
+				thistime = new Date();
+				if (audiochannels[a]['finished'] < thistime.getTime()) { // is this channel finished?
+					audiochannels[a]['finished'] = thistime.getTime() + document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
+					// Audio is encoded as base64
+					
+					// SO IT WILL WORK LOCALLY
+					// TODO: take out
+					if (on_server) {
+						audiochannels[a]['channel'].src = g_soundDataMap[s]; //document.getElementById(s).src;
+						audiochannels[a]['channel'].load();
+						audiochannels[a]['channel'].play();
+					}
+					break;
 				}
-				break;
 			}
 		}
 	}

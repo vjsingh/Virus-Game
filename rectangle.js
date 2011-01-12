@@ -53,6 +53,14 @@ var rectangle = function (p, spec) {
 		text = t;
 	}
 	
+	// Getters
+	obj.get_right_x = function() {
+		return rightx;
+	}
+	obj.get_top_y = function() {
+		return topy;
+	}
+	
 	
     return obj;
 };

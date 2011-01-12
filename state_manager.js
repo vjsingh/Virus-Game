@@ -100,6 +100,10 @@ var state_manager = function (p) {
 					is_overlay = true;
                     p.noLoop();
 					break;
+				case "options":
+					is_overlay = true;
+                    p.noLoop();
+					break;
             }
 			
 			//Error checking
