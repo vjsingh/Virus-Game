@@ -623,8 +623,12 @@ var in_game_state = function (p, previous_state) {
                 cell.set_state("infected");
                 // change mutation of cell to match particle,
 				// or new mutation info if mutated
-				cell.set_mutation_info(mutation.get_info());
-                //cell.set_mutation_info(par.get_mutation_info());
+                if (mutation.has_new_mutation()) {
+					cell.set_mutation_info(mutation.get_info());
+				}
+				else {
+					cell.set_mutation_info(par.get_mutation_info());
+				}
 				// Add 1 to score
 				score.incr(1 * mult.get_num());
             }
