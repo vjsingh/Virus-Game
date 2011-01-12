@@ -48,7 +48,8 @@ var mutation_obj = function(p) {
 	// takes into account level, cells_infected, and a random probability
 	var mutation_occured = function() {
 		//return Math.random() + ( (cells_infected / 50) / (level + 1)) > .95;
-        return (Math.random() * (cells_infected / 50)) > .3;
+        //return (Math.random() * (cells_infected / 50)) > .3;
+        return (Math.random() + (cells_infected / 100) - (level / 50)) > .98;
 	};
 	
 	// Flashes the mutation bar red and white
