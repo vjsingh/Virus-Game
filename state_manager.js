@@ -10,18 +10,19 @@ var state_manager = function (p) {
     
     // --- private variables ---
 
-    var curr_state = splash_state(p); //The currently active state
-    // shouldn't loop on splash
-    p.noLoop();
+    var curr_state = loading_state(p); //The currently active state
+    //p.noLoop();
     var displayed_states = [curr_state]; //THIS MUST ALWAYS BE SORTED BY RENDERING LEVEL
     
     //A mapping from game states to their rendering levels
     var type_to_level = {
         "splash": 0,
+		"loading" : 0,
         "game": 1,
         "game_over": 2,
         "pause": 2,
-        "help": 2
+        "help": 2,
+		"options" : 2
     };
     
     // --- private methods ---
@@ -82,7 +83,7 @@ var state_manager = function (p) {
             switch (state_type) {
                 case "splash":
                     is_overlay = false;
-                    p.noLoop();
+                    p.loop();
                     break;
                 case "game":
                     is_overlay = false;
@@ -101,8 +102,12 @@ var state_manager = function (p) {
                     p.noLoop();
 					break;
 				case "options":
-					is_overlay = true;
-                    p.noLoop();
+					is_overlay = false;
+                    p.loop();
+					break;
+				case "loading":
+					is_overlay = false;
+                    p.loop();
 					break;
             }
 			
@@ -123,7 +128,6 @@ var state_manager = function (p) {
                 }
 			}
 			else {
-				remove_from_displayed(curr_state);
 				displayed_states = [next_state];
 			}
 			curr_state = next_state;

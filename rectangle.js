@@ -10,6 +10,7 @@
 // 		text_color : color of text (defaults to black);
 //		text_size : size of text (default to processings default)
 //		rect_color : color of rectangle (defaults to white)
+// 		image 		: string location of image to display instead of a rectangle
 
 var rectangle = function (p, spec) {
 
@@ -27,6 +28,11 @@ var rectangle = function (p, spec) {
 	var text_color = spec.text_color || 0;
 	var text_size = spec.text_size || 12;
 	var rect_color = spec.rect_color || 255;
+	var rect_image;
+	if (spec.image) {
+		rect_image = p.loadImage(spec.image);
+	}
+	var rect_mode = p.CENTER;
 
     // --- public methods ---
 
@@ -36,12 +42,20 @@ var rectangle = function (p, spec) {
 	};
 	
 	obj.draw = function() {
-        p.shapeMode(obj.mode);
-
-        p.fill(rect_color);
-        p.noStroke();
-
-		p.rect(leftx, topy, width, height);
+		//console.log("drawing");
+		if (rect_image) {
+			p.imageMode(rect_mode);
+			rect_image.resize(width, height);
+			p.image(rect_image, pos.x, pos.y);//, width, height);
+		}
+		else {
+			p.shapeMode(rect_mode);
+			
+			p.fill(rect_color);
+			p.noStroke();
+			
+			p.rect(leftx, topy, width, height);
+		}
 		
 		p.fill(text_color);
         p.textAlign(p.CENTER, p.CENTER);
@@ -54,8 +68,8 @@ var rectangle = function (p, spec) {
 	}
 	
 	// Getters
-	obj.get_right_x = function() {
-		return rightx;
+	obj.get_left_x = function() {
+		return leftx;
 	}
 	obj.get_top_y = function() {
 		return topy;

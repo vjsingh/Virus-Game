@@ -7,8 +7,8 @@
 var option_button = function(p, spec) {
 	
     // --- defaults ---
-    spec.rect.width = 100;
-    spec.rect.height = 35;
+    spec.rect.width = spec.width || 250;
+    spec.rect.height = spec.height || 80;
 
     // obj to return
     var obj = {};
@@ -18,8 +18,8 @@ var option_button = function(p, spec) {
 	var rect = rectangle(p, spec.rect);
 	// Left-edge x and top-edge y coordinates of 'checkbox' indicating whether
 	// option is enabled
-	var status_x = rect.get_right_x() + 20;
-	var status_y = rect.get_top_y() + 30;
+	var status_x = rect.get_left_x() + 50;
+	var status_y = rect.get_top_y() + 40;
 
     // --- public methods --- 
 
@@ -27,11 +27,8 @@ var option_button = function(p, spec) {
         rect.draw();
 		if (g_game_settings[spec.global_var]) {
 			p.fill(255, 255, 255);
+			p.ellipse(status_x, status_y, 10, 10);
 		}
-		else {
-			p.fill(0, 0, 0);
-		}
-		p.ellipse(status_x, status_y, 10, 10);
 	};
 	
 	// Returns the state to go to if clicked, or

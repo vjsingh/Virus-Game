@@ -5,6 +5,8 @@ var splash_state = function (p) {
 
     // --- private variables ---
 
+	var header_image = p.loadImage("images/screens/header.png");
+
 	// Buttons
 	// Have a rectangle representing their position and
 	// a state to go to when pressed
@@ -14,7 +16,7 @@ var splash_state = function (p) {
 			pos : new p.PVector(p.width / 2, 250),
 			width : 100,
 			height : 40,
-			text : "Start Game"
+			image : "images/screens/newgame_listcell.png"
 		}
 	});
 	
@@ -76,6 +78,8 @@ var splash_state = function (p) {
 
     obj.render = function() {
         p.background(200);
+		p.imageMode(p.CENTER);
+		p.image(header_image, p.width / 2, 100, p.width * 3/4, 100);
     };
 
     return obj;

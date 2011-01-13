@@ -21,6 +21,13 @@ var help_state = function (p, prev_state) {
 		
 	//Not ordered
 	var all_buttons = [ back_button ];
+	var instruction_text = "Luckily for you, Jimmy McSick fell and scraped his knee, but forgot to cover up the wound. Being a strong and pro-active virus particle, you've succesfully broken through the epedermis, and are on a quest to make Jimmy pay for his mistake.\
+ To succesfully infect the body, you must understand all of the body's defences, and outwit the human immune system. \n\
+ The most important thing is that you must always be looking for new body cells to infect. When a virus particle infects a cell, it replicates inside it, producing more virus particles.\n\
+ The body won't stand idly by, however. It has sent out some macrophages as its first line of defence. If you infect one of these white cells, you will activate Jimmy's impressive immune system. A B cell will promptly find the macrophage, get the appropriate antigen, and being producing antibodies.\n\
+ These antibodies will seek out any body cells which have been infected by a virus particle that they recognize. Beware of this happening, because as soon as an antibody binds to an infected body cell, a killer T cell will seek out the infected cell and destroy it.\n\
+ Your only hope against this highly effective system is to harness your incredibly ability to mutate. Every time a virus particle replicates, it changes slightly. With each change comes a small chance for a mutation to occur. The more times you replicate, the greater your chance for a mutation. Upon mutating, the body's current defenses all become useless, and it will have to repeat the process all over again.\n\
+ ";
 
     // --- public methods ---
     
@@ -43,7 +50,7 @@ var help_state = function (p, prev_state) {
 
         p.fill(255);
         p.textAlign(p.LEFT);
-        p.text("Instructions...A virus is a small infectious agent that can replicate only inside the living cells of organisms. Most viruses are too small to be seen directly with a light microscope. Viruses infect all types of organisms, from animals and plants to bacteria and archaea.[1] Since the initial discovery of the tobacco mosaic virus by Martinus Beijerinck in 1898,[2] about 5,000 viruses have been described in detail,[3] although there are millions of different types.[4] Viruses are found in almost every ecosystem on Earth and are the most abundant type of biological entity.[5][6] The study of viruses is known as virology, a sub-speciality of microbiology.", 
+        p.text(instruction_text,
                 15, 10, p.width/2-30, p.height/2 - 50);
 
         p.popMatrix();

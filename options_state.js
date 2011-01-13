@@ -6,6 +6,8 @@ var options_state = function (p, prev_state) {
 	
     // --- private variables ---
 	
+	var background_image = p.loadImage("images/screens/settings.png");
+	
 	// Buttons
 	// Have a rectangle representing their position and
 	// a state to go to when pressed
@@ -20,45 +22,41 @@ var options_state = function (p, prev_state) {
 	});
 
 	// Options
-	var option_rect_height = 40;
+	var option_image = "./images/screens/bullet_listcell.png";
 	var sound_fx_button = option_button(p, {
 		click_fun : g_toggle_sound_fx,
 		global_var : "sound_fx",
 		rect : {
-			pos : new p.PVector(p.width / 2, p.height/2 - (option_rect_height * 3)),
-			width : 100,
-			height : option_rect_height,
-			text: "Sound_fx"
+			pos : new p.PVector(p.width / 2 - 100, p.height/2 - 30),
+			text: "Sound_fx",
+			image : option_image
 		}
 	});
 	var music_button = option_button(p, {
 		click_fun : g_toggle_music,
 		global_var : "music",
 		rect : {
-			pos : new p.PVector(p.width / 2, p.height/2 - (option_rect_height * 1.5)),
-			width : 100,
-			height : option_rect_height,
-			text: "Music"
+			pos : new p.PVector(p.width / 2 - 100, p.height/2 + 80),
+			text: "Music",
+			image : option_image
 		}
 	});
 	var spacebar_button = option_button(p, {
 		click_fun : g_toggle_spacebar_to_fire,
 		global_var : "spacebar_to_fire",
 		rect : {
-			pos : new p.PVector(p.width / 2, p.height/2 + (option_rect_height * 1.5)),
-			width : 100,
-			height : option_rect_height,
-			text: "Use Spacebar to Fire"
+			pos : new p.PVector(p.width / 2 + 150, p.height/2 - 30),
+			text: "Use Spacebar to Fire",
+			image : option_image
 		}
 	});
 	var mouse_button = option_button(p, {
 		click_fun : g_toggle_click_to_fire,
 		global_var : "click_to_fire",
 		rect : {
-			pos : new p.PVector(p.width / 2, p.height/2 + (option_rect_height * 3)),
-			width : 100,
-			height : option_rect_height,
-			text: "Use Mouse click to Fire"
+			pos : new p.PVector(p.width / 2 + 150, p.height/2 + 80),
+			text: "Use Mouse click to Fire",
+			image : option_image
 		}
 	});
 	
@@ -89,6 +87,8 @@ var options_state = function (p, prev_state) {
 
     obj.render = function() {
         p.background(200);
+		p.imageMode(p.CORNERS);
+		p.image(background_image, 0, 0, p.width, p.height);
 		for_each(all_option_buttons, function(b) {b.draw();});
     };
 

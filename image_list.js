@@ -10,14 +10,25 @@ var image_list = [
     "tcell1.png",
     "tcell2.png",
     "tcell3.png",
-    "virus1.png"
+    "virus1.png",
+	"screens/bullet_listcell.png",
+	"screens/header.png",
+	"screens/loading.png",
+	"screens/newgame_listcell.png",
+	"screens/settings.png"
 ];
 
-var preload_images = function(sketch) {
+var preload_images = function(sketch, indicate_loaded) {
     for_each(
         image_list,
         function(name) {
             sketch.imageCache.add("images/"+name);
+			for (var i = 0; i < 999; i++) {
+				console.log("a");
+			}
+			indicate_loaded();
         }    
     );
 };
+
+var TOTAL_NUM_OF_IMAGES = (function() {return image_list.length;}());

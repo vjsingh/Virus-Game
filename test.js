@@ -48,8 +48,6 @@ var p_code = function(p) {
 // note that we need to do this AFTER the canvas element is created
 var canvas = document.getElementById("test_canvas");
 var sketch = new Processing.Sketch(p_code);
-// this will preload and cache images
-preload_images(sketch);
 sketch.options.isTransparent = true;
 var pInstance = new Processing(canvas, sketch);
 
