@@ -7,8 +7,12 @@ var g_game_settings = {
 	sound_fx : true,
 	music : true,
 	click_to_fire : true,
-	spacebar_to_fire : true
+	spacebar_to_fire : true,
+    background_color : 0xFF371010
 }
+// abbreviate it
+var g = g_game_settings;
+
 var g_toggle_sound_fx = function() {g_toggle("sound_fx");};
 var g_toggle_music = function() {g_toggle("music");};
 var g_toggle_click_to_fire = function() {g_toggle("click_to_fire");};

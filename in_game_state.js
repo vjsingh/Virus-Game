@@ -1153,9 +1153,9 @@ var in_game_state = function (p, previous_state) {
 					// Set all applicable enemies to be outdated
 					set_all_outdated();
                     // update the scroll factor
-                    scroll_factor += 0.1;
+                    scroll_factor += 0.05;
 					
-					all_notifications.push(notification(p, {text : "New Mutation! Your new mutation is: <Insert new ability here>"}));
+					all_notifications.push(notification(p, {text : "New Mutation!"}));
 					
                     console.log("mutation occurred!");
                 }
@@ -1176,8 +1176,8 @@ var in_game_state = function (p, previous_state) {
             cells.push(active_cell);
         }
 
-        //p.background(142, 6, 29);
-        //p.background(0, 0);
+        p.background(g.background_color);
+
         for (var i=0; i<game_objects.length; i++) {
             for (var j=0; j<game_objects[i].length; j++) {
                 var o = game_objects[i][j];

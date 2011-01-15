@@ -35,8 +35,8 @@ var background = function(p, spec) {
     obj.draw = function() {
 		var x_pos = obj.get_pos().x;
 			
-		p.fill(p.color(49, 0, 0));
-        p.rect(x_pos, 0, obj.get_width() - x_pos, obj.get_height());
+		//p.fill(p.color(49, 0, 0));
+        //p.rect(x_pos, 0, obj.get_width() - x_pos, obj.get_height());
 		p.imageMode(obj.get_mode());
 		//background_image.resize(p.width, p.height);
 		//p.image(background_image, 0, 0);
@@ -63,7 +63,7 @@ var background = function(p, spec) {
         count += 1;
         if (count === 1) {
             count = 0;
-            obj.get_pos().add(new p.PVector(obj.get_scroll_dist()*scroll_factor, 0));
+            obj.get_pos().add(new p.PVector(obj.get_scroll_dist()*p.round(scroll_factor), 0));
         }
     };
 

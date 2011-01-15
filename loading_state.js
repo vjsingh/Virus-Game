@@ -5,12 +5,12 @@ var loading_state = function (p) {
 
     // --- private variables ---
 
-	var background_image = p.loadImage("images/screens/loading.png");
+	var background_image = p.loadImage("images/screens/loadingsplash.png");
 	var next_state = splash_state(p);
 	var bar_left_x = p.width * 4/20;
 	var bar_right_x = p.width * 16/20;
 	var bar_top_y = p.height * 24/50;
-	var bar_height = p.height * 1/25
+	var bar_height = p.height * 1/25;
 	
 	// loaded progress
 	var load_progress = 0;
@@ -55,9 +55,9 @@ var loading_state = function (p) {
 
     obj.render = function() {
 		//console.log("rendering");
-        p.background(200);
+        p.background(g.background_color);
 		p.imageMode(p.CORNERS);
-		p.image(background_image, 0, 0, p.width, p.height);
+		p.image(background_image, 0, 0);//, p.width, p.height);
 		
 		p.fill(p.color(255, 0, 0));
 		p.shapeMode(p.CORNERS);

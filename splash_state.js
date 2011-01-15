@@ -7,7 +7,7 @@ var splash_state = function (p) {
 
 	//var header_image = p.loadImage("images/screens/header.png");
     var back_image = p.loadImage("images/screens/mainscreenbase.png");
-    var back_color = 0xFF371010;
+    var back_color = g.background_color; 
 
 	// Buttons
 	// Have a rectangle representing their position and

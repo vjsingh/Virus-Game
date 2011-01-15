@@ -6,7 +6,7 @@ var options_state = function (p, prev_state) {
 	
     // --- private variables ---
 	
-	var background_image = p.loadImage("images/screens/settings.png");
+	var background_image = p.loadImage("images/screens/settingssplash.png");
 	
 	// Buttons
 	// Have a rectangle representing their position and
@@ -86,7 +86,7 @@ var options_state = function (p, prev_state) {
 	};
 
     obj.render = function() {
-        p.background(200);
+        p.background(g.background_color);
 		p.imageMode(p.CORNERS);
 		p.image(background_image, 0, 0, p.width, p.height);
 		for_each(all_option_buttons, function(b) {b.draw();});
