@@ -5,27 +5,40 @@ var splash_state = function (p) {
 
     // --- private variables ---
 
-	var header_image = p.loadImage("images/screens/header.png");
+	//var header_image = p.loadImage("images/screens/header.png");
+    var back_image = p.loadImage("images/screens/mainscreenbase.png");
+    var back_color = 0xFF371010;
 
 	// Buttons
 	// Have a rectangle representing their position and
 	// a state to go to when pressed
+    var splash_style = {
+        width : 170,
+        height : 40,
+        text_color: 0xFFEE0000,
+        rect_color: back_color,
+        text_size: 30,
+        text_align: p.LEFT
+    };
+    var button_x = 500;
+    var button_top = 150;
+    var button_sep = 60;
+
 	var start_button = button(p, {
 		state : function() { return in_game_state(p, obj); },
 		rect : {
-			pos : new p.PVector(p.width / 2, 250),
-			width : 100,
-			height : 40,
-			image : "images/screens/newgame_listcell.png"
+			pos : new p.PVector(button_x, button_top),
+            style : splash_style,
+            text : "New Game"
+			//image : "images/screens/newgame_listcell.png"
 		}
 	});
 	
 	var options_button = button(p, {
 		state : function() { return options_state(p, obj); },
 		rect :  {
-			pos : new p.PVector(p.width / 2, 300),
-			width : 100,
-			height : 40,
+			pos : new p.PVector(button_x, button_top+button_sep),
+            style : splash_style,
 			text : "Options"
 		}
 	});	
@@ -33,9 +46,8 @@ var splash_state = function (p) {
 	var help_button = button(p, {
 		state : function() { return help_state(p, obj); },
 		rect :  {
-			pos : new p.PVector(p.width / 2, 350),
-			width : 100,
-			height : 40,
+			pos : new p.PVector(button_x, button_top+2*button_sep),
+            style : splash_style,
 			text : "Help"
 		}
 	});	
@@ -77,9 +89,10 @@ var splash_state = function (p) {
 	};
 
     obj.render = function() {
-        p.background(200);
+        p.background(back_color);
 		p.imageMode(p.CENTER);
-		p.image(header_image, p.width / 2, 100, p.width * 3/4, 100);
+		//p.image(header_image, p.width / 2, 100, p.width * 3/4, 100);
+        p.image(back_image, p.width/2, p.height/2);
     };
 
     return obj;

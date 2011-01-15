@@ -15,7 +15,8 @@ var image_list = [
 	"screens/header.png",
 	"screens/loading.png",
 	"screens/newgame_listcell.png",
-	"screens/settings.png"
+	"screens/settings.png",
+	"screens/mainscreenbase.png"
 ];
 
 var preload_images = function(sketch, indicate_loaded) {
@@ -23,6 +24,7 @@ var preload_images = function(sketch, indicate_loaded) {
         image_list,
         function(name) {
             sketch.imageCache.add("images/"+name);
+            // WHAT'S THIS?
 			for (var i = 0; i < 999; i++) {
 				console.log("a");
 			}
