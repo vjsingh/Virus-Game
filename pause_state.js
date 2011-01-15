@@ -9,21 +9,34 @@ var pause_state = function (p, prev_state) {
 	// Buttons
 	// Have a rectangle representing their position and
 	// a state to go to when pressed
+    var button_x = p.width / 2;
+    var button_top = 200;
+    var button_sep = 50;
 	
 	var continue_button = button(p, {
 		state : function() { return prev_state; },
 		rect : {
-			pos : new p.PVector(p.width / 2, p.height/2-100),
+			pos : new p.PVector(button_x, button_top),
 			width : 60,
 			height : 20,
 			text: "Continue"
 		}
 	});
 
+	var options_button = button(p, {
+		state : function() { return options_state(p, obj); },
+		rect : {
+			pos : new p.PVector(button_x, button_top+button_sep),
+			width : 60,
+			height : 20,
+			text: "Options"
+		}
+	});
+
 	var help_button = button(p, {
 		state : function() { return help_state(p, obj); },	
 		rect : {
-			pos : new p.PVector(p.width / 2, p.height/2-50),
+			pos : new p.PVector(button_x, button_top+2*button_sep),
 			width : 60,
 			height : 20,
 			text: "Help"
@@ -33,7 +46,7 @@ var pause_state = function (p, prev_state) {
 	var quit_button = button(p, {
 		state : function() { return splash_state(p); },	
 		rect : {
-			pos : new p.PVector(p.width / 2, p.height/2),
+			pos : new p.PVector(button_x, button_top+3*button_sep),
 			width : 60,
 			height : 20,
 			text: "Quit"
@@ -41,7 +54,7 @@ var pause_state = function (p, prev_state) {
 	});
 	
 	//Not ordered
-	var all_buttons = [ continue_button, help_button, quit_button ];
+	var all_buttons = [ continue_button, options_button, help_button, quit_button ];
 
     // --- public methods ---
     

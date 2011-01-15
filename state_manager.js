@@ -102,7 +102,7 @@ var state_manager = function (p) {
                     p.noLoop();
 					break;
 				case "options":
-					is_overlay = false;
+					is_overlay = true;
                     p.loop();
 					break;
 				case "loading":

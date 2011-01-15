@@ -87,8 +87,10 @@ var options_state = function (p, prev_state) {
 
     obj.render = function() {
         p.background(g.background_color);
+        //p.fill(g.background_color);
+        //p.rect(100, 100, 500, 500);
 		p.imageMode(p.CORNERS);
-		p.image(background_image, 0, 0, p.width, p.height);
+		p.image(background_image, 0, 0);//, p.width, p.height);
 		for_each(all_option_buttons, function(b) {b.draw();});
     };
 
