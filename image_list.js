@@ -33,4 +33,4 @@ var preload_images = function(sketch, indicate_loaded) {
     );
 };
 
-var TOTAL_NUM_OF_IMAGES = (function() {return image_list.length;}());
+var TOTAL_NUM_OF_IMAGES = image_list.length;
