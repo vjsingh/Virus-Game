@@ -14,21 +14,38 @@ var loading_state = function (p) {
 	
 	// loaded progress
 	var load_progress = 0;
-	var load_max = 4;//TOTAL_NUM_OF_IMAGES;
+	var load_max = TOTAL_NUM_OF_IMAGES;
 
+	// MUST BE ABOVE INDICATE_LOADED
+    obj.render = function() {
+		console.log("rendering loading state");
+        p.background(200);
+		p.imageMode(p.CORNERS);
+		p.image(background_image, 0, 0, p.width, p.height);
+		
+		p.fill(p.color(255, 0, 0));
+		p.shapeMode(p.CORNERS);
+		var percent_done = load_progress / load_max;
+		p.rect(bar_left_x, bar_top_y, 
+			(bar_right_x - bar_left_x) * percent_done, bar_height);
+    };
+	
 	// Call this function to indicate that something loaded
 	var indicate_loaded = function() {
 		load_progress += 1;
-		obj.render_wrapper(); // Not getting called ??
+		console.log("indicate loaded");
+		obj.render(); // Not getting called ??
 	}
 	
 	// Loading function, apply immediately
 	var load_fun = function() {
-		//preload_images(sketch, indicate_loaded);
+		preload_images(sketch, indicate_loaded);
+		/*
 		setTimeout(indicate_loaded, 500);
 		setTimeout(indicate_loaded, 1000);
 		setTimeout(indicate_loaded, 1500);
 		setTimeout(indicate_loaded, 2000);
+		*/
 	}();
 	
 	// Call when loading is finished (sets next state);
@@ -52,19 +69,6 @@ var loading_state = function (p) {
 	obj.get_all_buttons = function() {
 		return [];
 	};
-
-    obj.render = function() {
-		//console.log("rendering");
-        p.background(200);
-		p.imageMode(p.CORNERS);
-		p.image(background_image, 0, 0, p.width, p.height);
-		
-		p.fill(p.color(255, 0, 0));
-		p.shapeMode(p.CORNERS);
-		var percent_done = load_progress / load_max;
-		p.rect(bar_left_x, bar_top_y, 
-			(bar_right_x - bar_left_x) * percent_done, bar_height);
-    };
 	
 	obj.key_pressed = function() {};
 

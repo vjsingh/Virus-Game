@@ -26,10 +26,19 @@ var cell = function(p, spec) {
     //var image1 = p.loadImage("images/infectable1.png");
     //var image2 = p.loadImage("images/infectable2.png");
     //var image3 = p.loadImage("images/infectable3.png");
-    var image1 = p.loadImage("images/new/infectable1.png");
-    var image2 = p.loadImage("images/new/infectable2.png");
-    var image3 = p.loadImage("images/new/infectable3.png");
-	images.add(image1);images.add(image2);images.add(image3);
+	if (on_server) { // so itwill work locally
+		for_each(g_infected_cell_images, function(i){
+			images.add(p.loadImage(i));
+		});
+	}
+	else {
+		var image1 = p.loadImage("images/new/infectable1.png");
+		var image2 = p.loadImage("images/new/infectable2.png");
+		var image3 = p.loadImage("images/new/infectable3.png");
+		images.add(image1);
+		images.add(image2);
+		images.add(image3);
+	}
 	var cell_image = images.get_image();
 	
     // state can be "alive", "infected", "active", or "dead"

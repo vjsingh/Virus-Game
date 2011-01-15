@@ -21,7 +21,17 @@ var empty_cell = function(p, spec) {
     //var state = spec.state || "alive";
 
     //var empty_image = p.loadImage("images/noninfectable1.png");
-    var empty_image = p.loadImage("images/new/noninfectable.png");
+	var images = random_image_selector();
+	var empty_image = null;
+	if (on_server) { // so itwill work locally
+		for_each(g_empty_cell_images, function(i){
+			images.add(p.loadImage(i));
+		});
+		empty_image = images.get_image();
+	}
+	else {
+ 		empty_image = p.loadImage("images/new/noninfectable.png");
+	}
 	
     // --- public methods --- 
 
