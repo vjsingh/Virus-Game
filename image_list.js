@@ -23,9 +23,6 @@ var preload_images = function(sketch, indicate_loaded) {
         image_list,
         function(name) {
             sketch.imageCache.add("images/"+name);
-			for (var i = 0; i < 999; i++) {
-				console.log("a");
-			}
 			indicate_loaded();
         }    
     );

@@ -18,7 +18,7 @@ var loading_state = function (p) {
 
 	// MUST BE ABOVE INDICATE_LOADED
     obj.render = function() {
-		console.log("rendering loading state");
+		//console.log("rendering loading state");
         p.background(200);
 		p.imageMode(p.CORNERS);
 		p.image(background_image, 0, 0, p.width, p.height);
@@ -33,7 +33,7 @@ var loading_state = function (p) {
 	// Call this function to indicate that something loaded
 	var indicate_loaded = function() {
 		load_progress += 1;
-		console.log("indicate loaded");
+		//console.log("indicate loaded");
 		obj.render(); // Not getting called ??
 	}
 	
