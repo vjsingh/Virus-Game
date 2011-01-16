@@ -62,12 +62,13 @@ var for_each = function(arr, fun) {
 	}
 };
 
-// returns the index of an element in a list,
+// returns the index+1 of an element in a list,
 // otherwise false
+// can't return just the index because 0 is false in js
 var member = function(arr, elt) {
     for (var i=0; i<arr.length; i++) {
         if (arr[i] === elt) {
-            return i;
+            return i+1;
         }
     }
     return false;

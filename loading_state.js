@@ -45,7 +45,36 @@ var loading_state = function (p) {
 	// Call when loading is finished (sets next state);
 	var loading_finished = function(){
 		obj.set_next_state(next_state);
-	}
+	};
+
+    // filter out non-images
+    var image_types = ["png", "jpg", "gif"];
+    image_list = image_list.filter(function(name) {
+            return member(image_types, name.substring(name.lastIndexOf('.')+1));
+    });
+
+    var TOTAL_NUM_OF_IMAGES = image_list.length;
+    console.log("total num images: "+TOTAL_NUM_OF_IMAGES);
+
+    var preload_images = function(sketch, indicate_loaded) {
+        for_each(
+            image_list,
+            function(name) {
+                sketch.imageCache.add(name);
+                console.log("loading "+name);
+                // WHAT'S THIS?
+                //for (var i = 0; i < 999; i++) {
+                    //console.log("a");
+                //}
+                indicate_loaded();
+            }    
+        );
+    };
+
+    var all_images_loaded = function(sketch) {
+        return sketch.imageCache.pending;
+    };
+
     // --- public methods ---
     
     obj.get_type = function() {
