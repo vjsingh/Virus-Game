@@ -54,6 +54,10 @@ var in_game_state = function (p, previous_state) {
 	var all_status_objs = [score, mult, time_status, mutation];
 	
 	var all_notifications = [];
+    // takes a string and adds a new notification
+    var notify = function(note) {
+        all_notifications.push(notification(p, { "text": note }));
+    };
 	
 	var generator = make_generator(p, {
 		game : obj,
@@ -677,7 +681,7 @@ var in_game_state = function (p, previous_state) {
 							flo.activate();
 							alert_b_cell(flo);
 						}
-						all_notifications.push(notification(p, {text : "Macrophage Activated"}));
+                        notify("Macrophage activated!");
                     }
                 },
                 
@@ -782,14 +786,14 @@ var in_game_state = function (p, previous_state) {
                     if (b.is_alive() && flo.is_activated()) {
                         b.set_mutation_info(flo.get_mutation_info());
                         b.activate();
-						all_notifications.push(notification(p, {text : "B Cell Activated"}));
+                        notify("B-cell activated!");
                     }
                 },
                 "wall_segment": function(b, wall) {
                     //console.log("collision");
                     if (b.is_activated()) {
                         b.make_antibodies();
-						all_notifications.push(notification(p, {text : "B Cell is producing Antibodies, watch out!"}));
+                        notify("Incoming antibodies!");
                     }
                     else if (b.is_alive() || b.is_outdated()) {
                         bounce(b, wall);
@@ -1155,7 +1159,7 @@ var in_game_state = function (p, previous_state) {
                     // update the scroll factor
                     scroll_factor += 0.05;
 					
-					all_notifications.push(notification(p, {text : "New Mutation!"}));
+                    notify("Mutation occurred!");
 					
                     console.log("mutation occurred!");
                 }
