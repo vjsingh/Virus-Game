@@ -629,14 +629,8 @@ var in_game_state = function (p, previous_state) {
 				mutation.infected_cell();
 				
                 cell.set_state("infected");
-                // change mutation of cell to match particle,
-				// or new mutation info if mutated
-                if (mutation.has_new_mutation()) {
-					cell.set_mutation_info(mutation.get_info());
-				}
-				else {
-					cell.set_mutation_info(par.get_mutation_info());
-				}
+				cell.set_mutation_info(par.get_mutation_info());
+
 				// Add 1 to score
 				score.incr(1 * mult.get_num());
             }
@@ -1152,12 +1146,14 @@ var in_game_state = function (p, previous_state) {
                 // check for a new mutation
                 // if mutation occurred
                 if (mutation.has_new_mutation() && active_cell) {
+                    // mutate the active cell
+					active_cell.set_mutation_info(mutation.get_info());
                     // reset the counters
                     mutation.reset_mutation();
 					// Set all applicable enemies to be outdated
 					set_all_outdated();
                     // update the scroll factor
-                    scroll_factor += 0.05;
+                    scroll_factor += 0.1;
 					
                     notify("Mutation occurred!");
 					
