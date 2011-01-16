@@ -12,9 +12,15 @@ var loading_state = function (p) {
 	var bar_top_y = p.height * 24/50;
 	var bar_height = p.height * 1/25;
 	
+    // filter out non-images
+    var image_types = ["png", "jpg", "gif"];
+    image_list = image_list.filter(function(name) {
+            return member(image_types, name.substring(name.lastIndexOf('.')+1));
+    });
+
 	// loaded progress
 	var load_progress = 0;
-	var load_max = TOTAL_NUM_OF_IMAGES;
+	var load_max = image_list.length;
 
 	// MUST BE ABOVE INDICATE_LOADED
     obj.render = function() {
@@ -34,46 +40,35 @@ var loading_state = function (p) {
 	var indicate_loaded = function() {
 		load_progress += 1;
 		//console.log("indicate loaded");
-		obj.render(); // Not getting called ??
-	}
+		//obj.render(); // Not getting called ??
+	};
 	
-	// Loading function, apply immediately
-	var load_fun = function() {
-		preload_images(sketch, indicate_loaded);
-	}();
 	
 	// Call when loading is finished (sets next state);
+    // warning: gets called multiple times so don't do anything that can't be repeated
 	var loading_finished = function(){
+        console.log("finished loading");
 		obj.set_next_state(next_state);
 	};
 
-    // filter out non-images
-    var image_types = ["png", "jpg", "gif"];
-    image_list = image_list.filter(function(name) {
-            return member(image_types, name.substring(name.lastIndexOf('.')+1));
-    });
-
-    var TOTAL_NUM_OF_IMAGES = image_list.length;
-    console.log("total num images: "+TOTAL_NUM_OF_IMAGES);
-
-    var preload_images = function(sketch, indicate_loaded) {
+    var preload_images = function() {
         for_each(
             image_list,
             function(name) {
                 sketch.imageCache.add(name);
                 console.log("loading "+name);
-                // WHAT'S THIS?
-                //for (var i = 0; i < 999; i++) {
-                    //console.log("a");
-                //}
-                indicate_loaded();
             }    
         );
     };
 
-    var all_images_loaded = function(sketch) {
-        return sketch.imageCache.pending;
+    var all_images_loaded = function() {
+        return !sketch.imageCache.pending;
     };
+
+	// Loading function, apply immediately
+	var load_fun = function() {
+		preload_images();
+	}();
 
     // --- public methods ---
     
@@ -82,8 +77,9 @@ var loading_state = function (p) {
     };
 
     obj.update = function() {
-		if (load_progress === load_max && all_images_loaded(sketch)){
-            console.log(all_images_loaded(sketch));
+        // for now just base progress on pending amount of images
+        load_progress = load_max - sketch.imageCache.pending;
+		if (load_progress === load_max && all_images_loaded()){
 			// Give them a second to see that its loaded
 			setTimeout(loading_finished, 500);
 		}
