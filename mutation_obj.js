@@ -170,11 +170,9 @@ var mutation_obj = function(p) {
     // --- public methods --- 
 
 	obj.draw = function() {
+		bar_status_obj.draw();
 		if (is_flashing) {
 			draw_flashing_bar();
-		}
-		else {
-			bar_status_obj.draw();
 		}
 
         // draw mutation colored box under level num
@@ -238,7 +236,12 @@ var mutation_obj = function(p) {
 		return level;
 	};
 
-
+	obj.set_level = function(l) {
+        // decrement by the difference in levels
+	    level_status_obj.incr(l-level);
+        // set the new level
+		level = l;
+	};
 	
     return obj;
 };

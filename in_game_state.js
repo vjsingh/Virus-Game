@@ -1171,6 +1171,32 @@ var in_game_state = function (p, previous_state) {
 					
                     console.log("mutation occurred!");
                 }
+
+                // check for the highest mutation level on screen
+                var max_level = 0;
+                var find_max = function(o) {
+                    if (o.get_level() > max_level) {
+                        max_level = o.get_level();
+                    }
+                };
+                do_to_type(find_max, "cell", false);
+                do_to_type(find_max, "particle", false);
+                assert(max_level, "no max level found!");
+                // if max level lower than mutation level
+                if (max_level < mutation.get_level()) {
+                    // downgrade to that level
+                    mutation.set_level(max_level);
+                    // reset the counters
+                    mutation.reset_mutation();
+
+                    notify("Lost new strain!");
+                    console.log("downgraded to mutation level "+max_level);
+
+                    scroll_factor -= 0.1;
+
+                    // TODO do enemies become not outdated?
+                }
+                
 			}
         };
         
