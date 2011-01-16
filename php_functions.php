@@ -35,8 +35,11 @@ function add_dir_to_arr($dir, $arr) {
 }
 add_dir_to_arr("./images/infectable_cell/", "g_infected_cell_images");
 add_dir_to_arr("./images/noninfectable_cell/", "g_empty_cell_images");
-add_dir_to_arr("./images/", "image_list");
+// for preloading
 add_dir_to_arr("./images/screens/", "image_list");
+add_dir_to_arr("./images/", "image_list");
+add_dir_to_arr("./images/infectable_cell/", "image_list");
+add_dir_to_arr("./images/noninfectable_cell/", "image_list");
 ?>
 
 
