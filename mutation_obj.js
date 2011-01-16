@@ -29,7 +29,7 @@ var mutation_obj = function(p) {
 	// Shows the probability of getting a mutation
 	var bar_status_obj = num_status_obj(p, {
 		pos : new p.PVector(150, 20),
-		text : "Probability:",
+		text : "Mutation:",
 		num : 0,
 		bar : true,
 		max : 50
@@ -38,8 +38,9 @@ var mutation_obj = function(p) {
 	//Shows the curent mutation level
     var level_spec = {
 		pos : new p.PVector(350, 20),
-		text : "Level:   ",
+		text : "Level ",
 		num : 1,
+        text_color : p.color(0)
 	};
 	var level_status_obj = num_status_obj(p, level_spec); 
 	
@@ -180,7 +181,7 @@ var mutation_obj = function(p) {
         p.fill(get_color());
         p.noStroke();
         var lpos = level_spec.pos;
-        p.rect(lpos.x+12, lpos.y-10, 20, 20);
+        p.rect(lpos.x-30, lpos.y-10, 70, 20);
 
 		level_status_obj.draw();
 	};

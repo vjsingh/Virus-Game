@@ -1201,7 +1201,7 @@ var in_game_state = function (p, previous_state) {
 	   
         // draw a rect under status labels
         p.noStroke();
-        p.fill(180);
+        p.fill(0);//, 200);
         p.rect(0, 0, p.width, 40);
 		//Draw the status labels
 		for_each(all_status_objs, function(o) {o.draw();});
