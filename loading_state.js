@@ -6,6 +6,7 @@ var loading_state = function (p) {
     // --- private variables ---
 
 	var background_image = p.loadImage("images/screens/loadingsplash.png");
+
 	var next_state = splash_state(p);
 	var bar_left_x = p.width * 4/20;
 	var bar_right_x = p.width * 16/20;
@@ -25,15 +26,18 @@ var loading_state = function (p) {
 	// MUST BE ABOVE INDICATE_LOADED
     obj.render = function() {
 		//console.log("rendering loading state");
-        p.background(200);
-		p.imageMode(p.CORNERS);
-		p.image(background_image, 0, 0, p.width, p.height);
-		
-		p.fill(p.color(255, 0, 0));
-		p.shapeMode(p.CORNERS);
-		var percent_done = load_progress / load_max;
-		p.rect(bar_left_x, bar_top_y, 
-			(bar_right_x - bar_left_x) * percent_done, bar_height);
+        p.background(g.background_color);
+
+        if (background_image.loaded) {
+            p.imageMode(p.CORNERS);
+            p.image(background_image, 0, 0, p.width, p.height);
+            
+            p.fill(p.color(255, 0, 0));
+            p.shapeMode(p.CORNERS);
+            var percent_done = load_progress / load_max;
+            p.rect(bar_left_x, bar_top_y, 
+                (bar_right_x - bar_left_x) * percent_done, bar_height);
+        }
     };
 	
 	// Call this function to indicate that something loaded
