@@ -28,7 +28,11 @@ var num_status_obj = function(p, spec) {
 			return txt;
 		}
 		else {
-			return txt + " " + number;
+            var num_txt = ""+number;
+            if (spec.format) {
+                num_txt = spec.format(number);
+            }
+			return txt + " " + num_txt;
 		}	
 	}
 	
@@ -44,7 +48,9 @@ var num_status_obj = function(p, spec) {
 	// --- private methods
 	
 	var update = function(n) {
+
 		number = n;
+
 		rect.update_text(get_obj_text());
 	};
 	var draw_full_rect = function(color) {
@@ -84,7 +90,7 @@ var num_status_obj = function(p, spec) {
 	// color : 3 element rgb array
 	obj.draw_color = function(color) {
 		draw_full_rect(color);
-	}
+	};
 	
 	obj.incr = function(n) {
 		update(number + n);
@@ -94,11 +100,11 @@ var num_status_obj = function(p, spec) {
 	
 	obj.set_num = function(n) {
 		update(n);
-	}
+	};
 	
-	obj.get_num = function(n) {
+	obj.get_num = function() {
 		return number;
-	}
+	};
 	
     return obj;
 };

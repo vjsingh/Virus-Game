@@ -46,7 +46,13 @@ var in_game_state = function (p, previous_state) {
 	var time_status = num_status_obj(p, {
 		pos : new p.PVector(40, 20),
 		text : "Time:",
-		num : time_elapsed
+		num : time_elapsed,
+        // formats time to mins:secs
+        format : function(num) {
+            var secs = num%60;
+            if (secs < 10) { secs = "0" + secs; }
+            return p.floor(num/60) + ":" + secs;
+        }
 	});
 	var mutation = mutation_obj(p);
 	
