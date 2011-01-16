@@ -18,7 +18,7 @@ var loading_state = function (p) {
 
 	// MUST BE ABOVE INDICATE_LOADED
     obj.render = function() {
-		console.log("rendering loading state");
+		//console.log("rendering loading state");
         p.background(200);
 		p.imageMode(p.CORNERS);
 		p.image(background_image, 0, 0, p.width, p.height);
@@ -33,19 +33,13 @@ var loading_state = function (p) {
 	// Call this function to indicate that something loaded
 	var indicate_loaded = function() {
 		load_progress += 1;
-		console.log("indicate loaded");
+		//console.log("indicate loaded");
 		obj.render(); // Not getting called ??
 	}
 	
 	// Loading function, apply immediately
 	var load_fun = function() {
 		preload_images(sketch, indicate_loaded);
-		/*
-		setTimeout(indicate_loaded, 500);
-		setTimeout(indicate_loaded, 1000);
-		setTimeout(indicate_loaded, 1500);
-		setTimeout(indicate_loaded, 2000);
-		*/
 	}();
 	
 	// Call when loading is finished (sets next state);
@@ -59,7 +53,8 @@ var loading_state = function (p) {
     };
 
     obj.update = function() {
-		if (load_progress === load_max){
+		if (load_progress === load_max && all_images_loaded(sketch)){
+            console.log(all_images_loaded(sketch));
 			// Give them a second to see that its loaded
 			setTimeout(loading_finished, 500);
 		}

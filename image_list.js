@@ -18,6 +18,7 @@ var image_list = [
 	"screens/settings.png",
 	"screens/mainscreenbase.png"
 ];
+var TOTAL_NUM_OF_IMAGES = image_list.length;
 
 var preload_images = function(sketch, indicate_loaded) {
     for_each(
@@ -25,12 +26,15 @@ var preload_images = function(sketch, indicate_loaded) {
         function(name) {
             sketch.imageCache.add("images/"+name);
             // WHAT'S THIS?
-			for (var i = 0; i < 999; i++) {
-				console.log("a");
-			}
+			//for (var i = 0; i < 999; i++) {
+				//console.log("a");
+			//}
 			indicate_loaded();
         }    
     );
 };
 
-var TOTAL_NUM_OF_IMAGES = image_list.length;
+var all_images_loaded = function(sketch) {
+    return sketch.imageCache.pending;
+};
+
