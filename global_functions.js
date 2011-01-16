@@ -7,8 +7,12 @@ var g_game_settings = {
 	sound_fx : true,
 	music : true,
 	click_to_fire : true,
-	spacebar_to_fire : true
+	spacebar_to_fire : true,
+    background_color : 0xFF371010
 }
+// abbreviate it
+var g = g_game_settings;
+
 var g_toggle_sound_fx = function() {g_toggle("sound_fx");};
 var g_toggle_music = function() {g_toggle("music");};
 var g_toggle_click_to_fire = function() {g_toggle("click_to_fire");};
@@ -58,12 +62,13 @@ var for_each = function(arr, fun) {
 	}
 };
 
-// returns the index of an element in a list,
+// returns the index+1 of an element in a list,
 // otherwise false
+// can't return just the index because 0 is false in js
 var member = function(arr, elt) {
     for (var i=0; i<arr.length; i++) {
         if (arr[i] === elt) {
-            return i;
+            return i+1;
         }
     }
     return false;

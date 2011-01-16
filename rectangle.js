@@ -9,30 +9,37 @@
 //  	text : text to display
 // 		text_color : color of text (defaults to black);
 //		text_size : size of text (default to processings default)
+//		text_align : alignment of text (default to p.CENTER)
 //		rect_color : color of rectangle (defaults to white)
 // 		image 		: string location of image to display instead of a rectangle
+// 		style : object that can specify text_color, text_size, rect_color, width, height, text_align
 
 var rectangle = function (p, spec) {
 
     // object to return
     var obj = {};
+    
+    // default to catch errors
+    if (!spec.style) { spec.style = {}; }
 
     // --- private variables ---
 
     var pos = spec.pos;
-    var width = spec.width, half_width = width / 2;
-    var height = spec.height, half_height = height / 2;
+    var width = spec.style.width || spec.width, half_width = width / 2;
+    var height = spec.style.height || spec.height, half_height = height / 2;
 	var leftx = pos.x - half_width, rightx = pos.x + half_width;
 	var topy = pos.y - half_height, bottomy = pos.y + half_height;
 	var text = spec.text || "";
-	var text_color = spec.text_color || 0;
-	var text_size = spec.text_size || 12;
-	var rect_color = spec.rect_color || 255;
+	var text_color = spec.style.text_color || spec.text_color || 0;
+	var text_size = spec.style.text_size || spec.text_size || 12;
+    var text_align = spec.style.text_align || spec.text_align || p.CENTER;
+	var rect_color = spec.style.rect_color || spec.rect_color || 255;
 	var rect_image;
 	if (spec.image) {
 		rect_image = p.loadImage(spec.image);
 	}
 	var rect_mode = p.CENTER;
+
 
     // --- public methods ---
 
@@ -53,14 +60,21 @@ var rectangle = function (p, spec) {
 			
 			p.fill(rect_color);
 			p.noStroke();
+            // for debugging
+            //p.stroke(255);
 			
 			p.rect(leftx, topy, width, height);
 		}
 		
 		p.fill(text_color);
-        p.textAlign(p.CENTER, p.CENTER);
+        p.textAlign(text_align, p.CENTER);
+        var text_x = pos.x;
+        // draw left aligned text to the left, not centered
+        if (text_align === p.LEFT) {
+            text_x = pos.x - half_width + 10;
+        }
 		p.textSize(text_size);
-        p.text(text, pos.x, pos.y);
+        p.text(text, text_x, pos.y);
 	};
 	
 	obj.update_text = function(t) {

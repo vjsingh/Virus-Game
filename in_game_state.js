@@ -39,14 +39,23 @@ var in_game_state = function (p, previous_state) {
 	var mult = num_status_obj(p, {
 		pos : new p.PVector(p.width - 150, 20),
 		text : "Multiplier:",
-		num : 1
+		num : 1,
+        format : function(num) {
+            return num+"x";
+        }
 	});
 	var time_elapsed = 0; // Time elapsed in seconds
 	var set_time = false; //bool that says if we've started counting time
 	var time_status = num_status_obj(p, {
 		pos : new p.PVector(40, 20),
 		text : "Time:",
-		num : time_elapsed
+		num : time_elapsed,
+        // formats time to mins:secs
+        format : function(num) {
+            var secs = num%60;
+            if (secs < 10) { secs = "0" + secs; }
+            return p.floor(num/60) + ":" + secs;
+        }
 	});
 	var mutation = mutation_obj(p);
 	
@@ -54,6 +63,10 @@ var in_game_state = function (p, previous_state) {
 	var all_status_objs = [score, mult, time_status, mutation];
 	
 	var all_notifications = [];
+    // takes a string and adds a new notification
+    var notify = function(note) {
+        all_notifications.push(notification(p, { "text": note }));
+    };
 	
 	var generator = make_generator(p, {
 		game : obj,
@@ -625,14 +638,8 @@ var in_game_state = function (p, previous_state) {
 				mutation.infected_cell();
 				
                 cell.set_state("infected");
-                // change mutation of cell to match particle,
-				// or new mutation info if mutated
-                if (mutation.has_new_mutation()) {
-					cell.set_mutation_info(mutation.get_info());
-				}
-				else {
-					cell.set_mutation_info(par.get_mutation_info());
-				}
+				cell.set_mutation_info(par.get_mutation_info());
+
 				// Add 1 to score
 				score.incr(1 * mult.get_num());
             }
@@ -677,7 +684,7 @@ var in_game_state = function (p, previous_state) {
 							flo.activate();
 							alert_b_cell(flo);
 						}
-						all_notifications.push(notification(p, {text : "Macrophage Activated"}));
+                        notify("Macrophage activated!");
                     }
                 },
                 
@@ -782,14 +789,14 @@ var in_game_state = function (p, previous_state) {
                     if (b.is_alive() && flo.is_activated()) {
                         b.set_mutation_info(flo.get_mutation_info());
                         b.activate();
-						all_notifications.push(notification(p, {text : "B Cell Activated"}));
+                        notify("B-cell activated!");
                     }
                 },
                 "wall_segment": function(b, wall) {
                     //console.log("collision");
                     if (b.is_activated()) {
                         b.make_antibodies();
-						all_notifications.push(notification(p, {text : "B Cell is producing Antibodies, watch out!"}));
+                        notify("Incoming antibodies!");
                     }
                     else if (b.is_alive() || b.is_outdated()) {
                         bounce(b, wall);
@@ -1097,6 +1104,9 @@ var in_game_state = function (p, previous_state) {
 					});
 					stop_background_music();
 					obj.set_next_state(go_state);
+
+                    // stop the time and stuff
+                    paused = true;
 					
 					// simply don't do the rest of update
 					return;
@@ -1148,6 +1158,8 @@ var in_game_state = function (p, previous_state) {
                 // check for a new mutation
                 // if mutation occurred
                 if (mutation.has_new_mutation() && active_cell) {
+                    // mutate the active cell
+					active_cell.set_mutation_info(mutation.get_info());
                     // reset the counters
                     mutation.reset_mutation();
 					// Set all applicable enemies to be outdated
@@ -1155,7 +1167,7 @@ var in_game_state = function (p, previous_state) {
                     // update the scroll factor
                     scroll_factor += 0.1;
 					
-					all_notifications.push(notification(p, {text : "New Mutation! Your new mutation is: <Insert new ability here>"}));
+                    notify("Mutation occurred!");
 					
                     console.log("mutation occurred!");
                 }
@@ -1176,8 +1188,8 @@ var in_game_state = function (p, previous_state) {
             cells.push(active_cell);
         }
 
-        //p.background(142, 6, 29);
-        //p.background(0, 0);
+        p.background(g.background_color);
+
         for (var i=0; i<game_objects.length; i++) {
             for (var j=0; j<game_objects[i].length; j++) {
                 var o = game_objects[i][j];
@@ -1201,7 +1213,7 @@ var in_game_state = function (p, previous_state) {
 	   
         // draw a rect under status labels
         p.noStroke();
-        p.fill(180);
+        p.fill(0);//, 200);
         p.rect(0, 0, p.width, 40);
 		//Draw the status labels
 		for_each(all_status_objs, function(o) {o.draw();});

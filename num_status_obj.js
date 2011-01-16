@@ -28,7 +28,11 @@ var num_status_obj = function(p, spec) {
 			return txt;
 		}
 		else {
-			return txt + " " + number;
+            var num_txt = ""+number;
+            if (spec.format) {
+                num_txt = spec.format(number);
+            }
+			return txt + " " + num_txt;
 		}	
 	}
 	
@@ -36,15 +40,19 @@ var num_status_obj = function(p, spec) {
 		pos : pos,
 		width : 0,
 		height : 0,
-		text : get_obj_text()
-	})
+		text : get_obj_text(),
+        text_size : 14,
+        text_color: spec.text_color || 255,
+	});
 	
 	// --- private methods
 	
 	var update = function(n) {
+
 		number = n;
+
 		rect.update_text(get_obj_text());
-	}
+	};
 	var draw_full_rect = function(color) {
 			p.fill(color[0], color[1], color[2]);
             p.strokeWeight(1);
@@ -52,7 +60,7 @@ var num_status_obj = function(p, spec) {
 			var topy = pos.y - (height / 2);
 			var leftx = pos.x + (txt.length * 4);
 			p.rect(leftx, topy, max_width, height);
-	}
+	};
 	
     // --- public methods --- 
 
@@ -82,7 +90,7 @@ var num_status_obj = function(p, spec) {
 	// color : 3 element rgb array
 	obj.draw_color = function(color) {
 		draw_full_rect(color);
-	}
+	};
 	
 	obj.incr = function(n) {
 		update(number + n);
@@ -92,11 +100,11 @@ var num_status_obj = function(p, spec) {
 	
 	obj.set_num = function(n) {
 		update(n);
-	}
+	};
 	
-	obj.get_num = function(n) {
+	obj.get_num = function() {
 		return number;
-	}
+	};
 	
     return obj;
 };
