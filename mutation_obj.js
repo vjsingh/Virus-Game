@@ -29,18 +29,19 @@ var mutation_obj = function(p) {
 	// Shows the probability of getting a mutation
 	var bar_status_obj = num_status_obj(p, {
 		pos : new p.PVector(150, 20),
-		text : "Mutation:",
+		text : "Probability:",
 		num : 0,
 		bar : true,
 		max : 50
 	});
 	
 	//Shows the curent mutation level
-	var level_status_obj = num_status_obj(p, {
+    var level_spec = {
 		pos : new p.PVector(350, 20),
-		text : "Mutation Level:",
+		text : "Level:   ",
 		num : 1,
-	});
+	};
+	var level_status_obj = num_status_obj(p, level_spec); 
 	
 	// --- private methods
 	
@@ -174,6 +175,13 @@ var mutation_obj = function(p) {
 		else {
 			bar_status_obj.draw();
 		}
+
+        // draw mutation colored box under level num
+        p.fill(get_color());
+        p.noStroke();
+        var lpos = level_spec.pos;
+        p.rect(lpos.x+12, lpos.y-10, 20, 20);
+
 		level_status_obj.draw();
 	};
 	
@@ -205,6 +213,10 @@ var mutation_obj = function(p) {
 		new_mutation = false;
     };
 
+    var get_color = function() {
+        return color_array[(level - 1) % color_array.length];
+    };
+
 	// Returns the current mutation level and color
 	obj.get_info = function() {
 		// color level goes from 0 to 360
@@ -215,7 +227,7 @@ var mutation_obj = function(p) {
             level: level,
             //color: p.color(rgb_arr[0], rgb_arr[1], rgb_arr[2]),
 			// level starts at 1, so have to subtract 1
-			color : color_array[(level - 1) % color_array.length], //% color_array.size],
+			color : get_color(), //% color_array.size],
             // get one new particle every 10 levels
             particles: 3+p.floor(level/3)
         };
@@ -224,6 +236,7 @@ var mutation_obj = function(p) {
 	obj.get_level = function() {
 		return level;
 	};
+
 
 	
     return obj;
