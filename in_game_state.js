@@ -39,7 +39,10 @@ var in_game_state = function (p, previous_state) {
 	var mult = num_status_obj(p, {
 		pos : new p.PVector(p.width - 150, 20),
 		text : "Multiplier:",
-		num : 1
+		num : 1,
+        format : function(num) {
+            return num+"x";
+        }
 	});
 	var time_elapsed = 0; // Time elapsed in seconds
 	var set_time = false; //bool that says if we've started counting time
