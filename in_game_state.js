@@ -1163,8 +1163,8 @@ var in_game_state = function (p, previous_state) {
             // check for a new mutation
             // if mutation occurred
             if (mutation.has_new_mutation() && active_cell) {
-                // do the actual mutation
-                mutation.do_mutation();
+                // do the actual mutation and hold onto new ability
+                var new_ability = mutation.do_mutation();
                 // mutate the active cell
                 active_cell.set_mutation_info(mutation.get_info());
                 // Set all applicable enemies to be outdated
@@ -1172,7 +1172,12 @@ var in_game_state = function (p, previous_state) {
                 // update the scroll factor
                 scroll_factor += 0.1;
                 
-                notify("Mutation occurred!");
+				if (new_ability) {
+					notify("New Ability: " + new_ability);
+				}
+				else {
+					notify("Mutation occurred!");
+				}
                 
                 console.log("mutation occurred!");
             }

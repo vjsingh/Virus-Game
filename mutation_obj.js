@@ -30,6 +30,7 @@ var mutation_obj = function(p) {
 	// All the possible abilities, sorted by level
 	// An ability can be earned at level x if it is in poss_abilities[0-x]
 	// TODO: add all abilities and change their levels
+	// TODO: Change these to be ready to be displayed to the user (or create a formatting mechanism)
 	var poss_abilities = [
 		["extra_particle"],
 		["faster_particles", "bigger_particles"]
@@ -236,10 +237,12 @@ var mutation_obj = function(p) {
 
     // to be called when in_game_state decides to enact the new mutation
     // as signalled by the flag
+	// Returns a new ability if one was added
     obj.do_mutation = function() {
         flash_bar();
 		// Add new ability before incrementing level
-		abilities.push(get_random_ability());
+		var new_ability = get_random_ability();
+		abilities.push(new_ability);
         level += 1;
         level_status_obj.incr(1);
         // update num cells needed
@@ -247,6 +250,8 @@ var mutation_obj = function(p) {
         bar_status_obj.set_max(cells_needed);
         // reset counters
         obj.reset_mutation();
+		
+		return new_ability;
     };
 
 
@@ -287,6 +292,10 @@ var mutation_obj = function(p) {
 	obj.set_level = function(l) {
         // decrement by the difference in levels
 	    level_status_obj.incr(l-level);
+		// Pop off abilities
+		for (var i = 0; i < (level - l); i++) {
+			abilities.pop();
+		}
         // set the new level
 		level = l;
 	};
