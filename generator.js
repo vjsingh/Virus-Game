@@ -22,6 +22,8 @@ var make_generator = function(p, spec) {
 	var distance = null;
 	var mutation = spec.mutation;
 	var game = spec.game;
+	var gen_x_pos = p.width + 50; // constant x pos for generated objs
+	var last_obj = null; // The last object generated
 
 	var default_gen_speed = 10;
     // structure that stores the generation settings
@@ -119,6 +121,19 @@ var make_generator = function(p, spec) {
             gen_info[type].num = num(type)+1;
         }
     };
+	
+	// Returns whether it is not too soon to generate another
+	// object, based on last_obj
+	var ok_to_generate = function() {
+		if (last_obj) {
+			if (last_obj.get_type() === "cell") {
+				// 2 times width spacing
+				return last_obj.get_pos().x < (gen_x_pos - last_obj.get_width() * 2); 
+			}
+		}
+		// else
+		return true;
+	};
 
     // --- public methods --- 
 	
@@ -135,12 +150,13 @@ var make_generator = function(p, spec) {
                 // and some random factor
                 && p.random(100) < (gen_speed(enemy_type) || default_gen_speed )
                 // and we are ready to start making this enemy
-                && distance >= start(enemy_type)) {
+                && distance >= start(enemy_type)
+				&& ok_to_generate()) {
 
 			//Generate random y position
             // TODO change hardcoded numbers
 			var enemy_y = p.random(90, p.height-50);
-			var enemy_pos = new p.PVector(p.width+50, enemy_y);
+			var enemy_pos = new p.PVector(gen_x_pos, enemy_y);
 			
 			var new_enemy = make_new(enemy_type)(enemy_pos);
 			assert(new_enemy, "Error in generator.update()");
@@ -158,6 +174,8 @@ var make_generator = function(p, spec) {
 			if (new_enemy.get_type() === "b_cell") {
 				game.set_b_cell_target(new_enemy);
 			}
+			
+			last_obj = new_enemy;
 		}
 
         // update nums for types based on rate
