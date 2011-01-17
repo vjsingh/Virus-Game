@@ -533,6 +533,7 @@ var in_game_state = function (p, previous_state) {
     // make it public
     obj.check_circle_collision = check_circle_collision;
 
+    /*
     // Reverses 2 objs appropriate velocities 
     var bounce_collided = (function() {
 		// A list containing 2 element lists
@@ -562,6 +563,7 @@ var in_game_state = function (p, previous_state) {
 			}
 	    }
 	}());
+    */
 
     var bounce = function(obj1, obj2) {
         //offset adjusts how closely we check, since we can't check exactly when they collide every time
@@ -612,7 +614,7 @@ var in_game_state = function (p, previous_state) {
         }
 		
 		// Bounce if appropriate
-		bounce_collided(obj1, obj2);
+		//bounce_collided(obj1, obj2);
     };
 	
     // object to store all the handlers
@@ -663,7 +665,7 @@ var in_game_state = function (p, previous_state) {
                 // particle vs. wall_cell
                 // bounce particle off cell
                 // cell doesn't move
-                "wall_cell": nothing,
+                "wall_cell": bounce,
 
                 // particle vs. empty_cell
                 // infect the cell, kill the particle
@@ -733,10 +735,10 @@ var in_game_state = function (p, previous_state) {
             // floater vs. floater
             // no overlap?
             "floater": {
-                "cell": nothing,
-                "wall_cell": nothing,
-                "empty_cell": nothing,
-                "floater": nothing
+                "cell": bounce,
+                "wall_cell": bounce,
+                "empty_cell": bounce,
+                "floater": bounce
             },
                 
             "tkiller": {
@@ -779,9 +781,7 @@ var in_game_state = function (p, previous_state) {
             "multiplier": {
                 // multiplier vs wall
 				// do nothing
-                "wall_segment": function(mult, wall) {
-					//do nothing
-                }
+                "wall_segment": bounce
             },
 
             "b_cell": {
