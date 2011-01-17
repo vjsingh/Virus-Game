@@ -11,6 +11,7 @@ var mutation_obj = function(p) {
 
 	var level = 1;
 	var cells_infected = 0;
+    var cells_needed = 50;
     var new_mutation = false;
 	// Color array for all the mutation levels
 	var color_array = [
@@ -51,7 +52,8 @@ var mutation_obj = function(p) {
 	var mutation_occured = function() {
 		//return Math.random() + ( (cells_infected / 50) / (level + 1)) > .95;
         //return (Math.random() * (cells_infected / 50)) > .3;
-        return (Math.random() + (cells_infected / 100) - (level / 50)) > .98;
+        //return (Math.random() + (cells_infected / 100) - (level / 50)) > .98;
+        return (Math.random() + (cells_infected / cells_needed)) > .98;
 	};
 	
 	// Flashes the mutation bar red and white
@@ -192,9 +194,15 @@ var mutation_obj = function(p) {
         if (mutation_occured()) {
             // set the flag
             new_mutation = true;
+            // TODO stuff below should only happen once in_game_state
+            // actually makes a mutation
+            // so move it to a method that in_game_state calls
 			flash_bar();
 			level += 1;
 	        level_status_obj.incr(1);
+            // update num cells needed
+            cells_needed = 50 + 5*level;
+            bar_status_obj.set_max(cells_needed);
         }
 	};
 

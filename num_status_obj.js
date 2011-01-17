@@ -97,6 +97,10 @@ var num_status_obj = function(p, spec) {
 	};
 	
 	// Set and get
+
+    obj.set_max = function(m) {
+        max = m;
+    };
 	
 	obj.set_num = function(n) {
 		update(n);
