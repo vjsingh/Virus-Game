@@ -55,8 +55,8 @@ var num_status_obj = function(p, spec) {
 	};
 	var draw_full_rect = function(color) {
 			p.fill(color[0], color[1], color[2]);
-            p.strokeWeight(1);
-            p.stroke(0);
+            //p.strokeWeight(1);
+            //p.stroke(0);
 			var topy = pos.y - (height / 2);
 			var leftx = pos.x + (txt.length * 4);
 			p.rect(leftx, topy, max_width, height);
@@ -68,12 +68,12 @@ var num_status_obj = function(p, spec) {
         rect.draw();
 		// Draw the bar separately, if appropriate
 		if (bar) {
+	        p.noStroke();
 			// Draw empty rectangle first
 			draw_full_rect([255, 255, 255]);
 			
 			// Then draw mutation status bar
-	        p.fill(0);
-	        p.noStroke();
+	        p.fill(150);
 			
 			var topy = pos.y - (height / 2);
 			var leftx = pos.x + (txt.length * 4);
