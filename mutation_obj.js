@@ -23,6 +23,18 @@ var mutation_obj = function(p) {
 		p.color(118, 12, 25)
 	];
 	
+	// Keeps track of all the abilities earned in the game so far
+	// If you lose a mutation level, must pop abilities off this array
+	var abilities = [];
+	
+	// All the possible abilities, sorted by level
+	// An ability can be earned at level x if it is in poss_abilities[0-x]
+	// TODO: add all abilities and change their levels
+	var poss_abilities = [
+		["extra_particle"],
+		["faster_particles", "bigger_particles"]
+	];
+	
 	// Flashing
 	var flash_color = null;
 	var is_flashing = false;
@@ -46,6 +58,17 @@ var mutation_obj = function(p) {
 	var level_status_obj = num_status_obj(p, level_spec); 
 	
 	// --- private methods
+	
+	// Returns a random ability, taking into account the current level
+	// Every possibile ability has an equal chance
+	var get_random_ability = function() {
+		var all_possible = [];
+		for(var i = 0; i < level; i++) {
+			for_each(poss_abilities[i], function(a) {all_possible.push(a);});
+		}
+		assert(all_possible.length != 0);
+		return all_possible[Math.floor(Math.random() * all_possible.length)];
+	}
 	
 	// Returns bool saying if a mutation should occur
 	// takes into account level, cells_infected, and a random probability
@@ -202,6 +225,7 @@ var mutation_obj = function(p) {
         if (mutation_occured()) {
             // set the flag
             new_mutation = true;
+			flash_bar();
         }
 	};
 
@@ -214,6 +238,8 @@ var mutation_obj = function(p) {
     // as signalled by the flag
     obj.do_mutation = function() {
         flash_bar();
+		// Add new ability before incrementing level
+		abilities.push(get_random_ability());
         level += 1;
         level_status_obj.incr(1);
         // update num cells needed
@@ -249,7 +275,8 @@ var mutation_obj = function(p) {
 			// level starts at 1, so have to subtract 1
 			color : get_color(), //% color_array.size],
             // get one new particle every 10 levels
-            particles: 3+p.floor(level/3)
+            particles: 3+p.floor(level/3),
+			abilities: abilities
         };
 	};
 	
