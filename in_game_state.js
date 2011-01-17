@@ -1181,9 +1181,9 @@ var in_game_state = function (p, previous_state) {
                 };
                 do_to_type(find_max, "cell", false);
                 do_to_type(find_max, "particle", false);
-                assert(max_level, "no max level found!");
+                    
                 // if max level lower than mutation level
-                if (max_level < mutation.get_level()) {
+                if (max_level > 0 && max_level < mutation.get_level()) {
                     // downgrade to that level
                     mutation.set_level(max_level);
                     // reset the counters
