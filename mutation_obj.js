@@ -11,7 +11,7 @@ var mutation_obj = function(p) {
 
 	var level = 1;
 	var cells_infected = 0;
-    var cells_needed = 50;
+    var cells_needed; // init'd below
     var new_mutation = false;
 	// Color array for all the mutation levels
 	var color_array = [
@@ -33,7 +33,7 @@ var mutation_obj = function(p) {
 		text : "Mutation:",
 		num : 0,
 		bar : true,
-		max : 50
+		max : 0 // init'd below
 	});
 	
 	//Shows the curent mutation level
@@ -53,9 +53,17 @@ var mutation_obj = function(p) {
 		//return Math.random() + ( (cells_infected / 50) / (level + 1)) > .95;
         //return (Math.random() * (cells_infected / 50)) > .3;
         //return (Math.random() + (cells_infected / 100) - (level / 50)) > .98;
-        return (Math.random() + (cells_infected / cells_needed)) > .98;
+        return (Math.random()*0.5 + (cells_infected / cells_needed)) > .98;
 	};
 	
+    // returns the max number of cells the player needs to infect to have
+    // a 100% probability of mutating
+    var calc_cells_needed = function() {
+        return 10 + 5*level;
+    };
+    cells_needed = calc_cells_needed();
+    bar_status_obj.set_max(cells_needed);
+
 	// Flashes the mutation bar red and white
 	var flash_bar = function() {
 		is_flashing = true;
@@ -194,15 +202,6 @@ var mutation_obj = function(p) {
         if (mutation_occured()) {
             // set the flag
             new_mutation = true;
-            // TODO stuff below should only happen once in_game_state
-            // actually makes a mutation
-            // so move it to a method that in_game_state calls
-			flash_bar();
-			level += 1;
-	        level_status_obj.incr(1);
-            // update num cells needed
-            cells_needed = 50 + 5*level;
-            bar_status_obj.set_max(cells_needed);
         }
 	};
 
@@ -210,6 +209,20 @@ var mutation_obj = function(p) {
     obj.has_new_mutation = function() {
         return new_mutation;
     };
+
+    // to be called when in_game_state decides to enact the new mutation
+    // as signalled by the flag
+    obj.do_mutation = function() {
+        flash_bar();
+        level += 1;
+        level_status_obj.incr(1);
+        // update num cells needed
+        cells_needed = calc_cells_needed();
+        bar_status_obj.set_max(cells_needed);
+        // reset counters
+        obj.reset_mutation();
+    };
+
 
     // resets the counters and the flag
     // to be called after a mutation is enacted in the game

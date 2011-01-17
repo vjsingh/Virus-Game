@@ -1155,23 +1155,29 @@ var in_game_state = function (p, previous_state) {
 				
 				remove_objs();
 
-                // check for a new mutation
-                // if mutation occurred
-                if (mutation.has_new_mutation() && active_cell) {
-                    // mutate the active cell
-					active_cell.set_mutation_info(mutation.get_info());
-                    // reset the counters
-                    mutation.reset_mutation();
-					// Set all applicable enemies to be outdated
-					set_all_outdated();
-                    // update the scroll factor
-                    scroll_factor += 0.1;
-					
-                    notify("Mutation occurred!");
-					
-                    console.log("mutation occurred!");
-                }
+                update_mutation();    
+			}
+        };
 
+        var update_mutation = function() {
+            // check for a new mutation
+            // if mutation occurred
+            if (mutation.has_new_mutation() && active_cell) {
+                // do the actual mutation
+                mutation.do_mutation();
+                // mutate the active cell
+                active_cell.set_mutation_info(mutation.get_info());
+                // Set all applicable enemies to be outdated
+                set_all_outdated();
+                // update the scroll factor
+                scroll_factor += 0.1;
+                
+                notify("Mutation occurred!");
+                
+                console.log("mutation occurred!");
+            }
+            // otherwise check for downgrades
+            else {
                 // check for the highest mutation level on screen
                 var max_level = 0;
                 var find_max = function(o) {
@@ -1196,8 +1202,7 @@ var in_game_state = function (p, previous_state) {
 
                     // TODO do enemies become not outdated?
                 }
-                
-			}
+            }
         };
         
         return update_fun;
