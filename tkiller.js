@@ -24,7 +24,7 @@ var tkiller = function(p, spec) {
 
     var alive = true;
 	/* @pjs preload="images/tcell2.png"; */
-	var t_image = p.loadImage("images/tcell4.png");
+	var t_image = image_manager.get_image("tcell_2.png");
 
 	// Rect to fill in
 	var rectx_offset = -(8/30)*obj.get_width();

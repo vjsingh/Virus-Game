@@ -21,8 +21,8 @@ var floater = function(p, spec) {
 
     // --- private variables ---
     
-	var macrophage_image = p.loadImage("images/macrophage1.png");
-	var macrophage_active = p.loadImage("images/macrophage_active.png");
+	var macrophage_image = image_manager.get_image("macrophage_1.png");
+	var macrophage_active = image_manager.get_image("macrophage_1_active.png");
 	
     // how far up or down it can move
     var range = 50;

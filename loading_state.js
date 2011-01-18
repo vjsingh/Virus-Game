@@ -7,21 +7,15 @@ var loading_state = function (p) {
 
 	var background_image = p.loadImage("images/screens/loadingsplash.png");
 
-	var next_state = splash_state(p);
+	var next_state = null;//splash_state(p);
 	var bar_left_x = p.width * 4/20;
 	var bar_right_x = p.width * 16/20;
 	var bar_top_y = p.height * 24/50;
 	var bar_height = p.height * 1/25;
 	
-    // filter out non-images
-    var image_types = ["png", "jpg", "gif"];
-    image_list = image_list.filter(function(name) {
-            return member(image_types, name.substring(name.lastIndexOf('.')+1));
-    });
-
 	// loaded progress
 	var load_progress = 0;
-	var load_max = image_list.length;
+	var load_max = 0;//image_list.length;
 
 	// MUST BE ABOVE INDICATE_LOADED
     obj.render = function() {
@@ -52,26 +46,14 @@ var loading_state = function (p) {
     // warning: gets called multiple times so don't do anything that can't be repeated
 	var loading_finished = function(){
         console.log("finished loading");
+        next_state = splash_state(p);
 		obj.set_next_state(next_state);
 	};
 
-    var preload_images = function() {
-        for_each(
-            image_list,
-            function(name) {
-                sketch.imageCache.add(name);
-                console.log("loading "+name);
-            }    
-        );
-    };
-
-    var all_images_loaded = function() {
-        return !sketch.imageCache.pending;
-    };
-
 	// Loading function, apply immediately
 	var load_fun = function() {
-		preload_images();
+		image_manager.preload_images();
+        load_max += image_manager.num_images();
 	}();
 
     // --- public methods ---
@@ -80,10 +62,13 @@ var loading_state = function (p) {
         return "loading";
     };
 
+            // TODO make this function only get called once
     obj.update = function() {
         // for now just base progress on pending amount of images
-        load_progress = load_max - sketch.imageCache.pending;
-		if (load_progress === load_max && all_images_loaded()){
+        load_progress = image_manager.num_loaded();
+		if (load_progress === load_max && image_manager.is_done_preloading()){
+            // init all image objects
+            image_manager.init_images(p);
 			// Give them a second to see that its loaded
 			setTimeout(loading_finished, 500);
 		}

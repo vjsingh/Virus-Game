@@ -22,7 +22,7 @@ var b_cell = function(p, spec) {
 
     // --- private variables ---
 
-	var b_image = p.loadImage("images/bcell1.png");
+	var b_image = image_manager.get_image("bcell_normal.png");
 
     // state can be "alive", "active", "shooting", "outdated"
 	
@@ -142,16 +142,19 @@ var b_cell = function(p, spec) {
 
         p.popMatrix();
 		*/
-		var pos = obj.get_pos();
 		
 		p.pushMatrix();
-		p.imageMode(obj.get_mode());
+
+		var pos = obj.get_pos();
+
         p.translate(pos.x, pos.y);
 		p.rotate(obj.get_target_angle() + p.PI / 2);
 		p.fill(obj.get_color());
 		p.noStroke();
 		//p.rect(rectx_offset, recty_offset, rect_width, rect_height);
+		p.imageMode(obj.get_mode());
 		p.image(b_image, 0, 0, obj.get_width(), obj.get_height());
+
 		p.popMatrix();
     };
 

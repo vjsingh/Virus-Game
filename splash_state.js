@@ -6,7 +6,7 @@ var splash_state = function (p) {
     // --- private variables ---
 
 	//var header_image = p.loadImage("images/screens/header.png");
-    var back_image = p.loadImage("images/screens/mainscreenbase.png");
+    var back_image = image_manager.get_image("mainscreenbase.png");
     var back_color = g.background_color; 
 
 	// Buttons

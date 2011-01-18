@@ -23,6 +23,21 @@ var mutation_obj = function(p) {
 		p.color(118, 12, 25)
 	];
 	
+/*
+	// Keeps track of all the abilities earned in the game so far
+	// If you lose a mutation level, must pop abilities off this array
+	var abilities = [];
+	
+	// All the possible abilities, sorted by level
+	// An ability can be earned at level x if it is in poss_abilities[0-x]
+	// TODO: add all abilities and change their levels
+	// TODO: Change these to be ready to be displayed to the user (or create a formatting mechanism)
+	var poss_abilities = [
+		["extra_particle"],
+		["faster_particles", "bigger_particles"]
+	];
+*/
+	
 	// Flashing
 	var flash_color = null;
 	var is_flashing = false;
@@ -46,6 +61,19 @@ var mutation_obj = function(p) {
 	var level_status_obj = num_status_obj(p, level_spec); 
 	
 	// --- private methods
+	
+/*
+	// Returns a random ability, taking into account the current level
+	// Every possibile ability has an equal chance
+	var get_random_ability = function() {
+		var all_possible = [];
+		for(var i = 0; i < level; i++) {
+			for_each(poss_abilities[i], function(a) {all_possible.push(a);});
+		}
+		assert(all_possible.length != 0);
+		return all_possible[Math.floor(Math.random() * all_possible.length)];
+	}
+*/
 	
 	// Returns bool saying if a mutation should occur
 	// takes into account level, cells_infected, and a random probability
@@ -202,6 +230,7 @@ var mutation_obj = function(p) {
         if (mutation_occured()) {
             // set the flag
             new_mutation = true;
+			flash_bar();
         }
 	};
 
@@ -212,8 +241,12 @@ var mutation_obj = function(p) {
 
     // to be called when in_game_state decides to enact the new mutation
     // as signalled by the flag
+	// Returns a new ability if one was added
     obj.do_mutation = function() {
         flash_bar();
+		// Add new ability before incrementing level
+		//var new_ability = get_random_ability();
+		//abilities.push(new_ability);
         level += 1;
         level_status_obj.incr(1);
         // update num cells needed
@@ -221,6 +254,8 @@ var mutation_obj = function(p) {
         bar_status_obj.set_max(cells_needed);
         // reset counters
         obj.reset_mutation();
+		
+		//return new_ability;
     };
 
 
@@ -249,7 +284,8 @@ var mutation_obj = function(p) {
 			// level starts at 1, so have to subtract 1
 			color : get_color(), //% color_array.size],
             // get one new particle every 10 levels
-            particles: 3+p.floor(level/3)
+            particles: 3+p.floor(level/3),
+			//abilities: abilities
         };
 	};
 	
@@ -260,6 +296,12 @@ var mutation_obj = function(p) {
 	obj.set_level = function(l) {
         // decrement by the difference in levels
 	    level_status_obj.incr(l-level);
+		// Pop off abilities
+        /*
+		for (var i = 0; i < (level - l); i++) {
+			abilities.pop();
+		}
+        */
         // set the new level
 		level = l;
 	};

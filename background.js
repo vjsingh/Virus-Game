@@ -1,19 +1,22 @@
 // --- inherits from game_object
 // spec:
 //  game_object spec
+//  boolean is_top = true if its a top edge, otherwise false
 // 
 
-var background = function(p, spec) {
+var background_edge = function(p, spec) {
 
 	//var background_image = p.loadImage("images/background.jpg");
-    var background_image = p.loadImage("images/background1.png");
+    //var background_image = p.loadImage("images/background1.png");
+    var edge = spec.top ? 
+        image_manager.get_image("background_topside.png") :
+        image_manager.get_image("background_bottomside.png");
 
     // --- defaults ---
 
     spec.mode = p.CORNERS;
-    // THESE MUST BE UPDATED BY HAND TO MATCH IMAGE DIMENSIONS
-    spec.width = 700;
-    spec.height = 600;
+    spec.width = spec.width || edge.width;
+    spec.height = spec.height || edge.height;
 
     // obj to return
     var obj = game_object(p, spec);
@@ -33,15 +36,15 @@ var background = function(p, spec) {
 
     // (flat rect for now)
     obj.draw = function() {
-		var x_pos = obj.get_pos().x;
+		//var x_pos = obj.get_pos().x;
 			
 		//p.fill(p.color(49, 0, 0));
         //p.rect(x_pos, 0, obj.get_width() - x_pos, obj.get_height());
-		p.imageMode(obj.get_mode());
 		//background_image.resize(p.width, p.height);
 		//p.image(background_image, 0, 0);
 		//console.log(obj.get_pos().x);
-        p.image(background_image, obj.get_pos().x, 0);//obj.get_pos().y);
+		p.imageMode(obj.get_mode());
+        p.image(background_image, obj.get_pos().x, obj.get_pos().y);
         //p.set(obj.get_pos().x, 0, background_image);
         //p.fill(255, 70);
         //p.noStroke();
@@ -72,5 +75,5 @@ var background = function(p, spec) {
     };
 
     return obj;
-}
+};
 
