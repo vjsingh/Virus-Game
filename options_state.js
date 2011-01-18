@@ -86,7 +86,7 @@ var options_state = function (p, prev_state) {
 	};
 
     obj.render = function() {
-        p.background(g.background_color);
+        //p.background(g.background_color);
         //p.fill(g.background_color);
         //p.rect(100, 100, 500, 500);
 		p.imageMode(p.CORNERS);
