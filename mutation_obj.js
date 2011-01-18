@@ -23,6 +23,7 @@ var mutation_obj = function(p) {
 		p.color(118, 12, 25)
 	];
 	
+/*
 	// Keeps track of all the abilities earned in the game so far
 	// If you lose a mutation level, must pop abilities off this array
 	var abilities = [];
@@ -35,6 +36,7 @@ var mutation_obj = function(p) {
 		["extra_particle"],
 		["faster_particles", "bigger_particles"]
 	];
+*/
 	
 	// Flashing
 	var flash_color = null;
@@ -60,6 +62,7 @@ var mutation_obj = function(p) {
 	
 	// --- private methods
 	
+/*
 	// Returns a random ability, taking into account the current level
 	// Every possibile ability has an equal chance
 	var get_random_ability = function() {
@@ -70,6 +73,7 @@ var mutation_obj = function(p) {
 		assert(all_possible.length != 0);
 		return all_possible[Math.floor(Math.random() * all_possible.length)];
 	}
+*/
 	
 	// Returns bool saying if a mutation should occur
 	// takes into account level, cells_infected, and a random probability
@@ -241,8 +245,8 @@ var mutation_obj = function(p) {
     obj.do_mutation = function() {
         flash_bar();
 		// Add new ability before incrementing level
-		var new_ability = get_random_ability();
-		abilities.push(new_ability);
+		//var new_ability = get_random_ability();
+		//abilities.push(new_ability);
         level += 1;
         level_status_obj.incr(1);
         // update num cells needed
@@ -281,7 +285,7 @@ var mutation_obj = function(p) {
 			color : get_color(), //% color_array.size],
             // get one new particle every 10 levels
             particles: 3+p.floor(level/3),
-			abilities: abilities
+			//abilities: abilities
         };
 	};
 	

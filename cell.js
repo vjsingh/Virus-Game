@@ -255,13 +255,16 @@ var cell = function(p, spec) {
     };
 
     var get_num_particles = function() {
+
 		var extra_particles = 0;
 		var mut_info = obj.get_mutation_info();
+        /*
 		for_each(mut_info.abilities, function(a) {
 			if (a === "extra_particle") {
 				extra_particles++;
 			}
 		});
+        */
         return mut_info.particles + extra_particles;
     };
 
