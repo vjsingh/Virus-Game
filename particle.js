@@ -21,7 +21,7 @@ var particle = function(p, spec) {
 
     //var par_shape = p.loadShape("images/virusfinal.svg");
 	//var par_image = p.loadImage("images/virus1.png");
-	var par_image = image_manager.get_image("particle.png");
+	var par_image = image_manager.get_image("tinyvirus_trans.png");
 	//var mutation = spec.mutation;
 
     // --- public methods --- 

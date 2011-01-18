@@ -846,31 +846,66 @@ var in_game_state = function (p, previous_state) {
 
     // adds a new background tile if the rightmost is onscreen
     // ASSUMES ALL WALL TILES ARE SAME SIZE
-    var rightmost_back = null;
-    var add_back = function() {
-        if (!goes_off_right(rightmost_back)) {
-            var x = rightmost_back.get_pos().x
-                + rightmost_back.get_width() - 1;
+    var back_top = null;
+    var back_btm = null;
+    var add_back = (function() {
 
-            var new_tile = background(p, {
-                    pos: new p.PVector(x, 0)
-            });
+        var add_one = function(edge_tile) {
+            if (!goes_off_right(edge_tile)) {
+                console.log("adding edge");
 
-            obj.add_object(new_tile);
+                var new_spec = {};
 
-            // set the rightmost
-            rightmost_back = new_tile;
-            //console.log("added tile "+new_tile.to_string());
-        }
-    };
+                var x = edge_tile.get_pos().x
+                    + edge_tile.get_width() - 1;
+
+                // hardcoded for top edge to match status bar height
+                var y = 40;
+                new_spec.is_top = true;
+                // switch if it's a bottom edge
+                if (edge_tile === back_btm) {
+                    // this will be changed in the edge object
+                    y = p.height;
+                    new_spec.is_top = false;
+                }
+
+                new_spec.pos = new p.PVector(x, y);
+
+                var new_tile = background_edge(p, new_spec);
+                obj.add_object(new_tile);
+
+                if (edge_tile === back_top) {
+                    back_top = new_tile;
+                }
+                else {
+                    back_btm = new_tile;
+                }
+                //console.log("added tile "+new_tile.to_string());
+            }
+        };
+
+        var add_both = function() {
+            add_one(back_top);
+            add_one(back_btm);
+        };
+
+        return add_both;
+    }());
 
     // initialized the background
     var init_back = function() {
-        // initial tile
-        rightmost_back = background(p, {
-                pos: new p.PVector(-10, 0),
+        // initial edges
+        back_top = background_edge(p, {
+                pos: new p.PVector(-100, 10),
+                is_top: true
         });
-        obj.add_object(rightmost_back);
+        obj.add_object(back_top);
+
+        back_btm = background_edge(p, {
+                pos: new p.PVector(-10, p.height),
+                is_top: false
+        });
+        obj.add_object(back_btm);
 
         // add one more tile to fill screen
         add_back();
@@ -891,27 +926,24 @@ var in_game_state = function (p, previous_state) {
         var add_one = function(rightmost) {
             // if the rightmost has entered the screen 
             if (!rightmost.is_off_right()) {
-                var wall_spec = random_from(wall_specs);
-                // need to make a new copy
-                var new_spec = {
-                    width: wall_spec.width,
-                    height: wall_spec.height
-                };
+                var new_spec = {};
 
+                // note that new wall coords should be at
+                // bottom left corner of seg
+
+                // should be next to last seg
                 var x = rightmost.get_pos().x
-                    + rightmost.get_width()/2
-                    + new_spec.width/2 - 1;
+                    + rightmost.get_width()/2 - 5;
 
-                // set y for bottom wall
-                var y = p.height - new_spec.height/2 + 5;
+                // set y for top wall
+                var y = 95;
+                new_spec.is_top = true;
                 // switch if it's a bottom wall
                 if (rightmost === rightmost_top) {
-                    y = p.height - y + 40;
-                    new_spec.is_top = true;
-                }
-                else {
+                    y = p.height+5;
                     new_spec.is_top = false;
                 }
+
                 new_spec.pos = new p.PVector(x, y);
 
                 // add the new segment

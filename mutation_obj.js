@@ -255,7 +255,7 @@ var mutation_obj = function(p) {
         // reset counters
         obj.reset_mutation();
 		
-		return new_ability;
+		//return new_ability;
     };
 
 
@@ -297,9 +297,11 @@ var mutation_obj = function(p) {
         // decrement by the difference in levels
 	    level_status_obj.incr(l-level);
 		// Pop off abilities
+        /*
 		for (var i = 0; i < (level - l); i++) {
 			abilities.pop();
 		}
+        */
         // set the new level
 		level = l;
 	};
