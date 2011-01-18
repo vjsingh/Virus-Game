@@ -6,7 +6,7 @@ var options_state = function (p, prev_state) {
 	
     // --- private variables ---
 	
-	var background_image = p.loadImage("images/screens/settingssplash.png");
+	var background_image = image_manager.get_image("settingssplash.png");
 	
 	// Buttons
 	// Have a rectangle representing their position and

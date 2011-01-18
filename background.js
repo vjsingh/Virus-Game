@@ -6,7 +6,8 @@
 var background = function(p, spec) {
 
 	//var background_image = p.loadImage("images/background.jpg");
-    var background_image = p.loadImage("images/background1.png");
+    //var background_image = p.loadImage("images/background1.png");
+    var background_image = image_manager.get_image("background1.png");
 
     // --- defaults ---
 

@@ -19,7 +19,7 @@ var wall_cell = function(p, spec) {
 
     // --- private variables ---
 	
-	var wall_image = p.loadImage("images/wallcell1.png");
+	var wall_image = image_manager.get_image("wallcell1.png");
     var alive = true;
 
     // --- public methods --- 

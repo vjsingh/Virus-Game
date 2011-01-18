@@ -22,10 +22,11 @@ var cell = function(p, spec) {
     // --- private variables ---
 
 	// images
-	var images = random_image_selector();
+	//var images = random_image_selector();
     //var image1 = p.loadImage("images/infectable1.png");
     //var image2 = p.loadImage("images/infectable2.png");
     //var image3 = p.loadImage("images/infectable3.png");
+    /*
 	if (on_server) { // so itwill work locally
 		for_each(g_infected_cell_images, function(i){
 			images.add(p.loadImage(i));
@@ -39,7 +40,9 @@ var cell = function(p, spec) {
 		images.add(image2);
 		images.add(image3);
 	}
-	var cell_image = images.get_image();
+    */
+	var cell_image = random_from(
+            image_manager.get_images("infectable_cell")).image;
 	
     // state can be "alive", "infected", "active", or "dead"
     var state = spec.state || "alive";

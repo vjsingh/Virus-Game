@@ -22,7 +22,7 @@ var b_cell = function(p, spec) {
 
     // --- private variables ---
 
-	var b_image = p.loadImage("images/bcell1.png");
+	var b_image = image_manager.get_image("bcell1.png");
 
     // state can be "alive", "active", "shooting", "outdated"
 	

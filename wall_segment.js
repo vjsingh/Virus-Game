@@ -22,7 +22,7 @@ var wall_specs = [
 var wall_segment = function(p, spec) {
 
     //var wall_shape = p.loadShape("images/cellwall1draft.svg");
-    var wall_shape = p.loadImage("images/cellwall1.png");
+    var wall_shape = image_manager.get_image("cellwall1.png");
 
     // --- defaults ---
 
