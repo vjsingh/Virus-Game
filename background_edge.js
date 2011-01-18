@@ -36,7 +36,6 @@ var background_edge = function(p, spec) {
     // override draw method only
     obj.draw = function() {
 		p.imageMode(obj.get_mode());
-        console.log(obj.to_string());
         p.image(edge, obj.get_pos().x, obj.get_pos().y);
     };
 
