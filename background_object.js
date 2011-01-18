@@ -21,8 +21,6 @@ var background_object = function(p, spec) {
         return "background";
     };
 
-    console.log(obj.to_string());
-
     // --- private variables ---
 
 	
