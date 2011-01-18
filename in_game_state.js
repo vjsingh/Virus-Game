@@ -31,6 +31,8 @@ var in_game_state = function (p, previous_state) {
     var game_objects = [];
 	var paused = false;
 
+    var status_bar_height = 40;
+
 	var score = num_status_obj(p, {
 		pos : new p.PVector(p.width - 60, 20),
 		text : "Score:",
@@ -857,10 +859,9 @@ var in_game_state = function (p, previous_state) {
                 var new_spec = {};
 
                 var x = edge_tile.get_pos().x
-                    + edge_tile.get_width() - 1;
+                    + edge_tile.get_width();
 
-                // hardcoded for top edge to match status bar height
-                var y = 40;
+                var y = status_bar_height;
                 new_spec.is_top = true;
                 // switch if it's a bottom edge
                 if (edge_tile === back_btm) {
@@ -896,7 +897,7 @@ var in_game_state = function (p, previous_state) {
     var init_back = function() {
         // initial edges
         back_top = background_edge(p, {
-                pos: new p.PVector(-100, 10),
+                pos: new p.PVector(-100, status_bar_height),
                 is_top: true
         });
         obj.add_object(back_top);
@@ -1283,7 +1284,7 @@ var in_game_state = function (p, previous_state) {
         // draw a rect under status labels
         p.noStroke();
         p.fill(0);//, 200);
-        p.rect(0, 0, p.width, 40);
+        p.rect(0, 0, p.width, status_bar_height);
 		//Draw the status labels
 		for_each(all_status_objs, function(o) {o.draw();});
 		
