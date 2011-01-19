@@ -27,6 +27,10 @@ var background_edge = function(p, spec) {
     // obj to return
     var obj = background_object(p, spec);
 
+    obj.get_type = function() {
+        return "background_edge";
+    };
+
 
     // --- private variables ---
 

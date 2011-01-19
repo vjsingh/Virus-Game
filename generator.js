@@ -22,7 +22,6 @@ var make_generator = function(p, spec) {
 	var distance = null;
 	var mutation = spec.mutation;
 	var game = spec.game;
-	var gen_x_pos = p.width + 50; // constant x pos for generated objs
 	var last_obj = null; // The last object generated
 
 	var default_gen_speed = 10;
@@ -86,7 +85,17 @@ var make_generator = function(p, spec) {
 			make_new: function(en_pos) {
 				return b_cell(p, { pos : en_pos });
 			}
-		}
+		},
+        "background_object": {
+            start:0, num: 8, cap: 8, rate: 99999, 
+            spacing: p.width/5, gen_x: 500,
+            gen_y: function() {
+                return p.random(200, p.height - 180);
+            },
+            make_new: function(en_pos) {
+                return background_object(p, { pos: en_pos });
+            }
+        },
     };
 
     // list of types of enemies
@@ -110,6 +119,18 @@ var make_generator = function(p, spec) {
     var rate = function(type) {
         return gen_info[type].rate;
     };
+    var spacing = function(type) {
+        return gen_info[type].spacing;
+    };
+    var gen_x_pos = function(type) {
+        return p.width + (gen_info[type].gen_x || 50);
+    };
+    var gen_y_pos = function(type) {
+        if (gen_info[type].gen_y) {
+            return gen_info[type].gen_y();
+        }
+        return p.random(90, p.height-50);
+    };
     var gen_speed = function(type) {
         return gen_info[type].gen_speed;
     };
@@ -128,7 +149,8 @@ var make_generator = function(p, spec) {
 		if (last_obj) {
 			if (last_obj.get_type() === "cell") {
 				// 2 times width spacing
-				return last_obj.get_pos().x < (gen_x_pos - last_obj.get_width() * 2); 
+				return last_obj.get_pos().x < 
+                    (gen_x_pos(last_obj.get_type()) - last_obj.get_width() * 2); 
 			}
 		}
 		// else
@@ -153,18 +175,27 @@ var make_generator = function(p, spec) {
                 && distance >= start(enemy_type)
 				&& ok_to_generate()) {
 
-			//Generate random y position
-            // TODO change hardcoded numbers
-			var enemy_y = p.random(90, p.height-50);
-			var enemy_pos = new p.PVector(gen_x_pos, enemy_y);
+			var enemy_y = gen_y_pos(enemy_type); 
+			var enemy_pos = new p.PVector(gen_x_pos(enemy_type), enemy_y);
 			
 			var new_enemy = make_new(enemy_type)(enemy_pos);
 			assert(new_enemy, "Error in generator.update()");
 
+            // make sure it's far enough away from the last object
+            // of its type
+            if (!spaced_out_enough(new_enemy)) { 
+                return;
+            }
+
             // make sure it's not overlapping anything else
-            if (is_overlapping(new_enemy)) {
+            if (is_overlapping(new_enemy) 
+                    && !new_enemy.is("background_object")) {
                 console.log("overlapped");
                 return;
+            }
+
+            if (new_enemy.is("background_object")) {
+                console.log("adding "+new_enemy.to_string());
             }
 			
 			//Add the new enemy to game_objects
@@ -214,6 +245,36 @@ var make_generator = function(p, spec) {
         game.do_to_type(check_overlap, "enemy", false);
         game.do_to_type(check_overlap, "wall_segment", false);
         return overlap;
+    };
+
+    // returns true if the new enemy if far enough away (in x coord)
+    // from the rightmost of its type
+    // or if there is no spacing requirement for that type
+    var spaced_out_enough = function(new_enemy) {
+        // if there is spacing defined for this type
+        if (spacing(new_enemy.get_type()) 
+                && rightmost(new_enemy.get_type())) {
+            // return true if it is far enough apart from rightmost of its type
+            return new_enemy.get_pos().x
+                - rightmost(new_enemy.get_type()).get_pos().x
+                > spacing(new_enemy.get_type());
+        }
+        return true;
+    };
+
+    // returns the rightmost obj of a given type
+    var rightmost = function(type) {
+        var rightmost_x = 0;
+        var rightmost;
+        game.do_to_type(
+            function(o) {
+                if (o.get_pos().x > rightmost_x) {
+                    rightmost = o;
+                }
+            },
+            type, true
+        );
+        return rightmost;
     };
 	
     // returns an object:

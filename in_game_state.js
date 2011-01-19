@@ -80,7 +80,8 @@ var in_game_state = function (p, previous_state) {
     
     //A mapping from game_object types to their rendering levels
     var type_to_level = {
-        "background":0,
+        "background_object":0,
+        "background_edge":0,
         "wall":1,
         "wall_segment":1,
         "particle":2, // general name for level
