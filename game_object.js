@@ -191,6 +191,17 @@ var game_object = function (p, spec) {
 		return pos.y + (height / 2);
 	};
 
+    // returns the x offset for rectangle collisions
+    // should be overridden for rectangular objects
+    obj.get_x_offset = function() {
+        return 0;
+    };
+    // returns the y offset for rectangle collisions
+    // should be overridden for rectangular objects
+    obj.get_y_offset = function() {
+        return 0;
+    };
+
     obj.get_width = function() {
         return width;
     };

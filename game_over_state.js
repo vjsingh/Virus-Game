@@ -13,7 +13,7 @@ var game_over_state = function (p, prev_state, spec) {
 
 	// Score display
 	var score_rect = rectangle(p, {
-		pos : new p.PVector(p.width / 2, 150),
+		pos : new p.PVector(p.width / 2, 230),
 		width : 0,
 		height : 0,
 		text : "Score : " + spec.score,
@@ -22,7 +22,7 @@ var game_over_state = function (p, prev_state, spec) {
 	});
 
 	var mutation_rect  = rectangle(p, {
-		pos : new p.PVector(p.width / 2,200),
+		pos : new p.PVector(p.width / 2,280),
 		width : 0,
 		height : 0,
 		text : "Mutation Level : " + spec.mutation_level,
@@ -34,7 +34,7 @@ var game_over_state = function (p, prev_state, spec) {
 	var restart_button = button(p, {
 		state : function() { return in_game_state(p, prev_state); },
 		rect : {
-			pos : new p.PVector(p.width / 2, p.height/2),
+			pos : new p.PVector(p.width / 2, 330),
 			width : 100,
 			height : 30,
 			text : "Restart"
@@ -43,7 +43,7 @@ var game_over_state = function (p, prev_state, spec) {
 	var splash_button  = button(p, {
 		state : function() { return splash_state(p); },
 		rect : {
-			pos : new p.PVector(p.width / 2, p.height/2 + 50),
+			pos : new p.PVector(p.width / 2, 380),
 			width : 100,
 			height : 30,
 			text : "Main Menu"
@@ -77,6 +77,15 @@ var game_over_state = function (p, prev_state, spec) {
     obj.render = function() {
         p.fill(0, 100);
         p.rect(0, 0, p.width, p.height);
+
+        p.fill(255);
+        p.textAlign(p.CENTER);
+
+        p.textSize(50);
+        p.text("Game Over", p.width/2, 150);
+        p.textSize(20);
+        p.text("Your virus was wiped out!", p.width/2, 180);
+
 		for_each(all_rectangles, function(r) {r.draw();});
     };
 	

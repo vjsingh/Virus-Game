@@ -8,6 +8,7 @@ var background_object = function(p, spec) {
     var obj_image = random_from(
             image_manager.get_images("background")).image;
 
+
     // --- defaults ---
 
     spec.mode = spec.mode || p.CENTER;
@@ -18,11 +19,11 @@ var background_object = function(p, spec) {
     var obj = game_object(p, spec);
 
     obj.get_type = function() {
-        return "background";
+        return "background_object";
     };
 
     // --- private variables ---
-
+    
 	
     // --- public methods --- 
 
