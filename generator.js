@@ -129,7 +129,7 @@ var make_generator = function(p, spec) {
         if (gen_info[type].gen_y) {
             return gen_info[type].gen_y();
         }
-        return p.random(90, p.height-50);
+        return p.floor(p.random(90, p.height-50));
     };
     var gen_speed = function(type) {
         return gen_info[type].gen_speed;
@@ -194,10 +194,6 @@ var make_generator = function(p, spec) {
                 return;
             }
 
-            if (new_enemy.is("background_object")) {
-                console.log("adding "+new_enemy.to_string());
-            }
-			
 			//Add the new enemy to game_objects
             game.add_object(new_enemy);
 			

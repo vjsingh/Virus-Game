@@ -249,16 +249,14 @@ var in_game_state = function (p, previous_state) {
 		if (the_b_cell && the_b_cell.is_alive()) {
 			var old_target = the_b_cell.get_target();
 			
-			// NOT ANYMORE
-			// Update target only if new object.level ===
-			// mutation(highest).level
-			//if (o.get_mutation_info().level == mutation.get_level()){
-			//
 			if (old_target) {
-				if (o.get_mutation_info().level >= 
-					old_target.get_mutation_info().level &&
-					old_target.get_pos().dist(the_b_cell.get_pos()) >
-				o.get_pos().dist(the_b_cell.get_pos())) {
+                // if new macro has higher or equal level
+				if (o.get_level() >= old_target.get_level()
+                    // but not higher than current highest level
+                    && o.get_level() <= mutation.get_level()
+                    // and it is closer
+					&& old_target.get_pos().dist(the_b_cell.get_pos()) >
+				        o.get_pos().dist(the_b_cell.get_pos())) {
 					the_b_cell.set_target(o);
 				}
 			}
