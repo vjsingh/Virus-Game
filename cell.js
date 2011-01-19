@@ -9,8 +9,9 @@ var cell = function(p, spec) {
     
     // --- defaults ---
 
-    spec.width = spec.width || 40;
-    spec.height = spec.height || 40;
+    // was 40
+    spec.width = spec.width || 25;
+    spec.height = spec.height || 25;
 
     // obj to return
     var obj = game_object(p, spec);

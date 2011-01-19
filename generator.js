@@ -41,8 +41,9 @@ var make_generator = function(p, spec) {
     // - make_new = function that takes a pos and returns a new enemy
     var gen_info = {
         "cell": { 
-            start: 0, num: 8, cap: 15, rate: 5000, gen_speed: 25,
-            spacing: 100, 
+            // was 8
+            start: 0, num: 40, cap: 40, rate: 5000, gen_speed: 55,
+            spacing: 30, 
             make_new: function(en_pos) {
                 return cell(p, {
                     pos: en_pos,
