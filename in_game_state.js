@@ -484,8 +484,8 @@ var in_game_state = function (p, previous_state) {
 
 	// Checks for a collision between circle (obj2) and rectangle (obj1)
 	var check_rectangle_collision = function(rect, circ) {
-		return overlapping_vertically(circ, rect, 0) &&
-				overlapping_horizontally(circ, rect, 0);
+		return overlapping_vertically(circ, rect, rect.get_y_offset()) &&
+				overlapping_horizontally(circ, rect, rect.get_x_offset());
 	};
 	
 	// Rectangle and circle collision helper functions
@@ -495,7 +495,7 @@ var in_game_state = function (p, previous_state) {
 		var circlel = circ.get_left(), circler = circ.get_right();
 		var rectl = rect.get_left(), rectr = rect.get_right();
 		return ((circler <= rectr && circler >= (rectl + offset)) || 
-					(circlel >= rectl && circlel <= (rectr + offset)));
+					(circlel >= rectl && circlel <= (rectr - offset)));
 	};
 	// Returns whether the circle is overlapping the rectangle, vertically,
 	// by offset num of pixels
@@ -504,7 +504,7 @@ var in_game_state = function (p, previous_state) {
 		var rectt = rect.get_top(), rectb = rect.get_bottom();
 		
 		return (circleb <= rectb && circleb >= (rectt + offset) || 
-				 	(circlet >= rectt && circlet <= (rectb + offset)));
+				 	(circlet >= rectt && circlet <= (rectb - offset)));
 	};
 
     // holds extra collision checking functions for certain

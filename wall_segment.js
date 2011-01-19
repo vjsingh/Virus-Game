@@ -49,6 +49,10 @@ var wall_segment = function(p, spec) {
 
     // --- public methods --- 
 
+    obj.get_y_offset = function() {
+        return obj.get_height()/2;
+    };
+
     // implementing game_object interface
     
     // update is default (move)
