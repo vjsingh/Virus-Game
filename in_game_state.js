@@ -645,8 +645,8 @@ var in_game_state = function (p, previous_state) {
                 cell.set_state("infected");
 				cell.set_mutation_info(par.get_mutation_info());
 
-				// Add 1 to score
-				score.incr(1 * mult.get_num());
+				// Add 10 to score 
+				score.incr(10 * par.get_level() * mult.get_num());
             }
             else {
                 // otherwise deflect
