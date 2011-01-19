@@ -14,7 +14,17 @@ var g_game_settings = {
 var g = g_game_settings;
 
 var g_toggle_sound_fx = function() {g_toggle("sound_fx");};
-var g_toggle_music = function() {g_toggle("music");};
+var g_toggle_music = function() {
+    g_toggle("music");
+    if (g.music) {
+        play_background_music();
+        console.log("starting music");
+    }
+    else {
+        console.log("stopping music");
+        stop_background_music();
+    }
+};
 var g_toggle_click_to_fire = function() {g_toggle("click_to_fire");};
 var g_toggle_spacebar_to_fire = function() {g_toggle("spacebar_to_fire");};
 

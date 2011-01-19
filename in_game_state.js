@@ -790,6 +790,7 @@ var in_game_state = function (p, previous_state) {
                     if (b.is_alive() && flo.is_activated()) {
                         b.set_mutation_info(flo.get_mutation_info());
                         b.activate();
+                        bounce(b, flo);
                         notify("B-cell activated!");
                     }
                 },

@@ -47,7 +47,8 @@ var play_background_music = (function() {
 	background_music.play();
 	}
 }());
+
 var stop_background_music = function() {
 	background_music.pause();
-}
+};
 
