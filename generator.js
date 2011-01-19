@@ -35,10 +35,14 @@ var make_generator = function(p, spec) {
 	// - gen_speed = speed with which to generate the object
 	//				1 (1/100 frames) to 100 (100/100 frames)
 	//				If not specified, defaults to DEFAULT_GEN_SPEED
+    // - spacing = diagonal space to put b/w objects of this type (optional)
+    // - gen_x = how far offscreen to gen this type (optional)
+    // - gen_y = function that returns random y pos for this object (optional)
     // - make_new = function that takes a pos and returns a new enemy
     var gen_info = {
         "cell": { 
             start: 0, num: 8, cap: 15, rate: 5000, gen_speed: 25,
+            spacing: 100, 
             make_new: function(en_pos) {
                 return cell(p, {
                     pos: en_pos,
@@ -172,8 +176,8 @@ var make_generator = function(p, spec) {
                 // and some random factor
                 && p.random(100) < (gen_speed(enemy_type) || default_gen_speed )
                 // and we are ready to start making this enemy
-                && distance >= start(enemy_type)
-				&& ok_to_generate()) {
+                && distance >= start(enemy_type)) {
+				//&& ok_to_generate()) {
 
 			var enemy_y = gen_y_pos(enemy_type); 
 			var enemy_pos = new p.PVector(gen_x_pos(enemy_type), enemy_y);
@@ -183,7 +187,7 @@ var make_generator = function(p, spec) {
 
             // make sure it's far enough away from the last object
             // of its type
-            if (!spaced_out_enough(new_enemy)) { 
+            if (!spaced_out_enough(new_enemy)) {
                 return;
             }
 
@@ -247,18 +251,38 @@ var make_generator = function(p, spec) {
     // from the rightmost of its type
     // or if there is no spacing requirement for that type
     var spaced_out_enough = function(new_enemy) {
+        var to_return = true;
         // if there is spacing defined for this type
-        if (spacing(new_enemy.get_type()) 
-                && rightmost(new_enemy.get_type())) {
+        if (spacing(new_enemy.get_type())) {
+            var min_dist = 99999;
+            game.do_to_type(
+                function(o) {
+                    var dist = new_enemy.get_pos().dist(o.get_pos());
+                    if (dist < min_dist) {
+                        min_dist = dist; 
+                        if (dist < spacing(new_enemy.get_type())) {
+                            to_return = false;
+                        }
+                    }
+                },
+                new_enemy.get_type(), true
+            );
+        }
+        return to_return;
+    }
+
+
+
+    /*
             // return true if it is far enough apart from rightmost of its type
-            return new_enemy.get_pos().x
-                - rightmost(new_enemy.get_type()).get_pos().x
-                > spacing(new_enemy.get_type());
+            return new_enemy.get_pos().dist(
+                    rightmost(new_enemy.get_type()).get_pos())
+                    > spacing(new_enemy.get_type());
         }
         return true;
     };
 
-    // returns the rightmost obj of a given type
+    /*
     var rightmost = function(type) {
         var rightmost_x = 0;
         var rightmost;
@@ -266,12 +290,14 @@ var make_generator = function(p, spec) {
             function(o) {
                 if (o.get_pos().x > rightmost_x) {
                     rightmost = o;
+                    rightmost_x = o.get_pos().x;
                 }
             },
             type, true
         );
         return rightmost;
     };
+    */
 	
     // returns an object:
     //      cell: number of cells on the screen

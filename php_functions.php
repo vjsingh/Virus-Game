@@ -73,13 +73,4 @@ add_dir_to_arr("./images/noninfectable_cell/", "image_list");
  */
 ?>
 
-for_each(
-    keys(all_image_files),
-    function(k) {
-        console.log("key: "+k);
-});
-
-
-
-
 

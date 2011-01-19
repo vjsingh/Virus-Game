@@ -251,9 +251,9 @@ var in_game_state = function (p, previous_state) {
 			
 			if (old_target) {
                 // if new macro has higher or equal level
-				if (o.get_level() >= old_target.get_level()
-                    // but not higher than current highest level
-                    && o.get_level() <= mutation.get_level()
+				if (//o.get_level() >= old_target.get_level()
+                    // if new macro has current mutation level  
+                    o.get_level() === mutation.get_level()
                     // and it is closer
 					&& old_target.get_pos().dist(the_b_cell.get_pos()) >
 				        o.get_pos().dist(the_b_cell.get_pos())) {

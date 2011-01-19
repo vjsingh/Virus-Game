@@ -5,7 +5,7 @@
 // Have to be wrapped in an object since primitives are pass-by-value
 var g_game_settings = {
 	sound_fx : true,
-	music : true,
+	music : false,
 	click_to_fire : true,
 	spacebar_to_fire : true,
     background_color : 0xFF371010
