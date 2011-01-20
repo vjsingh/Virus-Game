@@ -760,8 +760,9 @@ var in_game_state = function (p, previous_state) {
                         cell.die();
 						tk.set_target(null);
 						if (active_cell === cell) {
-                            last_active_cell = active_cell;
-							active_cell = null;
+                            //last_active_cell = active_cell;
+							//active_cell = null;
+                            kill_active_cell();
 						}
                     }
                 },
@@ -844,7 +845,8 @@ var in_game_state = function (p, previous_state) {
 
         // check offscreen for active cell
         if (active_cell && active_cell.is_offscreen()) {
-            active_cell = null;
+            //active_cell = null;
+            kill_active_cell();
         }
     };
 	
@@ -1081,9 +1083,9 @@ var in_game_state = function (p, previous_state) {
 	};
     
 	var set_all_outdated = function() {
-		for_each(get_all_of_type("b_cell"), function(o) {o.outdated();});
-		for_each(get_all_of_type("tkiller"), function(o) {o.outdated();});
-	}
+        do_to_type(function(o) { o.outdated(); }, "b_cell", true);
+        do_to_type(function(o) { o.outdated(); }, "tkiller", true);
+    };
 
     var dynamic_scroll = function() {
         do_to_types(function(o) { o.scroll(1); },
@@ -1160,8 +1162,6 @@ var in_game_state = function (p, previous_state) {
 				// Make antibodies seek any infected cells they are near
 				make_antibodies_seek();
 				
-				update_tkillers_targets();
-           
 				var the_b_cell = get_b_cell();
 				if (the_b_cell) {
 					// Add antibodies generated from b cells

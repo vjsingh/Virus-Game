@@ -134,7 +134,7 @@ var cell = function(p, spec) {
 	
 	obj.set_antibody = function(a) {
         anti = a;
-        anti.attach();
+        anti.attach(obj);
 	};
 	
 	obj.has_antibody = function() {

@@ -16,10 +16,10 @@ var mutation_obj = function(p) {
 	// Color array for all the mutation levels
 	var color_array = [
 		p.color(250, 250, 40),
-		p.color(100, 250, 110),
 		p.color(60, 240, 240),
-		p.color(13, 28, 171),
 		p.color(167, 17, 161),
+		p.color(100, 250, 110),
+		p.color(13, 28, 171),
 		p.color(118, 12, 25)
 	];
 	
@@ -87,7 +87,7 @@ var mutation_obj = function(p) {
     // returns the max number of cells the player needs to infect to have
     // a 100% probability of mutating
     var calc_cells_needed = function() {
-        return 30 + 10*level;
+        return 30 + 20*level;
     };
     cells_needed = calc_cells_needed();
     bar_status_obj.set_max(cells_needed);
