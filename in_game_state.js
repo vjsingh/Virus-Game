@@ -679,10 +679,10 @@ var in_game_state = function (p, previous_state) {
 
                 // particle vs. empty_cell
                 // // infect the cell, kill the particle
-		// kill the particle 
+		        // kill the particle 
                 "empty_cell": function(par, cell) {
-		    par.die();
-		},
+		            par.die();
+		        },
                 
                 // particle vs. floater
                 // kill the particle
@@ -1042,7 +1042,7 @@ var in_game_state = function (p, previous_state) {
 			return o.is(t);
 		};
 		return level(t).filter(filter_fun);
-	}
+	};
 	
 	// Returns all the infected cells
 	// NOTE: this includes the active cell
@@ -1051,7 +1051,7 @@ var in_game_state = function (p, previous_state) {
 						&& (o.get_state() === "infected" ||
 							o.get_state() === "active");};
 		return level("cell").filter(filter_fun);
-	}
+	};
 	
 	// Sets any antibodies on the screen to seek out any infected
 	// cells that they are close to
@@ -1078,7 +1078,7 @@ var in_game_state = function (p, previous_state) {
 						(!an_antibody.get_target() ||
 						dist_less_than(an_antibody, infected_cell, 
 										an_antibody.get_target()))) {
-					console.log("setting antibody target");
+					//console.log("setting antibody target");
 					an_antibody.set_target(infected_cell);
 				}
 			}

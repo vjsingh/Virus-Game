@@ -36,7 +36,7 @@ var rectangle = function (p, spec) {
 	var rect_color = spec.style.rect_color || spec.rect_color || 255;
 	var rect_image;
 	if (spec.image) {
-		rect_image = p.loadImage(spec.image);
+		rect_image = image_manager.get_image(spec.image);// p.loadImage(spec.image);
 	}
 	var rect_mode = p.CENTER;
 

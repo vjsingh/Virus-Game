@@ -22,7 +22,7 @@ var options_state = function (p, prev_state) {
 	});
 
 	// Options
-	var option_image = "./images/screens/bullet_listcell.png";
+	var option_image = "bullet_listcell.png";
 	var sound_fx_button = option_button(p, {
 		click_fun : g_toggle_sound_fx,
 		global_var : "sound_fx",
