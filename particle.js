@@ -7,8 +7,9 @@ var particle = function(p, spec) {
 
     // --- defaults ---
 
-    spec.width = spec.width || 15;
-    spec.height = spec.height || 15;
+    // was 15
+    spec.width = spec.width || 10;
+    spec.height = spec.height || 10;
 
     // obj to return
     var obj = game_object(p, spec);
@@ -21,7 +22,7 @@ var particle = function(p, spec) {
 
     //var par_shape = p.loadShape("images/virusfinal.svg");
 	//var par_image = p.loadImage("images/virus1.png");
-	var par_image = p.loadImage("images/new/particle.png");
+	var par_image = image_manager.get_image("tinyvirus_trans.png");
 	//var mutation = spec.mutation;
 
     // --- public methods --- 

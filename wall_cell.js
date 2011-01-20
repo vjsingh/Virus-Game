@@ -5,10 +5,13 @@
 
 var wall_cell = function(p, spec) {
     
+	var wall_image = image_manager.get_image("wallcell_1.png");
+
     // --- defaults ---
 
-    spec.width = spec.width || 40;
-    spec.height = spec.height || 20;
+    // temporarily dividing by 2 cuz image is too big
+    spec.width = spec.width || wall_image.width/2 || 40;
+    spec.height = spec.height || wall_image.height/2 || 20;
 
     // obj to return
     var obj = game_object(p, spec);
@@ -19,7 +22,6 @@ var wall_cell = function(p, spec) {
 
     // --- private variables ---
 	
-	var wall_image = p.loadImage("images/wallcell1.png");
     var alive = true;
 
     // --- public methods --- 

@@ -21,6 +21,7 @@ var empty_cell = function(p, spec) {
     //var state = spec.state || "alive";
 
     //var empty_image = p.loadImage("images/noninfectable1.png");
+    /*
 	var images = random_image_selector();
 	var empty_image = null;
 	if (on_server) { // so itwill work locally
@@ -32,6 +33,9 @@ var empty_cell = function(p, spec) {
 	else {
  		empty_image = p.loadImage("images/new/noninfectable.png");
 	}
+    */
+    empty_image = random_from(
+            image_manager.get_images("empty_cell")).image;
 	
     // --- public methods --- 
 

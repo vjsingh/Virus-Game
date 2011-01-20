@@ -31,6 +31,8 @@ var in_game_state = function (p, previous_state) {
     var game_objects = [];
 	var paused = false;
 
+    var status_bar_height = 40;
+
 	var score = num_status_obj(p, {
 		pos : new p.PVector(p.width - 60, 20),
 		text : "Score:",
@@ -78,7 +80,8 @@ var in_game_state = function (p, previous_state) {
     
     //A mapping from game_object types to their rendering levels
     var type_to_level = {
-        "background":0,
+        "background_object":0,
+        "background_edge":0,
         "wall":1,
         "wall_segment":1,
         "particle":2, // general name for level
@@ -246,16 +249,14 @@ var in_game_state = function (p, previous_state) {
 		if (the_b_cell && the_b_cell.is_alive()) {
 			var old_target = the_b_cell.get_target();
 			
-			// NOT ANYMORE
-			// Update target only if new object.level ===
-			// mutation(highest).level
-			//if (o.get_mutation_info().level == mutation.get_level()){
-			//
 			if (old_target) {
-				if (o.get_mutation_info().level >= 
-					old_target.get_mutation_info().level &&
-					old_target.get_pos().dist(the_b_cell.get_pos()) >
-				o.get_pos().dist(the_b_cell.get_pos())) {
+                // if new macro has higher or equal level
+				if (//o.get_level() >= old_target.get_level()
+                    // if new macro has current mutation level  
+                    o.get_level() === mutation.get_level()
+                    // and it is closer
+					&& old_target.get_pos().dist(the_b_cell.get_pos()) >
+				        o.get_pos().dist(the_b_cell.get_pos())) {
 					the_b_cell.set_target(o);
 				}
 			}
@@ -481,8 +482,8 @@ var in_game_state = function (p, previous_state) {
 
 	// Checks for a collision between circle (obj2) and rectangle (obj1)
 	var check_rectangle_collision = function(rect, circ) {
-		return overlapping_vertically(circ, rect, 0) &&
-				overlapping_horizontally(circ, rect, 0);
+		return overlapping_vertically(circ, rect, rect.get_y_offset()) &&
+				overlapping_horizontally(circ, rect, rect.get_x_offset());
 	};
 	
 	// Rectangle and circle collision helper functions
@@ -492,7 +493,7 @@ var in_game_state = function (p, previous_state) {
 		var circlel = circ.get_left(), circler = circ.get_right();
 		var rectl = rect.get_left(), rectr = rect.get_right();
 		return ((circler <= rectr && circler >= (rectl + offset)) || 
-					(circlel >= rectl && circlel <= (rectr + offset)));
+					(circlel >= rectl && circlel <= (rectr - offset)));
 	};
 	// Returns whether the circle is overlapping the rectangle, vertically,
 	// by offset num of pixels
@@ -501,7 +502,7 @@ var in_game_state = function (p, previous_state) {
 		var rectt = rect.get_top(), rectb = rect.get_bottom();
 		
 		return (circleb <= rectb && circleb >= (rectt + offset) || 
-				 	(circlet >= rectt && circlet <= (rectb + offset)));
+				 	(circlet >= rectt && circlet <= (rectb - offset)));
 	};
 
     // holds extra collision checking functions for certain
@@ -642,8 +643,8 @@ var in_game_state = function (p, previous_state) {
                 cell.set_state("infected");
 				cell.set_mutation_info(par.get_mutation_info());
 
-				// Add 1 to score
-				score.incr(1 * mult.get_num());
+				// Add 10 to score 
+				score.incr(10 * par.get_level() * mult.get_num());
             }
             else {
                 // otherwise deflect
@@ -792,6 +793,7 @@ var in_game_state = function (p, previous_state) {
                     if (b.is_alive() && flo.is_activated()) {
                         b.set_mutation_info(flo.get_mutation_info());
                         b.activate();
+                        bounce(b, flo);
                         notify("B-cell activated!");
                     }
                 },
@@ -849,31 +851,65 @@ var in_game_state = function (p, previous_state) {
 
     // adds a new background tile if the rightmost is onscreen
     // ASSUMES ALL WALL TILES ARE SAME SIZE
-    var rightmost_back = null;
-    var add_back = function() {
-        if (!goes_off_right(rightmost_back)) {
-            var x = rightmost_back.get_pos().x
-                + rightmost_back.get_width() - 1;
+    var back_top = null;
+    var back_btm = null;
+    var add_back = (function() {
 
-            var new_tile = background(p, {
-                    pos: new p.PVector(x, 0)
-            });
+        var add_one = function(edge_tile) {
+            if (!goes_off_right(edge_tile)) {
+                console.log("adding edge");
 
-            obj.add_object(new_tile);
+                var new_spec = {};
 
-            // set the rightmost
-            rightmost_back = new_tile;
-            //console.log("added tile "+new_tile.to_string());
-        }
-    };
+                var x = edge_tile.get_pos().x
+                    + edge_tile.get_width();
+
+                var y = status_bar_height;
+                new_spec.is_top = true;
+                // switch if it's a bottom edge
+                if (edge_tile === back_btm) {
+                    // this will be changed in the edge object
+                    y = p.height;
+                    new_spec.is_top = false;
+                }
+
+                new_spec.pos = new p.PVector(x, y);
+
+                var new_tile = background_edge(p, new_spec);
+                obj.add_object(new_tile);
+
+                if (edge_tile === back_top) {
+                    back_top = new_tile;
+                }
+                else {
+                    back_btm = new_tile;
+                }
+                //console.log("added tile "+new_tile.to_string());
+            }
+        };
+
+        var add_both = function() {
+            add_one(back_top);
+            add_one(back_btm);
+        };
+
+        return add_both;
+    }());
 
     // initialized the background
     var init_back = function() {
-        // initial tile
-        rightmost_back = background(p, {
-                pos: new p.PVector(-10, 0),
+        // initial edges
+        back_top = background_edge(p, {
+                pos: new p.PVector(-100, status_bar_height),
+                is_top: true
         });
-        obj.add_object(rightmost_back);
+        obj.add_object(back_top);
+
+        back_btm = background_edge(p, {
+                pos: new p.PVector(-10, p.height),
+                is_top: false
+        });
+        obj.add_object(back_btm);
 
         // add one more tile to fill screen
         add_back();
@@ -894,27 +930,24 @@ var in_game_state = function (p, previous_state) {
         var add_one = function(rightmost) {
             // if the rightmost has entered the screen 
             if (!rightmost.is_off_right()) {
-                var wall_spec = random_from(wall_specs);
-                // need to make a new copy
-                var new_spec = {
-                    width: wall_spec.width,
-                    height: wall_spec.height
-                };
+                var new_spec = {};
 
+                // note that new wall coords should be at
+                // bottom left corner of seg
+
+                // should be next to last seg
                 var x = rightmost.get_pos().x
-                    + rightmost.get_width()/2
-                    + new_spec.width/2 - 1;
+                    + rightmost.get_width()/2 - 5;
 
-                // set y for bottom wall
-                var y = p.height - new_spec.height/2 + 5;
+                // set y for top wall
+                var y = 95;
+                new_spec.is_top = true;
                 // switch if it's a bottom wall
                 if (rightmost === rightmost_top) {
-                    y = p.height - y + 40;
-                    new_spec.is_top = true;
-                }
-                else {
+                    y = p.height+5;
                     new_spec.is_top = false;
                 }
+
                 new_spec.pos = new p.PVector(x, y);
 
                 // add the new segment
@@ -1167,7 +1200,8 @@ var in_game_state = function (p, previous_state) {
             // if mutation occurred
             if (mutation.has_new_mutation() && active_cell) {
                 // do the actual mutation and hold onto new ability
-                var new_ability = mutation.do_mutation();
+                //var new_ability = 
+                mutation.do_mutation();
                 // mutate the active cell
                 active_cell.set_mutation_info(mutation.get_info());
                 // Set all applicable enemies to be outdated
@@ -1175,12 +1209,12 @@ var in_game_state = function (p, previous_state) {
                 // update the scroll factor
                 scroll_factor += 0.1;
                 
-				if (new_ability) {
-					notify("New Ability: " + new_ability);
-				}
-				else {
+				//if (new_ability) {
+				//	notify("New Ability: " + new_ability);
+				//}
+				//else {
 					notify("Mutation occurred!");
-				}
+				//}
                 
                 console.log("mutation occurred!");
             }
@@ -1253,7 +1287,7 @@ var in_game_state = function (p, previous_state) {
         // draw a rect under status labels
         p.noStroke();
         p.fill(0);//, 200);
-        p.rect(0, 0, p.width, 40);
+        p.rect(0, 0, p.width, status_bar_height);
 		//Draw the status labels
 		for_each(all_status_objs, function(o) {o.draw();});
 		

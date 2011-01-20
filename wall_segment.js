@@ -1,6 +1,7 @@
 // list of specs for wall segments to use in the game
 // later can include which image/shape to use
 // MUST HAVE WIDTH AND HEIGHT SPECIFIED
+/*
 var wall_specs = [
     { width: 100, height: 51 }
     //{ width: 100, height: 30, fill: 0 },
@@ -8,12 +9,14 @@ var wall_specs = [
     //{ width: 50, height: 30, fill: 100 },
     //{ width: 150, height: 30, fill: 150 }
 ];
+*/
 
 // *** wall_segment ***
 // --- inherits from game_object
 // spec:
 //  game_object spec
 //  boolean is_top = true if it is on the top of the screen
+//  pos should be at bottom left corner
 // 
 // Each wall segment must match up with the other
 // wall segments at each end
@@ -22,14 +25,18 @@ var wall_specs = [
 var wall_segment = function(p, spec) {
 
     //var wall_shape = p.loadShape("images/cellwall1draft.svg");
-    var wall_shape = p.loadImage("images/cellwall1.png");
+    var wall_image = random_from(
+            image_manager.get_images("wall_segments")).image;
 
     // --- defaults ---
 
-    spec.width = spec.width || 60;
-    spec.height = spec.height || 60;
+    // temporarily dividing by 3 because the images are 3x too big
+    spec.width = spec.width  || wall_image.width/3;// || 60;
+    spec.height = spec.height || wall_image.height/3;// || 60;
     spec.fill = spec.fill || 150;
     spec.mode = p.CENTER;
+    // adjust to center coords
+    spec.pos.add(new p.PVector(spec.width/2, -spec.height/2));
 
     // obj to return
     var obj = game_object(p, spec);
@@ -41,6 +48,10 @@ var wall_segment = function(p, spec) {
     // --- private variables ---
 
     // --- public methods --- 
+
+    obj.get_y_offset = function() {
+        return obj.get_height()/2;
+    };
 
     // implementing game_object interface
     
@@ -67,7 +78,7 @@ var wall_segment = function(p, spec) {
             
         //p.rect(-w/2, -h/2, w, h);
         p.imageMode(obj.get_mode());
-        p.image(wall_shape, 0, 0);//, w, h); 
+        p.image(wall_image, 0, 0, w, h); 
         //p.set(0, 0, wall_shape);
 		//draw(canvas.getContext('2d'));
 		//var d = new Date();
