@@ -678,8 +678,11 @@ var in_game_state = function (p, previous_state) {
                 "wall_cell": bounce,
 
                 // particle vs. empty_cell
-                // infect the cell, kill the particle
-                "empty_cell": infect,
+                // // infect the cell, kill the particle
+		// kill the particle 
+                "empty_cell": function(par, cell) {
+		    par.die();
+		},
                 
                 // particle vs. floater
                 // kill the particle
