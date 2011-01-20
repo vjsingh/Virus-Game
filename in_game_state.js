@@ -24,6 +24,7 @@ var in_game_state = function (p, previous_state) {
     var distance = 0;
     //var score = 0;
 	var active_cell = null;
+    var last_active_cell = null;
     // multiply each object's scroll amount by this
     // factor, which increases throughout the game
     var scroll_factor = 1;
@@ -270,6 +271,13 @@ var in_game_state = function (p, previous_state) {
     // if there is one
     var next_active_cell = function() {
 		var sort_fun = function(active_c) { // don't care about active
+            if (last_active_cell) {
+                // let's try the nearest cell to the one that died
+                return function(c1, c2) {
+                    return dist_less_than(last_active_cell, c1, c2);
+                };
+            }
+            // otherwise leftmost
 			return function(c1, c2) {
 				return c1.get_pos().x < c2.get_pos().x;
 			}
@@ -378,6 +386,7 @@ var in_game_state = function (p, previous_state) {
     // of all the tkillers
     var kill_active_cell = function() {
         active_cell.die();
+        last_active_cell = active_cell;
         active_cell = null;
         do_to_type(
             function(tk) {
@@ -751,6 +760,7 @@ var in_game_state = function (p, previous_state) {
                         cell.die();
 						tk.set_target(null);
 						if (active_cell === cell) {
+                            last_active_cell = active_cell;
 							active_cell = null;
 						}
                     }
@@ -840,8 +850,8 @@ var in_game_state = function (p, previous_state) {
 	
 	// Returns whether the 2 objects have the same mutation level
 	var same_mutation_level = function(o1, o2) {
-		o1level = o1.get_mutation_info().level;
-		o2level = o2.get_mutation_info().level;
+		var o1level = o1.get_mutation_info().level;
+		var o2level = o2.get_mutation_info().level;
 		return (o1level === o2level);
 	};
 	
@@ -1042,8 +1052,7 @@ var in_game_state = function (p, previous_state) {
 	// cells that they are close to
 	var make_antibodies_seek = function() {
 		// First, get all the antibodies and all the infected cells
-		var filter_fun = function(o) {return o.is("antibody");};
-		var all_antibodies = level("antibody").filter(filter_fun);
+		var all_antibodies = get_all_of_type("antibody");
 		var all_infected_cells = get_all_infected_cells();
 			
 		// Then, for each antibody and each infected cell,

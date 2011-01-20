@@ -42,8 +42,8 @@ var make_generator = function(p, spec) {
     var gen_info = {
         "cell": { 
             // was 8
-            start: 0, num: 40, cap: 40, rate: 5000, gen_speed: 55,
-            spacing: 30, 
+            start: 0, num: 25, cap: 40, rate: 5000, gen_speed: 55,
+            spacing: 50, 
             make_new: function(en_pos) {
                 return cell(p, {
                     pos: en_pos,

@@ -96,13 +96,13 @@ var wall_segment = function(p, spec) {
         return false;
     };
 
-    var count = 0;
+    //var count = 0;
     obj.scroll = function(scroll_factor) {
-        count += 1;
-        if (count === 1) {
-            count = 0;
+        //count += 1;
+        //if (count === 1) {
+            //count = 0;
             obj.get_pos().add(new p.PVector(obj.get_scroll_dist()*p.round(scroll_factor), 0));
-        }
+        //}
     };
 
     obj.get_scroll_dist = function() {

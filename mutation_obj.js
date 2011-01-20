@@ -87,7 +87,7 @@ var mutation_obj = function(p) {
     // returns the max number of cells the player needs to infect to have
     // a 100% probability of mutating
     var calc_cells_needed = function() {
-        return 10 + 5*level;
+        return 30 + 10*level;
     };
     cells_needed = calc_cells_needed();
     bar_status_obj.set_max(cells_needed);
