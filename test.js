@@ -9,10 +9,11 @@ var p_code = function(p) {
 
         // deal with console issues
         // TODO move this code
-        if (!window.console) { 
-            console = { log: function() {} };
-        }
-        Processing.logger = console;
+        //if (!window.console) { 
+
+         //   console = { log: function() {} };
+        //}
+        //Processing.logger = console;
 
         var f = new p.loadFont("_sans");
         p.textFont(f, 14);

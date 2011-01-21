@@ -63,7 +63,7 @@ var background_object = function(p, spec) {
        // count += 1;
         //if (count === 1) {
      //       count = 0;
-            obj.get_pos().add(new p.PVector(obj.get_scroll_dist()*p.floor(scroll_factor), 0));
+            obj.get_pos().add(new p.PVector(obj.get_scroll_dist(), 0));
       //  }
     };
 

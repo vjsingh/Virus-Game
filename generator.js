@@ -71,6 +71,7 @@ var make_generator = function(p, spec) {
                 return floater(p, { pos: en_pos });
             } 
         },
+        /*
         "tkiller": {
             start: 1000, num: 1, cap: 5, rate: 20000,
             make_new: function(en_pos) {
@@ -81,18 +82,21 @@ var make_generator = function(p, spec) {
 				});
             }
         },
+        */
 		"multiplier": {
 			start:0, num: 10, cap: 20, rate: 20000,
 			make_new: function(en_pos) {
 				return multiplier(p, { pos : en_pos });
 			}
 		},
+        /*
 		"b_cell": {
 			start:0, num: 1, cap: 1, rate: 999999,
 			make_new: function(en_pos) {
 				return b_cell(p, { pos : en_pos });
 			}
 		},
+        */
         "background_object": {
             start:0, num: 8, cap: 8, rate: 999999, 
             spacing: p.width/5, gen_x: 500,
@@ -199,7 +203,7 @@ var make_generator = function(p, spec) {
             // make sure it's not overlapping anything else
             if (is_overlapping(new_enemy) 
                     && !new_enemy.is("background_object")) {
-                console.log("overlapped");
+                //console.log("overlapped");
                 return;
             }
 
@@ -208,6 +212,7 @@ var make_generator = function(p, spec) {
 			
 			// If b cell, must update b cells targets
 			if (new_enemy.get_type() === "b_cell") {
+                console.log("made new b_cell");
 				game.set_b_cell_target(new_enemy);
 			}
 			

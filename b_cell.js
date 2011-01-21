@@ -23,6 +23,8 @@ var b_cell = function(p, spec) {
     // --- private variables ---
 
 	var b_image = image_manager.get_image("bcell_normal.png");
+    // where to go and shoot from
+    var slot = null;
 
     // state can be "alive", "active", "shooting", "outdated"
 	
@@ -37,10 +39,12 @@ var b_cell = function(p, spec) {
 			new_antibodies = [];
 		}
 		var obj_pos = obj.get_pos();
-		new_antibodies.push(antibody(p, {
+	    var new_antibody = antibody(p, {
 			pos : new p.PVector(obj_pos.x, obj_pos.y + (obj.get_height() / 2)),
             mutation_info: obj.get_mutation_info()
-		}));
+		});
+        new_antibodies.push(new_antibody);
+        return new_antibody;
 	};
 
 
@@ -54,12 +58,18 @@ var b_cell = function(p, spec) {
     };
 	
     // to be called on collision with floater
-    obj.activate = function() {
+    // takes a slot pos 
+    obj.activate = function(aslot) {
         obj.set_state("active");
+        slot = aslot;
         // send the bcell to the top
         obj.set_target(game_object(p, {
-            pos: new p.PVector(p.width - (obj.get_width() / 2), 0)
+            pos: slot.pos //new p.PVector(p.width - (obj.get_width() / 2), 0)
         })); 
+    };
+
+    obj.get_slot = function() {
+        return slot;
     };
 	
 	// Returns any newly created antibodies
@@ -90,7 +100,7 @@ var b_cell = function(p, spec) {
 			return 0;
 		}
 		else if (state === "outdated") {
-			return obj.DEFAULT_SCROLL_DIST * 2;
+			return obj.DEFAULT_SCROLL_DIST;// * 2;
 		}
 		else {
 			return obj.DEFAULT_SCROLL_DIST;
@@ -103,15 +113,21 @@ var b_cell = function(p, spec) {
         if (obj.get_state() === "shooting") {
             //obj.stop();
             // make it face downwards
-            obj.set_target_angle(p.PI/2);
+            var angle = p.PI/2
+            // switch if at bottom
+            if (!slot.is_top) {
+                angle = -p.PI/2;
+            }
+            obj.set_target_angle(angle);
 			if (Math.random() < .03) {
-				make_antibody();
+				var new_anti = make_antibody();
+                new_anti.set_target_angle(p.random(0, 2*angle));
 			}
         }
         else {
             obj.move();
         }
-    }
+    };
 
     // should point towards target
     // (triangle for now)

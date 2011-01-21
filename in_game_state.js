@@ -40,7 +40,7 @@ var in_game_state = function (p, previous_state) {
 		num : 0
 	});
 	var mult = num_status_obj(p, {
-		pos : new p.PVector(p.width - 150, 20),
+		pos : new p.PVector(p.width - 180, 20),
 		text : "Multiplier:",
 		num : 1,
         format : function(num) {
@@ -93,9 +93,9 @@ var in_game_state = function (p, previous_state) {
         "floater":4,
         "tkiller":4,
 		"antibody":4,
-		"b_cell": 4,
-		"multiplier":5,
-        "info":6
+		"b_cell": 5,
+		"multiplier":6,
+        "info":7
     }; 
 
     // given a type returns the array of objects
@@ -215,25 +215,62 @@ var in_game_state = function (p, previous_state) {
 		//obj.add_object(bg);	
 		//console.log(level("background")[0]);
 	};
+
+    // creates, adds, and returns a new b_cell with no target
+    var make_b_cell = function() {
+        var new_b_cell = b_cell(p, {
+            pos: new p.PVector(p.width+50, p.random(p.height/4, 3*p.height/4)),
+        }); 
+        obj.add_object(new_b_cell);
+        return new_b_cell;
+    };
+
+    // creates, adds, and returns a new tkiller with no target
+    var make_tkiller = function() {
+        var new_tkiller = tkiller(p, {
+            pos: new p.PVector(p.width+50, p.random(p.height/4, 3*p.height/4)),
+        }); 
+        obj.add_object(new_tkiller);
+        return new_tkiller;
+    };
 	
 	// Returns the current b cell on the screen, if there is one
-	var get_b_cell = function() {
+	var get_b_cell = function(level) {
 		var the_b_cell = null;
-        do_to_type(function(b) {
-                // not anymore -- only want unactivated bcell
-                //if (b.is_alive()) {
-           		the_b_cell = b; 
-                //}
+        do_to_type(
+            function(b) {
+                if (b.get_level() === level) {
+           		    the_b_cell = b; 
+                }
             },
-            "b_cell", true);
+            "b_cell", true
+        );
 		return the_b_cell;
-	}
+	};
+
+    var alert_b_cell = function(flo) {
+        // gets b_cell of the flo's level
+        var b = get_b_cell(flo.get_level());
+        // if there isn't one
+        if (!b) {
+            // make one
+            b = make_b_cell();
+            b.set_mutation_info(flo.get_mutation_info());
+            b.set_target(flo);
+        }
+        // if there is one
+        else {
+            // it should be either active, shooting, or outdated
+            // so do nothing
+        }
+    };
 	
 	// Alerts the b cell (only one on screen at a time?) to a newly mutated
 	// obj.
 	// If o.mutation_level >= b cells current target.mutation_level and o is
 	// closer than the b cells curr target (or if b cells curr
 	// target is null), updates b_cells curr target to be o
+    /*
 	var alert_b_cell = function(o) {
 		//var cell_objs = level("b_cell");
 		//var cell_obj = null;
@@ -243,7 +280,7 @@ var in_game_state = function (p, previous_state) {
 				the_b_cell = cell_obj;
 			}
 		}
-        */
+        /
 
 		var the_b_cell = get_b_cell();
 		
@@ -266,6 +303,7 @@ var in_game_state = function (p, previous_state) {
 			}
 		}
 	};
+    */
 
     // sets active_cell to the leftmost infected cell
     // if there is one
@@ -280,11 +318,11 @@ var in_game_state = function (p, previous_state) {
             // otherwise leftmost
 			return function(c1, c2) {
 				return c1.get_pos().x < c2.get_pos().x;
-			}
+			};
 		}
 		choose_cell(sort_fun);
     };
-	
+
 	// Set the next-left or next-right cell to be active, and 
 	// if appropriate sets current active to be not active
 	
@@ -368,18 +406,22 @@ var in_game_state = function (p, previous_state) {
 	// Updates all tkillers targets
 	// Tkillers target the closest infected and targeted cell
 	var update_tkillers_targets = function(){
+		var all_infected_cells = get_all_infected_cells();
 		do_to_type(function(tkill){
-			var all_infected_cells = get_all_infected_cells();
-			for (var i = 0; i < all_infected_cells.length; i++) {
-				var infected_cell = all_infected_cells[i];
-				if (infected_cell.has_antibody() &&
-					(!tkill.get_target() ||
-					dist_less_than(tkill, infected_cell, tkill.get_target()))) {
-					tkill.set_target(infected_cell);
-				}
-			}
+            for_each(
+                all_infected_cells,
+                function(infected_cell) {
+                    if (infected_cell.has_antibody() 
+                        && same_mutation_level(infected_cell, tkill)
+                        && (!tkill.get_target() ||
+                        dist_less_than(tkill,
+                            infected_cell, tkill.get_target()))) {
+                        tkill.set_target(infected_cell);
+                    }
+                }
+			);
 		}, "tkiller", true);
-	}
+	};
            
 
     // kills the active cell and updates the targets
@@ -388,11 +430,7 @@ var in_game_state = function (p, previous_state) {
         active_cell.die();
         last_active_cell = active_cell;
         active_cell = null;
-        do_to_type(
-            function(tk) {
-                tk.set_target(null);
-            },
-            "tkiller", "true");
+        update_tkillers_targets();
     };
 	
     //Checks whether any 2 objs are colliding, and if so calls handle_collision on them
@@ -406,6 +444,8 @@ var in_game_state = function (p, previous_state) {
             ["cell", "cell"],
             ["cell", "enemy"],
             ["enemy", "enemy"],
+			["enemy", "b_cell"],
+			["b_cell", "wall"],
 			["particle", "wall"],
 			["multiplier", "wall"],
 			["enemy", "wall"]
@@ -647,9 +687,10 @@ var in_game_state = function (p, previous_state) {
 			
 				// increase mutation percentage if level is highest on screen
 				// must be done before setting state of infected cell
-				if (par.get_level() === mutation.get_level()) {
-					mutation.infected_cell();
-				}
+                // only happens if infected by particle of cur level
+                if (par.get_level() === mutation.get_level()) {
+				    mutation.infected_cell();
+                }
 				
                 		cell.set_state("infected");
 				cell.set_mutation_info(par.get_mutation_info());
@@ -683,6 +724,8 @@ var in_game_state = function (p, previous_state) {
                 // // infect the cell, kill the particle
 		        // kill the particle 
                 "empty_cell": function(par, cell) {
+                    // TODO diff sound?
+                    play_sound("cell_infect");
 		            par.die();
 		        },
                 
@@ -695,8 +738,8 @@ var in_game_state = function (p, previous_state) {
 						// update flo if not activated || level <
 						// par.level
 						if (!flo.is_activated() ||
-								flo.get_mutation_info().level <
-								par.get_mutation_info.level) {
+								flo.get_level() <
+								par.get_level()) {
 							flo.set_mutation_info(par.get_mutation_info());
 							flo.activate();
 							alert_b_cell(flo);
@@ -764,7 +807,7 @@ var in_game_state = function (p, previous_state) {
 							cell.get_state() === "active") &&
 						cell.has_antibody()) {
                         cell.die();
-			play_sound("kill");	
+			            play_sound("kill");	
 						tk.set_target(null);
 						if (active_cell === cell) {
                             //last_active_cell = active_cell;
@@ -807,7 +850,7 @@ var in_game_state = function (p, previous_state) {
                 "floater": function(b, flo) {
                     if (b.is_alive() && flo.is_activated()) {
                         b.set_mutation_info(flo.get_mutation_info());
-                        b.activate();
+                        b.activate(get_bcell_slot());
                         bounce(b, flo);
                         notify("B-cell activated!");
                     }
@@ -818,8 +861,10 @@ var in_game_state = function (p, previous_state) {
                         b.make_antibodies();
                         notify("Incoming antibodies!");
                     }
-                    else if (b.is_alive() || b.is_outdated()) {
+                    else if (b.is_alive()) {
                         bounce(b, wall);
+                    }
+                    else if (b.is_outdated()) {
                     }
                 }
             }
@@ -873,10 +918,9 @@ var in_game_state = function (p, previous_state) {
 
         var add_one = function(edge_tile) {
             if (!goes_off_right(edge_tile)) {
-                console.log("adding edge");
+                //console.log("adding edge");
 
                 var new_spec = {};
-
                 var x = edge_tile.get_pos().x
                     + edge_tile.get_width();
 
@@ -950,7 +994,6 @@ var in_game_state = function (p, previous_state) {
 
                 // note that new wall coords should be at
                 // bottom left corner of seg
-
                 // should be next to last seg
                 var x = rightmost.get_pos().x
                     + rightmost.get_width()/2 - 5;
@@ -1089,9 +1132,83 @@ var in_game_state = function (p, previous_state) {
 		}
 	};
     
+    // sets anything activated to the given level to be outdated
 	var set_all_outdated = function() {
-        do_to_type(function(o) { o.outdated(); }, "b_cell", true);
-        do_to_type(function(o) { o.outdated(); }, "tkiller", true);
+        // make array of which levels are active
+        var active_levels = [];
+        var add_level = function(o) {
+            var level = o.get_level();
+            if (level) {
+                active_levels[level] = true;
+            }
+        };
+        do_to_type(add_level, "cell", true);
+        do_to_type(add_level, "particle", true);
+             
+        // for each b/t cell, see if its level is still active
+        var outdate = function(o) {
+            if (!active_levels[o.get_level()]) { 
+                o.outdated();
+                if (o.is("b_cell") && o.is_activated()) {
+                    free_bcell_slot(o.get_slot());
+                }
+            }
+        };
+        do_to_type(outdate, "b_cell", true);
+        do_to_type(outdate, "tkiller", true);
+    };
+
+    var slots = (function() {
+        var num_slots = 6;
+        var slot_incr = 90;
+        var slot_arr = [];
+        var slot_x = p.width - slot_incr;
+        // create an array of slots alternating
+        // top and bottom separated by slot_incr
+        for (n=0; n<num_slots; n++) {
+            var slot_y = 0;
+            var is_top = true;
+            if (n%2 === 1) {
+                slot_x -= slot_incr;
+                slot_y = p.height;
+                is_top = false;
+            }
+            slot_arr[n] = { 
+                pos: new p.PVector(slot_x, slot_y),
+                taken: false,
+                is_top: is_top
+            };
+        }
+        return slot_arr;
+    }());
+
+    // returns an object with a pos and a slot number
+    var get_bcell_slot = function() {
+        slot = null;
+        for (n=0; n<slots.length; n++) {
+            if (!slots[n].taken) {
+                slots[n].taken = true;
+                return {
+                    pos: slots[n].pos,
+                    num: n,
+                    is_top: slots[n].is_top
+                };
+            }
+        }
+        // if there are no empty slots
+        // make a random one
+        return {
+            pos: new p.PVector(p.random(p.width), p.random(p.height)), 
+            num: -1,
+            is_top: true
+        };
+    };
+
+    // marks slot as untaken again
+    var free_bcell_slot = function(slot) {
+       if (slots[slot.num]) {
+           slots[slot.num].taken = false; 
+       }
     };
 
     var dynamic_scroll = function() {
@@ -1169,11 +1286,13 @@ var in_game_state = function (p, previous_state) {
 				// Make antibodies seek any infected cells they are near
 				make_antibodies_seek();
 				
-				var the_b_cell = get_b_cell();
-				if (the_b_cell) {
-					// Add antibodies generated from b cells
-					obj.add_objects(the_b_cell.get_antibodies());
-				}
+				// Add antibodies generated from b cells
+                do_to_type(
+                    function(b) {
+					    obj.add_objects(b.get_antibodies());
+                    },
+                    "b_cell", true
+                );
 
                 // adds a new segment of wall if necessary
                 add_wall();
@@ -1181,6 +1300,9 @@ var in_game_state = function (p, previous_state) {
                 add_back();
 
 				update_tkillers_targets();
+
+                // set outdated t/b cells
+                set_all_outdated();
 				
 				// scroll all objects
                
@@ -1192,8 +1314,6 @@ var in_game_state = function (p, previous_state) {
 				
 				// update distance travelled
                 distance += scroll_factor;   
-			//	distance -= DEFAULT_SCROLL_DIST;
-                
 				
 				// update all objects
 				do_to_all_objs(function(o){
@@ -1212,13 +1332,27 @@ var in_game_state = function (p, previous_state) {
             // check for a new mutation
             // if mutation occurred
             if (mutation.has_new_mutation() && active_cell) {
+                // pick infected cell closest to active cell with the current
+                // mutation level
+                var choices = get_all_of_type("cell").filter(
+                    function(c) {
+                        return (c.get_state() === "infected"
+                            || c.get_state() === "active")
+                            && c.get_level() === mutation.get_level(); 
+                    }
+                );
+                choices.sort( 
+                    function(c1, c2) {
+                        return dist_less_than(active_cell, c1, c2);
+                    }
+                );
+                var cell_to_mutate = choices[choices.length-1];
+
                 // do the actual mutation and hold onto new ability
                 //var new_ability = 
                 mutation.do_mutation();
                 // mutate the active cell
-                active_cell.set_mutation_info(mutation.get_info());
-                // Set all applicable enemies to be outdated
-                set_all_outdated();
+                cell_to_mutate.set_mutation_info(mutation.get_info());
                 // update the scroll factor
                 scroll_factor += 0.1;
                 
@@ -1318,7 +1452,7 @@ var in_game_state = function (p, previous_state) {
             obj.add_objects(particles);
             kill_active_cell();
         }
-	}
+	};
 	obj.key_pressed = function(k) {
 		if (k === 32) { //spacebar
 			if (g_spacebar_to_fire()) {
