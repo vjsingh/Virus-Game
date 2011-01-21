@@ -24,6 +24,7 @@ var in_game_state = function (p, previous_state) {
     var distance = 0;
     //var score = 0;
 	var active_cell = null;
+    var last_active_cell = null;
     // multiply each object's scroll amount by this
     // factor, which increases throughout the game
     var scroll_factor = 1;
@@ -270,6 +271,13 @@ var in_game_state = function (p, previous_state) {
     // if there is one
     var next_active_cell = function() {
 		var sort_fun = function(active_c) { // don't care about active
+            if (last_active_cell) {
+                // let's try the nearest cell to the one that died
+                return function(c1, c2) {
+                    return dist_less_than(last_active_cell, c1, c2);
+                };
+            }
+            // otherwise leftmost
 			return function(c1, c2) {
 				return c1.get_pos().x < c2.get_pos().x;
 			}
@@ -378,6 +386,7 @@ var in_game_state = function (p, previous_state) {
     // of all the tkillers
     var kill_active_cell = function() {
         active_cell.die();
+        last_active_cell = active_cell;
         active_cell = null;
         do_to_type(
             function(tk) {
@@ -670,10 +679,10 @@ var in_game_state = function (p, previous_state) {
 
                 // particle vs. empty_cell
                 // // infect the cell, kill the particle
-		// kill the particle 
+		        // kill the particle 
                 "empty_cell": function(par, cell) {
-		    par.die();
-		},
+		            par.die();
+		        },
                 
                 // particle vs. floater
                 // kill the particle
@@ -755,7 +764,9 @@ var in_game_state = function (p, previous_state) {
 			play_sound("kill");	
 						tk.set_target(null);
 						if (active_cell === cell) {
-							active_cell = null;
+                            //last_active_cell = active_cell;
+							//active_cell = null;
+                            kill_active_cell();
 						}
                     }
                 },
@@ -838,14 +849,15 @@ var in_game_state = function (p, previous_state) {
 
         // check offscreen for active cell
         if (active_cell && active_cell.is_offscreen()) {
-            active_cell = null;
+            //active_cell = null;
+            kill_active_cell();
         }
     };
 	
 	// Returns whether the 2 objects have the same mutation level
 	var same_mutation_level = function(o1, o2) {
-		o1level = o1.get_mutation_info().level;
-		o2level = o2.get_mutation_info().level;
+		var o1level = o1.get_mutation_info().level;
+		var o2level = o2.get_mutation_info().level;
 		return (o1level === o2level);
 	};
 	
@@ -1031,7 +1043,7 @@ var in_game_state = function (p, previous_state) {
 			return o.is(t);
 		};
 		return level(t).filter(filter_fun);
-	}
+	};
 	
 	// Returns all the infected cells
 	// NOTE: this includes the active cell
@@ -1040,14 +1052,13 @@ var in_game_state = function (p, previous_state) {
 						&& (o.get_state() === "infected" ||
 							o.get_state() === "active");};
 		return level("cell").filter(filter_fun);
-	}
+	};
 	
 	// Sets any antibodies on the screen to seek out any infected
 	// cells that they are close to
 	var make_antibodies_seek = function() {
 		// First, get all the antibodies and all the infected cells
-		var filter_fun = function(o) {return o.is("antibody");};
-		var all_antibodies = level("antibody").filter(filter_fun);
+		var all_antibodies = get_all_of_type("antibody");
 		var all_infected_cells = get_all_infected_cells();
 			
 		// Then, for each antibody and each infected cell,
@@ -1068,7 +1079,7 @@ var in_game_state = function (p, previous_state) {
 						(!an_antibody.get_target() ||
 						dist_less_than(an_antibody, infected_cell, 
 										an_antibody.get_target()))) {
-					console.log("setting antibody target");
+					//console.log("setting antibody target");
 					an_antibody.set_target(infected_cell);
 				}
 			}
@@ -1076,9 +1087,9 @@ var in_game_state = function (p, previous_state) {
 	};
     
 	var set_all_outdated = function() {
-		for_each(get_all_of_type("b_cell"), function(o) {o.outdated();});
-		for_each(get_all_of_type("tkiller"), function(o) {o.outdated();});
-	}
+        do_to_type(function(o) { o.outdated(); }, "b_cell", true);
+        do_to_type(function(o) { o.outdated(); }, "tkiller", true);
+    };
 
     var dynamic_scroll = function() {
         do_to_types(function(o) { o.scroll(1); },
@@ -1155,8 +1166,6 @@ var in_game_state = function (p, previous_state) {
 				// Make antibodies seek any infected cells they are near
 				make_antibodies_seek();
 				
-				update_tkillers_targets();
-           
 				var the_b_cell = get_b_cell();
 				if (the_b_cell) {
 					// Add antibodies generated from b cells

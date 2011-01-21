@@ -8,8 +8,8 @@ var antibody = function(p, spec) {
     
     // --- defaults ---
 
-    spec.width = spec.width || 15;
-    spec.height = spec.height || 10;
+    spec.width = spec.width || 11;
+    spec.height = spec.height || 7;
 	spec.speed = spec.speed || 4;
 	spec.no_target_speed = spec.no_target_speed || 2
 	
@@ -29,11 +29,12 @@ var antibody = function(p, spec) {
     // --- public methods --- 
 
     // should be called when an antibody attaches to a cell
-    obj.attach = function() {
+    // tar will be the cell that it is attaching to (may not be its target)
+    obj.attach = function(tar) {
         attached = true;
+        obj.face_target(tar);
         // scoot it out just a bit
         obj.get_vel().mult(-1);
-        obj.move();
         obj.move();
 
         //obj.set_target(null);
@@ -45,7 +46,11 @@ var antibody = function(p, spec) {
         if (!attached) {
             obj.move();
             // don't want two antibodies attacking one cell
-            if (obj.get_target() && obj.get_target().has_antibody()) {
+            var tar = obj.get_target();
+            if (tar && (tar.has_antibody()
+                     // also don't want them to keep target
+                     // if the target changes level
+                    || tar.get_level() !== obj.get_level())) {
                 obj.set_target(null);
             }
         }

@@ -30,7 +30,6 @@ var seeker = function(p, spec) {
     // update makes tkiller chase target cell
     obj.update = function() {
         var pos = obj.get_pos();
-        var tpos;
         var speed_to_use = speed;
 
         if (target && target.is_dead()) {
@@ -47,19 +46,7 @@ var seeker = function(p, spec) {
             speed_to_use = no_target_speed;
         }
         else {
-            tpos = target.get_pos();
-
-            // update target_angle
-            target_angle = p.atan2(tpos.y-pos.y,
-                    tpos.x-pos.x); // y first!
-                
-            // SHOULD BE HANDLED BY COLLISIONS
-            // when we get there, stop
-            /*
-            if (pos.dist(tpos) < target.get_width()/2) {
-                target = null;
-            }
-            */
+            obj.face_target(); 
         }
 
         // change velocity to point towards target
@@ -87,6 +74,18 @@ var seeker = function(p, spec) {
 	
     obj.is_outdated = function() {
         return obj.get_state() === "outdated";
+    };
+
+    // faces tar, or if tar not supplied, the object's
+    // target
+    obj.face_target = function(tar) {
+        var pos = obj.get_pos();
+        var tpos = target.get_pos();
+        if (tar) {
+            var tpos = tar.get_pos();
+        }
+        // update target_angle
+        target_angle = p.atan2(tpos.y-pos.y, tpos.x-pos.x); // y first!
     };
 
 

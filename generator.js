@@ -42,8 +42,8 @@ var make_generator = function(p, spec) {
     var gen_info = {
         "cell": { 
             // was 8
-            start: 0, num: 40, cap: 40, rate: 5000, gen_speed: 55,
-            spacing: 30, 
+            start: 0, num: 20, cap: 40, rate: 2000, gen_speed: 55,
+            spacing: 50, 
             make_new: function(en_pos) {
                 return cell(p, {
                     pos: en_pos,
@@ -52,19 +52,21 @@ var make_generator = function(p, spec) {
             }
         },
         "wall_cell": {
-            start: 0, num: 3, cap: 7, rate: 20000, //non testing value: 1000
+            start: 0, num: 3, cap: 7, rate: 5000, //non testing value: 1000
+            spacing: 100,
             make_new: function(en_pos) {
                 return wall_cell(p, { pos: en_pos });
             } 
         },
         "empty_cell": {
-            start: /* 5000 */ 0, num: 1, cap: 10, rate: 20000,
+            start: /* 5000 */ 0, num: 1, cap: 10, rate: 5000,
             make_new: function(en_pos) {
                 return empty_cell(p, { pos: en_pos });
             } 
         },
         "floater": {
-            start: 0, num: 3, cap: 7, rate: 20000,
+            start: 0, num: 3, cap: 7, rate: 7000,
+            spacing: 100,
             make_new: function(en_pos) {
                 return floater(p, { pos: en_pos });
             } 
@@ -86,13 +88,13 @@ var make_generator = function(p, spec) {
 			}
 		},
 		"b_cell": {
-			start:0, num: 1, cap: 1, rate: 99999,
+			start:0, num: 1, cap: 1, rate: 999999,
 			make_new: function(en_pos) {
 				return b_cell(p, { pos : en_pos });
 			}
 		},
         "background_object": {
-            start:0, num: 8, cap: 8, rate: 99999, 
+            start:0, num: 8, cap: 8, rate: 999999, 
             spacing: p.width/5, gen_x: 500,
             gen_y: function() {
                 return p.random(200, p.height - 180);
@@ -167,7 +169,9 @@ var make_generator = function(p, spec) {
 	//Should be called every time the game updates
 	obj.update = function() {
 		//game_objects = game.get_game_objects();
-		distance = game.get_distance();
+		distance = p.floor(game.get_distance());
+
+        update_types();
 
         var enemy_type = random_from(enemy_types);//random_type();
         var num_enemies = count_enemy(enemy_type);
@@ -210,20 +214,27 @@ var make_generator = function(p, spec) {
 			last_obj = new_enemy;
 		}
 
-        // update nums for types based on rate
-        for (var i=0; i<enemy_types.length; i++) {
-            var type = enemy_types[i];
-            if (distance % rate(type) <= 0.1 
-                    && distance >= 10) {
-                gen_more(type);
-                console.log("increased num of "+type+
-                        "s to "+num(type));
-            }
-        }
-
 	};
 	
 	// --- private methods ---
+
+    var update_types = function() {
+        if (distance % 100 <= 0.5) {
+            console.log(distance);
+        }
+        // update nums for types based on rate
+        for_each(
+            enemy_types,
+            function(type) {
+                if (distance % rate(type) <= 0.1 
+                        && distance >= 10) {
+                    gen_more(type);
+                    console.log("increased num of "+type+
+                            "s to "+num(type));
+                }
+            }
+        );
+    };
     
     // returns how many of given enemy there are
     var count_enemy = function(enemy_type) {

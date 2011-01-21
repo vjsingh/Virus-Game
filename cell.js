@@ -134,7 +134,7 @@ var cell = function(p, spec) {
 	
 	obj.set_antibody = function(a) {
         anti = a;
-        anti.attach();
+        anti.attach(obj);
 	};
 	
 	obj.has_antibody = function() {
@@ -219,7 +219,7 @@ var cell = function(p, spec) {
                 || arrow_angle < -p.PI/2) {
             arrow_dir = (2-arrow_dir)-2;
         }
-        arrow_angle += p.radians(5)*arrow_dir;
+        arrow_angle += p.radians(5+obj.get_level()/2)*arrow_dir;
     };
 
     var drawArrow = function() {
