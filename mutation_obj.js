@@ -1,8 +1,10 @@
 // Manages all information about the current state of mutation
 // in the game
 // Provides a num_status_obj, which is used for rendering
+// spec:
+//      status_height = y value for status objects
 
-var mutation_obj = function(p) {
+var mutation_obj = function(p, spec) {
 	
     // obj to return
     var obj = {};
@@ -44,7 +46,7 @@ var mutation_obj = function(p) {
 	
 	// Shows the probability of getting a mutation
 	var bar_status_obj = num_status_obj(p, {
-		pos : new p.PVector(150, 20),
+		pos : new p.PVector(170, spec.status_height || 20),
 		text : "Mutation:",
 		num : 0,
 		bar : true,
@@ -53,7 +55,7 @@ var mutation_obj = function(p) {
 	
 	//Shows the curent mutation level
     var level_spec = {
-		pos : new p.PVector(350, 20),
+		pos : new p.PVector(350, spec.status_height || 20),
 		text : "Level ",
 		num : 1,
         text_color : p.color(0)

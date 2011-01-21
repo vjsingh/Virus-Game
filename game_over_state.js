@@ -35,8 +35,6 @@ var game_over_state = function (p, prev_state, spec) {
 		state : function() { return in_game_state(p, prev_state); },
 		rect : {
 			pos : new p.PVector(p.width / 2, 330),
-			width : 100,
-			height : 30,
 			text : "Restart"
 		}
 	});
@@ -44,8 +42,6 @@ var game_over_state = function (p, prev_state, spec) {
 		state : function() { return splash_state(p); },
 		rect : {
 			pos : new p.PVector(p.width / 2, 380),
-			width : 100,
-			height : 30,
 			text : "Main Menu"
 		}
 	});
@@ -75,7 +71,7 @@ var game_over_state = function (p, prev_state, spec) {
 	};
 
     obj.render = function() {
-        p.fill(0, 100);
+        p.fill(0, 150);
         p.rect(0, 0, p.width, p.height);
 
         p.fill(255);

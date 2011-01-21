@@ -17,8 +17,6 @@ var pause_state = function (p, prev_state) {
 		state : function() { return prev_state; },
 		rect : {
 			pos : new p.PVector(button_x, button_top),
-			width : 60,
-			height : 20,
 			text: "Continue"
 		}
 	});
@@ -27,8 +25,6 @@ var pause_state = function (p, prev_state) {
 		state : function() { return options_state(p, obj); },
 		rect : {
 			pos : new p.PVector(button_x, button_top+button_sep),
-			width : 60,
-			height : 20,
 			text: "Options"
 		}
 	});
@@ -37,8 +33,6 @@ var pause_state = function (p, prev_state) {
 		state : function() { return help_state(p, obj); },	
 		rect : {
 			pos : new p.PVector(button_x, button_top+2*button_sep),
-			width : 60,
-			height : 20,
 			text: "Help"
 		}
 	});
@@ -47,8 +41,6 @@ var pause_state = function (p, prev_state) {
 		state : function() { return splash_state(p); },	
 		rect : {
 			pos : new p.PVector(button_x, button_top+3*button_sep),
-			width : 60,
-			height : 20,
 			text: "Quit"
 		}
 	});

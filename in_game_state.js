@@ -33,15 +33,16 @@ var in_game_state = function (p, previous_state) {
 	var paused = false;
 
     var status_bar_height = 40;
+    var status_height = 20;
 
 	var score = num_status_obj(p, {
-		pos : new p.PVector(p.width - 60, 20),
+		pos : new p.PVector(p.width - 100, status_height),
 		text : "Score:",
 		num : 0,
         format : add_commas 
     });
 	var mult = num_status_obj(p, {
-		pos : new p.PVector(p.width - 180, 20),
+		pos : new p.PVector(p.width - 200, status_height),
 		text : "Multiplier:",
 		num : 1,
         format : function(num) {
@@ -51,7 +52,7 @@ var in_game_state = function (p, previous_state) {
 	var time_elapsed = 0; // Time elapsed in seconds
 	var set_time = false; //bool that says if we've started counting time
 	var time_status = num_status_obj(p, {
-		pos : new p.PVector(40, 20),
+		pos : new p.PVector(85, status_height),
 		text : "Time:",
 		num : time_elapsed,
         // formats time to mins:secs
@@ -61,10 +62,40 @@ var in_game_state = function (p, previous_state) {
             return p.floor(num/60) + ":" + secs;
         }
 	});
-	var mutation = mutation_obj(p);
+	var mutation = mutation_obj(p, { status_height : status_height });
+    
+    var pause_button = button(p, {
+        state: function() { 
+            paused = true;
+            console.log("pause button");
+            return pause_state(p, obj);
+        },
+        rect: {
+            pos: new p.PVector(25, status_height),
+            width: 25, height: 25,
+        }
+    });
+    // draw two vertical rects
+    pause_button.draw = function() {
+        p.pushMatrix();
+        // get the rect spec back
+        var r = pause_button.get_rect();
+        var w = r.width;
+        var h = r.height;
+        p.translate(r.pos.x-w/2, r.pos.y-h/2);
+        p.strokeWeight(2);
+        p.stroke(255);
+        p.ellipse(w/2, h/2, w, h);
+        p.noStroke();
+        p.fill(255);
+        p.rect(w/4, h/5, w/5, 3*h/5);
+        p.rect(w-w/4-w/5, h/5, w/5, 3*h/5);
+        p.popMatrix();
+    };
 	
 	// Used to draw all of the statuses (must implement draw)
 	var all_status_objs = [score, mult, time_status, mutation];
+	var all_buttons = [pause_button]; 
 	
 	var all_notifications = [];
     // takes a string and adds a new notification
@@ -138,7 +169,6 @@ var in_game_state = function (p, previous_state) {
 	};	
 */
 	//Not ordered
-	var all_buttons = []; //[pause_button, help_button, exit_button];
 
 
     // --- private methods ---
@@ -1520,7 +1550,7 @@ var in_game_state = function (p, previous_state) {
 	
 	// Fire
     obj.mouse_click = function (x, y) {
-		if (g_click_to_fire()) {
+		if (!paused && g_click_to_fire()) {
 			do_fire();
 		}
     };

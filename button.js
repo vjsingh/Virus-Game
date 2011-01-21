@@ -7,8 +7,8 @@
 var button = function(p, spec) {
 	
     // --- defaults ---
-    spec.rect.width = 100;
-    spec.rect.height = 35;
+    spec.rect.width = spec.rect.width || 100;
+    spec.rect.height = spec.rect.height || 35;
 
     // obj to return
     var obj = {};
@@ -39,6 +39,10 @@ var button = function(p, spec) {
 	obj.get_state = function() {
 		return next_state_fun();
 	};
+
+    obj.get_rect = function() {
+        return spec.rect;
+    };
 	
     return obj;
 };

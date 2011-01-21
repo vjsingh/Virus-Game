@@ -20,8 +20,6 @@ var help_state = function (p, prev_state) {
 		state : function() { return prev_state; },	
 		rect : {
 			pos : new p.PVector(box_x+box_w-80, box_y+box_h-30),
-			width : 100,
-			height : 40,
 			text: "Back"
 		}
 	});
