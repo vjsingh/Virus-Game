@@ -62,15 +62,13 @@ var loading_state = function (p) {
         return "loading";
     };
 
-            // TODO make this function only get called once
     obj.update = function() {
         // for now just base progress on pending amount of images
         load_progress = image_manager.num_loaded();
 		if (load_progress === load_max && image_manager.is_done_preloading()){
             // init all image objects
             image_manager.init_images(p);
-			// Give them a second to see that its loaded
-			setTimeout(loading_finished, 500);
+            loading_finished();
 		}
     };
 	
