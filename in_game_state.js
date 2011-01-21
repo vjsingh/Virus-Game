@@ -40,7 +40,7 @@ var in_game_state = function (p, previous_state) {
 		num : 0
 	});
 	var mult = num_status_obj(p, {
-		pos : new p.PVector(p.width - 150, 20),
+		pos : new p.PVector(p.width - 180, 20),
 		text : "Multiplier:",
 		num : 1,
         format : function(num) {
@@ -219,7 +219,7 @@ var in_game_state = function (p, previous_state) {
     // creates, adds, and returns a new b_cell with no target
     var make_b_cell = function() {
         var new_b_cell = b_cell(p, {
-            pos: new p.PVector(p.width+50),
+            pos: new p.PVector(p.width+50, p.random(p.height/4, 3*p.height/4)),
         }); 
         obj.add_object(new_b_cell);
         return new_b_cell;
@@ -228,7 +228,7 @@ var in_game_state = function (p, previous_state) {
     // creates, adds, and returns a new tkiller with no target
     var make_tkiller = function() {
         var new_tkiller = tkiller(p, {
-            pos: new p.PVector(p.width+50),
+            pos: new p.PVector(p.width+50, p.random(p.height/4, 3*p.height/4)),
         }); 
         obj.add_object(new_tkiller);
         return new_tkiller;
@@ -243,7 +243,8 @@ var in_game_state = function (p, previous_state) {
            		    the_b_cell = b; 
                 }
             },
-            "b_cell", true);
+            "b_cell", true
+        );
 		return the_b_cell;
 	};
 
@@ -317,11 +318,11 @@ var in_game_state = function (p, previous_state) {
             // otherwise leftmost
 			return function(c1, c2) {
 				return c1.get_pos().x < c2.get_pos().x;
-			}
+			};
 		}
 		choose_cell(sort_fun);
     };
-	
+
 	// Set the next-left or next-right cell to be active, and 
 	// if appropriate sets current active to be not active
 	
@@ -397,9 +398,6 @@ var in_game_state = function (p, previous_state) {
 	// Returns true if source is closer to target1 than target2 
 	// All 3 args are game_objs
 	var dist_less_than = function(source, target1, target2) {
-        if (source === undefined) {
-            throw "it was undefined";
-        };
 		var source_pos = source.get_pos();
 		return source_pos.dist(target1.get_pos()) <
 				source_pos.dist(target2.get_pos());
@@ -808,7 +806,7 @@ var in_game_state = function (p, previous_state) {
 							cell.get_state() === "active") &&
 						cell.has_antibody()) {
                         cell.die();
-			play_sound("kill");	
+			            play_sound("kill");	
 						tk.set_target(null);
 						if (active_cell === cell) {
                             //last_active_cell = active_cell;
@@ -862,8 +860,10 @@ var in_game_state = function (p, previous_state) {
                         b.make_antibodies();
                         notify("Incoming antibodies!");
                     }
-                    else if (b.is_alive() || b.is_outdated()) {
+                    else if (b.is_alive()) {
                         bounce(b, wall);
+                    }
+                    else if (b.is_outdated()) {
                     }
                 }
             }
@@ -917,10 +917,9 @@ var in_game_state = function (p, previous_state) {
 
         var add_one = function(edge_tile) {
             if (!goes_off_right(edge_tile)) {
-                console.log("adding edge");
+                //console.log("adding edge");
 
                 var new_spec = {};
-
                 var x = edge_tile.get_pos().x
                     + edge_tile.get_width();
 
@@ -994,7 +993,6 @@ var in_game_state = function (p, previous_state) {
 
                 // note that new wall coords should be at
                 // bottom left corner of seg
-
                 // should be next to last seg
                 var x = rightmost.get_pos().x
                     + rightmost.get_width()/2 - 5;
@@ -1148,10 +1146,9 @@ var in_game_state = function (p, previous_state) {
              
         // for each b/t cell, see if its level is still active
         var outdate = function(o) {
-            if (!o.is_alive() 
-                    && !active_levels[o.get_level()]) { 
+            if (!active_levels[o.get_level()]) { 
                 o.outdated();
-                if (o.is("b_cell")) {
+                if (o.is("b_cell") && o.is_activated()) {
                     free_bcell_slot(o.get_slot());
                 }
             }
@@ -1162,7 +1159,7 @@ var in_game_state = function (p, previous_state) {
 
     var slots = (function() {
         var num_slots = 6;
-        var slot_incr = 50;
+        var slot_incr = 90;
         var slot_arr = [];
         var slot_x = p.width - slot_incr;
         // create an array of slots alternating
@@ -1316,8 +1313,6 @@ var in_game_state = function (p, previous_state) {
 				
 				// update distance travelled
                 distance += scroll_factor;   
-			//	distance -= DEFAULT_SCROLL_DIST;
-                
 				
 				// update all objects
 				do_to_all_objs(function(o){
@@ -1456,7 +1451,7 @@ var in_game_state = function (p, previous_state) {
             obj.add_objects(particles);
             kill_active_cell();
         }
-	}
+	};
 	obj.key_pressed = function(k) {
 		if (k === 32) { //spacebar
 			if (g_spacebar_to_fire()) {

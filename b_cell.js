@@ -121,7 +121,7 @@ var b_cell = function(p, spec) {
             obj.set_target_angle(angle);
 			if (Math.random() < .03) {
 				var new_anti = make_antibody();
-                new_anti.set_target_angle(p.random(0, angle));
+                new_anti.set_target_angle(p.random(0, 2*angle));
 			}
         }
         else {
