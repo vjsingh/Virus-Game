@@ -70,6 +70,11 @@ var pause_state = function (p, prev_state) {
         p.noStroke();
         p.fill(0, 150);
         p.rect(0, 0, p.width, p.height);
+
+        p.fill(255);
+        p.textSize(40);
+        p.textAlign(p.CENTER);
+        p.text("Game Paused", p.width/2, 150);
     };
 
 	obj.key_pressed = function(k) {
