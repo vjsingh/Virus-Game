@@ -852,6 +852,8 @@ var in_game_state = function (p, previous_state) {
                         b.set_mutation_info(flo.get_mutation_info());
                         b.activate(get_bcell_slot());
                         bounce(b, flo);
+                        // prevent getting stuck
+                        b.update();
                         notify("B-cell activated!");
                     }
                 },
@@ -1153,10 +1155,10 @@ var in_game_state = function (p, previous_state) {
         // for each b/t cell, see if its level is still active
         var outdate = function(o) {
             if (!active_levels[o.get_level()]) { 
-                o.outdated();
-                if (o.is("b_cell") && o.is_activated()) {
+                if (o.is("b_cell") && o.get_slot()) {
                     free_bcell_slot(o.get_slot());
                 }
+                o.outdated();
             }
         };
         do_to_type(outdate, "b_cell", true);
