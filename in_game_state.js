@@ -645,11 +645,13 @@ var in_game_state = function (p, previous_state) {
 				//Play sound
 				play_sound("cell_infect");
 			
-				// increase mutation percentage
+				// increase mutation percentage if level is highest on screen
 				// must be done before setting state of infected cell
-				mutation.infected_cell();
+				if (par.get_level() === mutation.get_level()) {
+					mutation.infected_cell();
+				}
 				
-                cell.set_state("infected");
+                		cell.set_state("infected");
 				cell.set_mutation_info(par.get_mutation_info());
 
 				// Add 10 to score 
