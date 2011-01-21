@@ -79,11 +79,5 @@ var antibody = function(p, spec) {
         p.popMatrix();
     };
 
-    // always facing down since b_cell at top of screen
-    obj.random_target_angle = function() {
-        return p.random(0, p.PI);
-    };
-    obj.set_target_angle(obj.random_target_angle());
-
     return obj;
 }

@@ -215,25 +215,61 @@ var in_game_state = function (p, previous_state) {
 		//obj.add_object(bg);	
 		//console.log(level("background")[0]);
 	};
+
+    // creates, adds, and returns a new b_cell with no target
+    var make_b_cell = function() {
+        var new_b_cell = b_cell(p, {
+            pos: new p.PVector(p.width+50),
+        }); 
+        obj.add_object(new_b_cell);
+        return new_b_cell;
+    };
+
+    // creates, adds, and returns a new tkiller with no target
+    var make_tkiller = function() {
+        var new_tkiller = tkiller(p, {
+            pos: new p.PVector(p.width+50),
+        }); 
+        obj.add_object(new_tkiller);
+        return new_tkiller;
+    };
 	
 	// Returns the current b cell on the screen, if there is one
-	var get_b_cell = function() {
+	var get_b_cell = function(level) {
 		var the_b_cell = null;
-        do_to_type(function(b) {
-                // not anymore -- only want unactivated bcell
-                //if (b.is_alive()) {
-           		the_b_cell = b; 
-                //}
+        do_to_type(
+            function(b) {
+                if (b.get_level() === level) {
+           		    the_b_cell = b; 
+                }
             },
             "b_cell", true);
 		return the_b_cell;
-	}
+	};
+
+    var alert_b_cell = function(flo) {
+        // gets b_cell of the flo's level
+        var b = get_b_cell(flo.get_level());
+        // if there isn't one
+        if (!b) {
+            // make one
+            b = make_b_cell();
+            b.set_mutation_info(flo.get_mutation_info());
+            b.set_target(flo);
+        }
+        // if there is one
+        else {
+            // it should be either active, shooting, or outdated
+            // so do nothing
+        }
+    };
 	
 	// Alerts the b cell (only one on screen at a time?) to a newly mutated
 	// obj.
 	// If o.mutation_level >= b cells current target.mutation_level and o is
 	// closer than the b cells curr target (or if b cells curr
 	// target is null), updates b_cells curr target to be o
+    /*
 	var alert_b_cell = function(o) {
 		//var cell_objs = level("b_cell");
 		//var cell_obj = null;
@@ -243,7 +279,7 @@ var in_game_state = function (p, previous_state) {
 				the_b_cell = cell_obj;
 			}
 		}
-        */
+        /
 
 		var the_b_cell = get_b_cell();
 		
@@ -266,6 +302,7 @@ var in_game_state = function (p, previous_state) {
 			}
 		}
 	};
+    */
 
     // sets active_cell to the leftmost infected cell
     // if there is one
@@ -360,6 +397,9 @@ var in_game_state = function (p, previous_state) {
 	// Returns true if source is closer to target1 than target2 
 	// All 3 args are game_objs
 	var dist_less_than = function(source, target1, target2) {
+        if (source === undefined) {
+            throw "it was undefined";
+        };
 		var source_pos = source.get_pos();
 		return source_pos.dist(target1.get_pos()) <
 				source_pos.dist(target2.get_pos());
@@ -368,18 +408,22 @@ var in_game_state = function (p, previous_state) {
 	// Updates all tkillers targets
 	// Tkillers target the closest infected and targeted cell
 	var update_tkillers_targets = function(){
+		var all_infected_cells = get_all_infected_cells();
 		do_to_type(function(tkill){
-			var all_infected_cells = get_all_infected_cells();
-			for (var i = 0; i < all_infected_cells.length; i++) {
-				var infected_cell = all_infected_cells[i];
-				if (infected_cell.has_antibody() &&
-					(!tkill.get_target() ||
-					dist_less_than(tkill, infected_cell, tkill.get_target()))) {
-					tkill.set_target(infected_cell);
-				}
-			}
+            for_each(
+                all_infected_cells,
+                function(infected_cell) {
+                    if (infected_cell.has_antibody() 
+                        && same_mutation_level(infected_cell, tkill)
+                        && (!tkill.get_target() ||
+                        dist_less_than(tkill,
+                            infected_cell, tkill.get_target()))) {
+                        tkill.set_target(infected_cell);
+                    }
+                }
+			);
 		}, "tkiller", true);
-	}
+	};
            
 
     // kills the active cell and updates the targets
@@ -388,11 +432,7 @@ var in_game_state = function (p, previous_state) {
         active_cell.die();
         last_active_cell = active_cell;
         active_cell = null;
-        do_to_type(
-            function(tk) {
-                tk.set_target(null);
-            },
-            "tkiller", "true");
+        update_tkillers_targets();
     };
 	
     //Checks whether any 2 objs are colliding, and if so calls handle_collision on them
@@ -647,7 +687,10 @@ var in_game_state = function (p, previous_state) {
 			
 				// increase mutation percentage
 				// must be done before setting state of infected cell
-				mutation.infected_cell();
+                // only happens if infected by particle of cur level
+                if (par.get_level() === mutation.get_level()) {
+				    mutation.infected_cell();
+                }
 				
                 cell.set_state("infected");
 				cell.set_mutation_info(par.get_mutation_info());
@@ -693,8 +736,8 @@ var in_game_state = function (p, previous_state) {
 						// update flo if not activated || level <
 						// par.level
 						if (!flo.is_activated() ||
-								flo.get_mutation_info().level <
-								par.get_mutation_info.level) {
+								flo.get_level() <
+								par.get_level()) {
 							flo.set_mutation_info(par.get_mutation_info());
 							flo.activate();
 							alert_b_cell(flo);
@@ -803,7 +846,7 @@ var in_game_state = function (p, previous_state) {
                 "floater": function(b, flo) {
                     if (b.is_alive() && flo.is_activated()) {
                         b.set_mutation_info(flo.get_mutation_info());
-                        b.activate();
+                        b.activate(get_bcell_slot());
                         bounce(b, flo);
                         notify("B-cell activated!");
                     }
@@ -1085,9 +1128,84 @@ var in_game_state = function (p, previous_state) {
 		}
 	};
     
+    // sets anything activated to the given level to be outdated
 	var set_all_outdated = function() {
-        do_to_type(function(o) { o.outdated(); }, "b_cell", true);
-        do_to_type(function(o) { o.outdated(); }, "tkiller", true);
+        // make array of which levels are active
+        var active_levels = [];
+        var add_level = function(o) {
+            var level = o.get_level();
+            if (level) {
+                active_levels[level] = true;
+            }
+        };
+        do_to_type(add_level, "cell", true);
+        do_to_type(add_level, "particle", true);
+             
+        // for each b/t cell, see if its level is still active
+        var outdate = function(o) {
+            if (!o.is_alive() 
+                    && !active_levels[o.get_level()]) { 
+                o.outdated();
+                if (o.is("b_cell")) {
+                    free_bcell_slot(o.get_slot());
+                }
+            }
+        };
+        do_to_type(outdate, "b_cell", true);
+        do_to_type(outdate, "tkiller", true);
+    };
+
+    var slots = (function() {
+        var num_slots = 6;
+        var slot_incr = 50;
+        var slot_arr = [];
+        var slot_x = p.width - slot_incr;
+        // create an array of slots alternating
+        // top and bottom separated by slot_incr
+        for (n=0; n<num_slots; n++) {
+            var slot_y = 0;
+            var is_top = true;
+            if (n%2 === 1) {
+                slot_x -= slot_incr;
+                slot_y = p.height;
+                is_top = false;
+            }
+            slot_arr[n] = { 
+                pos: new p.PVector(slot_x, slot_y),
+                taken: false,
+                is_top: is_top
+            };
+        }
+        return slot_arr;
+    }());
+
+    // returns an object with a pos and a slot number
+    var get_bcell_slot = function() {
+        slot = null;
+        for (n=0; n<slots.length; n++) {
+            if (!slots[n].taken) {
+                slots[n].taken = true;
+                return {
+                    pos: slots[n].pos,
+                    num: n,
+                    is_top: slots[n].is_top
+                };
+            }
+        }
+        // if there are no empty slots
+        // make a random one
+        return {
+            pos: new p.PVector(p.random(p.width), p.random(p.height)), 
+            num: -1,
+            is_top: true
+        };
+    };
+
+    // marks slot as untaken again
+    var free_bcell_slot = function(slot) {
+       if (slots[slot.num]) {
+           slots[slot.num].taken = false; 
+       }
     };
 
     var dynamic_scroll = function() {
@@ -1165,11 +1283,13 @@ var in_game_state = function (p, previous_state) {
 				// Make antibodies seek any infected cells they are near
 				make_antibodies_seek();
 				
-				var the_b_cell = get_b_cell();
-				if (the_b_cell) {
-					// Add antibodies generated from b cells
-					obj.add_objects(the_b_cell.get_antibodies());
-				}
+				// Add antibodies generated from b cells
+                do_to_type(
+                    function(b) {
+					    obj.add_objects(b.get_antibodies());
+                    },
+                    "b_cell", true
+                );
 
                 // adds a new segment of wall if necessary
                 add_wall();
@@ -1177,6 +1297,9 @@ var in_game_state = function (p, previous_state) {
                 add_back();
 
 				update_tkillers_targets();
+
+                // set outdated t/b cells
+                set_all_outdated();
 				
 				// scroll all objects
                
@@ -1208,13 +1331,27 @@ var in_game_state = function (p, previous_state) {
             // check for a new mutation
             // if mutation occurred
             if (mutation.has_new_mutation() && active_cell) {
+                // pick infected cell closest to active cell with the current
+                // mutation level
+                var choices = get_all_of_type("cell").filter(
+                    function(c) {
+                        return (c.get_state() === "infected"
+                            || c.get_state() === "active")
+                            && c.get_level() === mutation.get_level(); 
+                    }
+                );
+                choices.sort( 
+                    function(c1, c2) {
+                        return dist_less_than(active_cell, c1, c2);
+                    }
+                );
+                var cell_to_mutate = choices[choices.length-1];
+
                 // do the actual mutation and hold onto new ability
                 //var new_ability = 
                 mutation.do_mutation();
                 // mutate the active cell
-                active_cell.set_mutation_info(mutation.get_info());
-                // Set all applicable enemies to be outdated
-                set_all_outdated();
+                cell_to_mutate.set_mutation_info(mutation.get_info());
                 // update the scroll factor
                 scroll_factor += 0.1;
                 
