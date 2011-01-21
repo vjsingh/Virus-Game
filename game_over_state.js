@@ -16,7 +16,7 @@ var game_over_state = function (p, prev_state, spec) {
 		pos : new p.PVector(p.width / 2, 230),
 		width : 0,
 		height : 0,
-		text : "Score : " + spec.score,
+		text : "Score : " + add_commas(spec.score),
 		text_size : 30,
 		text_color : 255
 	});

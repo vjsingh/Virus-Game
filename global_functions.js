@@ -108,7 +108,7 @@ var retrieve = function(obj, key1, key2) {
 
 // returns an array of the property names (keys)
 // of an object
-function keys(obj) {
+var keys = function(obj) {
     var k = [];
     for (key in obj) {
         if (obj.hasOwnProperty(key)) {
@@ -118,6 +118,20 @@ function keys(obj) {
     return k;
 };
 
+// This function formats numbers by adding commas
+// taken from http://www.mredkj.com/javascript/nfbasic.html
+var add_commas = function (nStr,prefix){
+    var prefix = prefix || '';
+    nStr += '';
+    x = nStr.split('.');
+    x1 = x[0];
+    x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
+    return prefix + x1 + x2;
+};
 
 
 // TAKE OUT

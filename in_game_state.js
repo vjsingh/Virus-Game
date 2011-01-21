@@ -37,8 +37,9 @@ var in_game_state = function (p, previous_state) {
 	var score = num_status_obj(p, {
 		pos : new p.PVector(p.width - 60, 20),
 		text : "Score:",
-		num : 0
-	});
+		num : 0,
+        format : add_commas 
+    });
 	var mult = num_status_obj(p, {
 		pos : new p.PVector(p.width - 180, 20),
 		text : "Multiplier:",
