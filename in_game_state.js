@@ -752,6 +752,7 @@ var in_game_state = function (p, previous_state) {
 							cell.get_state() === "active") &&
 						cell.has_antibody()) {
                         cell.die();
+			play_sound("kill");	
 						tk.set_target(null);
 						if (active_cell === cell) {
 							active_cell = null;
