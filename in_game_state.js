@@ -93,9 +93,9 @@ var in_game_state = function (p, previous_state) {
         "floater":4,
         "tkiller":4,
 		"antibody":4,
-		"b_cell": 4,
-		"multiplier":5,
-        "info":6
+		"b_cell": 5,
+		"multiplier":6,
+        "info":7
     }; 
 
     // given a type returns the array of objects
@@ -446,6 +446,8 @@ var in_game_state = function (p, previous_state) {
             ["cell", "cell"],
             ["cell", "enemy"],
             ["enemy", "enemy"],
+			["enemy", "b_cell"],
+			["b_cell", "wall"],
 			["particle", "wall"],
 			["multiplier", "wall"],
 			["enemy", "wall"]
@@ -724,6 +726,8 @@ var in_game_state = function (p, previous_state) {
                 // // infect the cell, kill the particle
 		        // kill the particle 
                 "empty_cell": function(par, cell) {
+                    // TODO diff sound?
+                    play_sound("cell_infect");
 		            par.die();
 		        },
                 

@@ -100,7 +100,7 @@ var b_cell = function(p, spec) {
 			return 0;
 		}
 		else if (state === "outdated") {
-			return obj.DEFAULT_SCROLL_DIST * 2;
+			return obj.DEFAULT_SCROLL_DIST;// * 2;
 		}
 		else {
 			return obj.DEFAULT_SCROLL_DIST;
