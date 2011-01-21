@@ -422,6 +422,34 @@ var in_game_state = function (p, previous_state) {
 			);
 		}, "tkiller", true);
 	};
+
+    // adds new tkillers if need be
+    var add_tkillers = function() {
+        var tks = get_all_of_type("tkiller");
+        do_to_type(
+            // for each b_cell
+            function(b) {
+                // if it needs a tkiller
+                if (b.is_shooting()) {
+                    // check if one exists
+                    var has_tkiller = false;
+                    for_each(tks, function(tk) {
+                        if (same_mutation_level(b, tk)) {
+                            has_tkiller = true;
+                        }
+                    });
+                    // if one doesn't
+                    if (!has_tkiller) {
+                        console.log("made tkiller for lvl "+b.get_level());
+                        // make one
+                        var tk = make_tkiller();
+                        tk.set_mutation_info(b.get_mutation_info());
+                    }
+                }
+            },
+            "b_cell", true
+        );
+    };
            
 
     // kills the active cell and updates the targets
@@ -1306,6 +1334,7 @@ var in_game_state = function (p, previous_state) {
                 // adds a new background tile if necessary
                 add_back();
 
+                add_tkillers();
 				update_tkillers_targets();
 
                 // set outdated t/b cells

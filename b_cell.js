@@ -92,6 +92,10 @@ var b_cell = function(p, spec) {
         return obj.get_state() === "alive";
     };
 
+    obj.is_shooting = function() {
+        return obj.get_state() === "shooting";
+    };
+
     obj.get_scroll_dist = function() {
 		var state = obj.get_state();
         if (state === "shooting"
