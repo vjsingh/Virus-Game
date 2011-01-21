@@ -19,7 +19,7 @@ var animated_image = function(image_name, spec) {
 	var active = true;
 	var loop = false;
 	var rate_counter = 0; // Goes from 0 to anim_rate - 1
-	var anim_rate = spec.anim_rate || 3
+	var anim_rate = spec.anim_rate || 8
 	
 	// If we are reversing, add all the images in the opposite
 	// order to all_images
