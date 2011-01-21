@@ -15,11 +15,15 @@ var animated_image = function(image_name, spec) {
 	// private vars
 	
 	var all_images = image_manager.get_images(image_name);
+    all_images.sort(function(i1, i2) {
+            return i1.path < i2.path;
+        }
+    );
 	var curr_index = 0;
 	var active = true;
 	var loop = false;
 	var rate_counter = 0; // Goes from 0 to anim_rate - 1
-	var anim_rate = spec.anim_rate || 8
+	var anim_rate = spec.anim_rate || 3
 	
 	// If we are reversing, add all the images in the opposite
 	// order to all_images
