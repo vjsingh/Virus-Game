@@ -80,12 +80,16 @@ var seeker = function(p, spec) {
     // target
     obj.face_target = function(tar) {
         var pos = obj.get_pos();
-        var tpos = target.get_pos();
+        if (target) {
+            var tpos = target.get_pos();
+        }
         if (tar) {
             var tpos = tar.get_pos();
         }
-        // update target_angle
-        target_angle = p.atan2(tpos.y-pos.y, tpos.x-pos.x); // y first!
+        if (tpos) {
+            // update target_angle
+            target_angle = p.atan2(tpos.y-pos.y, tpos.x-pos.x); // y first!
+        }
     };
 
 

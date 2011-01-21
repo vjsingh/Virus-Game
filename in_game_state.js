@@ -858,7 +858,12 @@ var in_game_state = function (p, previous_state) {
                 "wall_segment": function(b, wall) {
                     //console.log("collision");
                     if (b.is_activated()) {
+                        // start making antibodies
                         b.make_antibodies();
+                        // make a tkiller
+                        var tk = make_tkiller();
+                        tk.set_mutation_info(b.get_mutation_info());
+
                         notify("Incoming antibodies!");
                     }
                     else if (b.is_alive()) {
