@@ -19,6 +19,7 @@ var make_image_manager = function() {
         background : { dir : "background_objects/" },
         screens : { dir : "screens/" },
         wall_segments : { dir : "wall_segments/" },
+		macrophage : {dir : "macrophage_animation/"},
         // catches all images in images/
         other : { dir : "" },
     };
@@ -53,6 +54,7 @@ var make_image_manager = function() {
         if (!all_images[type]) {
             console.error("Invalid image type: "+type);
         }
+		//for_each(all_images[type], console.log()
         return all_images[type].images;
     };
 

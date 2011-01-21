@@ -21,7 +21,8 @@ var floater = function(p, spec) {
 
     // --- private variables ---
     
-	var macrophage_image = image_manager.get_image("macrophage_1.png");
+	//var macrophage_image = image_manager.get_image("macrophage_1.png");
+	var macrophage_image = animated_image("macrophage", {reverse : true});
 	var macrophage_active = image_manager.get_image("macrophage_1_active.png");
 	
     // how far up or down it can move
@@ -75,7 +76,7 @@ var floater = function(p, spec) {
 			p.image(macrophage_active, pos.x, pos.y, w, h);
 		}
 		else {
-			p.image(macrophage_image, pos.x, pos.y, obj.get_width(), obj.get_height());
+			p.image(macrophage_image.get_frame(), pos.x, pos.y, obj.get_width(), obj.get_height());
 		}
     };
 
