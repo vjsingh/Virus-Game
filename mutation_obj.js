@@ -231,6 +231,9 @@ var mutation_obj = function(p) {
             // set the flag
             new_mutation = true;
 			flash_bar();
+
+	    // Play sounds
+	    play_sound("level_up");
         }
 	};
 

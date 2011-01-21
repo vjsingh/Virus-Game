@@ -685,14 +685,14 @@ var in_game_state = function (p, previous_state) {
 				//Play sound
 				play_sound("cell_infect");
 			
-				// increase mutation percentage
+				// increase mutation percentage if level is highest on screen
 				// must be done before setting state of infected cell
                 // only happens if infected by particle of cur level
                 if (par.get_level() === mutation.get_level()) {
 				    mutation.infected_cell();
                 }
 				
-                cell.set_state("infected");
+                		cell.set_state("infected");
 				cell.set_mutation_info(par.get_mutation_info());
 
 				// Add 10 to score 
@@ -804,6 +804,7 @@ var in_game_state = function (p, previous_state) {
 							cell.get_state() === "active") &&
 						cell.has_antibody()) {
                         cell.die();
+			play_sound("kill");	
 						tk.set_target(null);
 						if (active_cell === cell) {
                             //last_active_cell = active_cell;

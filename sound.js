@@ -38,7 +38,7 @@ var play_background_music = (function() {
 	var loop2 = new Audio();
 	loop2.src = "sounds/sinister.mp3";
 	var loops = [loop1, loop2];
-	for_each(loops, function(l) {l.load();});
+	for_each(loops, function(l) {l.load(); l.loop = true;});
 	
 	return function() {
 	stop_background_music();
