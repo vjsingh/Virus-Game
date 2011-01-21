@@ -18,6 +18,7 @@ var play_sound = (function() {
 					// SO IT WILL WORK LOCALLY
 					// TODO: take out
 					if (on_server) {
+						console.log("playing: " + s);
 						audiochannels[a]['channel'].src = g_soundDataMap[s]; //document.getElementById(s).src;
 						audiochannels[a]['channel'].load();
 						audiochannels[a]['channel'].play();
