@@ -17,12 +17,24 @@ var mutation_obj = function(p, spec) {
     var new_mutation = false;
 	// Color array for all the mutation levels
 	var color_array = [
+        /*
 		p.color(250, 250, 40),
 		p.color(60, 240, 240),
 		p.color(167, 17, 161),
 		p.color(100, 250, 110),
 		p.color(13, 28, 171),
 		p.color(118, 12, 25)
+        */
+        0xffff2a7f,
+        0xffffff00,
+        0xff7f2aff,
+        0xff37c871,
+        0xffd42aff,
+        0xffff7f2a,
+        0xff2ad4ff,
+        0xffff2a2a,
+        0xff7fff2a,
+        0xffc8b7b7
 	];
 	
 /*
@@ -83,7 +95,7 @@ var mutation_obj = function(p, spec) {
 		//return Math.random() + ( (cells_infected / 50) / (level + 1)) > .95;
         //return (Math.random() * (cells_infected / 50)) > .3;
         //return (Math.random() + (cells_infected / 100) - (level / 50)) > .98;
-        return (Math.random()*0.5 + (cells_infected / cells_needed)) > .98;
+        return (Math.random()*0.5 + (cells_infected / cells_needed)) >.2; //.98;
 	};
 	
     // returns the max number of cells the player needs to infect to have

@@ -590,7 +590,8 @@ var in_game_state = function (p, previous_state) {
 
 	// Checks for a collision between circle (obj2) and rectangle (obj1)
 	var check_rectangle_collision = function(rect, circ) {
-		return overlapping_vertically(circ, rect, rect.get_y_offset()) &&
+        // this used to have &&, but I changed to ||
+		return overlapping_vertically(circ, rect, rect.get_y_offset()) ||  
 				overlapping_horizontally(circ, rect, rect.get_x_offset());
 	};
 	
@@ -691,7 +692,7 @@ var in_game_state = function (p, previous_state) {
             obj1.reverse_y();
             obj2.reverse_y();
         }
-        else if ((oner <= twol && x_vel >= 0)
+        if ((oner <= twol && x_vel >= 0)
                 || (onel > twor && x_vel <= 0)) { //bounce horizontally
                 obj1.reverse_x();
                 obj2.reverse_x();
@@ -911,8 +912,6 @@ var in_game_state = function (p, previous_state) {
                         b.set_mutation_info(flo.get_mutation_info());
                         b.activate(get_bcell_slot());
                         bounce(b, flo);
-                        // prevent getting stuck
-                        b.update();
                         notify("B-cell activated!");
                     }
                 },
