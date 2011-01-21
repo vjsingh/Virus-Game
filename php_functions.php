@@ -16,6 +16,7 @@ var g_soundDataMap =
 {
    "cell_fire"          : "<?php echo data_uri('sounds/cell_fire.ogg');?>",
    "cell_infect"        : "<?php echo data_uri('sounds/cell_infect.ogg');?>",
+   "macrophage_infect"  : "<?php echo data_uri('sounds/macrophage_infect.ogg');?>",	
    "level_up"		: "<?php echo data_uri('sounds/level_up.ogg');?>",
    "kill"		: "<?php echo data_uri('sounds/kill.ogg');?>",
 };

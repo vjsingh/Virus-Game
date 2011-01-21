@@ -743,6 +743,7 @@ var in_game_state = function (p, previous_state) {
 							flo.set_mutation_info(par.get_mutation_info());
 							flo.activate();
 							alert_b_cell(flo);
+							play_sound("macrophage_infect");
 						}
                         notify("Macrophage activated!");
                     }
