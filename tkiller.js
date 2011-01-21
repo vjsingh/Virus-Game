@@ -40,7 +40,8 @@ var tkiller = function(p, spec) {
     // update makes tkiller chase target cell
     obj.my_update = function() {
         obj.move();
-    }
+        obj.set_speed(obj.get_level()/2 + 1);
+    };
 
     // should point towards target
     // (triangle for now)

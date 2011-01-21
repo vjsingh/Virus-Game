@@ -99,6 +99,10 @@ var seeker = function(p, spec) {
 		}
     };
 
+    obj.set_speed = function(new_speed) {
+        speed = new_speed;
+    };
+
     obj.set_target_angle = function(new_target_angle) {
         target_angle = new_target_angle;
     };
