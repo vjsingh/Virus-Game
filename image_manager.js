@@ -50,12 +50,14 @@ var make_image_manager = function() {
 
     // returns all the image objects of a given type
     // if preloading and initing is done
+    // NOTE: returns a copy of the array of pointers, but the pointers
+    // will all point to the same objects so don't change the objects
     obj.get_images = function(type) {
         if (!all_images[type]) {
             console.error("Invalid image type: "+type);
         }
 		//for_each(all_images[type], console.log()
-        return all_images[type].images;
+        return all_images[type].images.slice();
     };
 
     // finds and returns the first image with the given name
