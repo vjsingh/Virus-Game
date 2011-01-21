@@ -9,8 +9,8 @@ var tkiller = function(p, spec) {
     
     // --- defaults ---
 
-    spec.width = spec.width || 30;
-    spec.height = spec.height || 30;
+    spec.width = spec.width || 35;
+    spec.height = spec.height || 35;
     spec.speed = spec.speed || 1.5;
 
     // obj to return
