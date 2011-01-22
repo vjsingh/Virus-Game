@@ -356,7 +356,7 @@ var in_game_state = function (p, previous_state) {
 
 	// Set the next-left or next-right cell to be active, and 
 	// if appropriate sets current active to be not active
-	
+	/*
 	// Returns the closest cell to a_pos
 	var get_closest_cell = function(a_pos) {
 		if (active_cell) {
@@ -380,6 +380,7 @@ var in_game_state = function (p, previous_state) {
 		}
 		return null;
 	}
+	*/
 	
 	// Chooses the closest cell to the active cell in the direction of comp,
 	// i.e. such that comp(c1.x, active.x) is true
@@ -1566,14 +1567,14 @@ var in_game_state = function (p, previous_state) {
 		//right and left
 		k = p.keyCode;
 		if (k === p.LEFT) { //left
-			if (!g_mouse_to_select()) {
+			//if (!g_mouse_to_select()) {
 				choose_left_cell();
-			}
+			//}
 		}
 		else if (k === 39) { //right
-			if (!g_mouse_to_select()) {
+			//if (!g_mouse_to_select()) {
 				choose_right_cell();
-			}
+			//}
 		}
 	};
 	
@@ -1583,13 +1584,14 @@ var in_game_state = function (p, previous_state) {
 			do_fire();
 		}
     };
-	
+	/*
 	// Choose active cell on mouse movement
 	obj.mouse_moved = function(x, y) {
 		if (g_mouse_to_select()) {
 			var active_cella = get_closest_cell(p.PVector(x, y));
 		}
 	}
+	*/
 	
 	obj.set_b_cell_target = function(the_b_cell) {
 		for_each(get_all_of_type("floater"), function(o){
