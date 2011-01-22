@@ -34,7 +34,7 @@ var empty_cell = function(p, spec) {
  		empty_image = p.loadImage("images/new/noninfectable.png");
 	}
     */
-    empty_image = random_from(
+    var empty_image = random_from(
             image_manager.get_images("empty_cell")).image;
 	
     // --- public methods --- 
