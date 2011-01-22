@@ -1453,7 +1453,7 @@ var in_game_state = function (p, previous_state) {
                     notify("Lost new strain!");
                     console.log("downgraded to mutation level "+max_level);
 
-                    scroll_factor -= 0.1;
+                    scroll_factor -= 0.15;
 
                     // TODO do enemies become not outdated?
                 }

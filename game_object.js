@@ -71,7 +71,7 @@ var game_object = function (p, spec) {
 	
 	// Returns if the obj is off the right of the screen
 	obj.is_off_right = function() {
-		var left_edge = pos.x - width;
+		var left_edge = pos.x - width/2;
 		return left_edge > p.width;
 	};
 	

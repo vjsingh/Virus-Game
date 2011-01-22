@@ -43,6 +43,12 @@ var background_edge = function(p, spec) {
         p.image(edge, obj.get_pos().x, obj.get_pos().y);
     };
 
+    // override offscreen check cuz we draw from the corners
+    obj.is_offscreen = function() {
+        // only need to check left edge of screen
+        return obj.get_pos().x + obj.get_width() < 0;
+    };
+
     return obj;
 };
 
