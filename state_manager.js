@@ -154,13 +154,18 @@ var state_manager = function (p) {
     //Passes clicks on to curr_state
     obj.mouse_click = function (x, y) {
         curr_state.mouse_click_wrapper(x, y); 
-        obj.update();
+        //obj.update();
     };
 
 	obj.key_pressed = function(k) {
 		curr_state.key_pressed(k);
-        obj.update();
+        //obj.update();
 	};
+	
+	obj.mouse_moved = function(x,y) {
+		curr_state.mouse_moved(x, y);
+		//obj.update();
+	}
     
     return obj;
 };

@@ -59,6 +59,15 @@ var options_state = function (p, prev_state) {
 			image : option_image
 		}
 	});
+	var mouse_to_select_button = option_button(p, {
+		click_fun : g_toggle_mouse_to_select,
+		global_var : "click_to_fire",
+		rect : {
+			pos : new p.PVector(p.width / 2 + 150, p.height/2 + 80),
+			text: "Use Mouse click to Fire",
+			image : option_image
+		}
+	});
 	
 	//Not ordered
 	var all_buttons = [back_button];

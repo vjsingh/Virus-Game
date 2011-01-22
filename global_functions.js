@@ -7,6 +7,7 @@ var g_game_settings = {
 	sound_fx : true,
 	music : true,
 	click_to_fire : true,
+	mouse_to_select : true,
 	spacebar_to_fire : true,
     background_color : 0xFF371010
 }
@@ -27,6 +28,7 @@ var g_toggle_music = function() {
 };
 var g_toggle_click_to_fire = function() {g_toggle("click_to_fire");};
 var g_toggle_spacebar_to_fire = function() {g_toggle("spacebar_to_fire");};
+var g_toggle_mouse_to_select = function() {g_toggle("mouse_to_select");};
 
 var g_toggle = function(global_var) {
 	g_game_settings[global_var] = !g_game_settings[global_var];
@@ -41,6 +43,9 @@ var g_music_on = function() {
 }
 var g_click_to_fire = function() {
 	return g_game_settings.click_to_fire;
+}
+var g_mouse_to_select = function() {
+	return g_game_settings.mouse_to_select;
 }
 var g_spacebar_to_fire = function() {
 	return g_game_settings.spacebar_to_fire;
