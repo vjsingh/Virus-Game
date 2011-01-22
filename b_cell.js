@@ -132,6 +132,50 @@ var b_cell = function(p, spec) {
             obj.move();
         }
     };
+	
+	var draw_antibody = function() {
+		// private vars
+		var counter = 0;
+		var c_max = 30;
+		var ascending = true;
+		
+		return function(){
+		
+			console.log("drawing antibody");
+			p.pushMatrix();
+			
+			var pos = obj.get_pos();
+			
+			p.translate(pos.x, pos.y);
+			p.rotate(obj.get_target_angle());
+			
+			// Copied from antibody.js to avoid overhead of
+			// creating new antibody every time
+			p.stroke(obj.get_color());
+			p.strokeWeight(1 + (counter / 6));
+			
+			var w = 11;
+			var h = 7;
+			p.line(-w, 0, w / 3, 0);
+			p.line(w / 3, 0, w, h / 2);
+			p.line(w / 3, 0, w, -h / 2);
+			
+			p.popMatrix();
+			
+			if (ascending === true) {
+				counter++;
+			}
+			else if (ascending === false) {
+				counter--;
+			}
+			if (counter === c_max) {
+				ascending = false;
+			}
+			else if (counter === 0) {
+				ascending = true;
+			}
+		};
+	}();
 
     // should point towards target
     // (triangle for now)
@@ -176,6 +220,11 @@ var b_cell = function(p, spec) {
 		p.image(b_image, 0, 0, obj.get_width(), obj.get_height());
 
 		p.popMatrix();
+		
+		var state = obj.get_state();
+		if (state === "active" || state === "shooting") {
+			draw_antibody();
+		}
     };
 
     return obj;
