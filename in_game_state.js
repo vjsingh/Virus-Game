@@ -1420,7 +1420,7 @@ var in_game_state = function (p, previous_state) {
                 // mutate the active cell
                 cell_to_mutate.set_mutation_info(mutation.get_info());
                 // update the scroll factor
-                scroll_factor += 0.1;
+                scroll_factor += 0.15;
                 
 				//if (new_ability) {
 				//	notify("New Ability: " + new_ability);
