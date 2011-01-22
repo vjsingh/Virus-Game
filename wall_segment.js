@@ -110,5 +110,5 @@ var wall_segment = function(p, spec) {
     };
 
     return obj;
-}
+};
 

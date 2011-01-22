@@ -2,7 +2,7 @@
 // which gets passed in a processing instance p
 var p_code = function(p) {
 
-    var g, t1, c1, c2;
+    var sm, t1, c1, c2;
 
     p.setup = function() {
         p.size(700, 600);
@@ -17,7 +17,7 @@ var p_code = function(p) {
         var f = new p.loadFont("_sans");
         p.textFont(f, 14);
 
-		g = state_manager(p);
+		sm = state_manager(p);
 		
 		p.frameRate(30);
     };
@@ -31,15 +31,15 @@ var p_code = function(p) {
             //console.log(p.__frameRate);
             update_counter = 0;
         }
-        g.update(); // Also renders
+        sm.update(); // Also renders
     };
 	
 	//Mouse and Keyboard input
 	p.keyPressed = function() {
-		g.key_pressed(p.key);
+		sm.key_pressed(p.key);
 	};
 	p.mousePressed = function() {
-		g.mouse_click(p.mouseX, p.mouseY);
+		sm.mouse_click(p.mouseX, p.mouseY);
 	};
 };
 

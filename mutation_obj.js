@@ -95,7 +95,7 @@ var mutation_obj = function(p, spec) {
 		//return Math.random() + ( (cells_infected / 50) / (level + 1)) > .95;
         //return (Math.random() * (cells_infected / 50)) > .3;
         //return (Math.random() + (cells_infected / 100) - (level / 50)) > .98;
-        return (Math.random()*0.5 + (cells_infected / cells_needed)) >.2; //.98;
+        return (Math.random()*0.5 + (cells_infected / cells_needed)) > .98;
 	};
 	
     // returns the max number of cells the player needs to infect to have

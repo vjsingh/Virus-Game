@@ -570,12 +570,12 @@ var in_game_state = function (p, previous_state) {
 		
         if (check_circle_collision(obj1, obj2)) {
             var check_again = retrieve(extra_check, type1, type2);
-            if (check_again != undefined) {
+            if (check_again !== undefined) {
                 return check_again(obj1, obj2);
             }
             else {
                 check_again = retrieve(extra_check, type2, type1);
-                if (check_again != undefined) {
+                if (check_again !== undefined) {
                     return check_again(obj2, obj1);
                 }
                 else {
@@ -590,8 +590,7 @@ var in_game_state = function (p, previous_state) {
 
 	// Checks for a collision between circle (obj2) and rectangle (obj1)
 	var check_rectangle_collision = function(rect, circ) {
-        // this used to have &&, but I changed to ||
-		return overlapping_vertically(circ, rect, rect.get_y_offset()) ||  
+		return overlapping_vertically(circ, rect, rect.get_y_offset()) &&  
 				overlapping_horizontally(circ, rect, rect.get_x_offset());
 	};
 	
@@ -864,8 +863,9 @@ var in_game_state = function (p, previous_state) {
                 // tkiller vs. cell
                 "cell": function(tk, cell) {
                     if ((cell.get_state() === "infected" ||
-							cell.get_state() === "active") &&
-						cell.has_antibody()) {
+							cell.get_state() === "active") 
+						    && cell.has_antibody()
+                            && same_mutation_level(tk, cell)) {
                         cell.die();
 			            play_sound("kill");	
 						tk.set_target(null);

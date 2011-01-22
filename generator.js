@@ -53,7 +53,7 @@ var make_generator = function(p, spec) {
         },
         "wall_cell": {
             start: 0, num: 3, cap: 7, rate: 5000, //non testing value: 1000
-            spacing: 100,
+            spacing: "dynamic",//100,
             make_new: function(en_pos) {
                 return wall_cell(p, { pos: en_pos });
             } 
@@ -66,7 +66,7 @@ var make_generator = function(p, spec) {
         },
         "floater": {
             start: 0, num: 3, cap: 7, rate: 7000,
-            spacing: 100,
+            spacing: "dynamic",//100,
             make_new: function(en_pos) {
                 return floater(p, { pos: en_pos });
             } 
@@ -131,6 +131,10 @@ var make_generator = function(p, spec) {
         return gen_info[type].rate;
     };
     var spacing = function(type) {
+        // dynamic spacing
+        if(gen_info[type].spacing === "dynamic") {
+            return p.width/num(type);
+        }
         return gen_info[type].spacing;
     };
     var gen_x_pos = function(type) {
@@ -272,11 +276,13 @@ var make_generator = function(p, spec) {
         // if there is spacing defined for this type
         if (spacing(new_enemy.get_type())) {
             var min_dist = 99999;
+            // find the closest object of the type
             game.do_to_type(
                 function(o) {
                     var dist = new_enemy.get_pos().dist(o.get_pos());
                     if (dist < min_dist) {
                         min_dist = dist; 
+                        // check if it is too close
                         if (dist < spacing(new_enemy.get_type())) {
                             to_return = false;
                         }
@@ -286,7 +292,7 @@ var make_generator = function(p, spec) {
             );
         }
         return to_return;
-    }
+    };
 
 
 
