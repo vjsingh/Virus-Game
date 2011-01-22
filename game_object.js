@@ -59,10 +59,10 @@ var game_object = function (p, spec) {
     // returns true if the object is completely offscreen
     // i.e. checks pos + dimensions
     obj.is_offscreen = function() {
-	    var left_edge = pos.x - width;
-	    var right_edge = pos.x + width;
-	    var top_edge = pos.y - height;
-	    var btm_edge = pos.y + height;
+	    var left_edge = pos.x - width/2;
+	    var right_edge = pos.x + width/2;
+	    var top_edge = pos.y - height/2;
+	    var btm_edge = pos.y + height/2;
         return (left_edge > p.width
             || right_edge < 0
             || top_edge > p.height
