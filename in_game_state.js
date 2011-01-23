@@ -18,6 +18,9 @@ var in_game_state = function (p, previous_state) {
     
     // --- private variables ---
 
+	GOOD_NOTIFICATION_COLOR = p.color(0, 255, 0);
+	BAD_NOTIFICATION_COLOR = p.color(255, 0, 0);
+	
 	var prev_state = previous_state;
 	// distance is the x-coordinate of the total distance traveled 
     // increments with scroll
@@ -99,8 +102,8 @@ var in_game_state = function (p, previous_state) {
 	
 	var all_notifications = [];
     // takes a string and adds a new notification
-    var notify = function(note) {
-        all_notifications.push(notification(p, { "text": note }));
+    var notify = function(note, color) {
+        all_notifications.push(notification(p, { "text": note, "color": color }));
     };
 	
 	var generator = make_generator(p, {
@@ -372,7 +375,7 @@ var in_game_state = function (p, previous_state) {
 			// In case it doesn't change (choose_cell assumes
 			// that the cell is diff from the curr active)
 			if (old_active.get_pos().dist(a_pos) <
-			active_cell.get_pos().dist(a_pos)) {
+					active_cell.get_pos().dist(a_pos)) {
 				active_cell.set_state("infected");
 				active_cell = old_active;
 				active_cell.set_state("active");
@@ -827,7 +830,7 @@ var in_game_state = function (p, previous_state) {
 							alert_b_cell(flo);
 							play_sound("macrophage_infect");
 						}
-                        notify("Macrophage activated!");
+                        notify("Macrophage activated!", BAD_NOTIFICATION_COLOR);
                     }
                 },
                 
@@ -935,7 +938,7 @@ var in_game_state = function (p, previous_state) {
                         b.set_mutation_info(flo.get_mutation_info());
                         b.activate(get_bcell_slot());
                         bounce(b, flo);
-                        notify("B-cell activated!");
+                        notify("B-cell activated!", BAD_NOTIFICATION_COLOR);
                     }
                 },
                 "wall_segment": function(b, wall) {
@@ -947,7 +950,7 @@ var in_game_state = function (p, previous_state) {
                         var tk = make_tkiller();
                         tk.set_mutation_info(b.get_mutation_info());
 
-                        notify("Incoming antibodies!");
+                        notify("Incoming antibodies!", BAD_NOTIFICATION_COLOR);
                     }
                     else if (b.is_alive()) {
                         bounce(b, wall);
@@ -1449,7 +1452,7 @@ var in_game_state = function (p, previous_state) {
 				//	notify("New Ability: " + new_ability);
 				//}
 				//else {
-					notify("Mutation occurred!");
+					notify("Mutation occurred!", GOOD_NOTIFICATION_COLOR);
 				//}
                 
                 console.log("mutation occurred!");
@@ -1473,7 +1476,7 @@ var in_game_state = function (p, previous_state) {
                     // reset the counters
                     mutation.reset_mutation();
 
-                    notify("Lost new strain!");
+                    notify("Lost new strain!", BAD_NOTIFICATION_COLOR);
                     console.log("downgraded to mutation level "+max_level);
 
                     scroll_factor -= 0.15;
@@ -1605,6 +1608,9 @@ var in_game_state = function (p, previous_state) {
         //var type = o.get_type();
         //var render_level = type_to_level[type];
         //game_objects[render_level].push(o);
+		if (o.get_type() === "tkiller") {
+            notify("Killer T Cell Incoming!", BAD_NOTIFICATION_COLOR);
+		}
         level(o.get_type()).push(o);
     };
 

@@ -41,11 +41,9 @@ var p_code = function(p) {
 	p.mousePressed = function() {
 		sm.mouse_click(p.mouseX, p.mouseY);
 	};
-	/*
 	p.mouseMoved = function() {
 		sm.mouse_moved(p.mouseX, p.mouseY);
 	}
-	*/
 };
 
 
