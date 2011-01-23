@@ -15,7 +15,7 @@ var notification = function(p, spec) {
 	var total_time = 200; // ~6 secs?
 
     var text_size = 20;
-	var text_color = spec.color || p.color(0, 0, 0);
+	var box_color = spec.color || p.color(255, 255, 255);
 	
     // --- public methods ---
 
@@ -40,10 +40,10 @@ var notification = function(p, spec) {
         var w = p.textWidth(spec.text);
 
         // draw a box behind it
-        p.fill(255, text_alpha);
+        p.fill(box_color, text_alpha);
         p.rect(x_pos-w/2-5, y_pos-p.textAscent(), w+10, p.textAscent()*2);
 
-		p.fill(text_color, text_alpha);
+		p.fill(p.color(0, 0, 0), text_alpha);
         p.text(spec.text, x_pos, y_pos);
 		
 		if (time_counter > total_time) { // Finished

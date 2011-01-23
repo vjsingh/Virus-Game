@@ -88,6 +88,3 @@ var add_commas = function (nStr,prefix){
     return prefix + x1 + x2;
 };
 
-
-// TAKE OUT
-on_server = false; 
