@@ -84,10 +84,8 @@ var game_state = function (p) {
 	//Takes in the key pressed and handles a key press
     obj.key_pressed = function(k) {throw "key_pressed not overwritten"};
 	   
-	/* 
 	// Do nothing unless overwritten
 	obj.mouse_moved = function(x, y) {};
-	*/
 	
     //Updates the current state, and returns the next state to go to
     //next state can be:

@@ -372,7 +372,7 @@ var in_game_state = function (p, previous_state) {
 			// In case it doesn't change (choose_cell assumes
 			// that the cell is diff from the curr active)
 			if (old_active.get_pos().dist(a_pos) <
-			active_cell.get_pos().dist(a_pos)) {
+					active_cell.get_pos().dist(a_pos)) {
 				active_cell.set_state("infected");
 				active_cell = old_active;
 				active_cell.set_state("active");
