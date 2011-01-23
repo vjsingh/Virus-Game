@@ -10,7 +10,6 @@ function data_uri($file)
 }
 
 ?>
-on_server = true;
 
 var g_soundDataMap =
 {
