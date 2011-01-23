@@ -33,7 +33,20 @@ var options_state = function (p, prev_state) {
 		}
 	});
 	var music_button = option_button(p, {
-		click_fun : g.toggle_music,
+		click_fun : function() {
+            // toggle the flag
+            g.toggle_music();
+            // if not coming from the splash screen
+            if (prev_state.get_type() !== "splash") {
+                // toggle the actual music
+                if (g.music) {
+                    sounds.play_background_music();
+                }
+                else {
+                    sounds.stop_background_music();
+                }
+            }
+        },
 		global_var : "music",
 		rect : {
 			pos : new p.PVector(p.width / 2 - 100, p.height/2 + 40),

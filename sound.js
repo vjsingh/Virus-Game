@@ -1,54 +1,66 @@
-// Taken from http://www.storiesinflight.com/html5/audio.html
-var play_sound = (function() {
-	var channel_max = 10;										// number of channels
-	audiochannels = new Array();
-	for (a=0;a<channel_max;a++) {									// prepare the channels
-		audiochannels[a] = new Array();
-		audiochannels[a]['channel'] = new Audio();						// create a new audio object
-		audiochannels[a]['finished'] = -1;							// expected end time for this channel
-	}
-	var to_return = function(s){
-		if (g.sound_fx) {
-			for (a = 0; a < audiochannels.length; a++) {
-				thistime = new Date();
-				if (audiochannels[a]['finished'] < thistime.getTime()) { // is this channel finished?
-					audiochannels[a]['finished'] = thistime.getTime() + document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
-					// Audio is encoded as base64
-					
-					// SO IT WILL WORK LOCALLY
-					// TODO: take out
-					if (on_server) {
-						audiochannels[a]['channel'].src = g_soundDataMap[s]; //document.getElementById(s).src;
-						audiochannels[a]['channel'].load();
-						audiochannels[a]['channel'].play();
-					}
-					break;
-				}
-			}
-		}
-	}
-	return to_return;
-}());
+// sound_manager
+// utility object to play or not play sounds
+// settings for sound still stored in settings object
+var sound_manager = function() {
+    var obj = {};
 
-var background_music = new Audio();
-var play_background_music = (function() {
-	// Load all the audio loops
-	var loop1 = new Audio();
-	loop1.src = "sounds/heart_loop1.mp3";
-	var loop2 = new Audio();
-	loop2.src = "sounds/sinister.mp3";
-	var loops = [loop1, loop2];
-	for_each(loops, function(l) {l.load(); l.loop = true;});
-	
-	return function() {
-	stop_background_music();
-	background_music = loops[Math.floor(Math.random() * loops.length)];
-	//background_music.load(); //already loaded
-	background_music.play();
-	}
-}());
+    // Taken from http://www.storiesinflight.com/html5/audio.html
+    obj.play_sound = (function() {
+        var channel_max = 10;										// number of channels
+        audiochannels = new Array();
+        for (a=0;a<channel_max;a++) {									// prepare the channels
+            audiochannels[a] = new Array();
+            audiochannels[a]['channel'] = new Audio();						// create a new audio object
+            audiochannels[a]['finished'] = -1;							// expected end time for this channel
+        }
+        var to_return = function(s){
+            if (g.sound_fx) {
+                for (a = 0; a < audiochannels.length; a++) {
+                    thistime = new Date();
+                    if (audiochannels[a]['finished'] < thistime.getTime()) { // is this channel finished?
+                        audiochannels[a]['finished'] = thistime.getTime() + document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
+                        // Audio is encoded as base64
+                        
+                        // SO IT WILL WORK LOCALLY
+                        // TODO: take out
+                        if (on_server) {
+                            audiochannels[a]['channel'].src = g_soundDataMap[s]; //document.getElementById(s).src;
+                            audiochannels[a]['channel'].load();
+                            audiochannels[a]['channel'].play();
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        return to_return;
+    }());
 
-var stop_background_music = function() {
-	background_music.pause();
+    var background_music = new Audio();
+
+    obj.play_background_music = (function() {
+        // Load all the audio loops
+        var loop1 = new Audio();
+        loop1.src = "sounds/heart_loop1.mp3";
+        var loop2 = new Audio();
+        loop2.src = "sounds/sinister.mp3";
+        var loops = [loop1, loop2];
+        for_each(loops, function(l) {l.load(); l.loop = true;});
+        
+        return function() {
+            obj.stop_background_music();
+            background_music = loops[Math.floor(Math.random() * loops.length)];
+            //background_music.load(); //already loaded
+            background_music.play();
+        };
+    }());
+
+    obj.stop_background_music = function() {
+        background_music.pause();
+    };
+
+    return obj;
 };
 
+// make a global object
+var sounds = sound_manager();

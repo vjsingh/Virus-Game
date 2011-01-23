@@ -18,18 +18,9 @@ var game_settings = function() {
     settings.toggle_click_to_fire = function() { toggle("click_to_fire"); };
     settings.toggle_spacebar_to_fire = function() { toggle("spacebar_to_fire"); };
     settings.toggle_mouse_to_select = function() { toggle("mouse_to_select"); };
-    // TODO make this not start playing music on splash screen
-    settings.toggle_music = function() {
-        toggle("music");
-        if (g.music) {
-            play_background_music();
-            console.log("starting music");
-        }
-        else {
-            console.log("stopping music");
-            stop_background_music();
-        }
-    };
+    // note that this only toggles the flag, not the actual music
+    // that should be done with a sound manager method
+    settings.toggle_music = function() { toggle("music"); };
 
     return settings;
 };

@@ -181,7 +181,7 @@ var in_game_state = function (p, previous_state) {
 	var init = function() {
 		// Start playing the game music
 		if (g.music) {
-			play_background_music();
+			sounds.play_background_music();
 		}
 		
 		//Initialize game_objects to be a list of num_of_render_levels empty lists
@@ -1361,7 +1361,7 @@ var in_game_state = function (p, previous_state) {
 						score : score.get_num(),
 						mutation_level : mutation.get_level()
 					});
-					stop_background_music();
+					sounds.stop_background_music();
 					obj.set_next_state(go_state);
 
                     // stop the time and stuff
