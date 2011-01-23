@@ -5,7 +5,7 @@
 $score = $_POST['score'];
 $level = $_POST['level'];
 $userid = $_POST['userid'];
-$date = date('Y-m-d');
+$date = $_POST['date'];//date('Y-m-d');
 
 mysql_connect('localhost', 'virion', 'virion1')
     or die("Could not connect to " . mysql_error());

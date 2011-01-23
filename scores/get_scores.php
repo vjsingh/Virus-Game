@@ -2,7 +2,7 @@
 
 // based on http://www.w3schools.com/PHP/php_ajax_database.asp
 
-$num = $_GET["num"];
+$num = $_POST["num"];
 // default num to return
 $num = $num ? $num : 10;
 

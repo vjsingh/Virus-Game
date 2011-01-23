@@ -43,9 +43,10 @@ var submit_score = function() {
     var userid = form.elements[2].value; 
 
     var score_obj = {
-       score: parseInt(score),
-       level: parseInt(level),
-       userid: userid
+        score: parseInt(score),
+        level: parseInt(level),
+        userid: userid,
+        date: new Date().format('Y-m-d')
     };
     console.log(score_obj);
 
