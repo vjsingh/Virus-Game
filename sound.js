@@ -8,7 +8,7 @@ var play_sound = (function() {
 		audiochannels[a]['finished'] = -1;							// expected end time for this channel
 	}
 	var to_return = function(s){
-		if (g_sound_fx_on()) {
+		if (g.sound_fx) {
 			for (a = 0; a < audiochannels.length; a++) {
 				thistime = new Date();
 				if (audiochannels[a]['finished'] < thistime.getTime()) { // is this channel finished?
