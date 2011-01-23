@@ -46,7 +46,7 @@ var submit_score = function() {
         score: parseInt(score),
         level: parseInt(level),
         userid: userid,
-        date: new Date().format('Y-m-d')
+        date: new Date().f('yyyy-MM-dd')
     };
     console.log(score_obj);
 

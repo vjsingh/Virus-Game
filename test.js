@@ -47,13 +47,20 @@ var p_code = function(p) {
 };
 
 
-// attaches the processing code to the canvas
-// note that we need to do this AFTER the canvas element is created
-var canvas = document.getElementById("test_canvas");
-var sketch = new Processing.Sketch(p_code);
-sketch.options.isTransparent = true;
-var pInstance = new Processing(canvas, sketch);
+// want this to be global
+var sketch;
 
+var start_game = function() {
+    // attaches the processing code to the canvas
+    // note that we need to do this AFTER the canvas element is created
+    var canvas = document.getElementById("test_canvas");
+    sketch = new Processing.Sketch(p_code);
+    sketch.options.isTransparent = true;
+    var pInstance = new Processing(canvas, sketch);
+};
+window.onload = start_game;
+
+/*
 var back_code = function(p) {
     var tiles = [];
     p.setup = function() {
@@ -75,7 +82,8 @@ var back_code = function(p) {
         });
     };
 };
-var back_canvas = document.getElementById("back_canvas");
+*/
+//var back_canvas = document.getElementById("back_canvas");
 //var backInstance = new Processing(back_canvas, back_code);
 
 // Make spacebar not move the window down
