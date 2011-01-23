@@ -154,19 +154,22 @@ var state_manager = function (p) {
     //Passes clicks on to curr_state
     obj.mouse_click = function (x, y) {
         curr_state.mouse_click_wrapper(x, y); 
-        obj.update();
+		if (curr_state.get_type() !== "game") {
+			obj.update();
+		}
     };
 
 	obj.key_pressed = function(k) {
 		curr_state.key_pressed(k);
-        obj.update();
+		if (curr_state.get_type() !== "game") {
+			obj.update();
+		}
 	};
-	/*
+	
 	obj.mouse_moved = function(x,y) {
 		curr_state.mouse_moved(x, y);
 		//obj.update();
 	}
-	*/
     
     return obj;
 };
