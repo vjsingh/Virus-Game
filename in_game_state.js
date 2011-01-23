@@ -356,31 +356,29 @@ var in_game_state = function (p, previous_state) {
 
 	// Set the next-left or next-right cell to be active, and 
 	// if appropriate sets current active to be not active
-	/*
-	// Returns the closest cell to a_pos
-	var get_closest_cell = function(a_pos) {
-		if (active_cell) {
-			var curr_closest = active_cell;
-			// TODO: WTF is going on here? get_pos()
-			// isn't returning a PVector
-			console.log("active " + active_cell.get_pos());
-			
-			var infecteds = level("cell").filter(function(cell){
-				// don't want empty_cells
-				return cell.get_type() === "cell" &&
-				cell.get_state() === "infected";
-			});
-			for_each(infecteds, function(i){
-				if ((i.get_pos().dist(a_pos)) <
-					(curr_closest.get_pos().dist(a_pos))) {
-					curr_closest = i;
+	
+	// Chooses the closest cell to a_pos
+	var choose_closest_cell = function(a_pos) {
+		if (active_cell) { // for the beginning
+			var old_active = active_cell;
+			var sort_fun = function(active_cell){
+				return function(c1, c2){
+					return (c1.get_pos().dist(a_pos)) <
+					(c2.get_pos().dist(a_pos));
 				}
-			})
-			return curr_closest;
+			};
+			choose_cell(sort_fun);
+			
+			// In case it doesn't change (choose_cell assumes
+			// that the cell is diff from the curr active)
+			if (old_active.get_pos().dist(a_pos) <
+			active_cell.get_pos().dist(a_pos)) {
+				active_cell.set_state("infected");
+				active_cell = old_active;
+				active_cell.set_state("active");
+			}
 		}
-		return null;
 	}
-	*/
 	
 	// Chooses the closest cell to the active cell in the direction of comp,
 	// i.e. such that comp(c1.x, active.x) is true
@@ -1330,8 +1328,6 @@ var in_game_state = function (p, previous_state) {
             "cell", "enemy", "multiplier", "antibody"];
 
         var update_fun = function() {
-			if (active_cell) 
-				console.log("acp " + active_cell.get_pos());
 			// Can't be set when object is initialized
 			// Takes time every update though to check
 			if (!set_time) {
@@ -1567,14 +1563,14 @@ var in_game_state = function (p, previous_state) {
 		//right and left
 		k = p.keyCode;
 		if (k === p.LEFT) { //left
-			//if (!g_mouse_to_select()) {
+			if (!g_mouse_to_select()) {
 				choose_left_cell();
-			//}
+			}
 		}
 		else if (k === 39) { //right
-			//if (!g_mouse_to_select()) {
+			if (!g_mouse_to_select()) {
 				choose_right_cell();
-			//}
+			}
 		}
 	};
 	
@@ -1584,14 +1580,13 @@ var in_game_state = function (p, previous_state) {
 			do_fire();
 		}
     };
-	/*
+	
 	// Choose active cell on mouse movement
 	obj.mouse_moved = function(x, y) {
 		if (g_mouse_to_select()) {
-			var active_cella = get_closest_cell(p.PVector(x, y));
+			choose_closest_cell(new p.PVector(x, y));
 		}
 	}
-	*/
 	
 	obj.set_b_cell_target = function(the_b_cell) {
 		for_each(get_all_of_type("floater"), function(o){

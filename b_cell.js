@@ -141,7 +141,6 @@ var b_cell = function(p, spec) {
 		
 		return function(){
 		
-			console.log("drawing antibody");
 			p.pushMatrix();
 			
 			var pos = obj.get_pos();

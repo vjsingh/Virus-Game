@@ -27,7 +27,7 @@ var options_state = function (p, prev_state) {
 		click_fun : g_toggle_sound_fx,
 		global_var : "sound_fx",
 		rect : {
-			pos : new p.PVector(p.width / 2 - 100, p.height/2 - 30),
+			pos : new p.PVector(p.width / 2 - 100, p.height/2 - 70),
 			text: "Sound_fx",
 			image : option_image
 		}
@@ -36,7 +36,7 @@ var options_state = function (p, prev_state) {
 		click_fun : g_toggle_music,
 		global_var : "music",
 		rect : {
-			pos : new p.PVector(p.width / 2 - 100, p.height/2 + 80),
+			pos : new p.PVector(p.width / 2 - 100, p.height/2 + 40),
 			text: "Music",
 			image : option_image
 		}
@@ -45,7 +45,7 @@ var options_state = function (p, prev_state) {
 		click_fun : g_toggle_spacebar_to_fire,
 		global_var : "spacebar_to_fire",
 		rect : {
-			pos : new p.PVector(p.width / 2 + 150, p.height/2 - 30),
+			pos : new p.PVector(p.width / 2 + 150, p.height/2 - 70),
 			text: "Use Spacebar to Fire",
 			image : option_image
 		}
@@ -54,24 +54,25 @@ var options_state = function (p, prev_state) {
 		click_fun : g_toggle_click_to_fire,
 		global_var : "click_to_fire",
 		rect : {
-			pos : new p.PVector(p.width / 2 + 150, p.height/2 + 80),
+			pos : new p.PVector(p.width / 2 + 150, p.height/2 + 40),
 			text: "Use Mouse click to Fire",
 			image : option_image
 		}
 	});
 	var mouse_to_select_button = option_button(p, {
 		click_fun : g_toggle_mouse_to_select,
-		global_var : "click_to_fire",
+		global_var : "mouse_to_select",
 		rect : {
-			pos : new p.PVector(p.width / 2 + 150, p.height/2 + 80),
-			text: "Use Mouse click to Fire",
-			image : option_image
+			pos : new p.PVector(p.width / 2, p.height/2 + 150),
+			text: "Use the mouse to select \ncells instead of Left/Right",
+			image : option_image,
+			text_x_offset : 10
 		}
 	});
 	
 	//Not ordered
 	var all_buttons = [back_button];
-	var all_option_buttons = [sound_fx_button, music_button, spacebar_button, mouse_button];
+	var all_option_buttons = [sound_fx_button, music_button, spacebar_button, mouse_button, mouse_to_select_button];
 
     // --- public methods ---
     
