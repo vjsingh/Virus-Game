@@ -39,7 +39,7 @@ head.js(
 "notification.js",
 "fisforformat.min.js",
 "scores/scores.js",
-"test.js",
-function() {
+"test.js");
+window.onload = function() {
     start_game();
-});
+};
