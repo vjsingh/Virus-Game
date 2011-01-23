@@ -465,6 +465,17 @@ var in_game_state = function (p, previous_state) {
 	var update_tkillers_targets = function(){
 		var all_infected_cells = get_all_infected_cells();
 		do_to_type(function(tkill){
+            // remove bad targets
+            if (tkill.get_target()
+                // if it's dead
+                && (tkill.get_target().is_dead()
+                    // or offscreen
+                    || tkill.get_target().is_offscreen()
+                    // or the target mutated
+                    || !same_mutation_level(tkill, tkill.get_target()))) {
+                tkill.set_target(null);
+            }
+            // set a new target
             for_each(
                 all_infected_cells,
                 function(infected_cell) {
