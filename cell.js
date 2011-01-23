@@ -156,7 +156,7 @@ var cell = function(p, spec) {
 	obj.fire = function() {
 		if (state === "active") {
 			// Make sounds
-			play_sound("cell_fire");
+			sounds.play_sound("cell_fire");
 			
             // TODO: need a slower death
 			obj.die();

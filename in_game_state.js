@@ -768,7 +768,7 @@ var in_game_state = function (p, previous_state) {
             }
             if (cell.get_state() === "alive") {
 				//Play sound
-				play_sound("cell_infect");
+				sounds.play_sound("cell_infect");
 			
 				// increase mutation percentage if level is highest on screen
 				// must be done before setting state of infected cell
@@ -810,7 +810,7 @@ var in_game_state = function (p, previous_state) {
 		        // kill the particle 
                 "empty_cell": function(par, cell) {
                     // TODO diff sound?
-                    play_sound("cell_infect");
+                    sounds.play_sound("cell_infect");
 		            par.die();
 		        },
                 
@@ -828,7 +828,7 @@ var in_game_state = function (p, previous_state) {
 							flo.set_mutation_info(par.get_mutation_info());
 							flo.activate();
 							alert_b_cell(flo);
-							play_sound("macrophage_infect");
+							sounds.play_sound("macrophage_infect");
 						}
                         notify("Macrophage activated!", BAD_NOTIFICATION_COLOR);
                     }
@@ -893,7 +893,7 @@ var in_game_state = function (p, previous_state) {
 						    && cell.has_antibody()
                             && same_mutation_level(tk, cell)) {
                         cell.die();
-			            play_sound("kill");	
+			            sounds.play_sound("kill");	
 						tk.set_target(null);
 						if (active_cell === cell) {
                             //last_active_cell = active_cell;

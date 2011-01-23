@@ -23,11 +23,11 @@ var sound_manager = function() {
                         
                         // SO IT WILL WORK LOCALLY
                         // TODO: take out
-                        if (on_server) {
+            //            if (on_server) {
                             audiochannels[a]['channel'].src = g_soundDataMap[s]; //document.getElementById(s).src;
                             audiochannels[a]['channel'].load();
                             audiochannels[a]['channel'].play();
-                        }
+             //           }
                         break;
                     }
                 }
