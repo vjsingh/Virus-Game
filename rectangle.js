@@ -10,6 +10,7 @@
 // 		text_color : color of text (defaults to black);
 //		text_size : size of text (default to processings default)
 //		text_align : alignment of text (default to p.CENTER)
+//		text_x_offset : offset for the text x coordinate
 //		rect_color : color of rectangle (defaults to white)
 // 		image 		: string location of image to display instead of a rectangle
 // 		style : object that can specify text_color, text_size, rect_color, width, height, text_align
@@ -71,8 +72,9 @@ var rectangle = function (p, spec) {
         var text_x = pos.x;
         // draw left aligned text to the left, not centered
         if (text_align === p.LEFT) {
-            text_x = pos.x - half_width + 10;
+            text_x = pos.x - half_width + 10; 
         }
+		text_x += (spec.text_x_offset || 0);
 		p.textSize(text_size);
         p.text(text, text_x, pos.y);
 	};

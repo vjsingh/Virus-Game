@@ -7,7 +7,7 @@ var g_game_settings = {
 	sound_fx : true,
 	music : true,
 	click_to_fire : true,
-	mouse_to_select : true,
+	mouse_to_select : false,
 	spacebar_to_fire : true,
     background_color : 0xFF371010
 }
