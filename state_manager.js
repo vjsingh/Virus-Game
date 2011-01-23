@@ -161,6 +161,12 @@ var state_manager = function (p) {
 		curr_state.key_pressed(k);
         obj.update();
 	};
+	/*
+	obj.mouse_moved = function(x,y) {
+		curr_state.mouse_moved(x, y);
+		//obj.update();
+	}
+	*/
     
     return obj;
 };
