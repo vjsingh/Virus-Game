@@ -58,7 +58,7 @@ var start_game = function() {
     sketch.options.isTransparent = true;
     var pInstance = new Processing(canvas, sketch);
 };
-//window.onload = start_game;
+window.onload = start_game;
 
 /*
 var back_code = function(p) {
