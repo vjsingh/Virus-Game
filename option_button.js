@@ -25,7 +25,7 @@ var option_button = function(p, spec) {
 
 	obj.draw = function() {
         rect.draw();
-		if (g_game_settings[spec.global_var]) {
+		if (g[spec.global_var]) {
 			p.fill(255, 255, 255);
 			p.ellipse(status_x, status_y, 10, 10);
 		}

@@ -177,7 +177,7 @@ var in_game_state = function (p, previous_state) {
     // gets called at the bottom
 	var init = function() {
 		// Start playing the game music
-		if (g_music_on()) {
+		if (g.music) {
 			play_background_music();
 		}
 		
@@ -1544,7 +1544,7 @@ var in_game_state = function (p, previous_state) {
 	};
 	obj.key_pressed = function(k) {
 		if (k === 32) { //spacebar
-			if (g_spacebar_to_fire()) {
+			if (g.spacebar_to_fire) {
 				do_fire();
 			}
 		}
@@ -1563,12 +1563,12 @@ var in_game_state = function (p, previous_state) {
 		//right and left
 		k = p.keyCode;
 		if (k === p.LEFT) { //left
-			if (!g_mouse_to_select()) {
+			if (!g.mouse_to_select) {
 				choose_left_cell();
 			}
 		}
 		else if (k === 39) { //right
-			if (!g_mouse_to_select()) {
+			if (!g.mouse_to_select) {
 				choose_right_cell();
 			}
 		}
@@ -1576,14 +1576,14 @@ var in_game_state = function (p, previous_state) {
 	
 	// Fire
     obj.mouse_click = function (x, y) {
-		if (!paused && g_click_to_fire()) {
+		if (!paused && g.click_to_fire) {
 			do_fire();
 		}
     };
 	
 	// Choose active cell on mouse movement
 	obj.mouse_moved = function(x, y) {
-		if (g_mouse_to_select()) {
+		if (g.mouse_to_select) {
 			choose_closest_cell(new p.PVector(x, y));
 		}
 	}

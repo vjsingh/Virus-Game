@@ -1,56 +1,6 @@
 // ** Global Constants
 //DEFAULT_SCROLL_DIST = -0.8;
 
-// Global settings
-// Have to be wrapped in an object since primitives are pass-by-value
-var g_game_settings = {
-	sound_fx : true,
-	music : true,
-	click_to_fire : true,
-	mouse_to_select : false,
-	spacebar_to_fire : true,
-    background_color : 0xFF371010
-}
-// abbreviate it
-var g = g_game_settings;
-
-var g_toggle_sound_fx = function() {g_toggle("sound_fx");};
-var g_toggle_music = function() {
-    g_toggle("music");
-    if (g.music) {
-        play_background_music();
-        console.log("starting music");
-    }
-    else {
-        console.log("stopping music");
-        stop_background_music();
-    }
-};
-var g_toggle_click_to_fire = function() {g_toggle("click_to_fire");};
-var g_toggle_spacebar_to_fire = function() {g_toggle("spacebar_to_fire");};
-var g_toggle_mouse_to_select = function() {g_toggle("mouse_to_select");};
-
-var g_toggle = function(global_var) {
-	g_game_settings[global_var] = !g_game_settings[global_var];
-}
-
-//getters
-var g_sound_fx_on = function() {
-	return g_game_settings.sound_fx;
-}
-var g_music_on = function() {
-	return g_game_settings.music;
-}
-var g_click_to_fire = function() {
-	return g_game_settings.click_to_fire;
-}
-var g_mouse_to_select = function() {
-	return g_game_settings.mouse_to_select;
-}
-var g_spacebar_to_fire = function() {
-	return g_game_settings.spacebar_to_fire;
-}
-
 // *** global_functions ***
 // Holds functions used in the whole project
 
