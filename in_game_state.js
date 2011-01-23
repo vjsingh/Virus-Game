@@ -1330,9 +1330,8 @@ var in_game_state = function (p, previous_state) {
             "cell", "enemy", "multiplier", "antibody"];
 
         var update_fun = function() {
-			if (active_cell) {
-				console.log(active_cell.get_pos());
-            }
+			if (active_cell) 
+				console.log("acp " + active_cell.get_pos());
 			// Can't be set when object is initialized
 			// Takes time every update though to check
 			if (!set_time) {
