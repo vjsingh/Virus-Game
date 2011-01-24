@@ -28,7 +28,7 @@ var options_state = function (p, prev_state) {
 		global_var : "sound_fx",
 		rect : {
 			pos : new p.PVector(p.width / 2 - 100, p.height/2 - 70),
-			text: "Sound_fx",
+			text: "Sound Effects",
 			image : option_image
 		}
 	});
@@ -70,7 +70,7 @@ var options_state = function (p, prev_state) {
 		global_var : "click_to_fire",
 		rect : {
 			pos : new p.PVector(p.width / 2 + 150, p.height/2 + 40),
-			text: "Use Mouse click to Fire",
+			text: "Use Mouse Click to Fire",
 			image : option_image
 		}
 	});
