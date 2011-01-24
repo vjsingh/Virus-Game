@@ -4,6 +4,7 @@
 var sound_manager = function() {
     var obj = {};
 
+	var the_swf_path = "./jplayer";
     // Taken from http://www.storiesinflight.com/html5/audio.html
     obj.play_sound = (function() {
         var channel_max = 10;										// number of channels
@@ -17,6 +18,7 @@ var sound_manager = function() {
 			
         	// call jPlayers constructor for each div
 			$("#jquery_jplayer_"+a).jPlayer( {
+			swfPath : the_swf_path,
 			ready: function () {
 					// Do nothing
 					/*
@@ -29,7 +31,7 @@ var sound_manager = function() {
 				supplied : "oga"
 			});
         }
-        var to_return = function(s){
+        return function(s){
             if (g.sound_fx) {
                 for (a = 0; a < audiochannels.length; a++) {
                     thistime = new Date();
@@ -44,12 +46,12 @@ var sound_manager = function() {
 						var jplayer_instance = audiochannels[a]['channel'];
 						jplayer_instance.jPlayer("setMedia", {oga : g_soundDataMap[s]});
 						jplayer_instance.jPlayer("play");                    
+						console.log("Playing: " + s);
 						break;
                     }
                 }
             }
         }
-        return to_return;
     }());
 
     var background_music = null;
@@ -90,16 +92,18 @@ var sound_manager = function() {
 		// init all bg music
 		var all_supplied = "mp3";
 		$("#jquery_jplayer_bg_0").jPlayer( {
-		ready: function () {
-	          $(this).jPlayer("setMedia", {
-		           mp3 : "sounds/heart_loop1.mp3"
-		          });
-				bg_music_loaded();
+			swfPath : the_swf_path,
+			ready: function () {
+		          $(this).jPlayer("setMedia", {
+			           mp3 : "sounds/heart_loop1.mp3"
+			          });
+					bg_music_loaded();
 	        },
 			supplied : all_supplied
 		});
 		$("#jquery_jplayer_bg_1").jPlayer( {
 		ready: function () {
+			swfPath : the_swf_path,
 	          $(this).jPlayer("setMedia", {
 		           mp3 : "sounds/sinister.mp3"
 		          });
@@ -119,6 +123,7 @@ var sound_manager = function() {
 	}
 	
 	obj.sounds_loaded = function() {
+		//console.log(num_loaded);
 		return num_loaded === max_loaded;
 	}
     return obj;
