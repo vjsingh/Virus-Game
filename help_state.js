@@ -103,7 +103,7 @@ var help_state = function (p, prev_state) {
 
         // auto height
         spec.height = spec.height 
-            || spec.image ? spec.image.height : 80;
+            || (spec.image ? spec.image.height : 80);
         spec.width = spec.width || screen_w;
 
         obj.height = function() { return spec.height; };
@@ -127,7 +127,7 @@ var help_state = function (p, prev_state) {
             }
 
             if (spec.title) {
-                p.textSize(18);
+                p.textSize(16);
                 p.textAlign(p.LEFT, p.TOP);
                 p.fill(255);
                 p.text(spec.title, text_x, 0); 
@@ -148,19 +148,36 @@ var help_state = function (p, prev_state) {
         var s1 = new_screen();
         screens.push(s1);
         s1.add_item(item({
-            text: "This is me testing a cell.blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahblah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah",
-            title: "Cell",
+            text: "You've managed to infiltrate the human body's defenses and get your virus particle (or virion) into the bloodstream!", 
+            height: 45,
+            image: image_manager.get_image("tinyvirus_trans.png"),
+            img_left: false
+        }));
+        s1.add_item(item({
+            title: "Infectable Cells",
+            text: "Hit an infectable cell with a virion to infect it. After penetrating the cell wall, the virion will use the cell's machinery to make copies of itself.",
             image: image_manager.get_image("infectable_cell_2n.png"),
             img_left: true
         }));
         s1.add_item(item({
-            text: "This is me testing a cell.blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahblah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah",
+            text: "Press SPACEBAR or click the MOUSE to burst an infected cell and shoot the new virions in the direction of the arrow. Pick which cell to burst using the LEFT and RIGHT arrow keys.", 
             image: image_manager.get_image("infectable_cell_2n.png"),
             img_left: false
         }));
         s1.add_item(item({
-            text: "Now there is no image.blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahblah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah",
+            title: "Tolerant Cells",
+            text: "Some cells can be infected, but will not allow you to make any new virions. A virion that infects a tolerant cell is as good as dead.",
+            image: image_manager.get_image("noninfectable_cell_1n.png"),
+            img_left: true
         }));
+        s1.add_item(item({
+            title: "Resistant Cells",
+            text: "Other cells will not even allow the virion to break through the cell wall. The virion will just be deflected in the opposite direction.",
+            height: 60,
+            image: image_manager.get_image("wallcell_1.png"),
+            img_left: false
+        }));
+
         var s2 = new_screen();
         screens.push(s2);
         s2.add_item(item({
@@ -182,13 +199,15 @@ var help_state = function (p, prev_state) {
     }());
 
 
+    /*
     var box_w = 370;
     var box_h = 500;
     var box_x = p.width/2 - box_w/2;
     var box_y = p.height/2 - box_h/2;
+    */
 
 	// Buttons
-    var button_y = p.height/2 + 180;
+    var button_y = p.height/2 + 190;
 
 	var back_button = button(p, {
 		state : function() { return prev_state; },	
