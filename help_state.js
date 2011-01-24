@@ -96,14 +96,23 @@ var help_state = function (p, prev_state) {
     //  - text - the text to display
     //  - title - the name of this item (optional)
     //  - image - image to display
-    //  - img_left - boolean, true if the image should go on the left,
+    //  - illustration (obj) 
+    //      - width, height - dimensions for the illustration
+    //      - draw - function that draws some illustration 
+    //              (origin at top left corner)
+    //  - img_left - boolean, true if the image/ill should go on the left,
     //              false for the right
+    //  (should only have image or illustration)
+    //
     var item = function(spec) {
         var obj = {};
 
         // auto height
         spec.height = spec.height 
-            || (spec.image ? spec.image.height : 80);
+            // the 0 here just takes us to the next cond
+            || (spec.image ? spec.image.height : 0)
+            // the actual default is at the end of this
+            || (spec.illustration ? spec.illustration.height : 80);
         spec.width = spec.width || screen_w;
         spec.padding = spec.padding || 10;
 
@@ -114,16 +123,26 @@ var help_state = function (p, prev_state) {
             var text_y = 0;
             var text_w = spec.width;
 
-            if (spec.image) {
-                text_w -= spec.image.width + spec.padding;
-                var img_x = spec.width - spec.image.width;
+            if (spec.image || spec.illustration) {
+                // make adjustments based on either one
+                var i = spec.image || spec.illustration;
+                text_w -= i.width + spec.padding;
+                var img_x = spec.width - i.width;
                 if (spec.img_left) {
                     img_x = 0;
-                    text_x = spec.image.width + spec.padding;
+                    text_x = i.width + spec.padding;
                 }
-
-                p.imageMode(p.CORNER);
-                p.image(spec.image, img_x, 0); 
+                // draw either
+                if (spec.image) {
+                    p.imageMode(p.CORNER);
+                    p.image(spec.image, img_x, 0); 
+                }
+                else {
+                    p.pushMatrix();
+                    p.translate(img_x, 0);
+                    spec.illustration.draw();
+                    p.popMatrix();
+                }
             }
 
             if (spec.title) {
@@ -145,13 +164,27 @@ var help_state = function (p, prev_state) {
     // init the help screens
     // eval'd immediately
     var init_screens = (function() {
+        var color1 = 0xffffff00;
+        var color2 = 0xff7f2aff;
+
         var s1 = new_screen();
         screens.push(s1);
         s1.add_item(item({
             text: "You've infiltrated the human body's defenses and gotten your virus particle (or virion) into the bloodstream! Here are the cells you may encounter:", 
             height: 45,
             padding: 1,
-            image: image_manager.get_image("tinyvirus_trans.png"),
+            illustration: {
+                width: 30, height: 30,
+                draw: function() {
+                    var img = image_manager.get_image("tinyvirus_trans.png");
+                    p.fill(color1);
+                    p.noStroke();
+                    p.ellipse(img.width/2, img.height/2,
+                        img.width*.75, img.height*.75);
+                    p.imageMode(p.CORNER);
+                    p.image(img, 0, 0);
+                }
+            },
             img_left: false
         }));
         s1.add_item(item({
@@ -162,7 +195,21 @@ var help_state = function (p, prev_state) {
         }));
         s1.add_item(item({
             text: "Press SPACEBAR or click the MOUSE to burst an infected cell and shoot the new virions in the direction of the arrow. Pick which cell to burst using the LEFT and RIGHT arrow keys.", 
-            image: image_manager.get_image("infectable_cell_2n.png"),
+            //image: image_manager.get_image("infectable_cell_2n.png"),
+            illustration: {
+                width: 30, height: 60,
+                draw: (function() {
+                    var c = cell(p, {
+                        pos: new p.PVector(20, 30),
+                        width: 30, height: 30,
+                        mutation_info: { color: color1 },
+                    });
+                    c.set_state("active");
+                    return function() {
+                        c.draw();
+                    };
+                }()),
+            },
             img_left: false
         }));
         s1.add_item(item({
@@ -188,6 +235,7 @@ var help_state = function (p, prev_state) {
         s2.add_item(item({
             title: "Macrophages",
             text: "The immune system's first line of defense. They will absorb any virion that hits them and then signal a B cell to give it information about your virus.",
+            height: 80,
             image: image_manager.get_image("macrophage_1.png"),
             img_left: true
         }));
