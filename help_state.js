@@ -105,21 +105,21 @@ var help_state = function (p, prev_state) {
         spec.height = spec.height 
             || (spec.image ? spec.image.height : 80);
         spec.width = spec.width || screen_w;
+        spec.padding = spec.padding || 10;
 
         obj.height = function() { return spec.height; };
         
         obj.render = function() {
-            var padding = 10;
             var text_x = 0;
             var text_y = 0;
             var text_w = spec.width;
 
             if (spec.image) {
-                text_w -= spec.image.width + padding;
+                text_w -= spec.image.width + spec.padding;
                 var img_x = spec.width - spec.image.width;
                 if (spec.img_left) {
                     img_x = 0;
-                    text_x = spec.image.width + padding;
+                    text_x = spec.image.width + spec.padding;
                 }
 
                 p.imageMode(p.CORNER);
@@ -127,7 +127,7 @@ var help_state = function (p, prev_state) {
             }
 
             if (spec.title) {
-                p.textSize(16);
+                p.textSize(18);
                 p.textAlign(p.LEFT, p.TOP);
                 p.fill(255);
                 p.text(spec.title, text_x, 0); 
@@ -148,8 +148,9 @@ var help_state = function (p, prev_state) {
         var s1 = new_screen();
         screens.push(s1);
         s1.add_item(item({
-            text: "You've managed to infiltrate the human body's defenses and get your virus particle (or virion) into the bloodstream!", 
+            text: "You've infiltrated the human body's defenses and gotten your virus particle (or virion) into the bloodstream! Here are the cells you may encounter:", 
             height: 45,
+            padding: 1,
             image: image_manager.get_image("tinyvirus_trans.png"),
             img_left: false
         }));
@@ -166,13 +167,13 @@ var help_state = function (p, prev_state) {
         }));
         s1.add_item(item({
             title: "Tolerant Cells",
-            text: "Some cells can be infected, but will not allow you to make any new virions. A virion that infects a tolerant cell is as good as dead.",
+            text: "Some cells can be infected, but will not let your virion replicate. A virion that infects a tolerant cell is as good as dead.",
             image: image_manager.get_image("noninfectable_cell_1n.png"),
             img_left: true
         }));
         s1.add_item(item({
             title: "Resistant Cells",
-            text: "Other cells will not even allow the virion to break through the cell wall. The virion will just be deflected in the opposite direction.",
+            text: "Virions can't break through the cell wall of resistant cells - they will just bounce off in the other direction.",
             height: 60,
             image: image_manager.get_image("wallcell_1.png"),
             img_left: false
@@ -181,17 +182,43 @@ var help_state = function (p, prev_state) {
         var s2 = new_screen();
         screens.push(s2);
         s2.add_item(item({
-            text: "This is me testing a cell.blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahblah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah",
-            image: image_manager.get_image("infectable_cell_2n.png"),
+            text: "Be careful! The immune system will try to destroy your virus. Here are the enemies you should look out for:",
+            height: 30
+        }));
+        s2.add_item(item({
+            title: "Macrophages",
+            text: "The immune system's first line of defense. They will absorb any virion that hits them and then signal a B cell to give it information about your virus.",
+            image: image_manager.get_image("macrophage_1.png"),
+            img_left: true
+        }));
+        s2.add_item(item({
+            title: "B Cells",
+            text: "Once a B cell knows about your virus, it will produce Y-shaped antibodies that will attach to infected cells, marking them for destruction.",
+            image: image_manager.get_image("bcell_normal.png"),
             img_left: false
         }));
         s2.add_item(item({
-            text: "Now there is no image.blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahblah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah",
+            title: "Killer T Cells",
+            text: "If an infected cell is marked with an antibody, the killer T cell will hunt it down and destroy it, along with all the virions inside!",
+            image: image_manager.get_image("tcell_2.png"),
+            img_left: true
         }));
-        s2.add_item(item({
-            text: "This is me testing a cell.blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahblah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah",
-            title: "Cell",
-            image: image_manager.get_image("infectable_cell_2n.png"),
+
+        var s3 = new_screen();
+        screens.push(s3);
+        s3.add_item(item({
+            title: "Mutation",
+            text: "Luckily, in the process of replicating a virus's genetic material, mistakes are often made, causing the virus to mutate! If a mutation occurs, a new strain of the virus will be created. Every time you infect a cell, the chance of a mutation occurring increases.",
+            height: 80
+        }));
+        s3.add_item(item({
+            text: "Macrophages, B cells, T cells, and antibodies are created to attack a specific strain of a virus. So when your virus mutates, the new strain will be safe from the old enemies.",
+            image: image_manager.get_image("macrophage_1.png"),
+            img_left: false
+        }));
+        s3.add_item(item({
+            text: "Each new strain will be represented by a different color. Therefore, an infected cell can only be attacked by enemies of the same color.",
+            image: image_manager.get_image("tcell_2.png"),
             img_left: true
         }));
 
