@@ -71,6 +71,7 @@ var tkiller = function(p, spec) {
 		p.rotate(obj.get_target_angle() + p.PI / 2);
 		p.fill(obj.get_color());
 		p.noStroke();
+        p.rectMode(p.CORNER);
 		p.rect(rectx_offset, recty_offset, rect_width, rect_height);
 		p.image(t_image, 0, 0, obj.get_width(), obj.get_height());
 		p.popMatrix();

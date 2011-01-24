@@ -57,7 +57,7 @@ var rectangle = function (p, spec) {
 			p.image(rect_image, pos.x, pos.y);//, width, height);
 		}
 		else {
-			p.shapeMode(rect_mode);
+			p.rectMode(p.CORNER);
 			
 			p.fill(rect_color);
 			p.noStroke();

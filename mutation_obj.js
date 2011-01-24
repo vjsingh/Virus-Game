@@ -231,6 +231,7 @@ var mutation_obj = function(p, spec) {
         p.fill(get_color());
         p.noStroke();
         var lpos = level_spec.pos;
+        p.rectMode(p.CORNER);
         p.rect(lpos.x-30, lpos.y-10, 70, 20);
 
 		level_status_obj.draw();

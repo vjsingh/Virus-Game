@@ -72,6 +72,7 @@ var game_over_state = function (p, prev_state, spec) {
 
     obj.render = function() {
         p.fill(0, 150);
+        p.rectMode(p.CORNER);
         p.rect(0, 0, p.width, p.height);
 
         p.fill(255);

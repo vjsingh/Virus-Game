@@ -27,7 +27,7 @@ var loading_state = function (p) {
             p.image(background_image, 0, 0, p.width, p.height);
             
             p.fill(p.color(255, 0, 0));
-            p.shapeMode(p.CORNERS);
+            p.rectMode(p.CORNER);
             var percent_done = load_progress / load_max;
             p.rect(bar_left_x, bar_top_y, 
                 (bar_right_x - bar_left_x) * percent_done, bar_height);
