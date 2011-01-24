@@ -238,20 +238,79 @@ var help_state = function (p, prev_state) {
             title: "Macrophages",
             text: "The immune system's first line of defense. They will absorb any virion that hits them and then signal a B cell to give it information about your virus.",
             height: 80,
-            image: image_manager.get_image("macrophage_1.png"),
+            //image: image_manager.get_image("macrophage_1.png"),
+            illustration: {
+                width: 50, height: 70,
+                draw: (function() {
+                    var m = floater(p, {
+                        pos: new p.PVector(25, 35),
+                        width: 50, height: 70,
+                        mutation_info: { color: color1 },
+                    });
+                    m.activate();
+                    return function() { 
+                        m.draw(); 
+                    };
+                }())
+            },
             img_left: true
         }));
         s2.add_item(item({
             title: "B Cells",
             text: "Once a B cell knows about your virus, it will produce Y-shaped antibodies that will attach to infected cells, marking them for destruction.",
             height: 70,
-            image: image_manager.get_image("bcell_normal.png"),
+            //image: image_manager.get_image("bcell_normal.png"),
+            illustration: {
+                width: 60, height: 60,
+                draw: (function() {
+                    var b = b_cell(p, {
+                        pos: new p.PVector(30, 55),
+                        width: 40, height: 40,
+                        mutation_info: { color: color1 },
+                    });
+                    b.set_state("active");
+                    b.set_target_angle(-p.PI/2);
+
+                    var a1 = antibody(p, {
+                        pos: new p.PVector(40, 17),
+                        mutation_info: { color: color1 },
+                    });
+                    a1.set_target_angle(-p.PI/4);
+
+                    var a2 = antibody(p, {
+                        pos: new p.PVector(18, 23),
+                        mutation_info: { color: color1 },
+                    });
+                    a2.set_target_angle(-3*p.PI/4+.2);
+
+                    return function() { 
+                        // make a thicker antibody
+                        b.set_anti_count(10);
+                        b.draw(); 
+                        a1.draw();
+                        a2.draw();
+                    };
+                }())
+            },
             img_left: false
         }));
         s2.add_item(item({
             title: "Killer T Cells",
             text: "If an infected cell is marked with an antibody, the killer T cell will hunt it down and destroy it, along with all the virions inside!",
-            image: image_manager.get_image("tcell_2.png"),
+            //image: image_manager.get_image("tcell_2.png"),
+            illustration: {
+                width: 60, height: 60,
+                draw: (function() {
+                    var tk = tkiller(p, {
+                        pos: new p.PVector(30, 30),
+                        width: 60, height: 60,
+                        mutation_info: { color: color1 },
+                    });
+                    tk.set_state("active");
+
+                    return function() { tk.draw(); };
+                }())
+            },
             img_left: true
         }));
 
