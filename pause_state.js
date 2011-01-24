@@ -25,7 +25,7 @@ var pause_state = function (p, prev_state) {
 		state : function() { return options_state(p, obj); },
 		rect : {
 			pos : new p.PVector(button_x, button_top+button_sep),
-			text: "Options"
+			text: "Settings"
 		}
 	});
 
@@ -33,7 +33,7 @@ var pause_state = function (p, prev_state) {
 		state : function() { return help_state(p, obj); },	
 		rect : {
 			pos : new p.PVector(button_x, button_top+2*button_sep),
-			text: "Help"
+			text: "Instructions"
 		}
 	});
     
