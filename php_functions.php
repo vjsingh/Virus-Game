@@ -6,7 +6,8 @@ function data_uri($file)
 { 
   $contents = file_get_contents($file);
   $base64   = base64_encode($contents);
-  return ('data:audio/ogg;base64,' . $base64);
+  //return ('data:audio/ogg;base64,' . $base64);
+  return ('data:application/ogg;base64,' . $base64);
 }
 
 ?>

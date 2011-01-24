@@ -248,7 +248,7 @@ var mutation_obj = function(p, spec) {
 			flash_bar();
 
 	    // Play sounds
-	    play_sound("level_up");
+	    sounds.play_sound("level_up");
         }
 	};
 
