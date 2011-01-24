@@ -72,7 +72,7 @@ var floater = function(p, spec) {
 			p.shapeMode(obj.mode);
 			p.fill(obj.get_color());
 			p.noStroke();
-			p.ellipse(pos.x + w / 8, pos.y - w / 8 + 1, 15, 15);
+			p.ellipse(pos.x + w / 8, pos.y - w / 8 + 1, w/2, w/2);
 			p.image(macrophage_active, pos.x, pos.y, w, h);
 		}
 		else {

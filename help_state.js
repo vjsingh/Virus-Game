@@ -166,6 +166,7 @@ var help_state = function (p, prev_state) {
     var init_screens = (function() {
         var color1 = 0xffffff00;
         var color2 = 0xff7f2aff;
+        var cimg = image_manager.get_image("infectable_cell_2n.png");
 
         var s1 = new_screen();
         screens.push(s1);
@@ -190,7 +191,7 @@ var help_state = function (p, prev_state) {
         s1.add_item(item({
             title: "Infectable Cells",
             text: "Hit an infectable cell with a virion to infect it. After penetrating the cell wall, the virion will use the cell's machinery to make copies of itself.",
-            image: image_manager.get_image("infectable_cell_2n.png"),
+            image: cimg,
             img_left: true
         }));
         s1.add_item(item({
@@ -204,6 +205,7 @@ var help_state = function (p, prev_state) {
                         width: 30, height: 30,
                         mutation_info: { color: color1 },
                     });
+                    c.set_image(cimg);
                     c.set_state("active");
                     return function() {
                         c.draw();
@@ -236,19 +238,79 @@ var help_state = function (p, prev_state) {
             title: "Macrophages",
             text: "The immune system's first line of defense. They will absorb any virion that hits them and then signal a B cell to give it information about your virus.",
             height: 80,
-            image: image_manager.get_image("macrophage_1.png"),
+            //image: image_manager.get_image("macrophage_1.png"),
+            illustration: {
+                width: 50, height: 70,
+                draw: (function() {
+                    var m = floater(p, {
+                        pos: new p.PVector(25, 35),
+                        width: 50, height: 70,
+                        mutation_info: { color: color1 },
+                    });
+                    m.activate();
+                    return function() { 
+                        m.draw(); 
+                    };
+                }())
+            },
             img_left: true
         }));
         s2.add_item(item({
             title: "B Cells",
             text: "Once a B cell knows about your virus, it will produce Y-shaped antibodies that will attach to infected cells, marking them for destruction.",
-            image: image_manager.get_image("bcell_normal.png"),
+            height: 70,
+            //image: image_manager.get_image("bcell_normal.png"),
+            illustration: {
+                width: 60, height: 60,
+                draw: (function() {
+                    var b = b_cell(p, {
+                        pos: new p.PVector(30, 55),
+                        width: 40, height: 40,
+                        mutation_info: { color: color1 },
+                    });
+                    b.set_state("active");
+                    b.set_target_angle(-p.PI/2);
+
+                    var a1 = antibody(p, {
+                        pos: new p.PVector(40, 17),
+                        mutation_info: { color: color1 },
+                    });
+                    a1.set_target_angle(-p.PI/4);
+
+                    var a2 = antibody(p, {
+                        pos: new p.PVector(18, 23),
+                        mutation_info: { color: color1 },
+                    });
+                    a2.set_target_angle(-3*p.PI/4+.2);
+
+                    return function() { 
+                        // make a thicker antibody
+                        b.set_anti_count(10);
+                        b.draw(); 
+                        a1.draw();
+                        a2.draw();
+                    };
+                }())
+            },
             img_left: false
         }));
         s2.add_item(item({
             title: "Killer T Cells",
             text: "If an infected cell is marked with an antibody, the killer T cell will hunt it down and destroy it, along with all the virions inside!",
-            image: image_manager.get_image("tcell_2.png"),
+            //image: image_manager.get_image("tcell_2.png"),
+            illustration: {
+                width: 60, height: 60,
+                draw: (function() {
+                    var tk = tkiller(p, {
+                        pos: new p.PVector(30, 30),
+                        width: 60, height: 60,
+                        mutation_info: { color: color1 },
+                    });
+                    tk.set_state("active");
+
+                    return function() { tk.draw(); };
+                }())
+            },
             img_left: true
         }));
 
@@ -257,16 +319,142 @@ var help_state = function (p, prev_state) {
         s3.add_item(item({
             title: "Mutation",
             text: "Luckily, in the process of replicating a virus's genetic material, mistakes are often made, causing the virus to mutate! If a mutation occurs, a new strain of the virus will be created. Every time you infect a cell, the chance of a mutation occurring increases.",
-            height: 80
-        }));
-        s3.add_item(item({
-            text: "Macrophages, B cells, T cells, and antibodies are created to attack a specific strain of a virus. So when your virus mutates, the new strain will be safe from the old enemies.",
-            image: image_manager.get_image("macrophage_1.png"),
+            height: 120,
+            padding: 15,
+            illustration: {
+                width: 90, height: 90,
+                draw: (function() {
+                    var c1 = cell(p, {
+                        pos: new p.PVector(10, 20),
+                        width: 30, height: 30,
+                        mutation_info: { color: color1 }
+                    });
+                    c1.set_image(cimg);
+                    c1.set_state("infected");
+                    var c2 = cell(p, {
+                        pos: new p.PVector(70, 80),
+                        width: 30, height: 30,
+                        mutation_info: { color: color2 }
+                    });
+                    c2.set_image(cimg);
+                    c2.set_state("infected");
+
+                    return function() {
+                        c1.draw();
+                        c2.draw();
+                        p.stroke(255);
+                        p.strokeWeight(3);
+                        p.line(30, 40, 50, 60);
+                        p.line(50, 60, 50, 50);
+                        p.line(50, 60, 40, 60);
+                    };
+                }()),
+            },
             img_left: false
         }));
         s3.add_item(item({
+            text: "Macrophages, B cells, T cells, and antibodies are created to attack a specific strain of a virus. So when your virus mutates, the new strain will be safe from the old enemies.",
+            //image: image_manager.get_image("macrophage_1.png"),
+            padding: 15,
+            illustration: {
+                width: 60, height: 60,
+                draw: (function() {
+                    var tk = tkiller(p, {
+                        pos: new p.PVector(50, 10),
+                        mutation_info: { color: color1 },
+                    });
+                    tk.set_target_angle(-p.PI/4);
+
+                    var c = cell(p, {
+                        pos: new p.PVector(10, 40),
+                        width: 30, height: 30,
+                        mutation_info: { color: color2 }
+                    });
+                    c.set_image(cimg);
+                    c.set_state("infected");
+
+                    var a = antibody(p, {
+                        pos: new p.PVector(20, 15),
+                        mutation_info: { color: color2 }
+                    });
+                    a.set_target(c);
+                    a.update();
+
+                    return function() {
+                        tk.draw();
+                        c.draw();
+                        a.draw();
+                    };
+                }()),
+            },
+            img_left: true
+        }));
+        s3.add_item(item({
             text: "Each new strain will be represented by a different color. Therefore, an infected cell can only be attacked by enemies of the same color.",
-            image: image_manager.get_image("tcell_2.png"),
+            //image: image_manager.get_image("tcell_2.png"),
+            //padding: 15,
+            illustration: {
+                width: 60, height: 50,
+                draw: (function() {
+                    var tk = tkiller(p, {
+                        pos: new p.PVector(50, 12),
+                        mutation_info: { color: color2 },
+                    });
+                    //tk.set_target_angle(p.PI/4);
+
+                    var c = cell(p, {
+                        pos: new p.PVector(15, 40),
+                        width: 30, height: 30,
+                        mutation_info: { color: color2 }
+                    });
+                    c.set_image(cimg);
+                    c.set_state("infected");
+
+                    tk.set_target(c);
+                    tk.update();
+
+                    var a = antibody(p, {
+                        pos: new p.PVector(5, 15),
+                        mutation_info: { color: color2 }
+                    });
+                    a.set_target(c);
+                    a.update();
+
+                    return function() {
+                        tk.draw();
+                        c.draw();
+                        a.draw();
+                    };
+                }()),
+            },
+            img_left: false
+        }));
+        s3.add_item(item({
+            title: "Multiplier Particles",
+            text: "Higher mutation levels will give you more points, as will collecting multiplier particles. When you infect a cell, the amount of points you get is multiplied by your multiplier and level.",
+            illustration: {
+                width: 50, height: 90,
+                draw: (function() {
+                    var poss = [
+                        new p.PVector(10, 10),
+                        new p.PVector(27, 25),
+                        new p.PVector(20, 45),
+                        new p.PVector(35, 50),
+                        //new p.PVector(23, 30),
+                        new p.PVector(40, 12)
+                    ];
+                    var ms = [];
+                    for_each(poss,
+                        function(pos) {
+                            ms.push(multiplier(p, { pos: pos }));
+                        }
+                    );
+
+                    return function() {
+                        for_each(ms, function(m) { m.draw(); });
+                    };
+                }()),
+            },
             img_left: true
         }));
 

@@ -138,6 +138,11 @@ var b_cell = function(p, spec) {
 		var counter = 0;
 		var c_max = 30;
 		var ascending = true;
+
+        // for illustrations
+        obj.set_anti_count = function(c) {
+            counter = c;
+        };
 		
 		return function(){
 		

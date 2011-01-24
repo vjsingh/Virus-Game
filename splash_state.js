@@ -39,7 +39,7 @@ var splash_state = function (p) {
 		rect :  {
 			pos : new p.PVector(button_x, button_top+button_sep),
             style : splash_style,
-			text : "Options"
+			text : "Settings"
 		}
 	});	
 		
