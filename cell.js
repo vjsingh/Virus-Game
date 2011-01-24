@@ -124,6 +124,15 @@ var cell = function(p, spec) {
 
     };
 
+    // to be used in illustration only
+    obj.set_image = function(i) {
+        cell_image = i;
+    };
+
+    obj.get_image = function() {
+        return cell_image;
+    };
+
     obj.is_dead = function() {
         return state === "dead";
     };
