@@ -333,18 +333,18 @@ var help_state = function (p, prev_state) {
         s3.add_item(item({
             text: "Each new strain will be represented by a different color. Therefore, an infected cell can only be attacked by enemies of the same color.",
             //image: image_manager.get_image("tcell_2.png"),
-            padding: 15,
+            //padding: 15,
             illustration: {
-                width: 60, height: 60,
+                width: 60, height: 50,
                 draw: (function() {
                     var tk = tkiller(p, {
-                        pos: new p.PVector(45, 12),
+                        pos: new p.PVector(50, 12),
                         mutation_info: { color: color2 },
                     });
                     //tk.set_target_angle(p.PI/4);
 
                     var c = cell(p, {
-                        pos: new p.PVector(10, 40),
+                        pos: new p.PVector(15, 40),
                         width: 30, height: 30,
                         mutation_info: { color: color2 }
                     });
@@ -355,7 +355,7 @@ var help_state = function (p, prev_state) {
                     tk.update();
 
                     var a = antibody(p, {
-                        pos: new p.PVector(0, 15),
+                        pos: new p.PVector(5, 15),
                         mutation_info: { color: color2 }
                     });
                     a.set_target(c);
@@ -369,6 +369,34 @@ var help_state = function (p, prev_state) {
                 }()),
             },
             img_left: false
+        }));
+        s3.add_item(item({
+            title: "Multiplier Particles",
+            text: "Higher mutation levels will give you more points, as will collecting multiplier particles. When you infect a cell, the amount of points you get is multiplied by your multiplier and level.",
+            illustration: {
+                width: 50, height: 90,
+                draw: (function() {
+                    var poss = [
+                        new p.PVector(10, 10),
+                        new p.PVector(27, 25),
+                        new p.PVector(20, 45),
+                        new p.PVector(35, 50),
+                        //new p.PVector(23, 30),
+                        new p.PVector(40, 12)
+                    ];
+                    var ms = [];
+                    for_each(poss,
+                        function(pos) {
+                            ms.push(multiplier(p, { pos: pos }));
+                        }
+                    );
+
+                    return function() {
+                        for_each(ms, function(m) { m.draw(); });
+                    };
+                }()),
+            },
+            img_left: true
         }));
 
 
