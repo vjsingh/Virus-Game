@@ -343,7 +343,7 @@ var help_state = function (p, prev_state) {
                         c1.draw();
                         c2.draw();
                         p.stroke(255);
-                        p.strokeWeight(4);
+                        p.strokeWeight(3);
                         p.line(30, 40, 50, 60);
                         p.line(50, 60, 50, 50);
                         p.line(50, 60, 40, 60);
