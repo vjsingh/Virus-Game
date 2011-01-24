@@ -69,7 +69,7 @@ var in_game_state = function (p, previous_state) {
     
     var pause_button = button(p, {
         state: function() { 
-            paused = true;
+			do_pause();
             console.log("pause button");
             return pause_state(p, obj);
         },
@@ -1551,10 +1551,8 @@ var in_game_state = function (p, previous_state) {
 		})
     };
 	
-	var go_to_pause_state = function() {
+	var do_pause = function() {
 		paused = true;
-		var p_state = pause_state(p, obj);
-		obj.set_next_state(p_state);
 		sounds.pause_background_music();
 	}
 	
@@ -1572,7 +1570,9 @@ var in_game_state = function (p, previous_state) {
 			}
 		}
 		else if (k === 112 || p.keyCode === 13) { //p, enter
-			go_to_pause_state();
+			do_pause();
+			var p_state = pause_state(p, obj);
+			obj.set_next_state(p_state);
 		}
         /*
 		else if (k === 104) { //h
