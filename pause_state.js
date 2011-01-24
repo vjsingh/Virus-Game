@@ -61,6 +61,7 @@ var pause_state = function (p, prev_state) {
     obj.render = function() {
         p.noStroke();
         p.fill(0, 150);
+        p.rectMode(p.CORNER);
         p.rect(0, 0, p.width, p.height);
 
         p.fill(255);

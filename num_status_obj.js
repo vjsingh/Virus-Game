@@ -79,6 +79,7 @@ var num_status_obj = function(p, spec) {
 			var leftx = pos.x + (txt.length * 4);
 			var rect_width = (number / max) * max_width;
 			rect_width = rect_width > max_width ? max_width : rect_width;
+            p.rectMode(p.CORNER);
 			p.rect(leftx, topy, rect_width, height);
 			
 			p.fill(255)

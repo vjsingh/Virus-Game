@@ -41,6 +41,7 @@ var notification = function(p, spec) {
 
         // draw a box behind it
         p.fill(box_color, text_alpha);
+        p.rectMode(p.CORNER)
         p.rect(x_pos-w/2-5, y_pos-p.textAscent(), w+10, p.textAscent()*2);
 
 		p.fill(p.color(0, 0, 0), text_alpha);

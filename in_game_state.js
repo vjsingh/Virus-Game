@@ -91,6 +91,7 @@ var in_game_state = function (p, previous_state) {
         p.ellipse(w/2, h/2, w, h);
         p.noStroke();
         p.fill(255);
+        p.rectMode(p.CORNER);
         p.rect(w/4, h/5, w/5, 3*h/5);
         p.rect(w-w/4-w/5, h/5, w/5, 3*h/5);
         p.popMatrix();
@@ -1537,6 +1538,7 @@ var in_game_state = function (p, previous_state) {
         // draw a rect under status labels
         p.noStroke();
         p.fill(0);//, 200);
+        p.rectMode(p.CORNER);
         p.rect(0, 0, p.width, status_bar_height);
 		//Draw the status labels
 		for_each(all_status_objs, function(o) {o.draw();});
