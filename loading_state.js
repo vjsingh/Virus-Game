@@ -54,6 +54,9 @@ var loading_state = function (p) {
 	var load_fun = function() {
 		image_manager.preload_images();
         load_max += image_manager.num_images();
+		
+		// Load sounds, not taken into account in progress bar
+		sounds.load_sounds();
 	}();
 
     // --- public methods ---
@@ -65,7 +68,9 @@ var loading_state = function (p) {
     obj.update = function() {
         // for now just base progress on pending amount of images
         load_progress = image_manager.num_loaded();
-		if (load_progress === load_max && image_manager.is_done_preloading()){
+		if (load_progress === load_max && 
+				image_manager.is_done_preloading() &&
+				sounds.sounds_loaded()){
             // init all image objects
             image_manager.init_images(p);
             loading_finished();

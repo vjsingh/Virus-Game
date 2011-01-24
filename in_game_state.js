@@ -1373,7 +1373,7 @@ var in_game_state = function (p, previous_state) {
 						score : score.get_num(),
 						mutation_level : mutation.get_level()
 					});
-					sounds.stop_background_music();
+					sounds.pause_background_music();
 					obj.set_next_state(go_state);
 
                     // stop the time and stuff
@@ -1551,6 +1551,13 @@ var in_game_state = function (p, previous_state) {
 		})
     };
 	
+	var go_to_pause_state = function() {
+		paused = true;
+		var p_state = pause_state(p, obj);
+		obj.set_next_state(p_state);
+		sounds.pause_background_music();
+	}
+	
    	var do_fire = function() {
         if (active_cell !== null) {
             var particles = active_cell.fire();
@@ -1565,9 +1572,7 @@ var in_game_state = function (p, previous_state) {
 			}
 		}
 		else if (k === 112 || p.keyCode === 13) { //p, enter
-			paused = true;
-			var p_state = pause_state(p, obj);
-			obj.set_next_state(p_state);
+			go_to_pause_state();
 		}
         /*
 		else if (k === 104) { //h
@@ -1614,6 +1619,9 @@ var in_game_state = function (p, previous_state) {
 
 	obj.resume = function() {
 		paused = false;
+		if (g.music) {
+			sounds.resume_background_music();
+		}
 	};
     
     //Adds a game_object to the game world

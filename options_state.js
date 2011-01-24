@@ -36,6 +36,7 @@ var options_state = function (p, prev_state) {
 		click_fun : function() {
             // toggle the flag
             g.toggle_music();
+			/*
             // if not coming from the splash screen
             if (prev_state.get_type() !== "splash") {
                 // toggle the actual music
@@ -46,6 +47,7 @@ var options_state = function (p, prev_state) {
                     sounds.stop_background_music();
                 }
             }
+            */
         },
 		global_var : "music",
 		rect : {

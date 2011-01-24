@@ -10,8 +10,24 @@ var sound_manager = function() {
         audiochannels = new Array();
         for (a=0;a<channel_max;a++) {									// prepare the channels
             audiochannels[a] = new Array();
-            audiochannels[a]['channel'] = new Audio();						// create a new audio object
+            audiochannels[a]['channel'] = //new Audio();						// create a new audio object
+            	$("#jquery_jplayer_"+a);
             audiochannels[a]['finished'] = -1;							// expected end time for this channel
+            
+			
+        	// call jPlayers constructor for each div
+			$("#jquery_jplayer_"+a).jPlayer( {
+			ready: function () {
+					// Do nothing
+					/*
+			          $(this).jPlayer("setMedia", {
+			            : "sounds/heart_loop1.mp3"
+			          });
+			          //$(this).jPlayer("play");
+					*/
+		        },
+				supplied : "oga"
+			});
         }
         var to_return = function(s){
             if (g.sound_fx) {
@@ -20,15 +36,15 @@ var sound_manager = function() {
                     if (audiochannels[a]['finished'] < thistime.getTime()) { // is this channel finished?
                         audiochannels[a]['finished'] = thistime.getTime() + document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
                         // Audio is encoded as base64
-                        
-                        // SO IT WILL WORK LOCALLY
-                        // TODO: take out
-            //            if (on_server) {
-                            audiochannels[a]['channel'].src = g_soundDataMap[s]; //document.getElementById(s).src;
-                            audiochannels[a]['channel'].load();
-                            audiochannels[a]['channel'].play();
-             //           }
-                        break;
+						/*
+                        audiochannels[a]['channel'].src = g_soundDataMap[s]; //document.getElementById(s).src;
+                        audiochannels[a]['channel'].load();
+                        audiochannels[a]['channel'].play();
+                        */
+						var jplayer_instance = audiochannels[a]['channel'];
+						jplayer_instance.jPlayer("setMedia", {oga : g_soundDataMap[s]});
+						jplayer_instance.jPlayer("play");                    
+						break;
                     }
                 }
             }
@@ -36,9 +52,12 @@ var sound_manager = function() {
         return to_return;
     }());
 
-    var background_music = new Audio();
+    var background_music = null;
+    var all_bg_music = [];
 
+	// Plays a random loop from the beginning
     obj.play_background_music = (function() {
+		/*
         // Load all the audio loops
         var loop1 = new Audio();
         loop1.src = "sounds/heart_loop1.mp3";
@@ -46,21 +65,85 @@ var sound_manager = function() {
         loop2.src = "sounds/sinister.mp3";
         var loops = [loop1, loop2];
         for_each(loops, function(l) {l.load(); l.loop = true;});
+        */
         
         return function() {
-            obj.stop_background_music();
-            background_music = loops[Math.floor(Math.random() * loops.length)];
+            //obj.stop_background_music();
+            background_music = all_bg_music[Math.floor(Math.random() * all_bg_music.length)];
             //background_music.load(); //already loaded
-            background_music.play();
+			console.log("Playing bg music");
+            background_music.jPlayer("play", 0);//background_music.play();
         };
     }());
+	
+	obj.resume_background_music = function() {
+		background_music.jPlayer("play");
+	}
 
-    obj.stop_background_music = function() {
-        background_music.pause();
+    obj.pause_background_music = function() {
+		console.log("Pausing bg music");
+        background_music.jPlayer("pause");
     };
+	
+	var num_bg_music = 2;
+	obj.load_sounds = function() {
+		// init all bg music
+		var all_supplied = "mp3";
+		$("#jquery_jplayer_bg_0").jPlayer( {
+		ready: function () {
+	          $(this).jPlayer("setMedia", {
+		           mp3 : "sounds/heart_loop1.mp3"
+		          });
+				bg_music_loaded();
+	        },
+			supplied : all_supplied
+		});
+		$("#jquery_jplayer_bg_1").jPlayer( {
+		ready: function () {
+	          $(this).jPlayer("setMedia", {
+		           mp3 : "sounds/sinister.mp3"
+		          });
+				bg_music_loaded();
+	        },
+			supplied : all_supplied
+		});
+		for (var i = 0; i < num_bg_music; i++) {
+			all_bg_music.push($("#jquery_jplayer_bg_"+i));
+		}
+	}
 
+	var num_loaded = 0;
+	var max_loaded = num_bg_music;
+	var bg_music_loaded = function() {
+		num_loaded++;
+	}
+	
+	obj.sounds_loaded = function() {
+		return num_loaded === max_loaded;
+	}
     return obj;
 };
 
 // make a global object
 var sounds = sound_manager();
+
+/*
+var jplayer = $("#jquery_jplayer_1").jPlayer( {
+	ready: function () {
+          $(this).jPlayer("setMedia", {
+            oga : g_soundDataMap["kill"]
+			//mp3 : "sounds/heart_loop1.mp3"
+          });
+          $(this).jPlayer("play");
+          $(this).jPlayer("play");
+          $(this).jPlayer("play");
+          $(this).jPlayer("play");
+		  //asdf_play();
+        },
+	supplied : "oga"
+});
+//$("#jquery_jplayer_1").jPlayer("setMedia", {mp3 : "sounds/heart_loop1.mp3"});
+var asdf_play = function(){
+	$("#jquery_jplayer_1").jPlayer("play");
+};
+*/
