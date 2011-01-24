@@ -20,6 +20,20 @@ var g_soundDataMap =
    "kill"		: "<?php echo data_uri('sounds/kill.ogg');?>",
 };
 
+/*
+Not working
+var dynamic_div_tag = null;
+// Jplayer instances
+<?php
+for ($i = 0; $i < 1; $i ++) {
+ 	echo 'dynamic_div_tag = document.createElement("div");'."\n";
+ 	echo 'dynamic_div_tag.setAttribute("id", "jquery_jplayer_1");'."\n";
+ 	echo 'dynamic_div_tag.setAttribute("class", "jp-jplayer");'."\n";
+} 
+
+
+?>
+*/
 
 //IMAGES
 
