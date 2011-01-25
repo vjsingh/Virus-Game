@@ -121,9 +121,10 @@ var sound_manager = function() {
 						bg_music_loaded();
 		        },
 				supplied : all_supplied
-		}).onSoundComplete(function() { // loop
+			}).onSoundComplete(function() { // loop
 			$(this).player(0);
-		});
+			});
+		};
 		init_bg_jplayer(0, "heart_loop1.mp3");
 		init_bg_jplayer(1, "sinister.mp3");
 			
