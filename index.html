@@ -115,6 +115,7 @@
 </div>
 
 <!-- Facebook Integration -->
+<!-- This initialized the SDK so we can use it -->
   <div id="fb-root"></div>
   <!--<script src="http://connect.facebook.net/en_US/all.js">
   -->
@@ -127,58 +128,59 @@
      });
 
 </script>	  
-<div> "Login with Facebook to track your high scores!" </div>
+<div> Login with Facebook to track your high scores! </div>
+
+<!-- FB Login Button -->
   <fb:login-button
   		redirect-uri=window.location>
      Login with Facebook
   </fb:login-button>
-  <!--
-  <script type="text/javascript" src="php_functions.php"></script>
-  -->
- <script>
- 	// If user is already logged in, then refresh to get
- 	// the auth token
-    if(window.location.hash.length == 0)
-    {
-        var url = "https://www.facebook.com/dialog/oauth?client_id= \
-                 179028108782663&redirect_uri=" + window.location +
-                 "&response_type=token";
-        //window.open(url);
-        //window.location = url;
-         FB.getLoginStatus(function(response) {
-	 	if (response.session) { //logged in and known
-			window.location=url;
-		}
-	 })
+  
+<script>
+// If user is already logged in, then refresh to get
+// the auth token
+if(window.location.hash.length == 0)
+{
+    var url = "https://www.facebook.com/dialog/oauth?client_id= \
+             179028108782663&redirect_uri=" + window.location +
+             "&response_type=token";
+    //window.open(url);
+    //window.location = url;
+     FB.getLoginStatus(function(response) {
+ 	if (response.session) { //logged in and known
+		window.location=url;
+	}
+ })
 
-    } else {
-        accessToken = window.location.hash.substring(1);
-        graphUrl = "https://graph.facebook.com/me?" + accessToken +
-                    "&callback=got_user"
+} else { // access token in URL
+    accessToken = window.location.hash.substring(1);
+    graphUrl = "https://graph.facebook.com/me?" + accessToken +
+                "&callback=got_user"
 
-        //use JSON-P to call the graph
-        var script = document.createElement("script");
-        script.src = graphUrl;
-        document.body.appendChild(script);  
-    }
+    //use JSON-P to call the graph
+    var script = document.createElement("script");
+    script.src = graphUrl;
+    document.body.appendChild(script);  
+}
 
-	//initialize global user variables to null
-	g_user_id = null;
-	g_user_name = null;
+//initialize global user variables to null
+g_user_id = null;
+g_user_name = null;
+
+// This 'user' object has all the info from fb
+function got_user(user) {
+    //userName.innerText = user.name;
+    //console.log("user id: " + user.id);
+    
+	//Global var for Unique User ID
+	g_user_id = user.id;
+	g_user_name = user.name;
 	
-	// This 'user' object has all the info from fb
-    function got_user(user) {
-        //userName.innerText = user.name;
-        //console.log("user id: " + user.id);
-		//Global var for Unique User ID
-		g_user_id = user.id;
-		g_user_name = user.name;
-		
-		// do scores after setting name and id
-		scores.do_scores();
-    }
-    </script>
-    <p id="userName"></p>
+	// do scores after setting name and id
+scores.do_scores();
+}
+</script>
+<p id="userName"></p>
     
     
 

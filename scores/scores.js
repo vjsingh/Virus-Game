@@ -26,7 +26,8 @@ var make_scores = function(){
 	};
 	
 	// interprets json and displays it
-	// Passsing it a head returns the actual function
+	// Passing it a header returns the actual function
+	// Must use this style so long as get_scores is async
 	var display_scores = function(header) {
 		return function(data){
 			$("#scores").append("<div>" + header + "</div>");
