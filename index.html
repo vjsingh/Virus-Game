@@ -164,6 +164,10 @@
         console.log(accessToken);
     }
 
+	//initialize global user variables to null
+	g_user_id = null;
+	g_user_name = null;
+	
 	// This 'user' object has all the info from fb
     function got_user(user) {
         //userName.innerText = user.name;
@@ -174,3 +178,12 @@
     }
     </script>
     <p id="userName"></p>
+    
+    
+
+<!-- Score -->
+<div id="scores">
+</div><script>
+    scores.do_scores();
+</script>
+

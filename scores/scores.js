@@ -4,21 +4,21 @@ var make_scores = function(){
 	// async gets scores and feeds to callback
 	var get_scores = function(callback){
 		// ajax request to get scores
-		if (true) { //(g_user_id) {
-			$.post("get_scores.php", {
+		if (g_user_id) {
+			$.post("scores/get_scores.php", {
 				num: 10,
-				uid : 1092540269 //g_user_id
+				uid :  g_user_id
 			}, callback);
 		}
 		else {
-			$.post("get_scores.php", {
+			$.post("scores/get_scores.php", {
 				num: 10
 			}, callback);
 		}
 	};
 	
 	var get_user_scores = function(callback) {
-		$.post("get_scores.php", {
+		$.post("scores/get_scores.php", {
 			num : 10
 		}, callback);
 	};
@@ -41,7 +41,6 @@ var make_scores = function(){
 	
 	// gets and displays scores
 	obj.do_scores = function(){
-		//console.log("g_user_id: " + g_user_id);
 		get_scores(display_scores);
 	};
 	
@@ -62,7 +61,6 @@ var make_scores = function(){
 		 var level = form.elements[1].value;
 		 var userid = form.elements[2].value;
 		 */
-            console.log("name in score.js: " + name);
 		var score_obj = {
 			/*
 			 score: parseInt(score),
