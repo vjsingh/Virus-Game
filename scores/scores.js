@@ -7,7 +7,7 @@ var make_scores = function(){
 		if (g_user_id) {
 			$.post("get_scores.php", {
 				num: 10,
-				uid : g_user_id
+				uid : 1092540269 //g_user_id
 			}, callback);
 		}
 		else {
@@ -41,7 +41,7 @@ var make_scores = function(){
 	
 	// gets and displays scores
 	obj.do_scores = function(){
-		console.log("g_user_id: " + g_user_id);
+		//console.log("g_user_id: " + g_user_id);
 		get_scores(display_scores);
 	};
 	
