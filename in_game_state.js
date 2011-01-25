@@ -1379,8 +1379,9 @@ var in_game_state = function (p, previous_state) {
                     // stop the time and stuff
                     paused = true;
 					
+					// Add to the high score table
+					// If fb user name and id are set
 					if (g_user_name && g_user_id) {
-						// Add to the high score table
 						scores.submit_score(score.get_num(), mutation.get_level(), g_user_name, g_user_id);
 						// Update the high score table
 						scores.do_scores();
