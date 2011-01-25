@@ -3,6 +3,7 @@
 // based on http://www.w3schools.com/PHP/php_ajax_database.asp
 
 $num = $_POST["num"];
+$uid = $_POST["uid"];
 // default num to return
 $num = $num ? $num : 10;
 
@@ -11,8 +12,14 @@ $con = mysql_connect('localhost', 'virion', 'virion1')
 mysql_select_db('high_scores', $con)
 	or die('Could not select database. ' . mysql_error());
 
-$query = "SELECT * FROM scores ORDER BY score DESC LIMIT 0, $num";
-
+// Get all from user
+if ($uid) {
+	$query = "SELECT * FROM scores WHERE id = "'".$uid."'" ORDER BY score DESC LIMIT 0, $num";
+}
+// Otherwise get global
+else {
+	$query = "SELECT * FROM scores ORDER BY score DESC LIMIT 0, $num";
+}
 $result = mysql_query($query);
 
 $to_return = array(); 
