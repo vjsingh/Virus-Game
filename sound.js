@@ -91,7 +91,7 @@ var sound_manager = function() {
         
         return function() {
             //obj.stop_background_music();
-            background_music = all_bg_music[Math.floor(Math.random() * all_bg_music.length)];
+            background_music = random_from(all_bg_music);
             //background_music.load(); //already loaded
 			console.log("Playing bg music");
             background_music.jPlayer("play", 0);//background_music.play();
@@ -126,19 +126,23 @@ var sound_manager = function() {
 				supplied : all_supplied
 			});
 		};
+        console.log("loading heart loop");
 		init_bg_jplayer(0, "heart_loop1.mp3");
+        console.log("loaded heart loop");
+        console.log("loading sinister");
 		init_bg_jplayer(1, "sinister.mp3");
-			
+        console.log("loaded sinister");
+
 		for (var i = 0; i < num_bg_music; i++) {
 			all_bg_music.push($("#jquery_jplayer_bg_"+i));
 		}
-	}
+	};
 
 	var num_loaded = 0;
 	var max_loaded = num_bg_music;
 	var bg_music_loaded = function() {
 		num_loaded++;
-	}
+	};
 	
 	obj.sounds_loaded = function() {
 		//console.log(num_loaded);
@@ -149,6 +153,18 @@ var sound_manager = function() {
 
 // make a global object
 var sounds = sound_manager();
+/*
+// to debug without sounds, use this object
+var sounds = {
+    sounds_loaded: function() { return true; },
+    play_sound: function() {},
+    play_background_music: function() {},
+    pause_background_music: function() {},
+    resume_background_music: function() {},
+    load_sounds: function() {},
+};
+*/
+
 
 /*
 var jplayer = $("#jquery_jplayer_1").jPlayer( {
