@@ -4,17 +4,19 @@ var make_scores = function(){
 	// async gets scores and feeds to callback
 	var get_scores = function(callback){
 		// ajax request to get scores
+		
+		// Personal high scores
 		if (g_user_id) {
-			$("#scores").append("<div>" + "Your Top High Scores" + "</div>");
 			$.post("scores/get_scores.php", {
 				num: 10,
 				uid :  g_user_id
-			}, callback);
+			}, callback("Your Top High Scores"));
 		}
-		$("#scores").append("<div>" + "Global Top High Scores" + "</div>");
+		
+		// Global High Scores
 		$.post("scores/get_scores.php", {
 			num: 10
-		}, callback);
+		}, callback("Global Top High Scores"));
 	};
 	
 	var get_user_scores = function(callback) {
@@ -24,23 +26,27 @@ var make_scores = function(){
 	};
 	
 	// interprets json and displays it
-	var display_scores = function(data){
-		$("#scores").empty();
-		var scores = jQuery.parseJSON(data);
-		//console.log(scores);
-		// scores is an array of row objects
-		for_each(scores, function(row){
-			// convert each row to an array for now
-			var rowarr = [];
-			for_each(keys(row), function(i){
-				rowarr.push(row[i]);
+	// Passsing it a head returns the actual function
+	var display_scores = function(header) {
+		return function(data){
+			$("#scores").append("<div>" + header + "</div>");
+			var scores = jQuery.parseJSON(data);
+			//console.log(scores);
+			// scores is an array of row objects
+			for_each(scores, function(row){
+				// convert each row to an array for now
+				var rowarr = [];
+				for_each(keys(row), function(i){
+					rowarr.push(row[i]);
+				});
+				$("#scores").append("<div>" + rowarr.join(", ") + "</div>");
 			});
-			$("#scores").append("<div>" + rowarr.join(", ") + "</div>");
-		});
+		}
 	};
 	
 	// gets and displays scores
 	obj.do_scores = function(){
+		$("#scores").empty();
 		get_scores(display_scores);
 	};
 	

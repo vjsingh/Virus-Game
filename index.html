@@ -172,6 +172,9 @@
 		//Global var for Unique User ID
 		g_user_id = user.id;
 		g_user_name = user.name;
+		
+		// do scores after setting name and id
+		scores.do_scores();
     }
     </script>
     <p id="userName"></p>
@@ -180,7 +183,8 @@
 
 <!-- Score -->
 <div id="scores">
-</div><script>
+</div>
+<script>
     scores.do_scores();
 </script>
 
