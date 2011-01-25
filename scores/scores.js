@@ -62,6 +62,7 @@ var make_scores = function(){
 		 var level = form.elements[1].value;
 		 var userid = form.elements[2].value;
 		 */
+            console.log("name in score.js: " + name);
 		var score_obj = {
 			/*
 			 score: parseInt(score),
@@ -77,7 +78,7 @@ var make_scores = function(){
 		
 		post_score(score_obj, function(data){
 			console.log(data);
-			obj.do_scores;
+			//obj.do_scores();
 		});
 	};
 	

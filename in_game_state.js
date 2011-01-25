@@ -1379,6 +1379,7 @@ var in_game_state = function (p, previous_state) {
                     // stop the time and stuff
                     paused = true;
 					
+                                        console.log("name : " + g_user_name);
 					// Add to the high score table
 					scores.submit_score(score.get_num(), 
 						mutation.get_level(),

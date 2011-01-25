@@ -4,7 +4,7 @@
 
 $score = $_POST['score'];
 $level = $_POST['level'];
-$name = $_POST['userid'];
+$name = $_POST['name'];
 $userid = $_POST['userid'];
 $date = $_POST['date'];//date('Y-m-d');
 
@@ -12,7 +12,7 @@ mysql_connect('localhost', 'virion', 'virion1')
     or die("Could not connect to " . mysql_error());
 mysql_select_db('high_scores');
 
-$query = "INSERT INTO scores VALUES ($score, $level, $name, '$userid', '$date')";
+$query = "INSERT INTO scores VALUES ($score, $level, '$name', $userid, '$date')";
 
 mysql_query($query) or die("Error updating database");
 
