@@ -4,7 +4,7 @@ var make_scores = function(){
 	// async gets scores and feeds to callback
 	var get_scores = function(callback){
 		// ajax request to get scores
-		if (g_user_id) {
+		if (true) { //(g_user_id) {
 			$.post("get_scores.php", {
 				num: 10,
 				uid : 1092540269 //g_user_id
