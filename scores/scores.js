@@ -68,7 +68,7 @@ var make_scores = function(){
 		
 		post_score(score_obj, function(data){
 			console.log(data);
-			do_scores();
+			obj.do_scores;
 		});
 	};
 	
