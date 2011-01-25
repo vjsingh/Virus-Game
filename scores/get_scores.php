@@ -14,7 +14,7 @@ mysql_select_db('high_scores', $con)
 
 // Get all from user
 if ($uid) {
-	$query = "SELECT * FROM scores WHERE id = "'".$uid."'" ORDER BY score DESC LIMIT 0, $num";
+	$query = "SELECT * FROM scores WHERE id = '".$uid."' ORDER BY score DESC LIMIT 0, $num";
 }
 // Otherwise get global
 else {
