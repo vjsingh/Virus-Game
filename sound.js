@@ -111,26 +111,22 @@ var sound_manager = function() {
 	obj.load_sounds = function() {
 		// init all bg music
 		var all_supplied = "mp3";
-		$("#jquery_jplayer_bg_0").jPlayer( {
-			swfPath : the_swf_path,
-			ready: function () {
-		          $(this).jPlayer("setMedia", {
-			           mp3 : "sounds/heart_loop1.mp3"
-			          });
-					bg_music_loaded();
-	        },
-			supplied : all_supplied
+		var init_bg_jplayer = function(num, file_name) {
+			$("#jquery_jplayer_bg_"+num).jPlayer( {
+				swfPath : the_swf_path,
+				ready: function () {
+			          $(this).jPlayer("setMedia", {
+				           mp3 : "sounds/"+file_name
+				          });
+						bg_music_loaded();
+		        },
+				supplied : all_supplied
+		}).onSoundComplete(function() { // loop
+			$(this).player(0);
 		});
-		$("#jquery_jplayer_bg_1").jPlayer( {
-		ready: function () {
-			swfPath : the_swf_path,
-	          $(this).jPlayer("setMedia", {
-		           mp3 : "sounds/sinister.mp3"
-		          });
-				bg_music_loaded();
-	        },
-			supplied : all_supplied
-		});
+		init_bg_jplayer(0, "heart_loop1.mp3");
+		init_bg_jplayer(1, "sinister.mp3");
+			
 		for (var i = 0; i < num_bg_music; i++) {
 			all_bg_music.push($("#jquery_jplayer_bg_"+i));
 		}
