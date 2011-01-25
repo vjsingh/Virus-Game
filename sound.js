@@ -119,10 +119,11 @@ var sound_manager = function() {
 				           mp3 : "sounds/"+file_name
 				          });
 						bg_music_loaded();
-		        },
+				},
+				ended : function() { // loop
+					$(this).jPlayer("play");
+				},
 				supplied : all_supplied
-			}).onSoundComplete(function() { // loop
-			$(this).player(0);
 			});
 		};
 		init_bg_jplayer(0, "heart_loop1.mp3");
