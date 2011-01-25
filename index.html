@@ -144,10 +144,8 @@
                  "&response_type=token";
         //window.open(url);
         //window.location = url;
-        console.log("no hash");
          FB.getLoginStatus(function(response) {
 	 	if (response.session) { //logged in and known
-	 		console.log("known");
 			window.location=url;
 		}
 	 })
@@ -161,7 +159,6 @@
         var script = document.createElement("script");
         script.src = graphUrl;
         document.body.appendChild(script);  
-        console.log(accessToken);
     }
 
 	//initialize global user variables to null

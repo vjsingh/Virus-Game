@@ -1384,6 +1384,9 @@ var in_game_state = function (p, previous_state) {
 						mutation.get_level(),
 						g_user_name,
 						g_user_id);
+						
+					// Update the high score table
+					scores.do_scores();
 					
 					// simply don't do the rest of update
 					return;

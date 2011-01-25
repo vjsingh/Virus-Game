@@ -5,16 +5,16 @@ var make_scores = function(){
 	var get_scores = function(callback){
 		// ajax request to get scores
 		if (g_user_id) {
+			$("#scores").append("<div>" + "Your Top High Scores" + "</div>");
 			$.post("scores/get_scores.php", {
 				num: 10,
 				uid :  g_user_id
 			}, callback);
 		}
-		else {
-			$.post("scores/get_scores.php", {
-				num: 10
-			}, callback);
-		}
+		$("#scores").append("<div>" + "Global Top High Scores" + "</div>");
+		$.post("scores/get_scores.php", {
+			num: 10
+		}, callback);
 	};
 	
 	var get_user_scores = function(callback) {
