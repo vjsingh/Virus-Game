@@ -42,7 +42,7 @@ var make_scores = function(){
 	//  - level: mutation level
 	//  - userid: unique id for the user (from fb?)
 	var post_score = function(score_obj, callback){
-		$.post("post_score.php", score_obj, callback);
+		$.post("scores/post_score.php", score_obj, callback);
 	};
 	
 	// testing function to use with form
