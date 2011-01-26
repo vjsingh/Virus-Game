@@ -352,7 +352,7 @@ var in_game_state = function (p, previous_state) {
             }
             // otherwise leftmost
 			return function(c1, c2) {
-				return c1.get_pos().x - c2.get_pos().x;
+				return c2.get_pos().x - c1.get_pos().x;
 			};
 		}
 		choose_cell(sort_fun);
@@ -367,8 +367,8 @@ var in_game_state = function (p, previous_state) {
 			var old_active = active_cell;
 			var sort_fun = function(active_cell){
 				return function(c1, c2){
-					return (c1.get_pos().dist(a_pos)) -
-					(c2.get_pos().dist(a_pos));
+					return c2.get_pos().dist(a_pos) -
+					c1.get_pos().dist(a_pos);
 				}
 			};
 			choose_cell(sort_fun);
