@@ -80,12 +80,13 @@ function got_user(user) {
 	
     // Display name
     console.log("Adding name");
-    var name_div = document.createElement('div');
+    var name_div = document.getElementById('fb_name_div');
     name_div.innerHTML = "Your are logged in as " + g_user_name;
-    document.body.appendChild(name_div);
 }
 </script>
 <p id="userName"></p>
+
+<div id="fb_name_div"> </div>
 
 
 <!-- Jplayer divs -->
