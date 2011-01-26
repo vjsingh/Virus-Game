@@ -129,6 +129,10 @@ var cell = function(p, spec) {
         return state === "dead" && burst_anim.is_finished();
     };
 
+    obj.stop_animation = function() {
+        burst_anim.pause();
+    };
+
     obj.set_state = function(s) {
         state = s;
     };

@@ -1382,6 +1382,15 @@ var in_game_state = function (p, previous_state) {
 					sounds.pause_background_music();
 					obj.set_next_state(go_state);
 
+                    // stop the animations
+                    do_to_all_objs(
+                        function(o) { 
+                            if (o.stop_animation) {
+                                o.stop_animation();
+                            }
+                        }
+                    );
+
                     // stop the time and stuff
                     paused = true;
 					

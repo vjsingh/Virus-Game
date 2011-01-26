@@ -40,28 +40,28 @@ var animated_image = function(image_name, spec) {
 
     obj.start = function() {
 		active = true;
-    }
+    };
 	
 	obj.pause = function() {
 		active = false;
-	}
+	};
 	
 	obj.loop = function() {
 		loop = true;
-	}
+	};
 	
 	obj.is_finished = function() {
         // changed to && cuz it should be not looping
         // and at the end to be finished
 		return (!loop && curr_index === (all_images.length - 1));
-	}
+	};
 	
 	// Returns the current image
 	obj.get_frame = function() {
 		var curr_image = all_images[curr_index].image;
 		update();
 		return curr_image;
-	}
+	};
 
 	// private methods
 	
@@ -75,7 +75,7 @@ var animated_image = function(image_name, spec) {
 				rate_counter++;
 			}
 		}
-	}
+	};
 	
 	var next_frame = function() {
 		// If not 'at the end and not looping', 
