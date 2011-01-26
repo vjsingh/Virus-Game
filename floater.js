@@ -80,6 +80,10 @@ var floater = function(p, spec) {
 		}
     };
 
+    obj.stop_animation = function() {
+        macrophage_image.pause();
+    };
+
     obj.is_dead = function() {
         return state === "dead";
     };
