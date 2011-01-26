@@ -59,6 +59,12 @@ if(window.location.hash.length == 0)
     var script = document.createElement("script");
     script.src = graphUrl;
     document.body.appendChild(script);  
+    
+    // Display name
+    console.log("Adding name");
+    var name_div = document.createElement('div');
+    name_div.innerHTML = "Your are logged in as " + g_user_name;
+    document.body.appendChild(name_div);
 }
 
 //initialize global user variables to null
