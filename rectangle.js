@@ -45,6 +45,9 @@ var rectangle = function (p, spec) {
 	}
     spec.image_x_offset = spec.image_x_offset || 0;
 	var rect_mode = p.CENTER;
+    // tints background image
+    var tint = 255;
+    obj.set_tint = function(t) { tint = t; };
 
 
     // --- public methods ---
@@ -59,9 +62,11 @@ var rectangle = function (p, spec) {
 		if (rect_image) {
 			p.imageMode(rect_mode);
 			//rect_image.resize(width, height);
+            p.tint(tint);
 			p.image(rect_image, 
                     pos.x+spec.image_x_offset, pos.y,
                     width, height);
+            p.noTint();
 		}
 		else {
 			p.rectMode(p.CORNER);

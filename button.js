@@ -22,14 +22,20 @@ var button = function(p, spec) {
     // --- public methods --- 
 
 	obj.draw = function() {
-        rect.draw();
         if (!active) {
+            rect.set_tint(100);
+            /*
             var r = spec.rect;
             p.noStroke();
             p.fill(0, 150);
             p.rectMode(p.CENTER);
             p.rect(r.pos.x, r.pos.y, r.width, r.height);
+            */
         }
+        else {
+            rect.set_tint(255);
+        }
+        rect.draw();
 	};
 
     // makes a button not active
