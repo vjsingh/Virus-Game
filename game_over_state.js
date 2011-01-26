@@ -30,19 +30,29 @@ var game_over_state = function (p, prev_state, spec) {
 		text_color : 255
 	});
 
+    var button_style = {
+        width: 120, height: 50,
+        text_align: p.LEFT,
+    };
 	// Buttons
 	var restart_button = button(p, {
 		state : function() { return in_game_state(p, prev_state); },
 		rect : {
 			pos : new p.PVector(p.width / 2, 330),
-			text : "Restart"
+			text : "Restart",
+            text_x_offset: 40,
+            image: "restart.png",
+            style: button_style
 		}
 	});
 	var splash_button  = button(p, {
 		state : function() { return splash_state(p); },
 		rect : {
-			pos : new p.PVector(p.width / 2, 380),
-			text : "Main Menu"
+			pos : new p.PVector(p.width / 2, 390),
+			text : "Main Menu",
+            text_x_offset: 35,
+            image: "mainmenu.png",
+            style: button_style
 		}
 	});
 		

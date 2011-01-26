@@ -21,7 +21,7 @@ var options_state = function (p, prev_state) {
 		state : function() { return prev_state; },	
 		rect : {
 			pos : new p.PVector(p.width / 2, p.height - 80),
-			width : 100,
+			width : 120,
 			height : 50,
 			text: "Back",
             text_x_offset: 5,

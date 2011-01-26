@@ -471,12 +471,21 @@ var help_state = function (p, prev_state) {
 
 	// Buttons
     var button_y = p.height/2 + 190;
+    var button_style = {
+            width: 120,
+            height: 50,
+    };
 
 	var back_button = button(p, {
 		state : function() { return prev_state; },	
 		rect : {
 			pos : new p.PVector(p.width/2, button_y),  //box_x+box_w-80, box_y+box_h-30),
-			text: "Back"
+            width: 120,
+            height: 50,
+			text: "Back",
+            text_x_offset: 5,
+            text_y_offset: -8,
+            image: "back.png",
 		}
 	});
 
@@ -487,7 +496,9 @@ var help_state = function (p, prev_state) {
         },
         rect: {
             pos: new p.PVector(p.width/2+120, button_y),
-            text: "Next"
+            text: "Next",
+            image: "next.png",
+            style: button_style
         }
     });
 
@@ -498,7 +509,9 @@ var help_state = function (p, prev_state) {
         },
         rect: {
             pos: new p.PVector(p.width/2-120, button_y),
-            text: "Previous"
+            text: "Previous",
+            image: "previous.png",
+            style: button_style
         }
     });
     previous_button.deactivate();
