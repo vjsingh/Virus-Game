@@ -19,16 +19,25 @@ var option_button = function(p, spec) {
 	// Left-edge x and top-edge y coordinates of 'checkbox' indicating whether
 	// option is enabled
 	var status_x = rect.get_left_x() + 50;
-	var status_y = rect.get_top_y() + 40;
+	var status_y = rect.get_top_y() + 37;
+    var tick_size = 30;
+    var tick_yes_image = image_manager.get_image("check1.png");
+    var tick_no_image = image_manager.get_image("check0.png");
 
     // --- public methods --- 
 
 	obj.draw = function() {
         rect.draw();
+
+        p.imageMode(p.CENTER);
 		if (g[spec.global_var]) {
-			p.fill(255, 255, 255);
-			p.ellipse(status_x, status_y, 10, 10);
+			//p.fill(255, 255, 255);
+			//p.ellipse(status_x, status_y, 10, 10);
+            p.image(tick_yes_image, status_x, status_y, tick_size, tick_size);
 		}
+        else {
+            p.image(tick_no_image, status_x, status_y, tick_size, tick_size);
+        }
 	};
 	
 	// Returns the state to go to if clicked, or
