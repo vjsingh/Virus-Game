@@ -17,7 +17,8 @@ var animated_image = function(image_name, spec) {
 	var all_images = image_manager.get_images(image_name);
     all_images.sort(
         function(i1, i2) {
-            return i1.path < i2.path;
+            //return i1.path < i2.path;
+            return i1.path < i2.path ? -1 : (i1.path > i2.path ? 1 : 0);
         }
     );
     for_each(all_images, function(i) { console.log(i.path); });
