@@ -347,12 +347,12 @@ var in_game_state = function (p, previous_state) {
             if (last_active_cell) {
                 // let's try the nearest cell to the one that died
                 return function(c1, c2) {
-                    return dist_less_than(last_active_cell, c1, c2) ? 1 : -1;
+                    return dist_less_than(last_active_cell, c1, c2) ? -1 : 1;
                 };
             }
             // otherwise leftmost
 			return function(c1, c2) {
-				return c2.get_pos().x - c1.get_pos().x;
+				return c1.get_pos().x - c2.get_pos().x;
 			};
 		}
 		choose_cell(sort_fun);
@@ -367,8 +367,8 @@ var in_game_state = function (p, previous_state) {
 			var old_active = active_cell;
 			var sort_fun = function(active_cell){
 				return function(c1, c2){
-					return c2.get_pos().dist(a_pos) -
-					c1.get_pos().dist(a_pos);
+					return c1.get_pos().dist(a_pos) -
+					c2.get_pos().dist(a_pos);
 				}
 			};
 			choose_cell(sort_fun);
@@ -395,18 +395,18 @@ var in_game_state = function (p, previous_state) {
 				// If one is in the right dir and the other isnt,
 				// return the one that is
 				if (comp(c1x, actx) && !(comp(c2x, actx))) {
-					return 1;
+					return -1;
 				}
 				else if (!(comp(c1x, actx)) && comp(c2x, actx)) {
-					return -1;
+					return 1;
 				}
 				// If they are on the same side, return opposite of comp
 				else {
 					if (comp(c1x, c2x)) {
-						return -1;
+						return 1;
 					}
 					else {
-						return 1;
+						return -1;
 					}
 				}
 			}
@@ -443,7 +443,7 @@ var in_game_state = function (p, previous_state) {
 
 		var curr_active = active_cell;
         if (infecteds.length > 0) {
-            active_cell = infecteds[infecteds.length-1];
+            active_cell = infecteds[0];
 			//If same as current
 			if (curr_active) { // for the beginning
 				curr_active.set_state("infected"); //if same, about to change
@@ -1464,15 +1464,15 @@ var in_game_state = function (p, previous_state) {
                     function(c) {
                         return ((c.get_state() === "infected"
                             || c.get_state() === "active")
-                            && c.get_level() === mutation.get_level()) ? 1 : -1; 
+                            && c.get_level() === mutation.get_level()); 
                     }
                 );
                 choices.sort( 
                     function(c1, c2) {
-                        return dist_less_than(active_cell, c1, c2) ? 1 : -1;
+                        return dist_less_than(active_cell, c1, c2) ? -1 : 1;
                     }
                 );
-                var cell_to_mutate = choices[choices.length-1];
+                var cell_to_mutate = choices[0];
 
                 // do the actual mutation and hold onto new ability
                 //var new_ability = 
