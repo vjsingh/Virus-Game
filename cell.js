@@ -23,27 +23,9 @@ var cell = function(p, spec) {
     // --- private variables ---
 
 	// images
-	//var images = random_image_selector();
-    //var image1 = p.loadImage("images/infectable1.png");
-    //var image2 = p.loadImage("images/infectable2.png");
-    //var image3 = p.loadImage("images/infectable3.png");
-    /*
-	if (on_server) { // so itwill work locally
-		for_each(g_infected_cell_images, function(i){
-			images.add(p.loadImage(i));
-		});
-	}
-	else {
-		var image1 = p.loadImage("images/new/infectable1.png");
-		var image2 = p.loadImage("images/new/infectable2.png");
-		var image3 = p.loadImage("images/new/infectable3.png");
-		images.add(image1);
-		images.add(image2);
-		images.add(image3);
-	}
-    */
 	var cell_image = random_from(
             image_manager.get_images("infectable_cell")).image;
+    var burst_anim = animated_image("burst", {});
 	
     // state can be "alive", "infected", "active", or "dead"
     var state = spec.state || "alive";
@@ -87,6 +69,15 @@ var cell = function(p, spec) {
         p.shapeMode(obj.get_mode());
 
         p.noStroke();
+
+        if (state === "dead") {
+            // draw frame and advance anim
+            p.image(burst_anim.get_frame(), pos.x, pos.y,
+                    obj.get_width(), obj.get_height());
+            // skip the rest of the method
+            return;
+        }
+
 
         if (state === "alive") {
             p.fill(p.color(200, 50, 50));
@@ -134,7 +125,8 @@ var cell = function(p, spec) {
     };
 
     obj.is_dead = function() {
-        return state === "dead";
+        //console.log(burst_anim.is_finished());
+        return state === "dead" && burst_anim.is_finished();
     };
 
     obj.set_state = function(s) {
@@ -159,6 +151,7 @@ var cell = function(p, spec) {
             anti.die();
         }
         obj.set_state("dead");
+        burst_anim.start();
     };
 	
 	// explodes this cell if it is active

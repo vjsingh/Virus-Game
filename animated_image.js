@@ -51,7 +51,9 @@ var animated_image = function(image_name, spec) {
 	}
 	
 	obj.is_finished = function() {
-		return (!loop || curr_index === (all_images.length - 1));
+        // changed to && cuz it should be not looping
+        // and at the end to be finished
+		return (!loop && curr_index === (all_images.length - 1));
 	}
 	
 	// Returns the current image

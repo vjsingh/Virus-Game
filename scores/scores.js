@@ -42,7 +42,7 @@ var make_scores = function(){
 				});
 				$("#scores").append("<div>" + rowarr.join(", ") + "</div>");
 			});
-		}
+		};
 	};
 	
 	// gets and displays scores
