@@ -20,6 +20,8 @@ var make_image_manager = function() {
         screens : { dir : "screens/" },
         wall_segments : { dir : "wall_segments/" },
 		macrophage : {dir : "macrophage_animation/"},
+		burst : { dir : "burstingcell_animation/"},
+		buttons : { dir : "buttons/"},
         // catches all images in images/
         other : { dir : "" },
     };

@@ -43,7 +43,7 @@ var p_code = function(p) {
 	};
 	p.mouseMoved = function() {
 		sm.mouse_moved(p.mouseX, p.mouseY);
-	}
+	};
 };
 
 
@@ -55,7 +55,7 @@ var start_game = function() {
     // note that we need to do this AFTER the canvas element is created
     var canvas = document.getElementById("test_canvas");
     sketch = new Processing.Sketch(p_code);
-    sketch.options.isTransparent = true;
+    //sketch.options.isTransparent = true;
     var pInstance = new Processing(canvas, sketch);
 };
 window.onload = start_game;

@@ -11,13 +11,25 @@ var pause_state = function (p, prev_state) {
 	// a state to go to when pressed
     var button_x = p.width / 2;
     var button_top = 200;
-    var button_sep = 50;
+    var button_sep = 60;
+
+    var button_style = {
+        text_size: 14,
+        text_align: p.LEFT,
+        text_x_offset: 25,
+        width: 120,
+        height: 50,
+    };
+
 	
 	var continue_button = button(p, {
 		state : function() { return prev_state; },
 		rect : {
 			pos : new p.PVector(button_x, button_top),
-			text: "Continue"
+            text: "Continue",
+            image: "continue.png",
+            image_x_offset: 5,
+            style: button_style
 		}
 	});
 
@@ -25,7 +37,9 @@ var pause_state = function (p, prev_state) {
 		state : function() { return options_state(p, obj); },
 		rect : {
 			pos : new p.PVector(button_x, button_top+button_sep),
-			text: "Settings"
+			text: "Settings",
+            image: "settings.png",
+            style: button_style
 		}
 	});
 
@@ -33,7 +47,11 @@ var pause_state = function (p, prev_state) {
 		state : function() { return help_state(p, obj); },	
 		rect : {
 			pos : new p.PVector(button_x, button_top+2*button_sep),
-			text: "Instructions"
+			text: "Instructions",
+            //text_x_offset: 10,
+            image: "instructions.png",
+            image_x_offset: 3,
+            style: button_style
 		}
 	});
     
@@ -41,7 +59,11 @@ var pause_state = function (p, prev_state) {
 		state : function() { return splash_state(p); },	
 		rect : {
 			pos : new p.PVector(button_x, button_top+3*button_sep),
-			text: "Quit"
+			text: "Quit",
+            //text_x_offset: -5,
+            image: "quit.png",
+            image_x_offset: -5,
+            style: button_style
 		}
 	});
 	

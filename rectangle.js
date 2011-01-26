@@ -11,9 +11,10 @@
 //		text_size : size of text (default to processings default)
 //		text_align : alignment of text (default to p.CENTER)
 //		text_x_offset : offset for the text x coordinate
+//		image_x_offset: offset for the image
 //		rect_color : color of rectangle (defaults to white)
 // 		image 		: string location of image to display instead of a rectangle
-// 		style : object that can specify text_color, text_size, rect_color, width, height, text_align
+// 		style : object that can specify text_color, text_size, rect_color, width, height, text_align, text_x_offset
 
 var rectangle = function (p, spec) {
 
@@ -33,12 +34,14 @@ var rectangle = function (p, spec) {
 	var text = spec.text || "";
 	var text_color = spec.style.text_color || spec.text_color || 0;
 	var text_size = spec.style.text_size || spec.text_size || 12;
+	var text_x_offset = spec.style.text_x_offset || spec.text_x_offset || 0;
     var text_align = spec.style.text_align || spec.text_align || p.CENTER;
 	var rect_color = spec.style.rect_color || spec.rect_color || 255;
 	var rect_image;
 	if (spec.image) {
 		rect_image = image_manager.get_image(spec.image);// p.loadImage(spec.image);
 	}
+    spec.image_x_offset = spec.image_x_offset || 0;
 	var rect_mode = p.CENTER;
 
 
@@ -53,8 +56,9 @@ var rectangle = function (p, spec) {
 		//console.log("drawing");
 		if (rect_image) {
 			p.imageMode(rect_mode);
-			rect_image.resize(width, height);
-			p.image(rect_image, pos.x, pos.y);//, width, height);
+			//rect_image.resize(width, height);
+			p.image(rect_image, pos.x+spec.image_x_offset, pos.y,
+                    width, height);
 		}
 		else {
 			p.rectMode(p.CORNER);
@@ -74,22 +78,22 @@ var rectangle = function (p, spec) {
         if (text_align === p.LEFT) {
             text_x = pos.x - half_width + 10; 
         }
-		text_x += (spec.text_x_offset || 0);
+		text_x += (text_x_offset || 0);
 		p.textSize(text_size);
         p.text(text, text_x, pos.y);
 	};
 	
 	obj.update_text = function(t) {
 		text = t;
-	}
+	};
 	
 	// Getters
 	obj.get_left_x = function() {
 		return leftx;
-	}
+	};
 	obj.get_top_y = function() {
 		return topy;
-	}
+	};
 	
 	
     return obj;

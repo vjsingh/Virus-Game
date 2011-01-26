@@ -534,13 +534,13 @@ var in_game_state = function (p, previous_state) {
     var check_collisions = (function() {
         // rendering levels to check collisions for:
         var to_check = [
-            ["particle", "particle"],
+            //["particle", "particle"],
             ["particle", "cell"],
             ["particle", "enemy"],
             ["particle", "multiplier"],
-            ["cell", "cell"],
+            //["cell", "cell"],
             ["cell", "enemy"],
-            ["enemy", "enemy"],
+            //["enemy", "enemy"],
 			["enemy", "b_cell"],
 			["b_cell", "wall"],
 			["particle", "wall"],
@@ -952,6 +952,11 @@ var in_game_state = function (p, previous_state) {
                         bounce(b, flo);
                         notify("B-cell activated!", BAD_NOTIFICATION_COLOR);
                     }
+                    // trying to avoid getting stuck
+                    if (b.is_outdated()) {
+                        bounce(b, flo);
+                        b.set_target(null);
+                    }
                 },
                 "wall_segment": function(b, wall) {
                     //console.log("collision");
@@ -989,10 +994,11 @@ var in_game_state = function (p, previous_state) {
 					//else false
 				}
 				else {
+                    console.log("removing "+x.to_string());
 					offscreen = true;
 				}
 			}
-            return (!offscreen && (! x.is_dead()));
+            return (! (offscreen || x.is_dead()));
         };  
         for (var i = 0; i < game_objects.length; i++) {
             game_objects[i] = game_objects[i].filter(filter_fun);
@@ -1437,6 +1443,14 @@ var in_game_state = function (p, previous_state) {
 				remove_objs();
 
                 update_mutation();    
+
+                /*
+                // for debugging
+                var count = 0;
+                do_to_all_objs(function() { count += 1; });
+                console.log(count);
+                console.log("fr "+p.__frameRate);
+                */
 			}
         };
 
@@ -1525,7 +1539,10 @@ var in_game_state = function (p, previous_state) {
         for (var i=0; i<game_objects.length; i++) {
             for (var j=0; j<game_objects[i].length; j++) {
                 var o = game_objects[i][j];
-                o.draw();
+                // debugging by taking out certain types
+                //if (!o.is("background_edge")) {
+                    o.draw();
+                //}
                 // to test collisions
                 //o.draw_circle();
             }
