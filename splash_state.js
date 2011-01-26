@@ -129,7 +129,9 @@ var splash_state = function (p) {
 		}
 	};
 
+    /*
     obj.mouse_moved = function(x, y) {
+
         for_each(
             all_buttons,
             function(b) {
@@ -137,6 +139,7 @@ var splash_state = function (p) {
             }
         );
     };
+    */
 	
 	obj.get_all_buttons = function() {
 		return all_buttons;

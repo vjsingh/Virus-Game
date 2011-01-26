@@ -167,7 +167,10 @@ var state_manager = function (p) {
 	};
 	
 	obj.mouse_moved = function(x,y) {
-		curr_state.mouse_moved(x, y);
+		curr_state.mouse_moved_wrapper(x, y);
+        if (curr_state.get_type() !== "game") {
+            obj.update();
+        }
 		//obj.update();
 	}
     

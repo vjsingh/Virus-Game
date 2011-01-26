@@ -21,7 +21,7 @@ var animated_image = function(image_name, spec) {
             return i1.path < i2.path ? -1 : (i1.path > i2.path ? 1 : 0);
         }
     );
-    for_each(all_images, function(i) { console.log(i.path); });
+    //for_each(all_images, function(i) { console.log(i.path); });
 	var curr_index = 0;
 	var active = true;
 	var loop = false;

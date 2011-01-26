@@ -19,8 +19,10 @@ var button = function(p, spec) {
 	var rect = rectangle(p, spec.rect);
     var active = spec.active || true;
 
-    var image = image_manager.get_image(spec.rect.image);
-    var over_image = image_manager.get_image(spec.rect.over_image);
+    var image = spec.rect.image ?
+        image_manager.get_image(spec.rect.image) : null;
+    var over_image = spec.rect.over_image ? 
+        image_manager.get_image(spec.rect.over_image) : null;
 
     // --- public methods --- 
 
@@ -36,7 +38,7 @@ var button = function(p, spec) {
             */
         }
         else {
-            rect.set_tint(255);
+            //rect.set_tint(255);
         }
         rect.draw();
 	};
@@ -55,6 +57,10 @@ var button = function(p, spec) {
 	// null if not clicked
 	obj.is_clicked = function(x, y) {
 		if (active && rect.is_in(x, y)) {
+            // after click go back to normal image
+            if (over_image) {
+                rect.set_image(image);
+            }
 			return obj.get_state();
 		}
 		else {
@@ -64,9 +70,19 @@ var button = function(p, spec) {
 
     obj.mouse_moved = function(x, y) {
         if (active && rect.is_in(x, y)) {
-            rect.set_image(over_image);
+            if (over_image) {
+                rect.set_image(over_image);
+            }
+            else {
+                //rect.set_tint(0);
+                rect.set_tint(255, 255);
+                rect.draw_twice();
+                console.log("tinting");
+            }
         }
         else {
+            rect.set_tint(255, 255);
+            rect.draw_once();
             rect.set_image(image);
         }
     };

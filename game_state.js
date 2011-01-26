@@ -28,7 +28,7 @@ var game_state = function (p) {
 	//First draws all the buttons, then calls render
 	obj.render_wrapper = function() {
 		obj.render();
-		for_each(all_buttons, function(b) { b.draw()});
+		for_each(all_buttons, function(b) { b.draw(); });
 	};
 	
 	//Do not over-ride these methods
@@ -73,6 +73,17 @@ var game_state = function (p) {
 		for_each(all_buttons, click_function);
 		obj.mouse_click(x, y);
 	};
+
+    obj.mouse_moved_wrapper = function(x, y) {
+        for_each(
+            all_buttons,
+            function(b) {
+                b.mouse_moved(x, y);
+            }
+        );
+        obj.mouse_moved(x, y);
+    };
+
 	
     // all game_states must implement the following functions:
     

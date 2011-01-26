@@ -47,7 +47,11 @@ var rectangle = function (p, spec) {
 	var rect_mode = p.CENTER;
     // tints background image
     var tint = 255;
-    obj.set_tint = function(t) { tint = t; };
+    var alpha = 255;
+    var times_to_draw = 1;
+    obj.set_tint = function(t, a) { tint = t; alpha = a; };
+    obj.draw_twice = function() { times_to_draw = 2; };
+    obj.draw_once = function() { times_to_draw = 1; };
 
 
     // --- public methods ---
@@ -62,11 +66,15 @@ var rectangle = function (p, spec) {
 		if (rect_image) {
 			p.imageMode(rect_mode);
 			//rect_image.resize(width, height);
-            p.tint(tint);
-			p.image(rect_image, 
-                    pos.x+spec.image_x_offset, pos.y,
-                    width, height);
+            // draw the image twice, once is the overlay with a tint
+            for (var i=0; i<times_to_draw; i++) {
+                p.tint(tint, alpha);
+                p.image(rect_image, 
+                        pos.x+spec.image_x_offset, pos.y,
+                        width, height);
+            }
             p.noTint();
+            
 		}
 		else {
 			p.rectMode(p.CORNER);
