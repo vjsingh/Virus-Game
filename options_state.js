@@ -7,6 +7,12 @@ var options_state = function (p, prev_state) {
     // --- private variables ---
 	
 	var background_image = image_manager.get_image("settingssplash.png");
+
+    var button_style = {
+		text_x_offset : 60,
+        text_y_offset: -3,
+        text_align: p.LEFT
+    };
 	
 	// Buttons
 	// Have a rectangle representing their position and
@@ -16,8 +22,11 @@ var options_state = function (p, prev_state) {
 		rect : {
 			pos : new p.PVector(p.width / 2, p.height - 80),
 			width : 100,
-			height : 40,
-			text: "Back"
+			height : 50,
+			text: "Back",
+            text_x_offset: 5,
+            text_y_offset: -8,
+            image: "back.png",
 		}
 	});
 
@@ -29,31 +38,23 @@ var options_state = function (p, prev_state) {
 		rect : {
 			pos : new p.PVector(p.width / 2 - 100, p.height/2 - 70),
 			text: "Sound Effects",
-			image : option_image
+            //text_x_offset: 60,
+			image : option_image,
+            style: button_style
 		}
 	});
 	var music_button = option_button(p, {
 		click_fun : function() {
             // toggle the flag
             g.toggle_music();
-			/*
-            // if not coming from the splash screen
-            if (prev_state.get_type() !== "splash") {
-                // toggle the actual music
-                if (g.music) {
-                    sounds.play_background_music();
-                }
-                else {
-                    sounds.stop_background_music();
-                }
-            }
-            */
         },
 		global_var : "music",
 		rect : {
 			pos : new p.PVector(p.width / 2 - 100, p.height/2 + 40),
 			text: "Music",
-			image : option_image
+            //text_x_offset: 60,
+			image : option_image,
+            style: button_style
 		}
 	});
 	var spacebar_button = option_button(p, {
@@ -61,8 +62,10 @@ var options_state = function (p, prev_state) {
 		global_var : "spacebar_to_fire",
 		rect : {
 			pos : new p.PVector(p.width / 2 + 150, p.height/2 - 70),
-			text: "Use Spacebar to Fire",
-			image : option_image
+			text: "Spacebar to Fire",
+			//text_x_offset : 60,
+			image : option_image,
+            style: button_style
 		}
 	});
 	var mouse_button = option_button(p, {
@@ -70,18 +73,21 @@ var options_state = function (p, prev_state) {
 		global_var : "click_to_fire",
 		rect : {
 			pos : new p.PVector(p.width / 2 + 150, p.height/2 + 40),
-			text: "Use Mouse Click to Fire",
-			image : option_image
+			text: "Mouse Click to Fire",
+			//text_x_offset : 60,
+			image : option_image,
+            style: button_style
 		}
 	});
 	var mouse_to_select_button = option_button(p, {
 		click_fun : g.toggle_mouse_to_select,
 		global_var : "mouse_to_select",
 		rect : {
-			pos : new p.PVector(p.width / 2, p.height/2 + 150),
-			text: "Use the mouse to select \ncells instead of Left/Right",
+			pos : new p.PVector(p.width / 2, p.height/2 + 140),
+			text: "Mouse to Select Cells\nInstead of Left/Right",
 			image : option_image,
-			text_x_offset : 10
+			//text_x_offset : 60,
+            style: button_style
 		}
 	});
 	

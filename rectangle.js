@@ -11,6 +11,7 @@
 //		text_size : size of text (default to processings default)
 //		text_align : alignment of text (default to p.CENTER)
 //		text_x_offset : offset for the text x coordinate
+//		text_y_offset : offset for the text y coordinate
 //		image_x_offset: offset for the image
 //		rect_color : color of rectangle (defaults to white)
 // 		image 		: string location of image to display instead of a rectangle
@@ -33,8 +34,9 @@ var rectangle = function (p, spec) {
 	var topy = pos.y - half_height, bottomy = pos.y + half_height;
 	var text = spec.text || "";
 	var text_color = spec.style.text_color || spec.text_color || 0;
-	var text_size = spec.style.text_size || spec.text_size || 12;
+	var text_size = spec.style.text_size || spec.text_size || 14;
 	var text_x_offset = spec.style.text_x_offset || spec.text_x_offset || 0;
+	var text_y_offset = spec.style.text_y_offset || spec.text_y_offset || 0;
     var text_align = spec.style.text_align || spec.text_align || p.CENTER;
 	var rect_color = spec.style.rect_color || spec.rect_color || 255;
 	var rect_image;
@@ -57,7 +59,8 @@ var rectangle = function (p, spec) {
 		if (rect_image) {
 			p.imageMode(rect_mode);
 			//rect_image.resize(width, height);
-			p.image(rect_image, pos.x+spec.image_x_offset, pos.y,
+			p.image(rect_image, 
+                    pos.x+spec.image_x_offset, pos.y,
                     width, height);
 		}
 		else {
@@ -78,9 +81,8 @@ var rectangle = function (p, spec) {
         if (text_align === p.LEFT) {
             text_x = pos.x - half_width + 10; 
         }
-		text_x += (text_x_offset || 0);
 		p.textSize(text_size);
-        p.text(text, text_x, pos.y);
+        p.text(text, text_x+text_x_offset, pos.y+text_y_offset);
 	};
 	
 	obj.update_text = function(t) {
