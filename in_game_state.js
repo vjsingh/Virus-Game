@@ -347,12 +347,12 @@ var in_game_state = function (p, previous_state) {
             if (last_active_cell) {
                 // let's try the nearest cell to the one that died
                 return function(c1, c2) {
-                    return dist_less_than(last_active_cell, c1, c2);
+                    return dist_less_than(last_active_cell, c1, c2) ? 1 : -1;
                 };
             }
             // otherwise leftmost
 			return function(c1, c2) {
-				return c1.get_pos().x < c2.get_pos().x;
+				return c1.get_pos().x - c2.get_pos().x;
 			};
 		}
 		choose_cell(sort_fun);
@@ -367,7 +367,7 @@ var in_game_state = function (p, previous_state) {
 			var old_active = active_cell;
 			var sort_fun = function(active_cell){
 				return function(c1, c2){
-					return (c1.get_pos().dist(a_pos)) <
+					return (c1.get_pos().dist(a_pos)) -
 					(c2.get_pos().dist(a_pos));
 				}
 			};
@@ -395,18 +395,18 @@ var in_game_state = function (p, previous_state) {
 				// If one is in the right dir and the other isnt,
 				// return the one that is
 				if (comp(c1x, actx) && !(comp(c2x, actx))) {
-					return true;
+					return 1;
 				}
 				else if (!(comp(c1x, actx)) && comp(c2x, actx)) {
-					return false;
+					return -1;
 				}
 				// If they are on the same side, return opposite of comp
 				else {
 					if (comp(c1x, c2x)) {
-						return false;
+						return -1;
 					}
 					else {
-						return true;
+						return 1;
 					}
 				}
 			}
@@ -1462,14 +1462,14 @@ var in_game_state = function (p, previous_state) {
                 // mutation level
                 var choices = get_all_of_type("cell").filter(
                     function(c) {
-                        return (c.get_state() === "infected"
+                        return ((c.get_state() === "infected"
                             || c.get_state() === "active")
-                            && c.get_level() === mutation.get_level(); 
+                            && c.get_level() === mutation.get_level()) ? 1 : -1; 
                     }
                 );
                 choices.sort( 
                     function(c1, c2) {
-                        return dist_less_than(active_cell, c1, c2);
+                        return dist_less_than(active_cell, c1, c2) ? 1 : -1;
                     }
                 );
                 var cell_to_mutate = choices[choices.length-1];
