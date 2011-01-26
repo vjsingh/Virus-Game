@@ -101,6 +101,10 @@ var rectangle = function (p, spec) {
 	obj.get_top_y = function() {
 		return topy;
 	};
+
+    obj.set_image = function(i) {
+        rect_image = i;
+    };
 	
 	
     return obj;

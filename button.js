@@ -19,6 +19,9 @@ var button = function(p, spec) {
 	var rect = rectangle(p, spec.rect);
     var active = spec.active || true;
 
+    var image = image_manager.get_image(spec.rect.image);
+    var over_image = image_manager.get_image(spec.rect.over_image);
+
     // --- public methods --- 
 
 	obj.draw = function() {
@@ -58,6 +61,15 @@ var button = function(p, spec) {
 			return null;
 		}
 	};	
+
+    obj.mouse_moved = function(x, y) {
+        if (active && rect.is_in(x, y)) {
+            rect.set_image(over_image);
+        }
+        else {
+            rect.set_image(image);
+        }
+    };
 	
 	// Returns the state to go to
 	obj.get_state = function() {

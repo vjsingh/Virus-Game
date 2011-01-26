@@ -12,6 +12,50 @@ var splash_state = function (p) {
 	// Buttons
 	// Have a rectangle representing their position and
 	// a state to go to when pressed
+
+    var top_row_y = 200;
+    var btm_row_y = 480;
+    var left_x = 460;
+    var button_style = {
+        height: 160,
+        rect_color: back_color
+    };
+
+
+    var start_button = button(p, {
+		state : function() { return in_game_state(p, obj); },
+        rect: {
+            pos: new p.PVector(left_x, top_row_y),
+            image: "mnewgame.png",
+            over_image: "mnewgame_r.png",
+            width: 80,
+            style: button_style,
+        }
+    });
+
+    var help_button = button(p, {
+		state : function() { return help_state(p, obj); },
+        rect: {
+            pos: new p.PVector(left_x+150, top_row_y),
+            image: "mhowtoplay.png",
+            over_image: "mhowtoplay_r.png",
+            width: 100,
+            style: button_style,
+        }
+    });
+
+    var options_button = button(p, {
+		state : function() { return options_state(p, obj); },
+        rect: {
+            pos: new p.PVector(left_x, btm_row_y),
+            image: "msettings.png",
+            over_image: "msettings_r.png",
+            width: 120,
+            style: button_style,
+        }
+    });
+
+    /*
     var splash_style = {
         width : 170,
         height : 40,
@@ -20,6 +64,7 @@ var splash_state = function (p) {
         text_size: 30,
         text_align: p.LEFT
     };
+
     var button_x = 500;
     var button_top = 150;
     var button_sep = 60;
@@ -83,6 +128,15 @@ var splash_state = function (p) {
 			obj.set_next_state(help_button.get_state());
 		}
 	};
+
+    obj.mouse_moved = function(x, y) {
+        for_each(
+            all_buttons,
+            function(b) {
+                b.mouse_moved(x, y);
+            }
+        );
+    };
 	
 	obj.get_all_buttons = function() {
 		return all_buttons;
