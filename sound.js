@@ -152,9 +152,10 @@ var sound_manager = function() {
 };
 
 // make a global object
-//var sounds = sound_manager();
+var sounds = sound_manager();
 
 // to debug without sounds, use this object
+/*
 var sounds = {
     sounds_loaded: function() { return true; },
     play_sound: function() {},
@@ -163,6 +164,7 @@ var sounds = {
     resume_background_music: function() {},
     load_sounds: function() {},
 };
+*/
 
 
 
