@@ -15,10 +15,12 @@ var animated_image = function(image_name, spec) {
 	// private vars
 	
 	var all_images = image_manager.get_images(image_name);
-    all_images.sort(function(i1, i2) {
+    all_images.sort(
+        function(i1, i2) {
             return i1.path < i2.path;
         }
     );
+    for_each(all_images, function(i) { console.log(i.path); });
 	var curr_index = 0;
 	var active = true;
 	var loop = false;
