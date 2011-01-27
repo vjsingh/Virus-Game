@@ -32,8 +32,8 @@ var make_scores = function(){
 	var display_scores = function(header) {
         var headers = [ "Score", "Level", "Name", "Date" ];
         var formatters = {
-            "Score": add_commas,
-            "Date": function(x) { return x; },
+            "score": add_commas,
+            "date": function(x) { return x; },
         };
 		return function(data){
 			var link = "<li><a href='#tabs-"+tab_count+"'>"
