@@ -30,10 +30,9 @@ var make_scores = function(){
 	// Must use this style so long as get_scores is async
     var tab_count = 1;
 	var display_scores = function(header) {
+        var headers = [ "Score", "Level", "Name", "Date" ];
         var formatters = {
             "Score": add_commas,
-            "Level": function(x) { return x; },
-            "Name": function(x) { return x; },
             "Date": function(x) { return x; },
         };
 		return function(data){
@@ -47,7 +46,7 @@ var make_scores = function(){
 
             // -- start header row --
             con += "<tr>";
-            for_each(keys(formatters), function(header) {
+            for_each(headers, function(header) {
                 con += "<td>" + header + "</td>";
             });
             con += "</tr>";
