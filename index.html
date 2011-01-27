@@ -15,7 +15,7 @@
         height: 600;
         position: relative;
     }
-    #scores {
+    #scores-wrap {
         z-index: 2; 
         background: white;
         color: black;
@@ -207,8 +207,10 @@ function got_user(user) {
     <div style="margin-bottom:1em;">Welcome to Virion beta testing!&nbsp;&nbsp;Give the game a try and then scroll down to give us your feedback.</div>
     <div style="">
         <!-- Score -->
+        <div id="scores-wrap">
         <div id="scores">
             Could not load high scores! You may want to check your internet connection.
+        </div>
         </div>
         <!-- Game Canvas -->
         <canvas width="700" height="600" id="test_canvas"> 
