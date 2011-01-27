@@ -30,11 +30,15 @@ var make_scores = function(){
 	// Must use this style so long as get_scores is async
 	var display_scores = function(header) {
         var row_headers = [ "Score", "Level", "Name", "Date" ];
+        var tab_count = 1;
 		return function(data){
-            // con is the content to put in the scores div
-            var con = "";
-			con += "<div>" + header + "</div>";
-			con += "<table id='score-table' >";
+			var link = "<li><a href='#tabs-"+tab_count+"'>"
+                + header + "</a></li>";
+            $("tab-list").append(link);
+
+            // con is the content to put in the score tab 
+            var con = "<div id='tabs-"+tab_count+"'>";
+			con += "<table class='score-table' >";
 
             // -- start header row --
             con += "<tr>";
@@ -50,10 +54,16 @@ var make_scores = function(){
 			for_each(scores, function(row){
                 con += "<tr>";
 				for_each(keys(row), function(i){
-                    con += "<td>" + row[i] + "</td>";
+                    // dont show uid
+                    if (i !== "userid") {
+                        con += "<td>" + row[i] + "</td>";
+                    }
 				});
                 con += "</tr>";
 			});
+
+            con += "</table>";
+            con += "</div>";
 
             // add it to page
 			$("#scores").append(con);
@@ -63,7 +73,10 @@ var make_scores = function(){
 	// gets and displays scores
 	obj.do_scores = function(){
 		$("#scores").empty();
+		$("#scores").append("<ul id='tab-list'></ul>");
 		get_scores(display_scores);
+        // make the tabs
+        $("#scores").tabs();
 	};
 	
 	// inserts a score into the db
