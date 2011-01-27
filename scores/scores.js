@@ -29,19 +29,34 @@ var make_scores = function(){
 	// Passing it a header returns the actual function
 	// Must use this style so long as get_scores is async
 	var display_scores = function(header) {
+        var row_headers = [ "Score", "Level", "Name", "Date" ];
 		return function(data){
-			$("#scores").append("<div>" + header + "</div>");
+            // con is the content to put in the scores div
+            var con = "";
+			con += "<div>" + header + "</div>";
+			con += "<table>";
+
+            // -- start header row --
+            con += "<tr>";
+            for_each(row_headers, function(header) {
+                con += "<td>" + header + "</td>";
+            });
+            con += "</tr>";
+            // -- end header row --
+            
 			var scores = jQuery.parseJSON(data);
 			//console.log(scores);
 			// scores is an array of row objects
 			for_each(scores, function(row){
-				// convert each row to an array for now
-				var rowarr = [];
+                con += "<tr>";
 				for_each(keys(row), function(i){
-					rowarr.push(row[i]);
+                    con += "<td>" + row[i] + "</td>";
 				});
-				$("#scores").append("<div>" + rowarr.join(", ") + "</div>");
+                con += "</tr>";
 			});
+
+            // add it to page
+			$("#scores").append(con);
 		};
 	};
 	
