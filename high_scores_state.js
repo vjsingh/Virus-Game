@@ -20,7 +20,7 @@ var high_scores_state = function (p, prev_state) {
 		state : function() { 
             // hide the div
             $("#scores").hide();
-		    $("#scores").empty();
+            $("#scores").tabs("destroy");
             return splash_state(p);
         },	
 		rect : {
