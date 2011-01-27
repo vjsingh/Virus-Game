@@ -34,7 +34,7 @@ var make_scores = function(){
             // con is the content to put in the scores div
             var con = "";
 			con += "<div>" + header + "</div>";
-			con += "<table>";
+			con += "<table id='score-table' >";
 
             // -- start header row --
             con += "<tr>";
