@@ -28,9 +28,9 @@ var make_scores = function(){
 	// interprets json and displays it
 	// Passing it a header returns the actual function
 	// Must use this style so long as get_scores is async
+    var tab_count = 1;
 	var display_scores = function(header) {
         var row_headers = [ "Score", "Level", "Name", "Date" ];
-        var tab_count = 1;
 		return function(data){
 			var link = "<li><a href='#tabs-"+tab_count+"'>"
                 + header + "</a></li>";
@@ -67,6 +67,8 @@ var make_scores = function(){
 
             // add it to page
 			$("#scores").append(con);
+            // update tab num
+            tab_count += 1;
 		};
 	};
 	
@@ -74,6 +76,8 @@ var make_scores = function(){
 	obj.do_scores = function(){
 		$("#scores").empty();
 		$("#scores").append("<ul id='tab-list'></ul>");
+        // reset tab count
+        tab_count = 1;
 		get_scores(display_scores);
         // make the tabs
         $("#scores").tabs();
