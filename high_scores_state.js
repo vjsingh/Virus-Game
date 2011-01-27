@@ -42,10 +42,6 @@ var high_scores_state = function (p, prev_state) {
     };
 
     obj.update = function() {
-        // show the div
-        $("#scores").show();
-        // update and render scores
-        scores.do_scores();
     };
 
     obj.render = function() {
@@ -62,6 +58,15 @@ var high_scores_state = function (p, prev_state) {
 	obj.get_all_buttons = function() {
 		return all_buttons;
 	};
+
+    // init the scores immediately
+    var init = (function() {
+        // show the div
+        $("#scores").show();
+        // update and render scores
+        // TODO what if it fails?
+        scores.do_scores();
+    }());
 	
     return obj;
 };
