@@ -90,4 +90,4 @@ var make_scores = function(){
 	return obj;
 }
 
-scores = make_scores();
+var scores = make_scores();

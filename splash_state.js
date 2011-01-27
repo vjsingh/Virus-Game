@@ -55,6 +55,18 @@ var splash_state = function (p) {
         }
     });
 
+    var scores_button = button(p, {
+		state : function() { return high_scores_state(p, obj); },
+        rect: {
+            pos: new p.PVector(left_x+150, btm_row_y),
+            //image: "msettings.png",
+            //over_image: "msettings_r.png",
+            text: "High Scores",
+            width: 120,
+            style: button_style,
+        }
+    });
+
     /*
     var splash_style = {
         width : 170,
@@ -108,7 +120,7 @@ var splash_state = function (p) {
 	*/
 	
 	//Not ordered
-	var all_buttons = [start_button, options_button, help_button];
+	var all_buttons = [start_button, options_button, help_button, scores_button ];
 
     // --- public methods ---
     

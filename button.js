@@ -77,7 +77,7 @@ var button = function(p, spec) {
                 //rect.set_tint(0);
                 rect.set_tint(255, 255);
                 rect.draw_twice();
-                console.log("tinting");
+                //console.log("tinting");
             }
         }
         else {

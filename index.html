@@ -1,5 +1,6 @@
 <!-- Caching -->
 <!-- html manifest="cache.manifest" --> 
+<head>
 <title>Virion</title>
 <style>
     body { 
@@ -8,9 +9,83 @@
         font-family: Arial, sans-serif;
     }
     canvas {
-        border: 0.2em solid gray;
+        border: 3px solid gray;
+        z-index: 1;
+        width: 700;
+        height: 600;
+        position: relative;
+    }
+    #scores {
+        z-index: 2; 
+        background: white;
+        color: black;
+        width: 400;
+        height: 300;
+        /* use margin to center manually */
+        /* add in border width */
+        margin-left: 153 px;
+        margin-top: 153 px;
+        position: absolute;
+        /* start hidden */
+        display: none;
     }
 </style>
+
+<!-- Sounds and Images -->
+<!--
+<script src="processing-1.0.0.min.js"></script>
+-->
+<script src="processing-1.0.0.js"></script>
+<script type="text/javascript" src="php_functions.php"></script>
+<script src="jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="jplayer/jquery.jplayer.min.js"></script>
+<script src="global_functions.js"></script>
+<script src="sound.js"></script>
+<script src="settings.js"></script>
+<script src="image_manager.js"></script>
+<script src="animated_image.js"></script>
+<script src="loading_state.js"></script>
+<script src="game_object.js"></script>
+<script src="wall_segment.js"></script>
+<script src="particle.js"></script>
+<script src="cell.js"></script>
+<script src="wall_cell.js"></script>
+<script src="empty_cell.js"></script>
+<script src="floater.js"></script>
+<script src="tkiller.js"></script>
+<script src="game_state.js"></script>
+<script src="in_game_state.js"></script>
+<script src="generator.js"> </script>
+<script src="rectangle.js"></script>
+<script src="options_state.js"></script>
+<script src="option_button.js"></script>
+<script src="help_state.js"></script>
+<script src="splash_state.js"></script>
+<script src="button.js"></script>
+<script src="state_manager.js"></script>
+<script src="pause_state.js"></script>
+<script src="game_over_state.js"></script>
+<script src="high_scores_state.js"></script>
+<script src="num_status_obj.js"></script>
+<script src="multiplier.js"></script>
+<script src="mutation_obj.js"></script>
+<script src="seeker.js"></script>
+<script src="b_cell.js"></script>
+<script src="antibody.js"></script>
+<script src="random_image_selector.js"></script>
+<script src="background_object.js"></script>
+<script src="background_edge.js"></script>
+<script src="object_with_states.js"></script>
+<script src="notification.js"></script>
+
+<script src="fisforformat.min.js"></script>
+<script src="scores/scores.js"></script>
+
+<script src="test.js"></script>
+<!-- <script src="rgbcolor.js"></script> 
+<script src="canvg.js"></script> --> 
+
+</head>
 
 <!-- Facebook Integration 
 	All of this is just to set g_user_id and g_user_name
@@ -104,58 +179,6 @@ function got_user(user) {
 <div id="jquery_jplayer_bg_0" class="jp-jplayer"></div>
 <div id="jquery_jplayer_bg_1" class="jp-jplayer"></div>
 
-<!-- Sounds and Images -->
-<!--
-<script src="processing-1.0.0.min.js"></script>
--->
-<script src="processing-1.0.0.js"></script>
-<script type="text/javascript" src="php_functions.php"></script>
-<script src="jquery-1.4.4.min.js"></script>
-<script type="text/javascript" src="jplayer/jquery.jplayer.min.js"></script>
-<script src="global_functions.js"></script>
-<script src="sound.js"></script>
-<script src="settings.js"></script>
-<script src="image_manager.js"></script>
-<script src="animated_image.js"></script>
-<script src="loading_state.js"></script>
-<script src="game_object.js"></script>
-<script src="wall_segment.js"></script>
-<script src="particle.js"></script>
-<script src="cell.js"></script>
-<script src="wall_cell.js"></script>
-<script src="empty_cell.js"></script>
-<script src="floater.js"></script>
-<script src="tkiller.js"></script>
-<script src="game_state.js"></script>
-<script src="in_game_state.js"></script>
-<script src="generator.js"> </script>
-<script src="rectangle.js"></script>
-<script src="options_state.js"></script>
-<script src="option_button.js"></script>
-<script src="help_state.js"></script>
-<script src="splash_state.js"></script>
-<script src="button.js"></script>
-<script src="state_manager.js"></script>
-<script src="pause_state.js"></script>
-<script src="game_over_state.js"></script>
-<script src="num_status_obj.js"></script>
-<script src="multiplier.js"></script>
-<script src="mutation_obj.js"></script>
-<script src="seeker.js"></script>
-<script src="b_cell.js"></script>
-<script src="antibody.js"></script>
-<script src="random_image_selector.js"></script>
-<script src="background_object.js"></script>
-<script src="background_edge.js"></script>
-<script src="object_with_states.js"></script>
-<script src="notification.js"></script>
-
-<script src="fisforformat.min.js"></script>
-<script src="scores/scores.js"></script>
-
-<script src="test.js"></script>
-<!-- <script src="rgbcolor.js"></script> 
-<script src="canvg.js"></script> --> 
 
 <!-- <audio id="changes" src="C:\Users\JKoh\Music\2Pac\Greatest Hits\05 Changes.mp3" preload="auto">
 </audio> -->
@@ -177,11 +200,15 @@ function got_user(user) {
 <div style="margin: auto; width: 700; align:center;">
     <div style="margin-bottom:1em;">Welcome to Virion beta testing!&nbsp;&nbsp;Give the game a try and then scroll down to give us your feedback.</div>
     <div style="">
+        <!-- Score -->
+        <div id="scores">
+            Could not load high scores! You may want to check your internet connection.
+        </div>
+        <!-- Game Canvas -->
         <canvas width="700" height="600" id="test_canvas"> 
             Your browser does not support the HTML5 canvas element. Upgrade to Chrome, Firefox 4, Safari, or Opera to play this game. 
         </canvas>
     </div>
-    <!--<canvas id="back_canvas" style="z-index: 1; position: absolute; left: 0px; top: 0px"></canvas>-->
     <div style="">
         <h2>Virion Beta Testing Feedback</h2>
         <div>
@@ -194,10 +221,7 @@ function got_user(user) {
     
     
 
-<!-- Score -->
-<div id="scores">
-</div>
 <script>
-    scores.do_scores();
+    //scores.do_scores();
 </script>
 

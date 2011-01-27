@@ -83,7 +83,7 @@ var state_manager = function (p) {
             switch (state_type) {
                 case "splash":
                     is_overlay = false;
-                    p.loop();
+                    p.noLoop();
                     break;
                 case "game":
                     is_overlay = false;
@@ -108,6 +108,10 @@ var state_manager = function (p) {
 				case "loading":
 					is_overlay = false;
                     p.loop();
+					break;
+				case "high_scores":
+					is_overlay = false;
+                    p.noLoop();
 					break;
             }
 			
