@@ -10,13 +10,13 @@ var make_scores = function(){
 			$.post("scores/get_scores.php", {
 				num: 10,
 				uid :  g_user_id
-			}, callback("Your Top High Scores"));
+			}, callback("Your High Scores"));
 		}
 		
 		// Global High Scores
 		$.post("scores/get_scores.php", {
 			num: 10
-		}, callback("Global Top High Scores"));
+		}, callback("Global High Scores"));
 	};
 	
 	var get_user_scores = function(callback) {
@@ -30,7 +30,12 @@ var make_scores = function(){
 	// Must use this style so long as get_scores is async
     var tab_count = 1;
 	var display_scores = function(header) {
-        var row_headers = [ "Score", "Level", "Name", "Date" ];
+        var formatters = {
+            "Score": add_commas,
+            "Level": function(x) { return x; },
+            "Name": function(x) { return x; },
+            "Date": function(x) { return x; },
+        };
 		return function(data){
 			var link = "<li><a href='#tabs-"+tab_count+"'>"
                 + header + "</a></li>";
@@ -42,7 +47,7 @@ var make_scores = function(){
 
             // -- start header row --
             con += "<tr>";
-            for_each(row_headers, function(header) {
+            for_each(keys(formatters), function(header) {
                 con += "<td>" + header + "</td>";
             });
             con += "</tr>";
@@ -53,10 +58,11 @@ var make_scores = function(){
 			// scores is an array of row objects
 			for_each(scores, function(row){
                 con += "<tr>";
-				for_each(keys(row), function(i){
+				for_each(keys(row), function(key){
+                    var f = formatters[key];
                     // dont show uid
                     if (i !== "userid") {
-                        con += "<td>" + row[i] + "</td>";
+                        con += "<td>" + f(row[key]) + "</td>";
                     }
 				});
                 con += "</tr>";
