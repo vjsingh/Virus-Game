@@ -34,7 +34,7 @@ var make_scores = function(){
 		return function(data){
 			var link = "<li><a href='#tabs-"+tab_count+"'>"
                 + header + "</a></li>";
-            $("tab-list").append(link);
+            $("#tab-list").append(link);
 
             // con is the content to put in the score tab 
             var con = "<div id='tabs-"+tab_count+"'>";
