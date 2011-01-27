@@ -61,7 +61,7 @@ var make_scores = function(){
 				for_each(keys(row), function(key){
                     var f = formatters[key];
                     // dont show uid
-                    if (i !== "userid") {
+                    if (key !== "userid") {
                         con += "<td>" + f(row[key]) + "</td>";
                     }
 				});
