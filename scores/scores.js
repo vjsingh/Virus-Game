@@ -17,7 +17,13 @@ var make_scores = function(){
 		// Global High Scores
 		$.post("scores/get_scores.php", {
 			num: 10
-		}, callback("Global High Scores"));
+		}, callback("Global High Scores",
+            // at the end of last callback we need to
+            // make the tabs
+            function() {
+                $("#scores").tabs();
+            }
+        ));
 	};
 	
 	var get_user_scores = function(callback) {
@@ -29,8 +35,9 @@ var make_scores = function(){
 	// interprets json and displays it
 	// Passing it a header returns the actual function
 	// Must use this style so long as get_scores is async
+    // Passing a function as do_more does it at the end of the callback
     var tab_count = 1;
-	var display_scores = function(header) {
+	var display_scores = function(header, do_more) {
         var headers = [ "Score", "Level", "Name", "Date" ];
         var formatters = {
             "score": add_commas,
@@ -75,6 +82,11 @@ var make_scores = function(){
 			$("#scores").append(con);
             // update tab num
             tab_count += 1;
+
+            // do some more stuff if necessary
+            if (do_more) {
+                do_more();
+            }
 		};
 	};
 	
@@ -85,8 +97,6 @@ var make_scores = function(){
         // reset tab count
         tab_count = 1;
 		get_scores(display_scores);
-        // make the tabs
-        $("#scores").tabs();
 	};
 	
 	// inserts a score into the db
