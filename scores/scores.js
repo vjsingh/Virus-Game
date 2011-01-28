@@ -50,7 +50,10 @@ var make_scores = function(){
         var headers = [ "Rank", "Score", "Level", "Name", "Date" ];
         var formatters = {
             "score": add_commas,
-            "date": function(x) { return x; },
+            "date": function(date_str) { 
+                var d = new Date(date_str); 
+                return d.f("NNN d, yyyy";
+            },
         };
 		return function(data){
 			var link = "<li><a href='#tabs-"+tab_count+"'>"
