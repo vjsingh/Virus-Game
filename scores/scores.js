@@ -6,26 +6,33 @@ var make_scores = function(){
 	// async gets scores and feeds to callback
 	var get_scores = function(callback){
 		// ajax request to get scores
+        
+        // want to do them sequentially so we
+        // chain the callbacks
 		
+        // this comes second via callback
+        var do_global = function() {
+            // Global High Scores
+            $.post("scores/get_scores.php", {
+                num: num_rows, 
+            }, callback("Global Scores",
+                // at the end of last callback we need to
+                // make the tabs
+                function() {
+                    $("#scores").tabs();
+                }
+            ));
+        };
+
+        // this comes first
 		// Personal high scores
 		if (g_user_id) {
 			$.post("scores/get_scores.php", {
 				num: num_rows,
 				uid :  g_user_id
-			}, callback("Your Scores"));
+			}, callback("Your Scores", do_global));
             console.log("getting user high scores");
 		}
-		
-		// Global High Scores
-		$.post("scores/get_scores.php", {
-			num: num_rows, 
-		}, callback("Global Scores",
-            // at the end of last callback we need to
-            // make the tabs
-            function() {
-                $("#scores").tabs();
-            }
-        ));
 	};
 	
 	var get_user_scores = function(callback) {
