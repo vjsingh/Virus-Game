@@ -11,6 +11,7 @@ var make_scores = function(){
 				num: 10,
 				uid :  g_user_id
 			}, callback("Your High Scores"));
+            console.log("getting user high scores");
 		}
 		
 		// Global High Scores
