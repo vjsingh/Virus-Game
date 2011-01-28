@@ -55,7 +55,7 @@ var make_scores = function(){
             // -- start header row --
             con += "<tr>";
             for_each(headers, function(header) {
-                con += "<th>" + header + "</th>";
+                con += "<th class='"+header+"-header'>" + header + "</th>";
             });
             con += "</tr>";
             // -- end header row --
