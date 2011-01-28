@@ -66,7 +66,7 @@ var high_scores_state = function (p, prev_state) {
     // init the scores immediately
     var init = (function() {
         // show the div
-        $("#scores").show();
+        $("#scores-wrap").show();
         // update and render scores
         // TODO what if it fails?
         scores.do_scores();
