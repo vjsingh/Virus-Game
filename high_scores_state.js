@@ -46,6 +46,9 @@ var high_scores_state = function (p, prev_state) {
     };
 
     obj.render = function() {
+        p.noStroke();
+        p.fill(0, 150);
+        p.rect(0, 0, p.width, p.height);
     };
 
 	obj.key_pressed = function(k) {
