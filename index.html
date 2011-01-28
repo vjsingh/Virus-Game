@@ -152,17 +152,24 @@ function got_user(user) {
     //userName.innerText = user.name;
     //console.log("user id: " + user.id);
     
-	//Global vars for Unique User ID and name	
-	g_user_id = user.id;
-	g_user_name = user.name;
-	
-	// do scores after setting name and id
-	//scores.do_scores();
-	
-    // Display name
-    console.log("Adding name");
-    var name_div = document.getElementById('fb_name_div');
-    name_div.innerHTML = "Your are logged in as " + g_user_name;
+    // Error checking, only update if it went correctly
+    if (user.id) {
+	    
+		//Global vars for Unique User ID and name	
+		g_user_id = user.id;
+		g_user_name = user.name;
+		
+		// do scores after setting name and id
+		//scores.do_scores();
+		
+	    // Display name
+	    console.log("Adding name");
+	    var name_div = document.getElementById('fb_name_div');
+	    name_div.innerHTML = "Your are logged in as " + g_user_name;
+    }
+    else {
+	    console.log("Error in getting facebook info");
+    }
 }
 </script>
 <p id="userName"></p>
