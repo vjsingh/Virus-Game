@@ -53,11 +53,11 @@ var make_scores = function(){
 			con += "<table class='score-table' >";
 
             // -- start header row --
-            con += "<th>";
+            con += "<tr>";
             for_each(headers, function(header) {
-                con += "<td>" + header + "</td>";
+                con += "<th>" + header + "</th>";
             });
-            con += "</th>";
+            con += "</tr>";
             // -- end header row --
             
 			var scores = jQuery.parseJSON(data);
