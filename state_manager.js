@@ -103,14 +103,14 @@ var state_manager = function (p) {
 					break;
 				case "options":
 					is_overlay = true;
-                    p.loop();
+                    p.noLoop();
 					break;
 				case "loading":
 					is_overlay = false;
                     p.loop();
 					break;
 				case "high_scores":
-					is_overlay = false;
+					is_overlay = true;
                     p.noLoop();
 					break;
             }
