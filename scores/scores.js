@@ -52,7 +52,7 @@ var make_scores = function(){
             "score": add_commas,
             "date": function(date_str) { 
                 var d = new Date(date_str); 
-                return d.f("NNN d, yyyy";
+                return d.f("NNN d, yyyy");
             },
         };
 		return function(data){
