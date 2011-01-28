@@ -1,39 +1,56 @@
 var make_scores = function(){
 	var obj = {};
+
+    var num_rows = 15;
 	
 	// async gets scores and feeds to callback
 	var get_scores = function(callback){
 		// ajax request to get scores
+        
+        // want to do them sequentially so we
+        // chain the callbacks
 		
+        // this comes second via callback
+        var do_global = function() {
+            // Global High Scores
+            $.post("scores/get_scores.php", {
+                num: num_rows, 
+            }, callback("Global Scores",
+                // at the end of last callback we need to
+                // make the tabs
+                function() {
+                    $("#scores").tabs();
+                }
+            ));
+        };
+
+        // this comes first
 		// Personal high scores
 		if (g_user_id) {
 			$.post("scores/get_scores.php", {
-				num: 10,
+				num: num_rows,
 				uid :  g_user_id
-			}, callback("Your High Scores"));
+			}, callback("Your Scores", do_global));
+            console.log("getting user high scores");
 		}
-		
-		// Global High Scores
-		$.post("scores/get_scores.php", {
-			num: 10
-		}, callback("Global High Scores"));
 	};
 	
 	var get_user_scores = function(callback) {
 		$.post("scores/get_scores.php", {
-			num : 10
+			num : num_rows 
 		}, callback);
 	};
 	
 	// interprets json and displays it
 	// Passing it a header returns the actual function
 	// Must use this style so long as get_scores is async
+    // Passing a function as do_more does it at the end of the callback
     var tab_count = 1;
-	var display_scores = function(header) {
-        var headers = [ "Score", "Level", "Name", "Date" ];
+	var display_scores = function(header, do_more) {
+        var headers = [ "Rank", "Score", "Level", "Name", "Date" ];
         var formatters = {
-            "Score": add_commas,
-            "Date": function(x) { return x; },
+            "score": add_commas,
+            "date": function(x) { return x; },
         };
 		return function(data){
 			var link = "<li><a href='#tabs-"+tab_count+"'>"
@@ -47,7 +64,7 @@ var make_scores = function(){
             // -- start header row --
             con += "<tr>";
             for_each(headers, function(header) {
-                con += "<td>" + header + "</td>";
+                con += "<th class='"+header+"-header'>" + header + "</th>";
             });
             con += "</tr>";
             // -- end header row --
@@ -55,8 +72,10 @@ var make_scores = function(){
 			var scores = jQuery.parseJSON(data);
 			//console.log(scores);
 			// scores is an array of row objects
+            var row_count = 1;
 			for_each(scores, function(row){
                 con += "<tr>";
+                con += "<td>" + row_count + ".</td>";
 				for_each(keys(row), function(key){
                     var f = formatters[key] || function(x) { return x; };
                     // dont show uid
@@ -65,7 +84,17 @@ var make_scores = function(){
                     }
 				});
                 con += "</tr>";
+                row_count += 1;
 			});
+            // fill up rest of table for beauty's sake
+            while (row_count <= num_rows) {
+                con += "<tr>";
+			    for_each(headers, function(header){
+                    con += "<td>&nbsp;</td>";
+				});
+                con += "</tr>";
+                row_count += 1;
+            }
 
             con += "</table>";
             con += "</div>";
@@ -74,6 +103,11 @@ var make_scores = function(){
 			$("#scores").append(con);
             // update tab num
             tab_count += 1;
+
+            // do some more stuff if necessary
+            if (do_more) {
+                do_more();
+            }
 		};
 	};
 	
@@ -84,8 +118,6 @@ var make_scores = function(){
         // reset tab count
         tab_count = 1;
 		get_scores(display_scores);
-        // make the tabs
-        $("#scores").tabs();
 	};
 	
 	// inserts a score into the db

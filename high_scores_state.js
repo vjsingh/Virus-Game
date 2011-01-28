@@ -19,12 +19,12 @@ var high_scores_state = function (p, prev_state) {
 	var quit_button = button(p, {
 		state : function() { 
             // hide the div
-            $("#scores").hide();
+            $("#scores-wrap").hide();
             $("#scores").tabs("destroy");
             return splash_state(p);
         },	
 		rect : {
-			pos : new p.PVector(500, 500),
+			pos : new p.PVector(500, 550),
 			text: "Main Menu",
             //text_x_offset: -5,
             image: "quit.png",
@@ -46,6 +46,9 @@ var high_scores_state = function (p, prev_state) {
     };
 
     obj.render = function() {
+        p.noStroke();
+        p.fill(0, 150);
+        p.rect(0, 0, p.width, p.height);
     };
 
 	obj.key_pressed = function(k) {
@@ -63,7 +66,7 @@ var high_scores_state = function (p, prev_state) {
     // init the scores immediately
     var init = (function() {
         // show the div
-        $("#scores").show();
+        $("#scores-wrap").show();
         // update and render scores
         // TODO what if it fails?
         scores.do_scores();
