@@ -19,7 +19,7 @@ var high_scores_state = function (p, prev_state) {
 	var quit_button = button(p, {
 		state : function() { 
             // hide the div
-            $("#scores").hide();
+            $("#scores-wrap").hide();
             $("#scores").tabs("destroy");
             return splash_state(p);
         },	
