@@ -1,5 +1,7 @@
 var make_scores = function(){
 	var obj = {};
+
+    var num_rows = 15;
 	
 	// async gets scores and feeds to callback
 	var get_scores = function(callback){
@@ -8,7 +10,7 @@ var make_scores = function(){
 		// Personal high scores
 		if (g_user_id) {
 			$.post("scores/get_scores.php", {
-				num: 10,
+				num: num_rows,
 				uid :  g_user_id
 			}, callback("Your Scores"));
             console.log("getting user high scores");
@@ -16,7 +18,7 @@ var make_scores = function(){
 		
 		// Global High Scores
 		$.post("scores/get_scores.php", {
-			num: 10
+			num: num_rows, 
 		}, callback("Global Scores",
             // at the end of last callback we need to
             // make the tabs
@@ -28,7 +30,7 @@ var make_scores = function(){
 	
 	var get_user_scores = function(callback) {
 		$.post("scores/get_scores.php", {
-			num : 10
+			num : num_rows 
 		}, callback);
 	};
 	
@@ -78,7 +80,7 @@ var make_scores = function(){
                 row_count += 1;
 			});
             // fill up rest of table for beauty's sake
-            while (row_count<10) {
+            while (row_count <= num_rows) {
                 con += "<tr>";
 			    for_each(headers, function(header){
                     con += "<td>&nbsp;</td>";
