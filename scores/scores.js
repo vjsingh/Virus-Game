@@ -75,7 +75,7 @@ var make_scores = function(){
                 con += "</tr>";
 			});
             // fill up rest of table for beauty's sake
-            for (int i=0; i<10-scores.length; i++) {
+            for (var i=0; i<10-scores.length; i++) {
                 con += "<tr>";
 			    for_each(headers, function(header){
                     con += "<td></td>";
