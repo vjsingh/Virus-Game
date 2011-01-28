@@ -78,7 +78,7 @@ var make_scores = function(){
             for (var i=0; i<10-scores.length; i++) {
                 con += "<tr>";
 			    for_each(headers, function(header){
-                    con += "<td> </td>";
+                    con += "<td>&nbsp;</td>";
 				});
                 con += "</tr>";
             }
