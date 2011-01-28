@@ -38,7 +38,7 @@ var make_scores = function(){
     // Passing a function as do_more does it at the end of the callback
     var tab_count = 1;
 	var display_scores = function(header, do_more) {
-        var headers = [ "Score", "Level", "Name", "Date" ];
+        var headers = [ "Rank", "Score", "Level", "Name", "Date" ];
         var formatters = {
             "score": add_commas,
             "date": function(x) { return x; },
@@ -63,8 +63,10 @@ var make_scores = function(){
 			var scores = jQuery.parseJSON(data);
 			//console.log(scores);
 			// scores is an array of row objects
+            var row_count = 1;
 			for_each(scores, function(row){
                 con += "<tr>";
+                con += "<td>" + row_count + ".</td>";
 				for_each(keys(row), function(key){
                     var f = formatters[key] || function(x) { return x; };
                     // dont show uid
@@ -73,14 +75,16 @@ var make_scores = function(){
                     }
 				});
                 con += "</tr>";
+                row_count += 1;
 			});
             // fill up rest of table for beauty's sake
-            for (var i=0; i<10-scores.length; i++) {
+            while (row_count<10) {
                 con += "<tr>";
 			    for_each(headers, function(header){
                     con += "<td>&nbsp;</td>";
 				});
                 con += "</tr>";
+                row_count += 1;
             }
 
             con += "</table>";
