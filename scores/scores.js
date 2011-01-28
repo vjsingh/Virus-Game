@@ -10,14 +10,14 @@ var make_scores = function(){
 			$.post("scores/get_scores.php", {
 				num: 10,
 				uid :  g_user_id
-			}, callback("Your High Scores"));
+			}, callback("Your Scores"));
             console.log("getting user high scores");
 		}
 		
 		// Global High Scores
 		$.post("scores/get_scores.php", {
 			num: 10
-		}, callback("Global High Scores",
+		}, callback("Global Scores",
             // at the end of last callback we need to
             // make the tabs
             function() {
@@ -53,11 +53,11 @@ var make_scores = function(){
 			con += "<table class='score-table' >";
 
             // -- start header row --
-            con += "<tr>";
+            con += "<th>";
             for_each(headers, function(header) {
                 con += "<td>" + header + "</td>";
             });
-            con += "</tr>";
+            con += "</th>";
             // -- end header row --
             
 			var scores = jQuery.parseJSON(data);

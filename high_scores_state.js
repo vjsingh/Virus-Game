@@ -24,7 +24,7 @@ var high_scores_state = function (p, prev_state) {
             return splash_state(p);
         },	
 		rect : {
-			pos : new p.PVector(500, 500),
+			pos : new p.PVector(500, 550),
 			text: "Main Menu",
             //text_x_offset: -5,
             image: "quit.png",
