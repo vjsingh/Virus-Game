@@ -56,6 +56,10 @@ var make_scores = function(){
             },
         };
 		return function(data){
+            // since we got some data
+            // remove the loading message
+            $("#scores-loading").remove();
+
 			var link = "<li><a href='#tabs-"+tab_count+"'>"
                 + header + "</a></li>";
             $("#tab-list").append(link);
