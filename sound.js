@@ -33,8 +33,8 @@ var sound_manager = function() {
 				ended : function() {
 					audiochannels[a]['finished'] = true;
 				},
-				supplied : "oga"
-				//oggSupport: true
+				supplied : "oga",
+				oggSupport: true
 				//solution : "flash"
 			});
         }
@@ -66,7 +66,7 @@ var sound_manager = function() {
 						jplayer_instance.jPlayer("setMedia", {oga : g_soundDataMap[s]});
 						//jplayer_instance.jPlayer.event.ready = function() {console.log("read");};
 						jplayer_instance.jPlayer("play");                    
-						console.log("Playing: " + s);
+						//console.log("Playing: " + s);
 						break;
                     }
                 }
