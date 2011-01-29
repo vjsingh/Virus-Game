@@ -33,6 +33,9 @@ var make_scores = function(){
 			}, callback("Your Scores", do_global));
             console.log("getting user high scores");
 		}
+        else {
+            do_global();
+        }
 	};
 	
 	var get_user_scores = function(callback) {
@@ -67,45 +70,56 @@ var make_scores = function(){
 
             // con is the content to put in the score tab 
             var con = "<div id='tabs-"+tab_count+"'>";
-			con += "<table class='score-table' >";
 
-            // -- start header row --
-            con += "<tr>";
-            for_each(headers, function(header) {
-                con += "<th class='"+header+"-header'>" + header + "</th>";
-            });
-            con += "</tr>";
-            // -- end header row --
-            
-			var scores = jQuery.parseJSON(data);
-			//console.log(scores);
-			// scores is an array of row objects
-            var row_count = 1;
-			for_each(scores, function(row){
-                con += "<tr>";
-                con += "<td>" + row_count + ".</td>";
-				for_each(keys(row), function(key){
-                    var f = formatters[key] || function(x) { return x; };
-                    // dont show uid
-                    if (key !== "userid") {
-                        con += "<td>" + f(row[key]) + "</td>";
-                    }
-				});
-                con += "</tr>";
-                row_count += 1;
-			});
-            // fill up rest of table for beauty's sake
-            while (row_count <= num_rows) {
-                con += "<tr>";
-			    for_each(headers, function(header){
-                    con += "<td>&nbsp;</td>";
-				});
-                con += "</tr>";
-                row_count += 1;
+            try {
+			    var scores = jQuery.parseJSON(data);
             }
+            catch (e) {
+                con += "<div style='padding:5;'>Error loading scores."
+                   +" Please check your internet connection.";
+            }
+            if (scores) {
 
-            con += "</table>";
-            con += "</div>";
+                con += "<table class='score-table' >";
+
+                // -- start header row --
+                con += "<tr>";
+                for_each(headers, function(header) {
+                    con += "<th class='"+header+"-header'>" + header + "</th>";
+                });
+                con += "</tr>";
+                // -- end header row --
+                
+                //console.log(scores);
+                // scores is an array of row objects
+                var row_count = 1;
+                for_each(scores, function(row){
+                    con += "<tr>";
+                    con += "<td>" + row_count + ".</td>";
+                    for_each(keys(row), function(key){
+                        var f = formatters[key] || function(x) { return x; };
+                        // dont show uid
+                        if (key !== "userid") {
+                            con += "<td>" + f(row[key]) + "</td>";
+                        }
+                    });
+                    con += "</tr>";
+                    row_count += 1;
+                });
+                // fill up rest of table for beauty's sake
+                while (row_count <= num_rows) {
+                    con += "<tr>";
+                    for_each(headers, function(header){
+                        con += "<td>&nbsp;</td>";
+                    });
+                    con += "</tr>";
+                    row_count += 1;
+                }
+
+                con += "</table>";
+                con += "</div>";
+
+            }
 
             // add it to page
 			$("#scores").append(con);
