@@ -18,8 +18,8 @@ var in_game_state = function (p, previous_state) {
     
     // --- private variables ---
 
-	GOOD_NOTIFICATION_COLOR = p.color(0, 255, 0);
-	BAD_NOTIFICATION_COLOR = p.color(255, 0, 0);
+	var GOOD_NOTIFICATION_COLOR = p.color(0, 255, 0);
+	var BAD_NOTIFICATION_COLOR = p.color(255, 0, 0);
 	
 	var prev_state = previous_state;
 	// distance is the x-coordinate of the total distance traveled 
@@ -1394,6 +1394,9 @@ var in_game_state = function (p, previous_state) {
                         }
                     );
 
+                    // stop notifications
+                    all_notifications = [];
+
                     // stop the time and stuff
                     paused = true;
 					
@@ -1581,11 +1584,11 @@ var in_game_state = function (p, previous_state) {
 		for_each(all_status_objs, function(o) {o.draw();});
 		
 		// Draw all the notifications, removing if finishing
-		for_each(all_notifications, function(n) {
-			if (!n.draw()) {
-				remove_elt(all_notifications, n);
-			}
-		})
+        for_each(all_notifications, function(n) {
+            if (!n.draw()) {
+                remove_elt(all_notifications, n);
+            }
+        });
     };
 	
 	var do_pause = function() {
