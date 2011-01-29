@@ -168,9 +168,9 @@ if(window.location.hash.length == 0)
 
 } else { // access token in URL
     accessToken = window.location.hash.substring(1);
-    console.log(accessToken);
+    
     // Only update if hash is from facebook
-    console.log(accessToken.indexOf('access_token'));
+    //console.log(accessToken.indexOf('access_token'));
     if (accessToken.indexOf('access_token') !== -1) {
 	    graphUrl = "https://graph.facebook.com/me?" + accessToken +
 	                "&callback=got_user"
