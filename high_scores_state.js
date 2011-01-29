@@ -65,6 +65,11 @@ var high_scores_state = function (p, prev_state) {
 
     // init the scores immediately
     var init = (function() {
+        // add a loading message to be removed on load
+        $("#scores-wrap").prepend(
+            "<div id='scores-loading' style='height:400; background: black; text-align:center;' ><div style='position:relative; top:50%;'>Loading high score data...</div></div>"
+        );
+
         // show the div
         $("#scores-wrap").show();
         // update and render scores
