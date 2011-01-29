@@ -91,7 +91,7 @@ var cell = function(p, spec) {
         }
         else {
             if (state === "infected") {
-                p.fill(obj.get_color());
+		p.fill(obj.get_color());
                 // draw after drawing the image
             }
             else if (state === "active") {
@@ -105,9 +105,11 @@ var cell = function(p, spec) {
 				p.ellipse(pos.x, pos.y, obj.get_width(), obj.get_height());
 				
 				p.noStroke();
-                p.fill(obj.get_color());
+		p.fill(obj.get_color());
             }
-            p.ellipse(pos.x, pos.y, obj.get_width() * 4/5, obj.get_height() * 4/5);
+            if (infect_anim.is_finished()) {
+		    p.ellipse(pos.x, pos.y, obj.get_width() * 4/5, obj.get_height() * 4/5);
+            }
         }
 
         p.imageMode(obj.get_mode());
