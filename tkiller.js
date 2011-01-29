@@ -34,6 +34,7 @@ var tkiller = function(p, spec) {
 	 
 	 
     var t_anim = animated_image("t_animation", {anim_rate : 6});
+    var t_image;
     t_anim.start();
     t_anim.loop();
 
@@ -78,7 +79,15 @@ var tkiller = function(p, spec) {
         p.rectMode(p.CORNER);
 		p.rect(rectx_offset, recty_offset, rect_width, rect_height);
 		//p.image(t_image, 0, 0, obj.get_width(), obj.get_height());
-            p.image(t_anim.get_frame(), 0, 0,
+        if (obj.get_target() === null) {
+            t_anim.set_rate(6);
+        }
+        else {
+            t_anim.set_rate(3);
+        }
+        t_image = t_anim.get_frame();
+
+        p.image(t_image, 0, 0,
                     obj.get_width(), obj.get_height());
 		p.popMatrix();
     };

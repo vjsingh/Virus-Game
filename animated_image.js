@@ -26,7 +26,7 @@ var animated_image = function(image_name, spec) {
 	var active = true;
 	var loop = false;
 	var rate_counter = 0; // Goes from 0 to anim_rate - 1
-	var anim_rate = spec.anim_rate || 3
+	var anim_rate = spec.anim_rate || 3;
 	
 	// If we are reversing, add all the images in the opposite
 	// order to all_images
@@ -63,11 +63,15 @@ var animated_image = function(image_name, spec) {
 		return curr_image;
 	};
 
+    obj.set_rate = function(r) {
+        anim_rate = r;
+    };
+
 	// private methods
 	
 	var update = function() {
 		if (active) {
-			if (rate_counter === (anim_rate - 1)) {
+			if (rate_counter >= (anim_rate - 1)) {
 				next_frame();
 				rate_counter = 0;
 			}
