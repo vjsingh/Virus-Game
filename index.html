@@ -168,6 +168,7 @@ if(window.location.hash.length == 0)
 
 } else { // access token in URL
     accessToken = window.location.hash.substring(1);
+    console.log(accessToken);
     graphUrl = "https://graph.facebook.com/me?" + accessToken +
                 "&callback=got_user"
 
