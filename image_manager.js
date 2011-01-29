@@ -21,6 +21,8 @@ var make_image_manager = function() {
         wall_segments : { dir : "wall_segments/" },
 		macrophage : {dir : "macrophage_animation/"},
 		burst : { dir : "burstingcell_animation/"},
+		cell_infect : { dir : "cellinfect_animation/"},
+		t_animation : { dir : "t_animation/"},
 		buttons : { dir : "buttons/"},
         // catches all images in images/
         other : { dir : "" },

@@ -26,6 +26,7 @@ var cell = function(p, spec) {
 	var cell_image = random_from(
             image_manager.get_images("infectable_cell")).image;
     var burst_anim = animated_image("burst", {});
+    var infect_anim = animated_image("cell_infect", {});
 	
     // state can be "alive", "infected", "active", or "dead"
     var state = spec.state || "alive";
@@ -90,7 +91,13 @@ var cell = function(p, spec) {
         }
         else {
             if (state === "infected") {
-                p.fill(obj.get_color());
+		if (!infect_anim.is_finished()) {
+		    // draw frame and advance anim
+		    p.image(infect_anim.get_frame(), pos.x, pos.y,
+		    obj.get_width(), obj.get_height());
+		    p.fill(obj.get_color());
+	            return;
+		}
             }
             else if (state === "active") {
                 drawArrow();
@@ -140,6 +147,9 @@ var cell = function(p, spec) {
     };
 
     obj.set_state = function(s) {
+        if (s === "infected") {
+            infect_anim.start();
+        }
         state = s;
     };
 	
