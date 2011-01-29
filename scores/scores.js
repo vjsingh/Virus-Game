@@ -58,6 +58,7 @@ var make_scores = function(){
 		return function(data){
             // since we got some data
             // remove the loading message
+            console.log("removing loading msg");
             $("#scores-loading").remove();
 
 			var link = "<li><a href='#tabs-"+tab_count+"'>"
@@ -120,6 +121,7 @@ var make_scores = function(){
 	
 	// gets and displays scores
 	obj.do_scores = function(){
+        console.log("trying to load scores");
 		$("#scores").empty();
 		$("#scores").append("<ul id='tab-list'></ul>");
         // reset tab count
