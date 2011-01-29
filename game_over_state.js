@@ -45,10 +45,20 @@ var game_over_state = function (p, prev_state, spec) {
             style: button_style
 		}
 	});
+	var scores_button  = button(p, {
+		state : function() { return high_scores_state(p); },
+		rect : {
+			pos : new p.PVector(p.width / 2, 390),
+			text : "High Scores",
+            //text_x_offset: 35,
+            //image: "mainmenu.png",
+            //style: button_style
+		}
+	});
 	var splash_button  = button(p, {
 		state : function() { return splash_state(p); },
 		rect : {
-			pos : new p.PVector(p.width / 2, 390),
+			pos : new p.PVector(p.width / 2, 450),
 			text : "Main Menu",
             text_x_offset: 35,
             image: "mainmenu.png",
@@ -57,7 +67,7 @@ var game_over_state = function (p, prev_state, spec) {
 	});
 		
 	//Not ordered
-	var all_buttons = [restart_button, splash_button];
+	var all_buttons = [restart_button, splash_button, scores_button];
 	var all_rectangles = [score_rect, mutation_rect];
 
     // --- public methods ---
