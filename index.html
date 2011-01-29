@@ -88,6 +88,7 @@
 
 <div id="jquery_jplayer_bg_0" class="jp-jplayer"></div>
 <div id="jquery_jplayer_bg_1" class="jp-jplayer"></div>
+<div id="jplayer_divs_all_loaded"> </div>
 
 
 <!-- <audio id="changes" src="C:\Users\JKoh\Music\2Pac\Greatest Hits\05 Changes.mp3" preload="auto">
@@ -104,6 +105,9 @@
 </audio>
 <audio id="kill" src="sounds/kill.ogg">
 </audio>
+
+
+
 <!-- Sounds and Images -->
 <!--
 <script src="processing-1.0.0.min.js"></script>
@@ -250,6 +254,9 @@ function got_user(user) {
 
 
 
+<!-- Init sounds after jplayer divs are loaded 
+<script> document.getElementById("jplayer_divs_all_loaded").onload = g_divs_loaded_init_sounds</script>
+-->
 
 <div style="margin: auto; width: 700; align:center;">
     <div style="margin-bottom:1em;">Welcome to Virion beta testing!&nbsp;&nbsp;Give the game a try and then scroll down to give us your feedback.</div>
