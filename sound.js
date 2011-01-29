@@ -6,6 +6,9 @@ var sound_manager = function() {
 
 	var the_swf_path = "./jplayer/";
     // Taken from http://www.storiesinflight.com/html5/audio.html
+	
+	//g_divs_loaded_init_sounds = function() {
+		//console.log("AAAAA initing sounds");
     obj.play_sound = (function() {
         var channel_max = 10;										// number of channels
         audiochannels = new Array();
@@ -73,6 +76,7 @@ var sound_manager = function() {
             }
         }
     }());
+	
 
     var background_music = null;
     var all_bg_music = [];
