@@ -470,6 +470,8 @@ var in_game_state = function (p, previous_state) {
             if (tkill.get_target()
                 // if it's dead
                 && (tkill.get_target().is_dead()
+                    // or dying
+                    || tkill.get_target().get_state() === "dying"
                     // or offscreen
                     || tkill.get_target().is_offscreen()
                     // or the target mutated
@@ -775,7 +777,8 @@ var in_game_state = function (p, previous_state) {
             // only if cell is "alive"
             // (ie only one particle per cell)
             assert(cell, "Not a cell in infect!");
-            if (cell.get_state() !== "dead") {
+            if (cell.get_state() !== "dead"
+                && cell.get_state() !== "dying") {
                 par.die();
             }
             if (cell.get_state() === "alive") {

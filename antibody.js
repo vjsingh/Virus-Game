@@ -50,7 +50,9 @@ var antibody = function(p, spec) {
             if (tar && (tar.has_antibody()
                      // also don't want them to keep target
                      // if the target changes level
-                    || tar.get_level() !== obj.get_level())) {
+                    || tar.get_level() !== obj.get_level()
+                    // or if it starts to die
+                    || tar.get_state() === "dying")) {
                 obj.set_target(null);
             }
         }

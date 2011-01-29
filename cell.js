@@ -57,9 +57,15 @@ var cell = function(p, spec) {
             // spin the arrow
             rotateArrow();
         }
+        else if (state === "dying") {
+            if (burst_anim.is_finished()) {
+                obj.set_state("dead");
+            }
+        } 
+        /*
         else if (state === "dead") {
-            // explode!!
         }
+        */
     };
 
     // draw makes a cell with a different color depending on state
@@ -70,7 +76,7 @@ var cell = function(p, spec) {
 
         p.noStroke();
 
-        if (state === "dead") {
+        if (state === "dying") {
             // draw frame and advance anim
             p.image(burst_anim.get_frame(), pos.x, pos.y,
                     obj.get_width(), obj.get_height());
@@ -126,7 +132,7 @@ var cell = function(p, spec) {
 
     obj.is_dead = function() {
         //console.log(burst_anim.is_finished());
-        return state === "dead" && burst_anim.is_finished();
+        return state === "dead";
     };
 
     obj.stop_animation = function() {
@@ -154,7 +160,7 @@ var cell = function(p, spec) {
         if (anti) {
             anti.die();
         }
-        obj.set_state("dead");
+        obj.set_state("dying");
         burst_anim.start();
     };
 	
