@@ -33,6 +33,10 @@ var tkiller = function(p, spec) {
 	var rect_height = (17 / 30) * obj.get_height();
 	 
 	 
+    var t_anim = animated_image("t_animation", {anim_rate : 6});
+    t_anim.start();
+    t_anim.loop();
+
     // --- public methods --- 
 
     // implementing game_object interface
@@ -73,7 +77,9 @@ var tkiller = function(p, spec) {
 		p.noStroke();
         p.rectMode(p.CORNER);
 		p.rect(rectx_offset, recty_offset, rect_width, rect_height);
-		p.image(t_image, 0, 0, obj.get_width(), obj.get_height());
+		//p.image(t_image, 0, 0, obj.get_width(), obj.get_height());
+            p.image(t_anim.get_frame(), 0, 0,
+                    obj.get_width(), obj.get_height());
 		p.popMatrix();
     };
 

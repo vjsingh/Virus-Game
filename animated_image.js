@@ -4,7 +4,7 @@
 // Unless you call loop, will only run through the images once
 // spec:
 //		All optional
-// 		rate : the number of frames to display each image
+// 		anim_rate : the number of frames to display each image
 //		reverse : whether to go backwards in the images when you reach the end or not
 
 var animated_image = function(image_name, spec) {
