@@ -45,13 +45,10 @@ var rectangle = function (p, spec) {
 	}
     spec.image_x_offset = spec.image_x_offset || 0;
 	var rect_mode = p.CENTER;
-    // tints background image
+    // tints background image for mouse over
     var tint = 255;
     var alpha = 255;
-    var times_to_draw = 1;
     obj.set_tint = function(t, a) { tint = t; alpha = a || 255; };
-    obj.draw_twice = function() { times_to_draw = 2; };
-    obj.draw_once = function() { times_to_draw = 1; };
 
 
     // --- public methods ---
@@ -66,13 +63,10 @@ var rectangle = function (p, spec) {
 		if (rect_image) {
 			p.imageMode(rect_mode);
 			//rect_image.resize(width, height);
-            // draw the image twice, once is the overlay with a tint
-            for (var i=0; i<times_to_draw; i++) {
-                p.tint(tint, alpha);
-                p.image(rect_image, 
-                        pos.x+spec.image_x_offset, pos.y,
-                        width, height);
-            }
+            p.tint(tint, alpha);
+            p.image(rect_image, 
+                    pos.x+spec.image_x_offset, pos.y,
+                    width, height);
             p.noTint();
             
 		}
