@@ -26,6 +26,10 @@
         appId:179028108782663, cookie:true, 
         status:true, xfbml:true 
      });
+    FB.Event.subscribe('auth.login', function(response) {
+	console.log("Auth.login call");
+	window.location.reload();
+	});
 
 </script>	  
 <div id="fbmessage"> Login with Facebook to track your high scores! </div>
