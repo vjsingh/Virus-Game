@@ -6,12 +6,11 @@
 <link type="text/css" href="css/styles.css" rel="stylesheet" />
 <style>
     body { 
-        background: black;
-        color: white;
+        background: white;
+        color: black;
         font-family: Arial, sans-serif;
     }
 </style>
-
 
 </head>
 
@@ -19,7 +18,7 @@
 	All of this is just to set g_user_id and g_user_name
 -->
 <!-- This initialized the SDK so we can use it -->
-  <div id="fb-root"></div>
+<div id="fb-root"></div>
   <script src="http://connect.facebook.net/en_US/all.js">
   </script>
   	<script>
@@ -29,7 +28,7 @@
      });
 
 </script>	  
-<div> Login with Facebook to track your high scores! </div>
+<div id="fbmessage"> Login with Facebook to track your high scores! </div>
 
 <!-- FB Login Button -->
   <fb:login-button
@@ -106,7 +105,6 @@ function got_user(user) {
 
 
 <div style="margin: auto; width: 700; align:center;">
-    <div style="margin-bottom:1em;">Welcome to Virion beta testing!&nbsp;&nbsp;Give the game a try and then scroll down to give us your feedback.</div>
     <div style="">
         <!-- Score -->
         <div id="scores-wrap">
@@ -122,10 +120,9 @@ function got_user(user) {
     <div style="">
         <h2>Virion Beta Testing Feedback</h2>
         <div>
-            Tell us what you thought of the game by filling out the survey below. You can also email us at <em>viriongame at gmail dot com</em>. Thanks! We appreciate your help. &nbsp;&mdash; The Virion Team
+            Tell us what you thought of the game by filling out <a href="https://spreadsheets0.google.com/viewform?hl=en&hl=en&formkey=dEcxNks5Vndqb1dVN2xsSTg0czFkemc6MQ#gid=0">this survey</a>. You can also email us at <em>viriongame at gmail dot com</em>. Thanks! We appreciate your help. &nbsp;&mdash; The Virion Team
         </div>
     </div>
-    <iframe src="https://spreadsheets1.google.com/embeddedform?formkey=dEcxNks5Vndqb1dVN2xsSTg0czFkemc6MQ&ttl=0&bc=000&f=Arial&tc=fff&htc=888&lc=f00&hl=en&pli=1" width="700" height="3500"  frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
 </div>
 
     
