@@ -26,6 +26,7 @@ table.score-table {
     border-collapse: collapse;
     width: 100%;
     background: black;
+    color: white;
     /*padding: 0.2em;*/
 }
 .score-table, .score-table tr, .score-table td {
