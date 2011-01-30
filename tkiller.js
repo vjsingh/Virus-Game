@@ -87,6 +87,13 @@ var tkiller = function(p, spec) {
         }
         t_image = t_anim.get_frame();
 
+        if (obj.is_illustration()) {
+            t_image = image_manager.get_image("tcell_2.png");
+            // to make it less transparent
+            p.image(t_image, 0, 0,
+                    obj.get_width(), obj.get_height());
+        }
+
         p.image(t_image, 0, 0,
                     obj.get_width(), obj.get_height());
 		p.popMatrix();

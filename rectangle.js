@@ -49,7 +49,7 @@ var rectangle = function (p, spec) {
     var tint = 255;
     var alpha = 255;
     var times_to_draw = 1;
-    obj.set_tint = function(t, a) { tint = t; alpha = a; };
+    obj.set_tint = function(t, a) { tint = t; alpha = a || 255; };
     obj.draw_twice = function() { times_to_draw = 2; };
     obj.draw_once = function() { times_to_draw = 1; };
 

@@ -9,6 +9,7 @@
 //  p.PVector vel = initial velocity
 //  p.PVector accel = initial acceleration
 //  mutation_info = object with level, num_particles and color props
+//  illustration = boolean that says whether or not to draw animations
 
 var game_object = function (p, spec) {
 
@@ -36,6 +37,7 @@ var game_object = function (p, spec) {
     // used for mutation
     var mutation_info = spec.mutation_info ||
             { level: -1, color: p.color(0, 0, 0), particles: 0 };
+    var illustration = spec.illustration || false;
 			
 	var alive = true;
 	
@@ -134,8 +136,16 @@ var game_object = function (p, spec) {
 	obj.die = function() {
 		alive = false;
 	};
+
+    obj.is_illustration = function() {
+        return illustration;
+    };
 	
     // --- setters --- 
+
+    obj.set_illustration = function(i) {
+        illustration = i;
+    };
     
     obj.set_pos = function(new_pos) {
         pos = new_pos;

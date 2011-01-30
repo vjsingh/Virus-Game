@@ -45,11 +45,15 @@ var button = function(p, spec) {
 
     // makes a button not active
     obj.deactivate = function() {
+        // hack to make sure button tint updates
+        obj.mouse_moved(-1, -1);
         active = false;
     };
     
     // makes a button active
     obj.activate = function() {
+        // hack to make sure button tint updates
+        obj.mouse_moved(-1, -1);
         active = true;
     };
 	
@@ -76,16 +80,20 @@ var button = function(p, spec) {
             else {
                 //rect.set_tint(0);
                 rect.set_tint(255, 255);
-                rect.draw_twice();
+                //rect.draw_twice();
                 //console.log("tinting");
             }
         }
         else {
-            rect.set_tint(255, 255);
-            rect.draw_once();
+            if (!over_image) {
+                rect.set_tint(200, 255);
+            }
+            //rect.draw_once();
             rect.set_image(image);
         }
     };
+    // call once to init button tints 
+    obj.mouse_moved(-1, -1);
 	
 	// Returns the state to go to
 	obj.get_state = function() {

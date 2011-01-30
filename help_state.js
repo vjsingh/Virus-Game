@@ -204,6 +204,7 @@ var help_state = function (p, prev_state) {
                         pos: new p.PVector(20, 30),
                         width: 30, height: 30,
                         mutation_info: { color: color1 },
+                        illustration: true
                     });
                     c.set_image(cimg);
                     c.set_state("active");
@@ -246,6 +247,7 @@ var help_state = function (p, prev_state) {
                         pos: new p.PVector(25, 35),
                         width: 50, height: 70,
                         mutation_info: { color: color1 },
+                        illustration: true
                     });
                     m.activate();
                     return function() { 
@@ -267,6 +269,7 @@ var help_state = function (p, prev_state) {
                         pos: new p.PVector(30, 55),
                         width: 40, height: 40,
                         mutation_info: { color: color1 },
+                        illustration: true
                     });
                     b.set_state("active");
                     b.set_target_angle(-p.PI/2);
@@ -305,10 +308,13 @@ var help_state = function (p, prev_state) {
                         pos: new p.PVector(30, 30),
                         width: 60, height: 60,
                         mutation_info: { color: color1 },
+                        illustration: true
                     });
-                    tk.set_state("active");
+                    //tk.set_state("alive");
 
-                    return function() { tk.draw(); };
+                    return function() { 
+                        tk.draw();
+                    };
                 }())
             },
             img_left: true
@@ -327,14 +333,17 @@ var help_state = function (p, prev_state) {
                     var c1 = cell(p, {
                         pos: new p.PVector(10, 20),
                         width: 30, height: 30,
-                        mutation_info: { color: color1 }
+                        mutation_info: { color: color1 },
+                        illustration: true
                     });
                     c1.set_image(cimg);
                     c1.set_state("infected");
+
                     var c2 = cell(p, {
                         pos: new p.PVector(70, 80),
                         width: 30, height: 30,
-                        mutation_info: { color: color2 }
+                        mutation_info: { color: color2 },
+                        illustration: true
                     });
                     c2.set_image(cimg);
                     c2.set_state("infected");
@@ -362,13 +371,16 @@ var help_state = function (p, prev_state) {
                     var tk = tkiller(p, {
                         pos: new p.PVector(50, 10),
                         mutation_info: { color: color1 },
+                        illustration: true
                     });
                     tk.set_target_angle(-p.PI/4);
+                    //tk.set_state("illustration");
 
                     var c = cell(p, {
                         pos: new p.PVector(10, 40),
                         width: 30, height: 30,
-                        mutation_info: { color: color2 }
+                        mutation_info: { color: color2 },
+                        illustration: true
                     });
                     c.set_image(cimg);
                     c.set_state("infected");
@@ -399,13 +411,16 @@ var help_state = function (p, prev_state) {
                     var tk = tkiller(p, {
                         pos: new p.PVector(50, 12),
                         mutation_info: { color: color2 },
+                        illustration: true
                     });
                     //tk.set_target_angle(p.PI/4);
+                    //tk.set_state("illustration");
 
                     var c = cell(p, {
                         pos: new p.PVector(15, 40),
                         width: 30, height: 30,
-                        mutation_info: { color: color2 }
+                        mutation_info: { color: color2 },
+                        illustration: true
                     });
                     c.set_image(cimg);
                     c.set_state("infected");
