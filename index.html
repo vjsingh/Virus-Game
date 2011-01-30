@@ -90,6 +90,9 @@ function got_user(user) {
 	    var name_div = document.getElementById('fb_name_div');
 	    name_div.innerHTML = "";//"Your are logged in as " + g_user_name;
 */
+            // Remove fb login button
+            var login_div = document.getElementById("fb_login_button");
+            login_div.parentNode.removeChild(login_div);
     }
     else {
 	    console.log("Error in getting facebook info");
@@ -101,15 +104,13 @@ function got_user(user) {
 <!-- <div id="fb_name_div"> You are not Logged In</div> -->
 
 <!-- FB Login Button -->
-<script>
-if (!g_user_name) {
-	document.write(" \
-	  <fb:login-button>\
-	     Login with Facebook to track your High Scores\
-	  </fb:login-button> \
-	");
-}
-</script>
+<div id="fb_login_button"> 
+	<div id="child_div">
+	  <fb:login-button>
+	     Login with Facebook to track your High Scores
+	  </fb:login-button> 
+	</div>
+</div>
 
 
 
