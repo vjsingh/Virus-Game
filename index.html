@@ -32,13 +32,6 @@
 	});
 
 </script>	  
-<div id="fbmessage"> Login with Facebook to track your high scores! </div>
-
-<!-- FB Login Button -->
-  <fb:login-button
-  		redirect-uri=www.google.com>
-     Login with Facebook
-  </fb:login-button>
   
 <script>
 // If user is already logged in, then refresh to get
@@ -92,9 +85,11 @@ function got_user(user) {
 		//scores.do_scores();
 		
 	    // Display name
+		/*
 	    console.log("Adding name");
 	    var name_div = document.getElementById('fb_name_div');
 	    name_div.innerHTML = "";//"Your are logged in as " + g_user_name;
+*/
     }
     else {
 	    console.log("Error in getting facebook info");
@@ -103,8 +98,18 @@ function got_user(user) {
 </script>
 <p id="userName"></p>
 
-<div id="fb_name_div"> You are not Logged In</div>
+<!-- <div id="fb_name_div"> You are not Logged In</div> -->
 
+<!-- FB Login Button -->
+<script>
+if (!g_user_name) {
+	document.write(" \
+	  <fb:login-button>\
+	     Login with Facebook to track your High Scores\
+	  </fb:login-button> \
+	");
+}
+</script>
 
 
 
