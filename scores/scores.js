@@ -55,13 +55,15 @@ var make_scores = function(){
             "score": add_commas,
             "date": function(date_str) { 
                 var d = new Date(date_str); 
-                return d.f("NNN d, yyyy");
+                //return d.f("NNN d, yyyy");
+                return d.format("mmm d, yyyy");
             },
         };
 		return function(data){
             // since we got some data
             // remove the loading message
             console.log("removing loading msg");
+            console.log(data);
             $("#scores-loading").remove();
 
 			var link = "<li><a href='#tabs-"+tab_count+"'>"
@@ -73,6 +75,9 @@ var make_scores = function(){
 
             try {
 			    var scores = jQuery.parseJSON(data);
+                if (!scores) {
+                    throw "No scores loaded";
+                }
             }
             catch (e) {
                 con += "<div style='padding:5;'>Error loading scores."
@@ -169,7 +174,8 @@ var make_scores = function(){
 			level: level,
 			name: name,
 			userid: uid,
-			date: new Date().f('yyyy-MM-dd')
+			//date: new Date().f('yyyy-MM-dd')
+            date: (new Date()).format("yyyy-mm-dd")
 		};
 		console.log(score_obj);
 		
