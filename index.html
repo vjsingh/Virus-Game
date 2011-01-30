@@ -26,8 +26,8 @@
         appId:179028108782663, cookie:true, 
         status:true, xfbml:true 
      });
+    // Reload when user logs in (like with the fb login button)
     FB.Event.subscribe('auth.login', function(response) {
-	console.log("Auth.login call");
 	window.location.reload();
 	});
 
