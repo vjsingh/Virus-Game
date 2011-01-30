@@ -26,13 +26,17 @@
         appId:179028108782663, cookie:true, 
         status:true, xfbml:true 
      });
+    // Reload when user logs in (like with the fb login button)
+    FB.Event.subscribe('auth.login', function(response) {
+	window.location.reload();
+	});
 
 </script>	  
 <div id="fbmessage"> Login with Facebook to track your high scores! </div>
 
 <!-- FB Login Button -->
   <fb:login-button
-  		redirect-uri=window.location>
+  		redirect-uri=www.google.com>
      Login with Facebook
   </fb:login-button>
   
@@ -90,7 +94,7 @@ function got_user(user) {
 	    // Display name
 	    console.log("Adding name");
 	    var name_div = document.getElementById('fb_name_div');
-	    name_div.innerHTML = "Your are logged in as " + g_user_name;
+	    name_div.innerHTML = "";//"Your are logged in as " + g_user_name;
     }
     else {
 	    console.log("Error in getting facebook info");
