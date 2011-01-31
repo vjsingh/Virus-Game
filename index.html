@@ -45,7 +45,8 @@ if(window.location.hash.length == 0)
     //window.location = url;
      FB.getLoginStatus(function(response) {
  	if (response.session) { //logged in and known
-		window.location=url;
+        console.log("refreshing");
+        window.location=url;
 	}
  })
 
