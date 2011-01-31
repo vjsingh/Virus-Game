@@ -1405,7 +1405,8 @@ var in_game_state = function (p, previous_state) {
 					if (g_user_name && g_user_id) {
 						scores.submit_score(score.get_num(), mutation.get_level(), g_user_name, g_user_id);
 						// Update the high score table
-						scores.do_scores();
+                        // (not necessary now)
+						//scores.do_scores();
 					}
 					
 					// simply don't do the rest of update
