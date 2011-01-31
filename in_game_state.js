@@ -997,7 +997,7 @@ var in_game_state = function (p, previous_state) {
 					//else false
 				}
 				else {
-                    console.log("removing "+x.to_string());
+                    //console.log("removing "+x.to_string());
 					offscreen = true;
 				}
 			}
