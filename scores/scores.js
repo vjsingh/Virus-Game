@@ -19,6 +19,7 @@ var make_scores = function(){
                 // at the end of last callback we need to
                 // make the tabs
                 function() {
+                    console.log("making tabs");
                     $("#scores").tabs();
                 }
             ));
