@@ -59,10 +59,10 @@ var splash_state = function (p) {
 		state : function() { return high_scores_state(p, obj); },
         rect: {
             pos: new p.PVector(left_x+150, btm_row_y),
-            //image: "msettings.png",
-            //over_image: "msettings_r.png",
-            text: "High Scores",
-            width: 120,
+            image: "mhighscores.png",
+            over_image: "mhighscores_r.png",
+            //text: "High Scores",
+            width: 100,
             style: button_style,
         }
     });
