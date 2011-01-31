@@ -12,12 +12,13 @@ var sound_manager = function() {
     obj.play_sound = (function() {
         var channel_max = 10;										// number of channels
         audiochannels = new Array();
-        for (a=0;a<channel_max;a++) {									// prepare the channels
+        for (var a=0;a<channel_max;a++) {									// prepare the channels
             audiochannels[a] = new Array();
             audiochannels[a]['channel'] = //new Audio();						// create a new audio object
             	$("#jquery_jplayer_"+a);
             audiochannels[a]['finished'] = true;							// expected end time for this channel
             
+            //var curr_audio_slot = audiochannels[a];
 			
         	// call jPlayers constructor for each div
 			$("#jquery_jplayer_"+a).jPlayer( {
@@ -32,11 +33,17 @@ var sound_manager = function() {
 					*/
 					//console.log("ready");
 		        },
+                /*
+                // NOT WORKING
 				// Set finished to be true so we can load a new sound
 				ended : function() {
                     console.log("Channel " + a + " is finishing");
-					audiochannels[a]['finished'] = true;
+					//audiochannels[a]['finished'] = true;
+                    console.log(curr_audio_slot);
+                    curr_audio_slot['finished'] = true;
+                    console.log(curr_audio_slot);
 				},
+                */
 				supplied : "oga",
 				oggSupport: true
 				//solution : "flash"
@@ -44,11 +51,11 @@ var sound_manager = function() {
         }
         return function(s){
             if (g.sound_fx) {
-                for (a = 0; a < audiochannels.length; a++) {
+                for (var a = 0; a < audiochannels.length; a++) {
                     console.log("Checking " + a);
-                    //thistime = new Date();
-                    if (audiochannels[a]['finished']) { //< thistime.getTime()) { // is this channel finished?
-                        audiochannels[a]['finished'] = false; // thistime.getTime() + document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
+                    thistime = new Date();
+                    if (audiochannels[a]['finished'] < thistime.getTime()) { 
+                        audiochannels[a]['finished'] = thistime.getTime() + document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
                         // Audio is encoded as base64
 						/*
                         audiochannels[a]['channel'].src = g_soundDataMap[s]; //document.getElementById(s).src;
