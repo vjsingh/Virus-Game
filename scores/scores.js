@@ -58,9 +58,10 @@ var make_scores = function(){
                 //var d = new Date(date_str); 
                 var d = new Date();
                 // date_str must be of format yyyy-mm-dd
-                var year = date_str.substring(0, 4);
-                var month = date_str.substring(5, 7);
-                var day = date_str.substring(8);
+                var year = parseInt(date_str.substring(0, 4));
+                var month = parseInt(date_str.substring(5, 7));
+                var day = parseInt(date_str.substring(8));
+                console.log(year+"-"+month+"-"+day);
                 d.setFullYear(year, month, day);
                 //return d.f("NNN d, yyyy");
                 return d.format("mmm d, yyyy");
