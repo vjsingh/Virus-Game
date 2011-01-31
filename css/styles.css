@@ -11,10 +11,10 @@ canvas {
     /*color: black;*/
     width: 500;
     height: 400;
-    /* use margin to center manually */
+    /* use top/left to center manually */
     /* add in border width */
-    margin-left: 103 px;
-    margin-top: 83 px;
+    left: 103px;
+    top: 83px;
     position: absolute;
     /* start hidden */
     display: none;
