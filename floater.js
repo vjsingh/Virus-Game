@@ -23,7 +23,7 @@ var floater = function(p, spec) {
     
 	//var macrophage_image = image_manager.get_image("macrophage_1.png");
 	var macrophage_image = animated_image("macrophage", {reverse : true});
-	var macrophage_active = image_manager.get_image("macrophage_1_active.png");
+	var macrophage_active = animated_image("macrophage_active", {reverse : true});//image_manager.get_image("macrophage_1_active.png");
 	
     // how far up or down it can move
     var range = 50;
@@ -73,7 +73,7 @@ var floater = function(p, spec) {
 			p.fill(obj.get_color());
 			p.noStroke();
 			p.ellipse(pos.x + w / 8, pos.y - w / 8 + 1, w/2, w/2);
-			p.image(macrophage_active, pos.x, pos.y, w, h);
+			p.image(macrophage_active.get_frame(), pos.x, pos.y, w, h);
 		}
 		else {
 			p.image(macrophage_image.get_frame(), pos.x, pos.y, obj.get_width(), obj.get_height());
