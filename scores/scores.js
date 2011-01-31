@@ -61,7 +61,6 @@ var make_scores = function(){
                 var year = parseInt(date_str.substring(0, 4));
                 var month = parseInt(date_str.substring(5, 7))-1;
                 var day = parseInt(date_str.substring(8));
-                console.log(year+"-"+month+"-"+day);
                 d.setFullYear(year, month, day);
                 //return d.f("NNN d, yyyy");
                 return d.format("mmm d, yyyy");
