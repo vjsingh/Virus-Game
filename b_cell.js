@@ -22,7 +22,7 @@ var b_cell = function(p, spec) {
 
     // --- private variables ---
 
-	var b_image = image_manager.get_image("bcell_normal.png");
+	var b_image = animated_image("bcell", {reverse : true});//image_manager.get_image("bcell_normal.png");
     // where to go and shoot from
     var slot = null;
 
@@ -221,7 +221,7 @@ var b_cell = function(p, spec) {
 		p.noStroke();
 		//p.rect(rectx_offset, recty_offset, rect_width, rect_height);
 		p.imageMode(obj.get_mode());
-		p.image(b_image, 0, 0, obj.get_width(), obj.get_height());
+		p.image(b_image.get_frame(), 0, 0, obj.get_width(), obj.get_height());
 
 		p.popMatrix();
 		

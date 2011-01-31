@@ -34,6 +34,7 @@ var sound_manager = function() {
 		        },
 				// Set finished to be true so we can load a new sound
 				ended : function() {
+                    console.log("Channel " + a + " is finishing");
 					audiochannels[a]['finished'] = true;
 				},
 				supplied : "oga",
@@ -44,6 +45,7 @@ var sound_manager = function() {
         return function(s){
             if (g.sound_fx) {
                 for (a = 0; a < audiochannels.length; a++) {
+                    console.log("Checking " + a);
                     //thistime = new Date();
                     if (audiochannels[a]['finished']) { //< thistime.getTime()) { // is this channel finished?
                         audiochannels[a]['finished'] = false; // thistime.getTime() + document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin

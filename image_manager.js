@@ -20,6 +20,8 @@ var make_image_manager = function() {
         screens : { dir : "screens/" },
         wall_segments : { dir : "wall_segments/" },
 		macrophage : {dir : "macrophage_animation/"},
+		macrophage_active : {dir : "holemacrophage_animation/"},
+		bcell  : {dir : "b_animation/"},
 		burst : { dir : "burstingcell_animation/"},
 		cell_infect : { dir : "cellinfect_animation/"},
 		t_animation : { dir : "t_animation/"},
