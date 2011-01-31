@@ -93,7 +93,7 @@ var pause_state = function (p, prev_state) {
     };
 
 	obj.key_pressed = function(k) {
-		if (k === 112 || p.keyCode == 13) { //p, enter
+		if (k === 112 || p.keyCode == 13 || p.keyCode === 27) { //p, enter, esc
 			obj.exit_state();;
 		}
 	};

@@ -1609,7 +1609,7 @@ var in_game_state = function (p, previous_state) {
 				do_fire();
 			}
 		}
-		else if (k === 112 || p.keyCode === 13) { //p, enter
+		else if (k === 112 || p.keyCode === 13 || p.keyCode === 27) { //p, enter, esc
 			do_pause();
 			var p_state = pause_state(p, obj);
 			obj.set_next_state(p_state);
