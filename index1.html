@@ -116,7 +116,7 @@ function got_user(user) {
         // Set friends list
         FB.api('/me/friends?', function(response) {
             console.log("In response");
-            console.log("AAA " + response.name);
+            console.log("AAA " + response.data);
         });
     }
     else {
