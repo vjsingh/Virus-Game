@@ -10,7 +10,7 @@ var make_scores = function(){
         // want to do them sequentially so we
         // chain the callbacks
 		
-        // this comes second via callback
+        // this comes third via callback
         var do_global = function() {
             // Global High Scores
             $.post("scores/get_scores.php", {
@@ -25,13 +25,22 @@ var make_scores = function(){
             ));
         };
 
+        // this comes second via callback
+        var do_friends = function() {
+            // Global High Scores
+            $.post("scores/get_scores.php", {
+                num: num_rows, 
+            }, callback("Friends Scores", do_global));
+            ));
+        };
+        
         // this comes first
 		// Personal high scores
 		if (g_user_id) {
 			$.post("scores/get_scores.php", {
 				num: num_rows,
 				uid :  g_user_id
-			}, callback("Your Scores", do_global));
+			}, callback("Your Scores", do_friends));
             console.log("getting user high scores");
 		}
         else {
