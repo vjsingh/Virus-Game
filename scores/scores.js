@@ -21,6 +21,11 @@ var make_scores = function(){
                 function() {
                     console.log("making tabs");
                     $("#scores").tabs();
+
+                    // remove the loading message
+                    console.log("removing loading msg");
+                    $("#scores-loading").remove();
+
                     $("#scores").show();
                 }
             ));
@@ -86,11 +91,7 @@ var make_scores = function(){
             },
         };
 		return function(data){
-            // since we got some data
-            // remove the loading message
-            console.log("removing loading msg");
-            console.log(data);
-            $("#scores-loading").remove();
+            //console.log(data);
 
 			var link = "<li><a href='#tabs-"+tab_count+"'>"
                 + header + "</a></li>";
