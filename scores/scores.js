@@ -27,11 +27,18 @@ var make_scores = function(){
 
         // this comes second via callback
         var do_friends = function() {
-            // Global High Scores
-            $.post("scores/get_scores.php", {
-                num: num_rows, 
-            }, callback("Friends Scores", do_global));
-            ));
+            var friends = g_get_friends();
+            if (friends.length !== 0) {
+                // Global High Scores
+                $.post("scores/get_scores.php", {
+                    num: num_rows, 
+                    uid: g_user_id,
+                    friends: friends 
+                }, callback("Friends' Scores", do_global));
+            }
+            else {
+                do_global();
+            }
         };
         
         // this comes first
