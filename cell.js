@@ -107,9 +107,9 @@ var cell = function(p, spec) {
 				p.noStroke();
 		        p.fill(obj.get_color());
             }
-            if (infect_anim.is_finished() || obj.is_illustration()) {
+            //if (infect_anim.is_finished() || obj.is_illustration()) {
 		        p.ellipse(pos.x, pos.y, obj.get_width() * 4/5, obj.get_height() * 4/5);
-            }
+            //}
         }
 
         p.imageMode(obj.get_mode());
@@ -121,7 +121,7 @@ var cell = function(p, spec) {
                 // draw frame and advance anim
                 p.image(infect_anim.get_frame(), pos.x, pos.y,
                     obj.get_width(), obj.get_height());
-                p.fill(obj.get_color());
+                //p.fill(obj.get_color());
             }
         }
 
