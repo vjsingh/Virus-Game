@@ -123,13 +123,16 @@ var sound_manager = function() {
     };
 
     var menu_music = null;
+
+    // Really resume menu music, menu music never restarts
     obj.play_menu_music = function() {
-        menu_music.jPlayer("play", 0);
+        menu_music.jPlayer("play");
     }
     obj.resume_menu_music = function() {
         menu_music.jPlayer("play");
     }
     obj.pause_menu_music = function() {
+        console.log("Pausing menu music");
         menu_music.jPlayer("pause");
     }
 

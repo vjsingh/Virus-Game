@@ -24,8 +24,15 @@ var splash_state = function (p) {
     // Play menu music
     sounds.play_menu_music();
 
+    var pause_menu_music = function() {
+        sounds.pause_menu_music();
+    }
+
     var start_button = button(p, {
-		state : function() { return in_game_state(p, obj); },
+		state : function() { 
+            pause_menu_music();
+            return in_game_state(p, obj); 
+        },
         rect: {
             pos: new p.PVector(left_x, top_row_y),
             image: "mnewgame.png",
@@ -137,6 +144,7 @@ var splash_state = function (p) {
 	obj.key_pressed = function(k) {
 		if (k === 115 || p.keyCode === 13 || k === 32) { //s, enter, space
 			obj.set_next_state(start_button.get_state());
+            pause_menu_music();
 		}
 		else if (k === 104) { //h
 			obj.set_next_state(help_button.get_state());
