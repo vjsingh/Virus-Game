@@ -18,14 +18,6 @@ if ($friends) {
     // need to format friends as ('id1', 'id2', ...)
     $fstr = implode("', '", $friends);
     $fstr = "('" . $fstr . "')";
-    /*
-    $friends_str = "(";
-    foreach ($friends as $fid) {
-        $friends_str .= "'$fid', ";
-    }
-    // take off last ", "
-    $friends_str = $friends_str.substring($friends_str.length-2) . ")";
-     */
 
 	$query = "SELECT * FROM scores WHERE userid IN $fstr ORDER BY score DESC LIMIT 0, $num";
 }
