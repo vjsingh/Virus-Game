@@ -231,5 +231,13 @@ var b_cell = function(p, spec) {
 		}
     };
 
+    obj.stop_animation = function() {
+        b_image.pause();
+    };
+
+    obj.resume_animation = function() {
+        b_image.start();
+    };
+
     return obj;
 }

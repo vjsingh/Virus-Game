@@ -151,6 +151,12 @@ var cell = function(p, spec) {
 
     obj.stop_animation = function() {
         burst_anim.pause();
+        infect_anim.pause();
+    };
+
+    obj.resume_animation = function() {
+        burst_anim.start();
+        infect_anim.start();
     };
 
     obj.set_state = function(s) {

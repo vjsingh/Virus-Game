@@ -1595,6 +1595,14 @@ var in_game_state = function (p, previous_state) {
 	var do_pause = function() {
 		paused = true;
 		sounds.pause_background_music();
+        // stop the animations
+        do_to_all_objs(
+            function(o) { 
+                if (o.stop_animation) {
+                    o.stop_animation();
+                }
+            }
+        );
 	}
 	
    	var do_fire = function() {
@@ -1663,6 +1671,14 @@ var in_game_state = function (p, previous_state) {
 		if (g.music) {
 			sounds.resume_background_music();
 		}
+        // resume the animations
+        do_to_all_objs(
+            function(o) { 
+                if (o.resume_animation) {
+                    o.resume_animation();
+                }
+            }
+        );
 	};
     
     //Adds a game_object to the game world
