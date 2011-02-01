@@ -28,7 +28,12 @@
      });
     // Reload when user logs in (like with the fb login button)
     FB.Event.subscribe('auth.login', function(response) {
-	    window.location.reload();
+        if (self.parent) {
+            self.parent.location.reload();
+        }
+        else {
+            window.location.reload();
+        }
 	});
 
 </script>	  
