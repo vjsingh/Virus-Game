@@ -67,7 +67,7 @@ var high_scores_state = function (p, prev_state) {
     var init = (function() {
         // add a loading message to be removed on load
         $("#scores-wrap").prepend(
-            "<div id='scores-loading' style='height:400; background: black; text-align:center;' ><div style='position:relative; top:50%;'>Loading high score data...</div></div>"
+            "<div id='scores-loading' style='height:400; background: black; text-align:center;' ><div style='position:relative; top:50%; color:white;'>Loading high score data...</div></div>"
         );
 
         // show the div
