@@ -662,7 +662,7 @@ var in_game_state = function (p, previous_state) {
             "multiplier": //check_rectangle_collision
                 // had to do manually cuz offset was messed up
                 function(rect, circ) {
-                    return overlapping_vertically(circ, rect, 10) &&  
+                    return overlapping_vertically(circ, rect, 0) &&  
                             overlapping_horizontally(circ, rect, 0); 
                 }
         },
