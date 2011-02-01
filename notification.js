@@ -23,7 +23,7 @@ var notification = function(p, spec) {
 	obj.draw = function() {
 		var time_percent = time_counter / total_time;
 		//var text_size = 25 - 25*(time_percent);
-        var text_alpha = 255 - 255*time_percent;
+        var text_alpha = 255 - 200*time_percent;
 
 		//var x_pos = (p.width / 2) + (p.width / 2) *time_percent;
 		//var y_pos = (p.height / 2) + (p.height / 2) *time_percent;

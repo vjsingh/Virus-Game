@@ -50,9 +50,9 @@ var game_over_state = function (p, prev_state, spec) {
 		rect : {
 			pos : new p.PVector(p.width / 2, 390),
 			text : "High Scores",
-            //text_x_offset: 35,
-            //image: "mainmenu.png",
-            //style: button_style
+            text_x_offset: 35,
+            image: "highscores.png",
+            style: button_style
 		}
 	});
 	var splash_button  = button(p, {

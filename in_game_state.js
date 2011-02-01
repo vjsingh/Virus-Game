@@ -658,8 +658,13 @@ var in_game_state = function (p, previous_state) {
     var extra_check = {
         "wall_segment": {
             "particle": check_rectangle_collision,
-            "multiplier": check_rectangle_collision,
-            "b_cell": check_rectangle_collision
+            "b_cell": check_rectangle_collision,
+            "multiplier": //check_rectangle_collision
+                // had to do manually cuz offset was messed up
+                function(rect, circ) {
+                    return overlapping_vertically(circ, rect, 0) &&  
+                            overlapping_horizontally(circ, rect, 0); 
+                }
         },
         "floater": {
             "b_cell": check_rectangle_collision
@@ -1403,7 +1408,8 @@ var in_game_state = function (p, previous_state) {
 					// Add to the high score table
 					// If fb user name and id are set
 					if (g_user_name && g_user_id) {
-						scores.submit_score(score.get_num(), mutation.get_level(), g_user_name, g_user_id);
+						scores.submit_score(score.get_num(),
+                                mutation.get_level(), g_user_name, g_user_id);
 						// Update the high score table
                         // (not necessary now)
 						//scores.do_scores();
@@ -1595,6 +1601,14 @@ var in_game_state = function (p, previous_state) {
 	var do_pause = function() {
 		paused = true;
 		sounds.pause_background_music();
+        // stop the animations
+        do_to_all_objs(
+            function(o) { 
+                if (o.stop_animation) {
+                    o.stop_animation();
+                }
+            }
+        );
 	}
 	
    	var do_fire = function() {
@@ -1663,6 +1677,14 @@ var in_game_state = function (p, previous_state) {
 		if (g.music) {
 			sounds.resume_background_music();
 		}
+        // resume the animations
+        do_to_all_objs(
+            function(o) { 
+                if (o.resume_animation) {
+                    o.resume_animation();
+                }
+            }
+        );
 	};
     
     //Adds a game_object to the game world

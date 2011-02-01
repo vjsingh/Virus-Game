@@ -21,17 +21,32 @@ var make_scores = function(){
                 function() {
                     console.log("making tabs");
                     $("#scores").tabs();
+
+                    // remove the loading message
+                    console.log("removing loading msg");
+                    $("#scores-loading").remove();
+
+                    $("#scores").show();
                 }
             ));
         };
 
         // this comes second via callback
         var do_friends = function() {
-            // Global High Scores
-            $.post("scores/get_scores.php", {
-                num: num_rows, 
-            }, callback("Friends Scores", do_global));
-            ));
+            var friends = g_get_friends();
+            if (friends.length !== 0) {
+                // Global High Scores
+                $.post("scores/get_scores.php", {
+                    num: num_rows, 
+                    uid: g_user_id,
+                    friends: friends 
+                }, callback("Friends' Scores", do_global));
+                console.log("got friends scores");
+            }
+            else {
+                do_global();
+                console.log("skipped friends scores");
+            }
         };
         
         // this comes first
@@ -76,11 +91,7 @@ var make_scores = function(){
             },
         };
 		return function(data){
-            // since we got some data
-            // remove the loading message
-            console.log("removing loading msg");
-            console.log(data);
-            $("#scores-loading").remove();
+            //console.log(data);
 
 			var link = "<li><a href='#tabs-"+tab_count+"'>"
                 + header + "</a></li>";
@@ -158,6 +169,7 @@ var make_scores = function(){
 	obj.do_scores = function(){
         console.log("trying to load scores");
 		$("#scores").empty();
+        $("#scores").hide();
 		$("#scores").append("<ul id='tab-list'></ul>");
         // reset tab count
         tab_count = 1;

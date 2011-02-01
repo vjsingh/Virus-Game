@@ -15,7 +15,11 @@ mysql_select_db('high_scores', $con)
 
 // Get friends if set
 if ($friends) {
-	$query = "SELECT * FROM scores WHERE userid IN $friends ORDER BY score DESC LIMIT 0, $num";
+    // need to format friends as ('id1', 'id2', ...)
+    $fstr = implode("', '", $friends);
+    $fstr = "('" . $fstr . "')";
+
+	$query = "SELECT * FROM scores WHERE userid IN $fstr ORDER BY score DESC LIMIT 0, $num";
 }
 // Get all from user
 else if ($uid) {

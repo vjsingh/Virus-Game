@@ -22,7 +22,9 @@ var b_cell = function(p, spec) {
 
     // --- private variables ---
 
-	var b_image = animated_image("bcell", {reverse : true});//image_manager.get_image("bcell_normal.png");
+	var b_anim = animated_image("bcell", {reverse : true});
+    // for illustration
+    var b_image = image_manager.get_image("bcell_normal.png");
     // where to go and shoot from
     var slot = null;
 
@@ -221,7 +223,11 @@ var b_cell = function(p, spec) {
 		p.noStroke();
 		//p.rect(rectx_offset, recty_offset, rect_width, rect_height);
 		p.imageMode(obj.get_mode());
-		p.image(b_image.get_frame(), 0, 0, obj.get_width(), obj.get_height());
+
+        if (!obj.is_illustration()) {
+            b_image = b_anim.get_frame();
+        }
+		p.image(b_image, 0, 0, obj.get_width(), obj.get_height());
 
 		p.popMatrix();
 		
@@ -229,6 +235,14 @@ var b_cell = function(p, spec) {
 		if (state === "active" || state === "shooting") {
 			draw_antibody();
 		}
+    };
+
+    obj.stop_animation = function() {
+        b_anim.pause();
+    };
+
+    obj.resume_animation = function() {
+        b_anim.start();
     };
 
     return obj;
