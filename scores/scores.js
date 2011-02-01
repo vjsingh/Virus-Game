@@ -88,7 +88,7 @@ var make_scores = function(){
             // since we got some data
             // remove the loading message
             console.log("removing loading msg");
-            //console.log(data);
+            console.log(data);
             $("#scores-loading").remove();
 
 			var link = "<li><a href='#tabs-"+tab_count+"'>"
