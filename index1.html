@@ -89,6 +89,13 @@ g_user_name = null;
 
 // Has an array of objects, where each object has a name and an id field
 g_friends_list = [];
+g_get_friends = function() {
+    var all_friend_ids = [];
+    for_each(g_friends_list, function(o) {
+        all_friend_ids.push(o.id);
+    });
+    return all_friend_ids;
+}
 
 // This 'user' object has all the info from fb
 function got_user(user) {

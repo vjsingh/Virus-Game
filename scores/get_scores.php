@@ -4,6 +4,7 @@
 
 $num = $_POST["num"];
 $uid = $_POST["uid"];
+$friends = $_POST["friends"];
 // default num to return
 $num = $num ? $num : 10;
 
@@ -12,8 +13,12 @@ $con = mysql_connect('localhost', 'virion', 'virion1')
 mysql_select_db('high_scores', $con)
 	or die('Could not select database. ' . mysql_error());
 
+// Get friends if set
+if ($friends) {
+	$query = "SELECT * FROM scores WHERE userid IN $friends ORDER BY score DESC LIMIT 0, $num";
+}
 // Get all from user
-if ($uid) {
+else if ($uid) {
 	$query = "SELECT * FROM scores WHERE userid = $uid ORDER BY score DESC LIMIT 0, $num";
 }
 // Otherwise get global
