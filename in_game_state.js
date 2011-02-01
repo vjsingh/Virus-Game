@@ -658,8 +658,13 @@ var in_game_state = function (p, previous_state) {
     var extra_check = {
         "wall_segment": {
             "particle": check_rectangle_collision,
-            "multiplier": check_rectangle_collision,
-            "b_cell": check_rectangle_collision
+            "b_cell": check_rectangle_collision,
+            "multiplier": //check_rectangle_collision
+                // had to do manually cuz offset was messed up
+                function(rect, circ) {
+                    return overlapping_vertically(circ, rect, 10) &&  
+                            overlapping_horizontally(circ, rect, 0); 
+                }
         },
         "floater": {
             "b_cell": check_rectangle_collision
