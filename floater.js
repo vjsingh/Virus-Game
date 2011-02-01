@@ -82,6 +82,12 @@ var floater = function(p, spec) {
 
     obj.stop_animation = function() {
         macrophage_image.pause();
+        macrophage_active.pause();
+    };
+
+    obj.stop_animation = function() {
+        macrophage_image.start();
+        macrophage_active.start();
     };
 
     obj.is_dead = function() {
