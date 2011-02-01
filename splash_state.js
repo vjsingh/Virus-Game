@@ -21,6 +21,8 @@ var splash_state = function (p) {
         rect_color: back_color
     };
 
+    // Play menu music
+    sounds.play_menu_music();
 
     var start_button = button(p, {
 		state : function() { return in_game_state(p, obj); },
