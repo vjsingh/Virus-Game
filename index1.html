@@ -86,6 +86,7 @@ if(window.location.hash.length == 0)
 //initialize global user variables to null
 g_user_id = null;
 g_user_name = null;
+g_friends_list = [];
 
 // This 'user' object has all the info from fb
 function got_user(user) {
@@ -108,9 +109,14 @@ function got_user(user) {
 	    var name_div = document.getElementById('fb_name_div');
 	    name_div.innerHTML = "";//"Your are logged in as " + g_user_name;
 */
-            // Remove fb login button
-            var login_div = document.getElementById("fb_login_button");
-            login_div.parentNode.removeChild(login_div);
+        // Remove fb login button
+        var login_div = document.getElementById("fb_login_button");
+        login_div.parentNode.removeChild(login_div);
+
+        // Set friends list
+        FB.api('/me', function(response) {
+            console.log("AAA " + response.name);
+        });
     }
     else {
 	    console.log("Error in getting facebook info");
