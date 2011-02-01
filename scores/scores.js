@@ -27,7 +27,7 @@ var make_scores = function(){
 
         // this comes second via callback
         var do_friends = function() {
-            var friends = [];//g_get_friends();
+            var friends = g_get_friends();
             if (friends.length !== 0) {
                 // Global High Scores
                 $.post("scores/get_scores.php", {
@@ -88,7 +88,7 @@ var make_scores = function(){
             // since we got some data
             // remove the loading message
             console.log("removing loading msg");
-            console.log(data);
+            //console.log(data);
             $("#scores-loading").remove();
 
 			var link = "<li><a href='#tabs-"+tab_count+"'>"
