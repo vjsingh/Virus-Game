@@ -89,12 +89,12 @@ var floater = function(p, spec) {
     };
 
     obj.stop_animation = function() {
-        macrophage_image.pause();
+        macrophage_alive.pause();
         macrophage_active.pause();
     };
 
     obj.stop_animation = function() {
-        macrophage_image.start();
+        macrophage_alive.start();
         macrophage_active.start();
     };
 
