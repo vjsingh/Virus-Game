@@ -114,11 +114,13 @@ var sound_manager = function() {
     }());
 	
 	obj.resume_background_music = function() {
+        if (background_music) 
 		background_music.jPlayer("play");
 	}
 
     obj.pause_background_music = function() {
 		console.log("Pausing bg music");
+        if (background_music) 
         background_music.jPlayer("pause");
     };
 
