@@ -86,6 +86,8 @@ if(window.location.hash.length == 0)
 //initialize global user variables to null
 g_user_id = null;
 g_user_name = null;
+
+// Has an array of objects, where each object has a name and an id field
 g_friends_list = [];
 
 // This 'user' object has all the info from fb
@@ -115,8 +117,8 @@ function got_user(user) {
 
         // Set friends list
         FB.api('/me/friends?', function(response) {
-            console.log("In response");
-            console.log("AAA " + response.data);
+            //console.log("AAA " + response.data);
+            g_friends_list = response.data;
         });
     }
     else {
