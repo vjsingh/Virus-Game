@@ -21,9 +21,11 @@ var floater = function(p, spec) {
 
     // --- private variables ---
     
-	//var macrophage_image = image_manager.get_image("macrophage_1.png");
-	var macrophage_image = animated_image("macrophage", {reverse : true});
-	var macrophage_active = animated_image("macrophage_active", {reverse : true});//image_manager.get_image("macrophage_1_active.png");
+	var macrophage_alive = animated_image("macrophage", {reverse : true});
+	var macrophage_active = animated_image("macrophage_active", {reverse : true});
+    // for illustration
+    var macro_active_img = image_manager.get_image("macrophage_1_active.png");
+	var macro_alive_img = image_manager.get_image("macrophage_1.png");
 	
     // how far up or down it can move
     var range = 50;
@@ -65,18 +67,24 @@ var floater = function(p, spec) {
         p.rect(pos.x-w/2, pos.y-h/2, w, h);
         */
         var pos = obj.get_pos();
+        var w = obj.get_width();
+        var h = obj.get_height();
 		p.imageMode(obj.get_mode());
 		if (state === "active") {
-			var w = obj.get_width();
-			var h = obj.get_height();
 			p.shapeMode(obj.mode);
 			p.fill(obj.get_color());
 			p.noStroke();
 			p.ellipse(pos.x + w / 8, pos.y - w / 8 + 1, w/2, w/2);
-			p.image(macrophage_active.get_frame(), pos.x, pos.y, w, h);
+            if (!obj.is_illustration()) {
+                macro_active_img = macrophage_active.get_frame();
+            }
+			p.image(macro_active_img, pos.x, pos.y, w, h);
 		}
 		else {
-			p.image(macrophage_image.get_frame(), pos.x, pos.y, obj.get_width(), obj.get_height());
+            if (!obj.is_illustration()) {
+                macro_alive_img = macrophage_alive.get_frame();
+            }
+			p.image(macro_alive_img, pos.x, pos.y, w, h);
 		}
     };
 
