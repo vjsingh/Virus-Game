@@ -29,7 +29,7 @@
     // Reload when user logs in (like with the fb login button)
     FB.Event.subscribe('auth.login', function(response) {
         if (parent) {
-            parent.location = parent.location;//.reload();
+            parent.location = "http://apps.facebook.com/viriongame/";//.reload();
         }
         else {
             window.location.reload();
