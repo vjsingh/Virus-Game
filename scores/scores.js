@@ -27,7 +27,7 @@ var make_scores = function(){
 
         // this comes second via callback
         var do_friends = function() {
-            var friends = g_get_friends();
+            var friends = [];//g_get_friends();
             if (friends.length !== 0) {
                 // Global High Scores
                 $.post("scores/get_scores.php", {
@@ -35,9 +35,11 @@ var make_scores = function(){
                     uid: g_user_id,
                     friends: friends 
                 }, callback("Friends' Scores", do_global));
+                console.log("got friends scores");
             }
             else {
                 do_global();
+                console.log("skipped friends scores");
             }
         };
         
