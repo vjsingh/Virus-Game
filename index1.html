@@ -108,13 +108,14 @@ function got_user(user) {
 	    console.log("Adding name");
 	    var name_div = document.getElementById('fb_name_div');
 	    name_div.innerHTML = "";//"Your are logged in as " + g_user_name;
-*/
         // Remove fb login button
         var login_div = document.getElementById("fb_login_button");
         login_div.parentNode.removeChild(login_div);
+*/
 
         // Set friends list
         FB.api('/me', function(response) {
+            console.log("In response");
             console.log("AAA " + response.name);
         });
     }
