@@ -21,6 +21,7 @@ var make_scores = function(){
                 function() {
                     console.log("making tabs");
                     $("#scores").tabs();
+                    $("#scores").show();
                 }
             ));
         };
@@ -167,6 +168,7 @@ var make_scores = function(){
 	obj.do_scores = function(){
         console.log("trying to load scores");
 		$("#scores").empty();
+        $("#scores").hide();
 		$("#scores").append("<ul id='tab-list'></ul>");
         // reset tab count
         tab_count = 1;
