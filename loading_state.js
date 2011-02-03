@@ -68,8 +68,8 @@ var loading_state = function (p) {
     obj.update = function() {
         // for now just base progress on pending amount of images
         load_progress = image_manager.num_loaded();
-        console.log("images: "+image_manager.is_done_preloading());
-        console.log("sounds: "+sounds.sounds_loaded());
+        //console.log("images: "+image_manager.is_done_preloading());
+        //console.log("sounds: "+sounds.sounds_loaded());
 		if (load_progress === load_max && 
 				image_manager.is_done_preloading() &&
 				sounds.sounds_loaded()){

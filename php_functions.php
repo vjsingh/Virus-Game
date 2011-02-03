@@ -2,23 +2,32 @@
 
 Header("content-type: application/x-javascript");
 
-function data_uri($file)
+function data_uri($file, $file_type)
 { 
   $contents = file_get_contents($file);
   $base64   = base64_encode($contents);
   //return ('data:audio/ogg;base64,' . $base64);
-  return ('data:application/ogg;base64,' . $base64);
+  return ('data:application/' . $file_type . ';base64,' . $base64);
 }
 
 ?>
 
 var g_soundDataMap =
 {
-   "cell_fire"          : "<?php echo data_uri('sounds/cell_fire.ogg');?>",
-   "cell_infect"        : "<?php echo data_uri('sounds/cell_infect.ogg');?>",
-   "macrophage_infect"  : "<?php echo data_uri('sounds/macrophage_infect.ogg');?>",	
-   "level_up"		: "<?php echo data_uri('sounds/level_up.ogg');?>",
-   "kill"		: "<?php echo data_uri('sounds/kill.ogg');?>",
+   "cell_fire"          : "<?php echo data_uri('sounds/cell_fire.ogg', "ogg");?>",
+   "cell_infect"        : "<?php echo data_uri('sounds/cell_infect.ogg', "ogg");?>",
+   "macrophage_infect"  : "<?php echo data_uri('sounds/macrophage_infect.ogg', "ogg");?>",	
+   "level_up"		: "<?php echo data_uri('sounds/level_up.ogg', "ogg");?>",
+   "kill"		: "<?php echo data_uri('sounds/kill.ogg', "ogg");?>",
+   "buttonmain"		: "<?php echo data_uri('sounds/buttonmain.ogg', "ogg");?>",
+   "buttonback"		: "<?php echo data_uri('sounds/buttonback.ogg', "ogg");?>",
+   "cell_firemp3"          : "<?php echo data_uri('sounds/cell_fire.mp3', "mp3");?>",
+   "cell_infectmp3"        : "<?php echo data_uri('sounds/cell_infect.mp3', "mp3");?>",
+   "macrophage_infectmp3"  : "<?php echo data_uri('sounds/macrophage_infect.mp3', "mp3");?>",	
+   "level_upmp3"		: "<?php echo data_uri('sounds/level_up.mp3', "mp3");?>",
+   "killmp3"		: "<?php echo data_uri('sounds/kill.mp3', "mp3");?>",
+   "buttonmainmp3"		: "<?php echo data_uri('sounds/buttonmain.mp3', "mp3");?>",
+   "buttonbackmp3"		: "<?php echo data_uri('sounds/buttonback.mp3', "mp3");?>",
 };
 
 /*

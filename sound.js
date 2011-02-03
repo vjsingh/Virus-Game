@@ -125,6 +125,7 @@ var sound_manager = function() {
     };
 
     var menu_music = null;
+    var button_sounds = null;
 
     // Really resume menu music, menu music never restarts
     obj.play_menu_music = function() {
@@ -138,28 +139,49 @@ var sound_manager = function() {
     obj.pause_menu_music = function() {
         menu_music.jPlayer("pause");
     }
-
+    obj.play_button_click = function() {
+        play_a_sound(button_sounds, "buttonmain");
+    }
+    obj.play_button_back = function() {
+        play_a_sound(button_sounds, "buttonback");
+    }
 	
-	var num_bg_music = 1;
+    var play_a_sound = function(jplayer_instance, sound_name) {
+        jplayer_instance.jPlayer("setMedia", {
+            mp3 : g_soundDataMap[sound_name + "mp3"],
+            oga : g_soundDataMap[sound_name]
+        });
+        //jplayer_instance.jPlayer.event.ready = function() {console.log("read");};
+        jplayer_instance.jPlayer("play");                    
+    }
+
+	var num_bg_music = 2;
 	obj.load_sounds = function() {
 		// init all bg music
 		var all_supplied = "mp3, ogg";
-		var init_bg_jplayer = function(num, file_name, oggfn) {
-			$("#jquery_jplayer_bg_"+num).jPlayer( {
+        var init_jplayer = function(name, mp3name, oggname, should_loop) {
+			$(name).jPlayer( {
 				swfPath : the_swf_path,
 				ready: function () {
 			          $(this).jPlayer("setMedia", {
-				           mp3 : "sounds/"+file_name,
-                           oga : "sounds/"+oggfn
+				           mp3 : "sounds/"+mp3name,
+                           oga : "sounds/"+oggname
 				          });
+                        //console.log(name + " is ready");
 						bg_music_loaded();
 				},
 				ended : function() { // loop
-					$(this).jPlayer("play");
+                    if (should_loop) {
+                        $(this).jPlayer("play");
+                    }
 				},
 				supplied : all_supplied
 			});
-		};
+        }
+
+		var init_bg_jplayer = function(num, file_name, oggfn) {
+            init_jplayer("#jquery_jplayer_bg_"+num, file_name, oggfn, true)
+        }
         /*
         console.log("loading heart loop");
 		init_bg_jplayer(0, "heart_loop1.mp3");
@@ -169,30 +191,21 @@ var sound_manager = function() {
 		init_bg_jplayer(0, "sinister.mp3", "sinister.ogg");
         console.log("loaded sinister");
 
+		init_bg_jplayer(1, "gameloop2.mp3", "gameloop2.ogg");
+
 		for (var i = 0; i < num_bg_music; i++) {
 			all_bg_music.push($("#jquery_jplayer_bg_"+i));
 		}
 
-        // Load menu music
-        $("#jquery_jplayer_menu").jPlayer( {
-            swfPath : the_swf_path,
-            ready: function () {
-                  $(this).jPlayer("setMedia", {
-                       mp3 : "sounds/menu_loop.mp3",
-                       oga : "sounds/menu_loop.ogg"
-                      });
-                    bg_music_loaded();
-            },
-            ended : function() { // loop
-                $(this).jPlayer("play");
-            },
-            supplied : all_supplied
-        });
+        init_jplayer("#jquery_jplayer_menu", "menu_loop.mp3", "menu_loop.ogg", true);
         menu_music = $("#jquery_jplayer_menu");
+
+        init_jplayer("#jquery_jplayer_buttons", "buttonmain.mp3", "buttonmain.ogg", false);
+        button_sounds = $("#jquery_jplayer_buttons");
 	};
 
 	var num_loaded = 0;
-	var max_loaded = num_bg_music + 1; // + 1 for menu music
+	var max_loaded = num_bg_music + 2 // + 1 for menu music, + 1 for button
 	var bg_music_loaded = function() {
 		num_loaded++;
 	};

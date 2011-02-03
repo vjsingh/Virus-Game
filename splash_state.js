@@ -31,6 +31,7 @@ var splash_state = function (p) {
     var start_button = button(p, {
 		state : function() { 
             pause_menu_music();
+            sounds.play_button_click();
             return in_game_state(p, obj); 
         },
         rect: {
@@ -43,7 +44,10 @@ var splash_state = function (p) {
     });
 
     var help_button = button(p, {
-		state : function() { return help_state(p, obj); },
+		state : function() { 
+            sounds.play_button_click();
+            return help_state(p, obj); 
+        },
         rect: {
             pos: new p.PVector(left_x+150, top_row_y),
             image: "mhowtoplay.png",
@@ -54,7 +58,10 @@ var splash_state = function (p) {
     });
 
     var options_button = button(p, {
-		state : function() { return options_state(p, obj); },
+		state : function() { 
+            sounds.play_button_click();
+            return options_state(p, obj); 
+        },
         rect: {
             pos: new p.PVector(left_x, btm_row_y),
             image: "msettings.png",
@@ -65,7 +72,10 @@ var splash_state = function (p) {
     });
 
     var scores_button = button(p, {
-		state : function() { return high_scores_state(p, obj); },
+		state : function() { 
+            sounds.play_button_click();
+            return high_scores_state(p, obj); 
+        },
         rect: {
             pos: new p.PVector(left_x+150, btm_row_y),
             image: "mhighscores.png",

@@ -18,7 +18,7 @@ var options_state = function (p, prev_state) {
 	// Have a rectangle representing their position and
 	// a state to go to when pressed
 	var back_button = button(p, {
-		state : function() { return prev_state; },	
+		state : function() { sounds.play_button_back(); return prev_state; },	
 		rect : {
 			pos : new p.PVector(p.width / 2, p.height - 80),
 			width : 120,
@@ -33,7 +33,7 @@ var options_state = function (p, prev_state) {
 	// Options
 	var option_image = "bullet_listcell.png";
 	var sound_fx_button = option_button(p, {
-		click_fun : g.toggle_sound_fx,
+		click_fun : function() {sounds.play_button_click(); g.toggle_sound_fx();},
 		global_var : "sound_fx",
 		rect : {
 			pos : new p.PVector(p.width / 2 - 100, p.height/2 - 70),
@@ -45,6 +45,7 @@ var options_state = function (p, prev_state) {
 	});
 	var music_button = option_button(p, {
 		click_fun : function() {
+            sounds.play_button_click();
             // toggle the flag
             g.toggle_music();
         },
@@ -58,7 +59,7 @@ var options_state = function (p, prev_state) {
 		}
 	});
 	var spacebar_button = option_button(p, {
-		click_fun : g.toggle_spacebar_to_fire,
+		click_fun : function() {sounds.play_button_click(); g.toggle_spacebar_to_fire();},
 		global_var : "spacebar_to_fire",
 		rect : {
 			pos : new p.PVector(p.width / 2 + 150, p.height/2 - 70),
@@ -69,7 +70,7 @@ var options_state = function (p, prev_state) {
 		}
 	});
 	var mouse_button = option_button(p, {
-		click_fun : g.toggle_click_to_fire,
+		click_fun : function() {sounds.play_button_click(); g.toggle_click_to_fire();},
 		global_var : "click_to_fire",
 		rect : {
 			pos : new p.PVector(p.width / 2 + 150, p.height/2 + 40),
@@ -80,7 +81,7 @@ var options_state = function (p, prev_state) {
 		}
 	});
 	var mouse_to_select_button = option_button(p, {
-		click_fun : g.toggle_mouse_to_select,
+		click_fun : function() {sounds.play_button_click(); g.toggle_mouse_to_select();},
 		global_var : "mouse_to_select",
 		rect : {
 			pos : new p.PVector(p.width / 2, p.height/2 + 140),
