@@ -18,13 +18,15 @@ var high_scores_state = function (p, prev_state) {
 
 	var quit_button = button(p, {
 		state : function() { 
+            sounds.play_button_back();
+
             // hide the div
             $("#scores-wrap").hide();
             $("#scores").tabs("destroy");
             return splash_state(p);
         },	
 		rect : {
-			pos : new p.PVector(500, 550),
+			pos : new p.PVector(550, 550),
 			text: "Main Menu",
             //text_x_offset: -5,
             image: "quit.png",
@@ -67,7 +69,7 @@ var high_scores_state = function (p, prev_state) {
     var init = (function() {
         // add a loading message to be removed on load
         $("#scores-wrap").prepend(
-            "<div id='scores-loading' style='height:400; background: black; text-align:center;' ><div style='position:relative; top:50%;'>Loading high score data...</div></div>"
+            "<div id='scores-loading' style='height:400; background: black; text-align:center;' ><div style='position:relative; top:50%; color:white;'>Loading high score data...</div></div>"
         );
 
         // show the div

@@ -20,7 +20,16 @@ var game_settings = function() {
     settings.toggle_mouse_to_select = function() { toggle("mouse_to_select"); };
     // note that this only toggles the flag, not the actual music
     // that should be done with a sound manager method
-    settings.toggle_music = function() { toggle("music"); };
+    settings.toggle_music = function() { 
+        toggle("music"); 
+        console.log(settings.music);
+        if (settings.music) {
+            sounds.play_menu_music();
+        }
+        else {
+            sounds.pause_menu_music();
+        }
+    };
 
     return settings;
 };

@@ -109,5 +109,13 @@ var tkiller = function(p, spec) {
         alive = false;
     };
 
+    obj.stop_animation = function() {
+        t_anim.pause();
+    };
+
+    obj.resume_animation = function() {
+        t_anim.start();
+    };
+
     return obj;
 }

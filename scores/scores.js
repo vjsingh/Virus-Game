@@ -10,7 +10,7 @@ var make_scores = function(){
         // want to do them sequentially so we
         // chain the callbacks
 		
-        // this comes second via callback
+        // this comes third via callback
         var do_global = function() {
             // Global High Scores
             $.post("scores/get_scores.php", {
@@ -19,18 +19,43 @@ var make_scores = function(){
                 // at the end of last callback we need to
                 // make the tabs
                 function() {
+                    console.log("making tabs");
                     $("#scores").tabs();
+
+                    // remove the loading message
+                    console.log("removing loading msg");
+                    $("#scores-loading").remove();
+
+                    $("#scores").show();
                 }
             ));
         };
 
+        // this comes second via callback
+        var do_friends = function() {
+            var friends = g_get_friends();
+            if (friends.length !== 0) {
+                // Global High Scores
+                $.post("scores/get_scores.php", {
+                    num: num_rows, 
+                    uid: g_user_id,
+                    friends: friends 
+                }, callback("Friends' Scores", do_global));
+                console.log("got friends scores");
+            }
+            else {
+                do_global();
+                console.log("skipped friends scores");
+            }
+        };
+        
         // this comes first
 		// Personal high scores
 		if (g_user_id) {
 			$.post("scores/get_scores.php", {
 				num: num_rows,
 				uid :  g_user_id
-			}, callback("Your Scores", do_global));
+			}, callback("Your Scores", do_friends));
             console.log("getting user high scores");
 		}
         else {
@@ -57,20 +82,16 @@ var make_scores = function(){
                 //var d = new Date(date_str); 
                 var d = new Date();
                 // date_str must be of format yyyy-mm-dd
-                var year = date_str.substring(0, 4);
-                var month = date_str.substring(5, 7);
-                var day = date_str.substring(8);
+                var year = parseInt(date_str.substring(0, 4));
+                var month = parseInt(date_str.substring(5, 7))-1;
+                var day = parseInt(date_str.substring(8));
                 d.setFullYear(year, month, day);
                 //return d.f("NNN d, yyyy");
                 return d.format("mmm d, yyyy");
             },
         };
 		return function(data){
-            // since we got some data
-            // remove the loading message
-            console.log("removing loading msg");
-            console.log(data);
-            $("#scores-loading").remove();
+            //console.log(data);
 
 			var link = "<li><a href='#tabs-"+tab_count+"'>"
                 + header + "</a></li>";
@@ -148,6 +169,7 @@ var make_scores = function(){
 	obj.do_scores = function(){
         console.log("trying to load scores");
 		$("#scores").empty();
+        $("#scores").hide();
 		$("#scores").append("<ul id='tab-list'></ul>");
         // reset tab count
         tab_count = 1;

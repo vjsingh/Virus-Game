@@ -12,12 +12,13 @@ var sound_manager = function() {
     obj.play_sound = (function() {
         var channel_max = 10;										// number of channels
         audiochannels = new Array();
-        for (a=0;a<channel_max;a++) {									// prepare the channels
+        for (var a=0;a<channel_max;a++) {									// prepare the channels
             audiochannels[a] = new Array();
             audiochannels[a]['channel'] = //new Audio();						// create a new audio object
             	$("#jquery_jplayer_"+a);
             audiochannels[a]['finished'] = true;							// expected end time for this channel
             
+            //var curr_audio_slot = audiochannels[a];
 			
         	// call jPlayers constructor for each div
 			$("#jquery_jplayer_"+a).jPlayer( {
@@ -32,21 +33,29 @@ var sound_manager = function() {
 					*/
 					//console.log("ready");
 		        },
+                /*
+                // NOT WORKING
 				// Set finished to be true so we can load a new sound
 				ended : function() {
-					audiochannels[a]['finished'] = true;
+                    console.log("Channel " + a + " is finishing");
+					//audiochannels[a]['finished'] = true;
+                    console.log(curr_audio_slot);
+                    curr_audio_slot['finished'] = true;
+                    console.log(curr_audio_slot);
 				},
-				supplied : "oga",
+                */
+				supplied : "mp3, oga",
 				oggSupport: true
 				//solution : "flash"
 			});
         }
         return function(s){
             if (g.sound_fx) {
-                for (a = 0; a < audiochannels.length; a++) {
-                    //thistime = new Date();
-                    if (audiochannels[a]['finished']) { //< thistime.getTime()) { // is this channel finished?
-                        audiochannels[a]['finished'] = false; // thistime.getTime() + document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
+                for (var a = 0; a < audiochannels.length; a++) {
+                    console.log("Checking " + a);
+                    thistime = new Date();
+                    if (audiochannels[a]['finished'] < thistime.getTime()) { 
+                        audiochannels[a]['finished'] = thistime.getTime() + document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
                         // Audio is encoded as base64
 						/*
                         audiochannels[a]['channel'].src = g_soundDataMap[s]; //document.getElementById(s).src;
@@ -66,9 +75,10 @@ var sound_manager = function() {
 							}
 						})
 						*/
-						jplayer_instance.jPlayer("setMedia", {oga : g_soundDataMap[s]});
+                        play_a_sound(jplayer_instance, s);
+						//jplayer_instance.jPlayer("setMedia", {oga : g_soundDataMap[s]});
 						//jplayer_instance.jPlayer.event.ready = function() {console.log("read");};
-						jplayer_instance.jPlayer("play");                    
+						//jplayer_instance.jPlayer("play");                    
 						//console.log("Playing: " + s);
 						break;
                     }
@@ -98,52 +108,105 @@ var sound_manager = function() {
             background_music = random_from(all_bg_music);
             //background_music.load(); //already loaded
 			console.log("Playing bg music");
-            background_music.jPlayer("play", 0);//background_music.play();
+            if (background_music) {
+                background_music.jPlayer("play", 0);//background_music.play();
+            }
         };
     }());
 	
 	obj.resume_background_music = function() {
+        if (background_music) 
 		background_music.jPlayer("play");
 	}
 
     obj.pause_background_music = function() {
 		console.log("Pausing bg music");
+        if (background_music) 
         background_music.jPlayer("pause");
     };
+
+    var menu_music = null;
+    var button_sounds = null;
+
+    // Really resume menu music, menu music never restarts
+    obj.play_menu_music = function() {
+		if (g.music) 
+            menu_music.jPlayer("play");
+    }
+    obj.resume_menu_music = function() {
+		if (g.music) 
+            menu_music.jPlayer("play");
+    }
+    obj.pause_menu_music = function() {
+        menu_music.jPlayer("pause");
+    }
+    obj.play_button_click = function() {
+        play_a_sound(button_sounds, "buttonmain");
+    }
+    obj.play_button_back = function() {
+        play_a_sound(button_sounds, "buttonback");
+    }
 	
+    var play_a_sound = function(jplayer_instance, sound_name) {
+        jplayer_instance.jPlayer("setMedia", {
+            mp3 : g_soundDataMap[sound_name + "mp3"],
+            oga : g_soundDataMap[sound_name]
+        });
+        //jplayer_instance.jPlayer.event.ready = function() {console.log("read");};
+        jplayer_instance.jPlayer("play");                    
+    }
+
 	var num_bg_music = 2;
 	obj.load_sounds = function() {
 		// init all bg music
-		var all_supplied = "mp3";
-		var init_bg_jplayer = function(num, file_name) {
-			$("#jquery_jplayer_bg_"+num).jPlayer( {
+		var all_supplied = "mp3, ogg";
+        var init_jplayer = function(name, mp3name, oggname, should_loop) {
+			$(name).jPlayer( {
 				swfPath : the_swf_path,
 				ready: function () {
 			          $(this).jPlayer("setMedia", {
-				           mp3 : "sounds/"+file_name
+				           mp3 : "sounds/"+mp3name,
+                           oga : "sounds/"+oggname
 				          });
+                        //console.log(name + " is ready");
 						bg_music_loaded();
 				},
 				ended : function() { // loop
-					$(this).jPlayer("play");
+                    if (should_loop) {
+                        $(this).jPlayer("play");
+                    }
 				},
 				supplied : all_supplied
 			});
-		};
+        }
+
+		var init_bg_jplayer = function(num, file_name, oggfn) {
+            init_jplayer("#jquery_jplayer_bg_"+num, file_name, oggfn, true)
+        }
+        /*
         console.log("loading heart loop");
 		init_bg_jplayer(0, "heart_loop1.mp3");
         console.log("loaded heart loop");
+        */
         console.log("loading sinister");
-		init_bg_jplayer(1, "sinister.mp3");
+		init_bg_jplayer(0, "sinister.mp3", "sinister.ogg");
         console.log("loaded sinister");
+
+		init_bg_jplayer(1, "gameloop2.mp3", "gameloop2.ogg");
 
 		for (var i = 0; i < num_bg_music; i++) {
 			all_bg_music.push($("#jquery_jplayer_bg_"+i));
 		}
+
+        init_jplayer("#jquery_jplayer_menu", "menu_loop.mp3", "menu_loop.ogg", true);
+        menu_music = $("#jquery_jplayer_menu");
+
+        init_jplayer("#jquery_jplayer_buttons", "buttonmain.mp3", "buttonmain.ogg", false);
+        button_sounds = $("#jquery_jplayer_buttons");
 	};
 
 	var num_loaded = 0;
-	var max_loaded = num_bg_music;
+	var max_loaded = num_bg_music + 2 // + 1 for menu music, + 1 for button
 	var bg_music_loaded = function() {
 		num_loaded++;
 	};

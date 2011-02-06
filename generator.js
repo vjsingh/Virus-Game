@@ -39,10 +39,11 @@ var make_generator = function(p, spec) {
     // - gen_x = how far offscreen to gen this type (optional)
     // - gen_y = function that returns random y pos for this object (optional)
     // - make_new = function that takes a pos and returns a new enemy
+    // - diminish = Include to make enemy's num decrease over time instead of increasing (optional)
     var gen_info = {
         "cell": { 
             // was 8
-            start: 0, num: 20, cap: 40, rate: 2000, gen_speed: 55,
+            start: 0, num: 30, cap: 10, rate: 2000, gen_speed: 55, diminish : true,
             spacing: 50, 
             make_new: function(en_pos) {
                 return cell(p, {
@@ -52,20 +53,20 @@ var make_generator = function(p, spec) {
             }
         },
         "wall_cell": {
-            start: 0, num: 3, cap: 7, rate: 5000, //non testing value: 1000
+            start: 0, num: 3, cap: 7, rate: 3000, //non testing value: 1000
             spacing: "dynamic",//100,
             make_new: function(en_pos) {
                 return wall_cell(p, { pos: en_pos });
             } 
         },
         "empty_cell": {
-            start: /* 5000 */ 0, num: 1, cap: 10, rate: 5000,
+            start: 5000, num: 1, cap: 10, rate: 5000,
             make_new: function(en_pos) {
                 return empty_cell(p, { pos: en_pos });
             } 
         },
         "floater": {
-            start: 0, num: 3, cap: 7, rate: 7000,
+            start: 1000, num: 3, cap: 7, rate: 7000,
             spacing: "dynamic",//100,
             make_new: function(en_pos) {
                 return floater(p, { pos: en_pos });
@@ -152,9 +153,19 @@ var make_generator = function(p, spec) {
     var make_new = function(type) {
         return gen_info[type].make_new;
     };
+    var diminish = function(type) {
+        return gen_info[type].diminish || false;
+    }
     var gen_more = function(type) {
-        if (num(type) < cap(type)) {
-            gen_info[type].num = num(type)+1;
+        if (diminish(type)) {
+            if (num(type) > cap(type)) {
+                gen_info[type].num = num(type)-1;
+            }
+        }
+        else {
+            if (num(type) < cap(type)) {
+                gen_info[type].num = num(type)+1;
+            }
         }
     };
 	

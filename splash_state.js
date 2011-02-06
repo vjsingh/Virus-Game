@@ -21,9 +21,19 @@ var splash_state = function (p) {
         rect_color: back_color
     };
 
+    // Play menu music
+    sounds.play_menu_music();
+
+    var pause_menu_music = function() {
+        sounds.pause_menu_music();
+    }
 
     var start_button = button(p, {
-		state : function() { return in_game_state(p, obj); },
+		state : function() { 
+            pause_menu_music();
+            sounds.play_button_click();
+            return in_game_state(p, obj); 
+        },
         rect: {
             pos: new p.PVector(left_x, top_row_y),
             image: "mnewgame.png",
@@ -34,7 +44,10 @@ var splash_state = function (p) {
     });
 
     var help_button = button(p, {
-		state : function() { return help_state(p, obj); },
+		state : function() { 
+            sounds.play_button_click();
+            return help_state(p, obj); 
+        },
         rect: {
             pos: new p.PVector(left_x+150, top_row_y),
             image: "mhowtoplay.png",
@@ -45,7 +58,10 @@ var splash_state = function (p) {
     });
 
     var options_button = button(p, {
-		state : function() { return options_state(p, obj); },
+		state : function() { 
+            sounds.play_button_click();
+            return options_state(p, obj); 
+        },
         rect: {
             pos: new p.PVector(left_x, btm_row_y),
             image: "msettings.png",
@@ -56,13 +72,16 @@ var splash_state = function (p) {
     });
 
     var scores_button = button(p, {
-		state : function() { return high_scores_state(p, obj); },
+		state : function() { 
+            sounds.play_button_click();
+            return high_scores_state(p, obj); 
+        },
         rect: {
             pos: new p.PVector(left_x+150, btm_row_y),
-            //image: "msettings.png",
-            //over_image: "msettings_r.png",
-            text: "High Scores",
-            width: 120,
+            image: "mhighscores.png",
+            over_image: "mhighscores_r.png",
+            //text: "High Scores",
+            width: 100,
             style: button_style,
         }
     });
@@ -135,6 +154,7 @@ var splash_state = function (p) {
 	obj.key_pressed = function(k) {
 		if (k === 115 || p.keyCode === 13 || k === 32) { //s, enter, space
 			obj.set_next_state(start_button.get_state());
+            pause_menu_music();
 		}
 		else if (k === 104) { //h
 			obj.set_next_state(help_button.get_state());
