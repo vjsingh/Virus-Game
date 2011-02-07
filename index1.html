@@ -58,7 +58,8 @@ if(window.location.hash.length == 0)
     }
  })
     // Add fb login button if user is not logged in
-    document.write(' \
+    //document.write(
+    fb_login_button = ' \
         <!-- FB Login Button -->  \
         <div id="fb_login_button">  \
             <div id="child_div"> \
@@ -66,7 +67,8 @@ if(window.location.hash.length == 0)
                  Login with Facebook to track your high scores \
               </fb:login-button> \
             </div> \
-        </div> ');
+        </div> '
+        //);
 } else { // access token in URL
     accessToken = window.location.hash.substring(1);
     
@@ -138,7 +140,11 @@ function got_user(user) {
 <!-- <div id="fb_name_div"> You are not Logged In</div> -->
 
 <div style="margin: auto; width: 700; align:center;">
-
+    <script>
+        if (fb_login_button) {
+            document.write(fb_login_button);
+        }
+    </script>
 
     <div style="margin-top:1em; position:relative;">
         <!-- Score -->
