@@ -61,7 +61,7 @@ if(window.location.hash.length == 0)
     //document.write(
     fb_login_button = ' \
         <!-- FB Login Button -->  \
-        <div id="fb_login_button" style="float:left;">  \
+        <div id="fb_login_button" style="postion:absolute;left:0;">  \
             <div id="child_div"> \
               <fb:login-button> \
                  Login with Facebook to track your high scores \
@@ -140,15 +140,14 @@ function got_user(user) {
 <!-- <div id="fb_name_div"> You are not Logged In</div> -->
 
 <div style="margin: auto; width: 700; align:center;">
+    <div style="float:right; ">
+        Created for the <a href="http://www.facebook.com/haproject"><img src="images/halogo.jpg" width="100" align="absmiddle"  /></a> contest
+    </div>
     <script>
         if (fb_login_button) {
             document.write(fb_login_button);
         }
     </script>
-    <div style="float:right;">
-        <p>Created for the <a href="http://www.facebook.com/haproject"><img src="images/halogo.jpg" width="100" /></a> contest
-        </p>
-    </div>
 
     <div style="margin-top:1em; position:relative;">
         <!-- Score -->
