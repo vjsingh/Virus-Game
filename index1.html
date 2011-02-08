@@ -2,6 +2,7 @@
 <!-- html manifest="cache.manifest" --> 
 <head>
 <title>Virion</title>
+<link rel="shortcut icon" href="images/logo/logo32.png" />
 <link type="text/css" href="css/ui-darkness/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
 <link type="text/css" href="css/styles.css" rel="stylesheet" />
 <style>
@@ -58,15 +59,17 @@ if(window.location.hash.length == 0)
     }
  })
     // Add fb login button if user is not logged in
-    document.write(' \
+    //document.write(
+    fb_login_button = ' \
         <!-- FB Login Button -->  \
-        <div id="fb_login_button">  \
+        <div id="fb_login_button" style="postion:absolute;left:0;">  \
             <div id="child_div"> \
               <fb:login-button> \
                  Login with Facebook to track your high scores \
               </fb:login-button> \
             </div> \
-        </div> ');
+        </div> '
+        //);
 } else { // access token in URL
     accessToken = window.location.hash.substring(1);
     
@@ -138,7 +141,14 @@ function got_user(user) {
 <!-- <div id="fb_name_div"> You are not Logged In</div> -->
 
 <div style="margin: auto; width: 700; align:center;">
-
+    <div style="float:right; margin-bottom:0.5em;">
+        Created for &nbsp; <a href="http://www.facebook.com/haproject"><img src="images/halogo.jpg" width="100" align="absmiddle"  /></a> 
+    </div>
+    <script>
+        if (fb_login_button) {
+            document.write(fb_login_button);
+        }
+    </script>
 
     <div style="margin-top:1em; position:relative;">
         <!-- Score -->
