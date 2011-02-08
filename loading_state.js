@@ -8,10 +8,10 @@ var loading_state = function (p) {
 	var background_image = p.loadImage("images/screens/loadingsplash.png");
 
 	var next_state = null;//splash_state(p);
-	var bar_left_x = p.width * 4/20;
-	var bar_right_x = p.width * 16/20;
-	var bar_top_y = p.height * 24/50;
-	var bar_height = p.height * 1/25;
+	var bar_left_x = p.width * 31/80;
+	var bar_right_x = p.width * 31/50;
+	var bar_top_y = p.height * 55/100;
+	var bar_height = p.height * 1/35;
 	
 	// loaded progress
 	var load_progress = 0;
