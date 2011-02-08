@@ -36,7 +36,7 @@ var game_over_state = function (p, prev_state, spec) {
     };
 	// Buttons
 	var restart_button = button(p, {
-		state : function() { return in_game_state(p, prev_state); },
+		state : function() { sounds.play_button_click(); return in_game_state(p, prev_state); },
 		rect : {
 			pos : new p.PVector(p.width / 2, 330),
 			text : "Restart",
@@ -46,7 +46,7 @@ var game_over_state = function (p, prev_state, spec) {
 		}
 	});
 	var scores_button  = button(p, {
-		state : function() { return high_scores_state(p, obj); },
+		state : function() { sounds.play_button_click(); return high_scores_state(p, obj); },
 		rect : {
 			pos : new p.PVector(p.width / 2, 390),
 			text : "High Scores",
@@ -56,7 +56,7 @@ var game_over_state = function (p, prev_state, spec) {
 		}
 	});
 	var splash_button  = button(p, {
-		state : function() { return splash_state(p); },
+		state : function() { sounds.play_button_click(); return splash_state(p); },
 		rect : {
 			pos : new p.PVector(p.width / 2, 450),
 			text : "Main Menu",
