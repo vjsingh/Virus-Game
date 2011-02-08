@@ -44,9 +44,9 @@ var sound_manager = function() {
                     console.log(curr_audio_slot);
 				},
                 */
-				supplied : "mp3, oga",
-				oggSupport: true
-				//solution : "flash"
+				supplied : "mp3",//, oga",
+				oggSupport: false//true
+				//solution : "flash, html"
 			});
         }
         return function(s){
