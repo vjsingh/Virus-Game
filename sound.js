@@ -141,10 +141,12 @@ var sound_manager = function() {
         menu_music.jPlayer("pause");
     }
     obj.play_button_click = function() {
-        play_a_sound(button_sounds, "buttonmain");
+        if (g.sound_fx)
+            play_a_sound(button_sounds, "buttonmain");
     }
     obj.play_button_back = function() {
-        play_a_sound(button_sounds, "buttonback");
+        if (g.sound_fx)
+            play_a_sound(button_sounds, "buttonback");
     }
 	
     var play_a_sound = function(jplayer_instance, sound_name) {
