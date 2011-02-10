@@ -51,7 +51,7 @@ var game_over_state = function (p, prev_state, spec) {
             if (g_user_id) {
                 FB.ui({
                     method: 'feed',
-                    name: "Play Virion!"
+                    name: "Play Virion!",
                     picture: "http://apps.facebook.com/viriongame/images/logo/vlogolarge.png",
                     link: "http://apps.facebook.com/viriongame",
                     caption: "I just scored "+add_commas(spec.score)+
