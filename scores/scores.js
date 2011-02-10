@@ -193,6 +193,9 @@ var make_scores = function(){
 		 var level = form.elements[1].value;
 		 var userid = form.elements[2].value;
 		 */
+        var date_str = (new Date()).format("yyyy-mm-dd");
+        console.log(date_str);
+ 
 		var score_obj = {
 			/*
 			 score: parseInt(score),
@@ -203,8 +206,8 @@ var make_scores = function(){
 			name: name,
 			userid: uid,
 			//date: new Date().f('yyyy-MM-dd')
-            date: (new Date()).format("yyyy-mm-dd")
-		};
+            date: date_str
+        };
 		console.log(score_obj);
 		
 		post_score(score_obj, function(data){
