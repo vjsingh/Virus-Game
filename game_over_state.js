@@ -50,7 +50,16 @@ var game_over_state = function (p, prev_state, spec) {
             // only post if they are logged in 
             if (g_user_id) {
                 FB.ui({ method: 'feed',
-                    message: "I just scored "+add_commas(spec.score)+" playing Virion!"
+                    properties: {
+                        "text": "I just scored "+add_commas(spec.score)
+                            + " playing Virion!"
+                    },
+                    actions: [
+                        { 
+                            "name": "Play Virion",
+                            "link": "http://apps.facebook.com/viriongame"
+                        }
+                    ],
                 });
             }
             return obj;
@@ -63,9 +72,11 @@ var game_over_state = function (p, prev_state, spec) {
             style: button_style
 		}
 	});
+    // only allow posts if logged in
     if (!g_user_id) {
         post_button.deactivate();
     }
+
 	var scores_button  = button(p, {
 		state : function() { sounds.play_button_click(); return high_scores_state(p, obj); },
 		rect : {
