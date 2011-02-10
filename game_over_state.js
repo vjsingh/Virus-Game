@@ -50,6 +50,7 @@ var game_over_state = function (p, prev_state, spec) {
             // only post if they are logged in 
             if (g_user_id) {
                 FB.ui({ method: 'feed',
+                    description: "description",
                     properties: {
                         "scoremsg": "I just scored "+add_commas(spec.score)
                             + " playing Virion!"
