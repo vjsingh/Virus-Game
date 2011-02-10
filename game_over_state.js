@@ -45,10 +45,31 @@ var game_over_state = function (p, prev_state, spec) {
             style: button_style
 		}
 	});
+	var post_button  = button(p, {
+		state : function() { 
+            // only post if they are logged in 
+            if (g_user_id) {
+                FB.ui({ method: 'feed',
+                    message: "I just scored "+add_commas(spec.score)+" playing Virion!"
+                });
+            }
+            return obj;
+        },
+		rect : {
+			pos : new p.PVector(p.width / 2, 390),
+			text : "Post Score to Wall",
+            //text_x_offset: 35,
+            //image: "mainmenu.png",
+            style: button_style
+		}
+	});
+    if (!g_user_id) {
+        post_button.deactivate();
+    }
 	var scores_button  = button(p, {
 		state : function() { sounds.play_button_click(); return high_scores_state(p, obj); },
 		rect : {
-			pos : new p.PVector(p.width / 2, 390),
+			pos : new p.PVector(p.width / 2, 450),
 			text : "High Scores",
             text_x_offset: 35,
             image: "highscores.png",
@@ -58,7 +79,7 @@ var game_over_state = function (p, prev_state, spec) {
 	var splash_button  = button(p, {
 		state : function() { sounds.play_button_click(); return splash_state(p); },
 		rect : {
-			pos : new p.PVector(p.width / 2, 450),
+			pos : new p.PVector(p.width / 2, 510),
 			text : "Main Menu",
             text_x_offset: 35,
             image: "mainmenu.png",
@@ -67,7 +88,7 @@ var game_over_state = function (p, prev_state, spec) {
 	});
 		
 	//Not ordered
-	var all_buttons = [restart_button, splash_button, scores_button];
+	var all_buttons = [restart_button, post_button, splash_button, scores_button];
 	var all_rectangles = [score_rect, mutation_rect];
 
     // --- public methods ---

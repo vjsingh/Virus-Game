@@ -194,7 +194,6 @@ var make_scores = function(){
 		 var userid = form.elements[2].value;
 		 */
         var date_str = (new Date()).format("yyyy-mm-dd");
-        console.log(date_str);
  
 		var score_obj = {
 			/*
