@@ -51,15 +51,9 @@ var game_over_state = function (p, prev_state, spec) {
             if (g_user_id) {
                 FB.ui({ method: 'feed',
                     properties: {
-                        "text": "I just scored "+add_commas(spec.score)
+                        "scoremsg": "I just scored "+add_commas(spec.score)
                             + " playing Virion!"
                     },
-                    actions: [
-                        { 
-                            "name": "Play Virion",
-                            "link": "http://apps.facebook.com/viriongame"
-                        }
-                    ],
                 });
             }
             return obj;
