@@ -68,15 +68,37 @@ var game_over_state = function (p, prev_state, spec) {
             style: button_style
 		}
 	});
-    // only allow posts if logged in
+	var invite_button  = button(p, {
+		state : function() { 
+            // only post if they are logged in 
+            if (g_user_id) {
+                FB.ui({
+                    method: 'apprequests',
+                    title: "Infect Your Friends",
+                    message: 'Check out this awesome game!',
+                }); 
+            }
+            return obj;
+        },
+		rect : {
+			pos : new p.PVector(p.width / 2, 450),
+			text : "Infect Your Friends",
+            //text_x_offset: 35,
+            //image: "mainmenu.png",
+            style: button_style
+		}
+	});
+
+    // only allow posts/invites if logged in
     if (!g_user_id) {
         post_button.deactivate();
+        invite_button.deactivate();
     }
 
 	var scores_button  = button(p, {
 		state : function() { sounds.play_button_click(); return high_scores_state(p, obj); },
 		rect : {
-			pos : new p.PVector(p.width / 2, 450),
+			pos : new p.PVector(p.width / 2, 510),
 			text : "High Scores",
             text_x_offset: 35,
             image: "highscores.png",
@@ -86,7 +108,7 @@ var game_over_state = function (p, prev_state, spec) {
 	var splash_button  = button(p, {
 		state : function() { sounds.play_button_click(); return splash_state(p); },
 		rect : {
-			pos : new p.PVector(p.width / 2, 510),
+			pos : new p.PVector(p.width / 2, 570),
 			text : "Main Menu",
             text_x_offset: 35,
             image: "mainmenu.png",
