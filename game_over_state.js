@@ -14,7 +14,7 @@ var game_over_state = function (p, prev_state, spec) {
     var topy = 100;
 	// Score display
 	var score_rect = rectangle(p, {
-		pos : new p.PVector(p.width / 2, topy+50),// 230),
+		pos : new p.PVector(p.width / 2, topy+80),// 230),
 		width : 0,
 		height : 0,
 		text : "Score : " + add_commas(spec.score),
@@ -23,7 +23,7 @@ var game_over_state = function (p, prev_state, spec) {
 	});
 
 	var mutation_rect  = rectangle(p, {
-		pos : new p.PVector(p.width / 2, topy+100),//280),
+		pos : new p.PVector(p.width / 2, topy+130),//280),
 		width : 0,
 		height : 0,
 		text : "Mutation Level : " + spec.mutation_level,
@@ -31,7 +31,7 @@ var game_over_state = function (p, prev_state, spec) {
 		text_color : 255
 	});
 
-    var b_top = topy+150;
+    var b_top = topy+180;
     var b_spc = 60;
     var button_style = {
         width: 120, height: 50,
