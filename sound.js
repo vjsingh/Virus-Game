@@ -96,7 +96,7 @@ var sound_manager = function() {
     // we will only load however many names there are
 	var num_bg_music = track_names.length;
     // index for background tracks
-    var track_index = Math.floor(Math.random(0, num_bg_music));
+    var track_index = Math.floor(Math.random(0)*num_bg_music));
 
 	// Plays a random loop from the beginning
     obj.play_background_music = (function() {
