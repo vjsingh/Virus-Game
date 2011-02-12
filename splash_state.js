@@ -26,7 +26,7 @@ var splash_state = function (p) {
 
     var pause_menu_music = function() {
         sounds.pause_menu_music();
-    }
+    };
 
     var start_button = button(p, {
 		state : function() { 
