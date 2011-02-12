@@ -21,6 +21,7 @@ var state_manager = function (p) {
         "game": 1,
         "game_over": 2,
         "pause": 2,
+        "credits": 2,
         "help": 2,
 		"options" : 2
     };
@@ -110,6 +111,10 @@ var state_manager = function (p) {
                     p.loop();
 					break;
 				case "high_scores":
+					is_overlay = true;
+                    p.noLoop();
+					break;
+				case "credits":
 					is_overlay = true;
                     p.noLoop();
 					break;

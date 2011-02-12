@@ -23,7 +23,10 @@ var pause_state = function (p, prev_state) {
 
 	
 	var continue_button = button(p, {
-		state : function() { sounds.play_button_click(); return prev_state; },
+		state : function() { 
+            sounds.play_button_click();
+            return prev_state; 
+        },
 		rect : {
 			pos : new p.PVector(button_x, button_top),
             text: "Continue",
@@ -34,7 +37,10 @@ var pause_state = function (p, prev_state) {
 	});
 
 	var options_button = button(p, {
-		state : function() { sounds.play_button_click(); return options_state(p, obj); },
+		state : function() { 
+            sounds.play_button_click(); 
+            return options_state(p, obj); 
+        },
 		rect : {
 			pos : new p.PVector(button_x, button_top+button_sep),
 			text: "Settings",
@@ -44,7 +50,10 @@ var pause_state = function (p, prev_state) {
 	});
 
 	var help_button = button(p, {
-		state : function() { sounds.play_button_click(); return help_state(p, obj); },	
+		state : function() {
+            sounds.play_button_click();
+            return help_state(p, obj);
+        },	
 		rect : {
 			pos : new p.PVector(button_x, button_top+2*button_sep),
 			text: "Instructions",
@@ -56,7 +65,10 @@ var pause_state = function (p, prev_state) {
 	});
     
 	var quit_button = button(p, {
-		state : function() { sounds.play_button_click(); return splash_state(p); },	
+		state : function() {
+            sounds.play_button_click();
+            return splash_state(p); 
+        },	
 		rect : {
 			pos : new p.PVector(button_x, button_top+3*button_sep),
 			text: "Quit",
@@ -68,7 +80,8 @@ var pause_state = function (p, prev_state) {
 	});
 	
 	//Not ordered
-	var all_buttons = [ continue_button, options_button, help_button, quit_button ];
+	var all_buttons = [ continue_button, options_button,
+        help_button, quit_button ];
 
     // --- public methods ---
     

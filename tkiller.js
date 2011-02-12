@@ -89,7 +89,7 @@ var tkiller = function(p, spec) {
 
         if (obj.is_illustration()) {
             t_image = image_manager.get_image("tcell_2.png");
-            // to make it less transparent
+            // to make it less transparent draw twice
             p.image(t_image, 0, 0,
                     obj.get_width(), obj.get_height());
         }
