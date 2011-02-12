@@ -15,8 +15,10 @@ var options_state = function (p, prev_state) {
     };
 	
 	// Buttons
-	// Have a rectangle representing their position and
-	// a state to go to when pressed
+    
+    var col1_x = p.width/2 - 120;
+    var col2_x = p.width/2 + 120;
+
 	var back_button = button(p, {
 		state : function() {
             sounds.play_button_back();
@@ -39,7 +41,7 @@ var options_state = function (p, prev_state) {
 		click_fun : function() {sounds.play_button_click(); g.toggle_sound_fx();},
 		global_var : "sound_fx",
 		rect : {
-			pos : new p.PVector(p.width / 2 - 100, p.height/2 - 70),
+			pos : new p.PVector(col1_x, p.height/2 - 70),
 			//text: "Sound Effects",
             //text_x_offset: 60,
 			image : "set_sound.png",//option_image,
@@ -55,7 +57,7 @@ var options_state = function (p, prev_state) {
         },
 		global_var : "music",
 		rect : {
-			pos : new p.PVector(p.width / 2 - 100, p.height/2 + 40),
+			pos : new p.PVector(col1_x, p.height/2 + 40),
 			//text: "Music",
             //text_x_offset: 60,
 			image : "set_music.png",//option_image,
@@ -70,7 +72,7 @@ var options_state = function (p, prev_state) {
         },
 		global_var : "spacebar_to_fire",
 		rect : {
-			pos : new p.PVector(p.width / 2 + 150, p.height/2 - 70),
+			pos : new p.PVector(col2_x, p.height/2 - 70),
 			//text: "Spacebar to Fire",
 			//text_x_offset : 60,
 			image : "set_spacebar.png",//option_image,
@@ -85,7 +87,7 @@ var options_state = function (p, prev_state) {
         },
 		global_var : "click_to_fire",
 		rect : {
-			pos : new p.PVector(p.width / 2 + 150, p.height/2 + 40),
+			pos : new p.PVector(col2_x, p.height/2 + 40),
 			//text: "Mouse Click to Fire",
 			//text_x_offset : 60,
 			image : "set_click.png",//option_image,
@@ -100,7 +102,7 @@ var options_state = function (p, prev_state) {
         },
 		global_var : "mouse_to_select",
 		rect : {
-			pos : new p.PVector(p.width / 2 + 150, p.height/2 + 140),
+			pos : new p.PVector(col2_x, p.height/2 + 140),
 			//text: "Mouse to Select Cells\nInstead of Left/Right",
 			image : "set_mouseselect.png",//option_image,
 			over_image : "set_mouseselect_a.png",
@@ -115,7 +117,7 @@ var options_state = function (p, prev_state) {
             return obj; 
         },
 		rect : {
-			pos : new p.PVector(p.width / 2 - 150, p.height/2 + 140),
+			pos : new p.PVector(col1_x - 50, p.height/2 + 140),
 			image : "track_left.png",
 		}
 	});
@@ -126,7 +128,7 @@ var options_state = function (p, prev_state) {
             return obj; 
         },
 		rect : {
-			pos : new p.PVector(p.width / 2 - 50, p.height/2 + 140),
+			pos : new p.PVector(col2_x + 50, p.height/2 + 140),
 			image : "track_right.png",
 		}
 	});
@@ -169,7 +171,7 @@ var options_state = function (p, prev_state) {
 		p.image(background_image, 0, 0);//, p.width, p.height);
 
         // draw the track button background manually    
-        var track_x = p.width/2 - 100;
+        var track_x = col1_x;
         var track_y = p.height/2 + 140;
         var track_image = image_manager.get_image("set_track.png");
         p.imageMode(p.CENTER);
