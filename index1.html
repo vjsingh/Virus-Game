@@ -2,6 +2,7 @@
 <!-- html manifest="cache.manifest" --> 
 <head>
 <title>Virion</title>
+<link rel="shortcut icon" href="images/logo/logo32.png" />
 <link type="text/css" href="css/ui-darkness/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
 <link type="text/css" href="css/styles.css" rel="stylesheet" />
 <style>
@@ -9,6 +10,7 @@
         background: white;
         color: black;
         font-family: Arial, sans-serif;
+        overflow:none;
     }
 </style>
 
@@ -58,15 +60,17 @@ if(window.location.hash.length == 0)
     }
  })
     // Add fb login button if user is not logged in
-    document.write(' \
+    //document.write(
+    fb_login_button = ' \
         <!-- FB Login Button -->  \
-        <div id="fb_login_button">  \
+        <div id="fb_login_button" style="postion:absolute;left:0;">  \
             <div id="child_div"> \
               <fb:login-button> \
                  Login with Facebook to track your high scores \
               </fb:login-button> \
             </div> \
-        </div> ');
+        </div> '
+        //);
 } else { // access token in URL
     accessToken = window.location.hash.substring(1);
     
@@ -133,12 +137,15 @@ function got_user(user) {
     }
 }
 </script>
-<p id="userName"></p>
 
 <!-- <div id="fb_name_div"> You are not Logged In</div> -->
 
 <div style="margin: auto; width: 700; align:center;">
-
+    <script>
+        if (fb_login_button) {
+            document.write(fb_login_button);
+        }
+    </script>
 
     <div style="margin-top:1em; position:relative;">
         <!-- Score -->
@@ -151,14 +158,15 @@ function got_user(user) {
         <canvas width="700" height="600" id="test_canvas"> 
             Your browser does not support the HTML5 canvas element. Upgrade to Chrome, Firefox 4, Safari, or Opera to play this game. 
         </canvas>
-        <div style="margin-top: 0.5em; font-size: 0.8em;">
-            Note: If you are using Firefox 3 and the game is running slowly, please upgrade to Firefox 4.
+        <div style="float:right; margin: 1.5em -5px 0.5em 1.5em; padding:0.5em; border: 1px dashed black; font-size:0.8em; width:200;">
+            <div style="margin-bottom:0.5em; font-weight:bold;">Virion was created as an entry in the Hidden Agenda contest</div> 
+            <a href="http://www.facebook.com/haproject" target="_blank"><img src="images/halogo.jpg" width="200" /></a> 
         </div>
-    </div>
-    <div style="">
-        <h2>Virion Beta Testing Feedback</h2>
-        <div>
-            Tell us what you thought of the game by filling out <a href="https://spreadsheets0.google.com/viewform?hl=en&hl=en&formkey=dEcxNks5Vndqb1dVN2xsSTg0czFkemc6MQ#gid=0">this survey</a>. You can also email us at <em>viriongame at gmail dot com</em>. Thanks! We appreciate your help. &nbsp;&mdash; The Virion Team
+        <div style="margin-top:0.8em;">
+        <fb:like href="http://www.facebook.com/apps/application.php?id=179028108782663" show_faces="true" width="450"></fb:like>
+        </div>
+        <div style="margin-top: 1.5em; margin-bottom:2em; font-size: 0.8em;">
+            <strong>Note:</strong> If you are using Firefox 3 and the game is not loading or running slowly, please upgrade to Firefox 4 or try using Chrome or Safari.
         </div>
     </div>
 </div>

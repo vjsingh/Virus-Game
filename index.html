@@ -10,14 +10,15 @@
 
 </head>
 
+<body>
 <!-- Facebook Integration 
 	All of this is just to set g_user_id and g_user_name
 -->
 <!-- This initialized the SDK so we can use it -->
 <div id="fb-root"></div>
-  <script src="http://connect.facebook.net/en_US/all.js">
-  </script>
-  	<script>
+<script src="http://connect.facebook.net/en_US/all.js">
+</script>
+<script>
      FB.init({ 
         appId:179028108782663, cookie:true, 
         status:true, xfbml:true 
@@ -26,7 +27,6 @@
     FB.Event.subscribe('auth.login', function(response) {
 	    window.location.reload();
 	});
-
 </script>	  
   
 <script>
@@ -100,6 +100,5 @@ function got_user(user) {
     }
 }
 </script>
-<p id="userName"></p>
 
-<!-- <div id="fb_name_div"> You are not Logged In</div> -->
+</body>
