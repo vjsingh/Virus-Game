@@ -23,52 +23,67 @@ var pause_state = function (p, prev_state) {
 
 	
 	var continue_button = button(p, {
-		state : function() { sounds.play_button_click(); return prev_state; },
+		state : function() { 
+            sounds.play_button_click();
+            return prev_state; 
+        },
 		rect : {
 			pos : new p.PVector(button_x, button_top),
-            text: "Continue",
+            //text: "Continue",
             image: "continue.png",
-            image_x_offset: 5,
-            style: button_style
+            width: 120,
+            height: 50
+            //image_x_offset: 5,
+            //style: button_style
 		}
 	});
 
 	var options_button = button(p, {
-		state : function() { sounds.play_button_click(); return options_state(p, obj); },
+		state : function() { 
+            sounds.play_button_click(); 
+            return options_state(p, obj); 
+        },
 		rect : {
 			pos : new p.PVector(button_x, button_top+button_sep),
-			text: "Settings",
+			//text: "Settings",
             image: "settings.png",
-            style: button_style
+            //style: button_style
 		}
 	});
 
 	var help_button = button(p, {
-		state : function() { sounds.play_button_click(); return help_state(p, obj); },	
+		state : function() {
+            sounds.play_button_click();
+            return help_state(p, obj);
+        },	
 		rect : {
 			pos : new p.PVector(button_x, button_top+2*button_sep),
-			text: "Instructions",
+			//text: "Instructions",
             //text_x_offset: 10,
             image: "instructions.png",
-            image_x_offset: 3,
-            style: button_style
+            //image_x_offset: 3,
+            //style: button_style
 		}
 	});
     
 	var quit_button = button(p, {
-		state : function() { sounds.play_button_click(); return splash_state(p); },	
+		state : function() {
+            sounds.play_button_click();
+            return splash_state(p); 
+        },	
 		rect : {
 			pos : new p.PVector(button_x, button_top+3*button_sep),
-			text: "Quit",
+			//text: "Quit",
             //text_x_offset: -5,
             image: "quit.png",
-            image_x_offset: -5,
-            style: button_style
+            //image_x_offset: -5,
+            //style: button_style
 		}
 	});
 	
 	//Not ordered
-	var all_buttons = [ continue_button, options_button, help_button, quit_button ];
+	var all_buttons = [ continue_button, options_button,
+        help_button, quit_button ];
 
     // --- public methods ---
     
@@ -93,7 +108,7 @@ var pause_state = function (p, prev_state) {
     };
 
 	obj.key_pressed = function(k) {
-		if (k === 112 || p.keyCode == 13 || p.keyCode === 27) { //p, enter, esc
+		if (k === 112 || p.keyCode === 13 || p.keyCode === 27) { //p, enter, esc
 			obj.exit_state();;
 		}
 	};

@@ -16,27 +16,27 @@ var high_scores_state = function (p, prev_state) {
         height: 50,
     };
 
-	var quit_button = button(p, {
+	var back_button = button(p, {
 		state : function() { 
             sounds.play_button_back();
 
             // hide the div
             $("#scores-wrap").hide();
             $("#scores").tabs("destroy");
-            return splash_state(p);
+            return prev_state;//splash_state(p);
         },	
 		rect : {
-			pos : new p.PVector(550, 550),
-			text: "Main Menu",
+			pos : new p.PVector(540, 550),
+			//text: "Main Menu",
             //text_x_offset: -5,
-            image: "quit.png",
-            image_x_offset: -5,
-            style: button_style
+            image: "back.png",
+            //image_x_offset: -5,
+            //style: button_style
 		}
 	});
 	
 	//Not ordered
-	var all_buttons = [ quit_button ];
+	var all_buttons = [ back_button ];
 
     // --- public methods ---
     

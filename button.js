@@ -7,8 +7,8 @@
 var button = function(p, spec) {
 	
     // --- defaults ---
-    spec.rect.width = spec.rect.width || 100;
-    spec.rect.height = spec.rect.height || 35;
+    //spec.rect.width = spec.rect.width || 100;
+    //spec.rect.height = spec.rect.height || 35;
 
     // obj to return
     var obj = {};
@@ -16,13 +16,24 @@ var button = function(p, spec) {
     // --- private variables ---
 
 	var next_state_fun = spec.state;
-	var rect = rectangle(p, spec.rect);
     var active = spec.active || true;
 
     var image = spec.rect.image ?
         image_manager.get_image(spec.rect.image) : null;
     var over_image = spec.rect.over_image ? 
         image_manager.get_image(spec.rect.over_image) : null;
+
+    // if no width is given but an image is
+    // use the image width
+    if (!spec.rect.width && image) {
+        spec.rect.width = image.width;
+    }
+    // and for height
+    if (!spec.rect.height && image) {
+        spec.rect.height = image.height;
+    }
+
+	var rect = rectangle(p, spec.rect);
 
     // --- public methods --- 
 
