@@ -44,6 +44,7 @@ var antibody = function(p, spec) {
     
     obj.my_update = function() {
         if (!attached) {
+            obj.set_speed(obj.get_level() / 4 + 1)
             obj.move();
             // don't want two antibodies attacking one cell
             var tar = obj.get_target();
