@@ -128,7 +128,7 @@ var options_state = function (p, prev_state) {
             return obj; 
         },
 		rect : {
-			pos : new p.PVector(col2_x + 50, p.height/2 + 140),
+			pos : new p.PVector(col1_x + 50, p.height/2 + 140),
 			image : "track_right.png",
 		}
 	});
