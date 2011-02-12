@@ -35,12 +35,11 @@ var credits_state = function(p, prev_state) {
     };
 
     obj.render = function() {
-        /*
+        // fill the background
         p.noStroke();
-        p.fill(0, 150);
+        p.fill(g.background_color);
         p.rectMode(p.CORNER);
         p.rect(0, 0, p.width, p.height);
-        */
 
         p.imageMode(p.CENTER);
         p.image(credits_back, p.width/2, p.height/2);
