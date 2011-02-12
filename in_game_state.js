@@ -102,9 +102,13 @@ var in_game_state = function (p, previous_state) {
 	var all_buttons = [pause_button]; 
 	
 	var all_notifications = [];
+    var last_notification_time = -1
     // takes a string and adds a new notification
     var notify = function(note, color) {
-        all_notifications.push(notification(p, { "text": note, "color": color }));
+        if (new Date().getTime() > (last_notification_time + 1000)) { // one second
+            all_notifications.push(notification(p, { "text": note, "color": color }));
+            last_notification_time = new Date().getTime();
+        }
     };
 	
 	var generator = make_generator(p, {
@@ -1591,6 +1595,7 @@ var in_game_state = function (p, previous_state) {
 		for_each(all_status_objs, function(o) {o.draw();});
 		
 		// Draw all the notifications, removing if finishing
+        // Don't draw if they overlap
         for_each(all_notifications, function(n) {
             if (!n.draw()) {
                 remove_elt(all_notifications, n);
