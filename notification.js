@@ -26,7 +26,7 @@ var notification = function(p, spec) {
         var text_alpha = 255 - 200*time_percent;
 
 		var x_pos = (p.width * (5/8)); //+ (p.width / 2) *time_percent;
-		var y_pos = (p.height * (5/8)); //- (p.height / 2) *time_percent;
+		var y_pos = (p.height * (5/8)); - (p.height / 2) *time_percent;
 
         // I don't like the moving from the center
         // so I'm trying it stationary
