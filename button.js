@@ -83,6 +83,9 @@ var button = function(p, spec) {
 		}
 	};	
 
+    // special case for track buttons
+    obj.click = obj.is_clicked;
+
     obj.mouse_moved = function(x, y) {
         if (active && rect.is_in(x, y)) {
             if (over_image) {
