@@ -495,11 +495,9 @@ var help_state = function (p, prev_state) {
 		state : function() { sounds.play_button_back(); return prev_state; },	
 		rect : {
 			pos : new p.PVector(p.width/2, button_y),  //box_x+box_w-80, box_y+box_h-30),
-            width: 120,
-            height: 50,
-			text: "Back",
-            text_x_offset: 5,
-            text_y_offset: -8,
+			//text: "Back",
+            //text_x_offset: 5,
+            //text_y_offset: -8,
             image: "back.png",
 		}
 	});
@@ -512,9 +510,9 @@ var help_state = function (p, prev_state) {
         },
         rect: {
             pos: new p.PVector(p.width/2+120, button_y),
-            text: "Next",
+            //text: "Next",
             image: "next.png",
-            style: button_style
+            //style: button_style
         }
     });
 
@@ -526,9 +524,9 @@ var help_state = function (p, prev_state) {
         },
         rect: {
             pos: new p.PVector(p.width/2-120, button_y),
-            text: "Previous",
+            //text: "Previous",
             image: "previous.png",
-            style: button_style
+            //style: button_style
         }
     });
     previous_button.deactivate();

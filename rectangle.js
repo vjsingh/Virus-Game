@@ -43,6 +43,7 @@ var rectangle = function (p, spec) {
 	if (spec.image) {
 		rect_image = image_manager.get_image(spec.image);// p.loadImage(spec.image);
 	}
+
     spec.image_x_offset = spec.image_x_offset || 0;
 	var rect_mode = p.CENTER;
     // tints background image for mouse over
