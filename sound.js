@@ -230,10 +230,10 @@ var sound_manager = function() {
         console.log("loaded heart loop");
         */
         console.log("loading sinister");
-		init_bg_jplayer(0, "sinister.mp3", "sinister.ogg");
+		init_bg_jplayer(0, "sinister.mp3", "sinister.ogg", true);
         console.log("loaded sinister");
 
-		init_bg_jplayer(1, "gameloop2.mp3", "gameloop2.ogg");
+		init_bg_jplayer(1, "gameloop2.mp3", "gameloop2.ogg", true);
 
 		for (var i = 0; i < num_bg_music; i++) {
 			all_bg_music.push({
