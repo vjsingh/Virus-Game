@@ -88,6 +88,7 @@ var in_game_state = function (p, previous_state) {
         p.translate(r.pos.x-w/2, r.pos.y-h/2);
         p.strokeWeight(2);
         p.stroke(255);
+        p.noFill();
         p.ellipse(w/2, h/2, w, h);
         p.noStroke();
         p.fill(255);
