@@ -31,8 +31,8 @@ var wall_segment = function(p, spec) {
     // --- defaults ---
 
     // temporarily dividing by 3 because the images are 3x too big
-    spec.width = spec.width  || wall_image.width/3;// || 60;
-    spec.height = spec.height || wall_image.height/3;// || 60;
+    spec.width = spec.width  || wall_image.width;///3;// || 60;
+    spec.height = spec.height || wall_image.height;///3;// || 60;
     spec.fill = spec.fill || 150;
     spec.mode = p.CENTER;
     // adjust to center coords

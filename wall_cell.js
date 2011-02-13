@@ -10,8 +10,8 @@ var wall_cell = function(p, spec) {
     // --- defaults ---
 
     // temporarily dividing by 2 cuz image is too big
-    spec.width = spec.width || wall_image.width/2 || 40;
-    spec.height = spec.height || wall_image.height/2 || 20;
+    spec.width = spec.width || wall_image.width;///2 || 40;
+    spec.height = spec.height || wall_image.height;///2 || 20;
 
     // obj to return
     var obj = game_object(p, spec);
