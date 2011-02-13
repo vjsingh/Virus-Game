@@ -178,12 +178,13 @@ var help_state = function (p, prev_state) {
                 width: 30, height: 30,
                 draw: function() {
                     var img = image_manager.get_image("tinyvirus_trans.png");
+                    var w = 15;
+                    var h = 15;
                     p.fill(color1);
                     p.noStroke();
-                    p.ellipse(img.width/2, img.height/2,
-                        img.width*.75, img.height*.75);
-                    p.imageMode(p.CORNER);
-                    p.image(img, 0, 0);
+                    p.ellipse(w, h, w*.75, h*.75);
+                    p.imageMode(p.CENTER);
+                    p.image(img, w, h, w, h);
                 }
             },
             img_left: false
@@ -191,7 +192,22 @@ var help_state = function (p, prev_state) {
         s1.add_item(item({
             title: "Infectable Cells",
             text: "Hit an infectable cell with a virion to infect it. After penetrating the cell wall, the virion will use the cell's machinery to make copies of itself.",
-            image: cimg,
+            //image: cimg,
+            illustration: {
+                width: 50, height: 60,
+                draw: (function() {
+                    var c = cell(p, {
+                        pos: new p.PVector(30, 30),
+                        width: 30, height: 30,
+                        illustration: true
+                    });
+                    c.set_image(cimg);
+                    //c.set_state("active");
+                    return function() {
+                        c.draw();
+                    };
+                }()),
+            },
             img_left: true
         }));
         s1.add_item(item({
@@ -218,14 +234,36 @@ var help_state = function (p, prev_state) {
         s1.add_item(item({
             title: "Tolerant Cells",
             text: "Some cells can be infected, but will not let your virion replicate. A virion that infects a tolerant cell is as good as dead.",
-            image: image_manager.get_image("noninfectable_cell_1n.png"),
+            illustration: {
+                width: 50, height: 60,
+                draw: (function() {
+                    var c = empty_cell(p, {
+                        pos: new p.PVector(30, 30),
+                        width: 30, height: 30,
+                    });
+                    return function() {
+                        c.draw();
+                    };
+                }()),
+            },
             img_left: true
         }));
         s1.add_item(item({
             title: "Resistant Cells",
             text: "Virions can't break through the cell wall of resistant cells - they will just bounce off in the other direction.",
             height: 60,
-            image: image_manager.get_image("wallcell_1.png"),
+            illustration: {
+                width: 30, height: 60,
+                draw: (function() {
+                    var c = wall_cell(p, {
+                        pos: new p.PVector(20, 30),
+                        //width: 30, height: 30,
+                    });
+                    return function() {
+                        c.draw();
+                    };
+                }()),
+            },
             img_left: false
         }));
 
