@@ -89,7 +89,14 @@ var sound_manager = function() {
 	
 
     var background_music = null;
+    // list of objs with props "music" and "name" 
     var all_bg_music = [];
+    // keep this updated with names
+    var track_names = [ "Sinister", "Loop 2" ];
+    // we will only load however many names there are
+	var num_bg_music = track_names.length;
+    // index for background tracks
+    var track_index = Math.floor(Math.random(0)*num_bg_music);
 
 	// Plays a random loop from the beginning
     obj.play_background_music = (function() {
@@ -105,7 +112,7 @@ var sound_manager = function() {
         
         return function() {
             //obj.stop_background_music();
-            background_music = random_from(all_bg_music);
+            set_background_music();
             //background_music.load(); //already loaded
 			console.log("Playing bg music");
             if (background_music) {
@@ -113,16 +120,49 @@ var sound_manager = function() {
             }
         };
     }());
+
+
+    // changes to the next background track
+    // and returns its name
+    obj.next_track = function() {
+        track_index += 1;
+        if (track_index >= all_bg_music.length) {
+            track_index = 0;
+        }
+        // pause the old one
+        obj.pause_background_music();
+        // set the new one
+        set_background_music();
+        //obj.play_background_music();
+        return all_bg_music[track_index].name;
+    };
 	
+    obj.prev_track = function() {
+        track_index -= 1;
+        if (track_index < 0) {
+            track_index = all_bg_music.length-1;
+        }
+        // pause the old one
+        obj.pause_background_music();
+        // set the new one
+        set_background_music();
+        return all_bg_music[track_index].name;
+    };
+
+    // sets the background music to the current track index
+    var set_background_music = function() {
+        background_music = all_bg_music[track_index].music; 
+    };
+
 	obj.resume_background_music = function() {
         if (background_music) 
-		background_music.jPlayer("play");
+		    background_music.jPlayer("play");
 	}
 
     obj.pause_background_music = function() {
 		console.log("Pausing bg music");
         if (background_music) 
-        background_music.jPlayer("pause");
+            background_music.jPlayer("pause");
     };
 
     var menu_music = null;
@@ -158,7 +198,6 @@ var sound_manager = function() {
         jplayer_instance.jPlayer("play");                    
     }
 
-	var num_bg_music = 2;
 	obj.load_sounds = function() {
 		// init all bg music
 		var all_supplied = "mp3, ogg";
@@ -197,7 +236,10 @@ var sound_manager = function() {
 		init_bg_jplayer(1, "gameloop2.mp3", "gameloop2.ogg");
 
 		for (var i = 0; i < num_bg_music; i++) {
-			all_bg_music.push($("#jquery_jplayer_bg_"+i));
+			all_bg_music.push({
+                music: $("#jquery_jplayer_bg_"+i),
+                name: track_names[i]
+            });
 		}
 
         init_jplayer("#jquery_jplayer_menu", "menu_loop.mp3", "menu_loop.ogg", true);
@@ -205,6 +247,9 @@ var sound_manager = function() {
 
         init_jplayer("#jquery_jplayer_buttons", "buttonmain.mp3", "buttonmain.ogg", false);
         button_sounds = $("#jquery_jplayer_buttons");
+
+        // set initial track
+        g.set_track(track_names[track_index]);
 	};
 
 	var num_loaded = 0;

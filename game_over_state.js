@@ -17,7 +17,7 @@ var game_over_state = function (p, prev_state, spec) {
 		pos : new p.PVector(p.width / 2, topy+80),// 230),
 		width : 0,
 		height : 0,
-		text : "Score : " + add_commas(spec.score),
+		text : "Score: " + add_commas(spec.score),
 		text_size : 30,
 		text_color : 255
 	});
@@ -26,7 +26,7 @@ var game_over_state = function (p, prev_state, spec) {
 		pos : new p.PVector(p.width / 2, topy+130),//280),
 		width : 0,
 		height : 0,
-		text : "Mutation Level : " + spec.mutation_level,
+		text : "Mutation Level: " + spec.mutation_level,
 		text_size : 30,
 		text_color : 255
 	});
@@ -39,19 +39,23 @@ var game_over_state = function (p, prev_state, spec) {
     };
 	// Buttons
 	var restart_button = button(p, {
-		state : function() { sounds.play_button_click(); return in_game_state(p, prev_state); },
+		state : function() { 
+            sounds.play_button_click(); 
+            return in_game_state(p, prev_state); 
+        },
 		rect : {
 			pos : new p.PVector(p.width / 2, b_top),//330),
-			text : "Restart",
-            text_x_offset: 40,
+			//text : "Restart",
+            //text_x_offset: 40,
             image: "restart.png",
-            style: button_style
+            //style: button_style
 		}
 	});
 	var post_button  = button(p, {
 		state : function() { 
             // only post if they are logged in 
             if (g_user_id) {
+                sounds.play_button_click(); 
                 FB.ui({
                     method: 'feed',
                     name: "Play Virion!",
@@ -65,16 +69,17 @@ var game_over_state = function (p, prev_state, spec) {
         },
 		rect : {
 			pos : new p.PVector(p.width / 2, b_top+b_spc),//390),
-			text : "Post Score to Wall",
+			//text : "Post Score to Wall",
             //text_x_offset: 35,
-            //image: "mainmenu.png",
-            style: button_style
+            image: "postscore.png",
+            //style: button_style
 		}
 	});
 	var invite_button  = button(p, {
 		state : function() { 
             // only post if they are logged in 
             if (g_user_id) {
+                sounds.play_button_click(); 
                 FB.ui({
                     method: 'apprequests',
                     title: "Infect Your Friends",
@@ -85,10 +90,10 @@ var game_over_state = function (p, prev_state, spec) {
         },
 		rect : {
 			pos : new p.PVector(p.width / 2, b_top+2*b_spc),//450),
-			text : "Infect Your Friends",
+			//text : "Infect Your Friends",
             //text_x_offset: 35,
-            //image: "mainmenu.png",
-            style: button_style
+            image: "infectfriends.png",
+            //style: button_style
 		}
 	});
 
@@ -99,28 +104,35 @@ var game_over_state = function (p, prev_state, spec) {
     }
 
 	var scores_button  = button(p, {
-		state : function() { sounds.play_button_click(); return high_scores_state(p, obj); },
+		state : function() { 
+            sounds.play_button_click(); 
+            return high_scores_state(p, obj); 
+        },
 		rect : {
 			pos : new p.PVector(p.width / 2, b_top+3*b_spc),//510),
-			text : "High Scores",
-            text_x_offset: 35,
+			//text : "High Scores",
+            //text_x_offset: 35,
             image: "highscores.png",
-            style: button_style
+            //style: button_style
 		}
 	});
 	var splash_button  = button(p, {
-		state : function() { sounds.play_button_click(); return splash_state(p); },
+		state : function() { 
+            sounds.play_button_click(); 
+            return splash_state(p); 
+        },
 		rect : {
 			pos : new p.PVector(p.width / 2, b_top+4*b_spc),//570),
-			text : "Main Menu",
-            text_x_offset: 35,
+			//text : "Main Menu",
+            //text_x_offset: 35,
             image: "mainmenu.png",
-            style: button_style
+            //style: button_style
 		}
 	});
 		
 	//Not ordered
-	var all_buttons = [restart_button, post_button, invite_button, splash_button, scores_button];
+	var all_buttons = [restart_button, post_button, 
+        invite_button, splash_button, scores_button];
 	var all_rectangles = [score_rect, mutation_rect];
 
     // --- public methods ---

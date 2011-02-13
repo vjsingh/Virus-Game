@@ -4,6 +4,7 @@ var game_settings = function() {
     var settings = {
         sound_fx : true,
         music : true,
+        track: "no track",
         click_to_fire : true,
         mouse_to_select : false,
         spacebar_to_fire : true,
@@ -22,13 +23,27 @@ var game_settings = function() {
     // that should be done with a sound manager method
     settings.toggle_music = function() { 
         toggle("music"); 
-        console.log(settings.music);
+        //console.log(settings.music);
         if (settings.music) {
             sounds.play_menu_music();
         }
         else {
             sounds.pause_menu_music();
         }
+    };
+
+    settings.next_track = function() {
+        var t = sounds.next_track();
+        settings.track = t;
+    };
+    
+    settings.prev_track = function() {
+        var t = sounds.prev_track();
+        settings.track = t;
+    };
+
+    settings.set_track = function(t) {
+        settings.track = t;
     };
 
     return settings;

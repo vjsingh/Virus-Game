@@ -26,7 +26,7 @@ var splash_state = function (p) {
 
     var pause_menu_music = function() {
         sounds.pause_menu_music();
-    }
+    };
 
     var start_button = button(p, {
 		state : function() { 
@@ -86,6 +86,19 @@ var splash_state = function (p) {
         }
     });
 
+    var credits_button = button(p, {
+        state : function() {
+            sounds.play_button_click();
+            return credits_state(p, obj);
+        },
+        rect: {
+            pos: new p.PVector(p.width-100, 30),
+            image: "credits.png",
+            width: 200,
+            height: 50,
+        }
+    });
+
     /*
     var splash_style = {
         width : 170,
@@ -139,7 +152,8 @@ var splash_state = function (p) {
 	*/
 	
 	//Not ordered
-	var all_buttons = [start_button, options_button, help_button, scores_button ];
+	var all_buttons = [start_button, options_button,
+        help_button, scores_button, credits_button ];
 
     // --- public methods ---
     
