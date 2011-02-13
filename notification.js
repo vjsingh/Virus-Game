@@ -3,6 +3,7 @@
 // spec:
 //		text : text to display
 //		color : color of text (defaults to black)
+//		pos : pos of notification
 
 var notification = function(p, spec) {
 
@@ -12,7 +13,7 @@ var notification = function(p, spec) {
     // --- private variables ---
 	
 	var time_counter = 0; // used to draw the object at various times
-	var total_time = 200; // ~6 secs?
+	var total_time = 60; // ~ 2 seconds. If changed must be changed in notify in in_game_state to prevent overlap //200; // ~6 secs?
 
     var text_size = 20;
 	var box_color = spec.color || p.color(255, 255, 255);
@@ -25,9 +26,11 @@ var notification = function(p, spec) {
 		//var text_size = 25 - 25*(time_percent);
         var text_alpha = 255 - 200*time_percent;
 
-        console.log(time_percent);
-		var x_pos = (p.width * (5/8)); //+ (p.width / 2) *time_percent;
-		var y_pos = (p.height * (5/8)); - (p.height / 2) *time_percent;
+		//var x_pos = (p.width * (5/8)); //+ (p.width / 2) *time_percent;
+		//var y_pos = (p.height * (5/8)) - (p.height / 2) *time_percent;
+
+        var x_pos = spec.pos.x;
+        var y_pos = spec.pos.y;
 
         // I don't like the moving from the center
         // so I'm trying it stationary

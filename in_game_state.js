@@ -106,8 +106,19 @@ var in_game_state = function (p, previous_state) {
     var last_notification_time = -1
     // takes a string and adds a new notification
     var notify = function(note, color) {
-        if (new Date().getTime() > (last_notification_time + 1000)) { // one second
-            all_notifications.push(notification(p, { "text": note, "color": color }));
+        var the_pos = null;
+        if (active_cell) {
+            console.log("Setting to active cell");
+            a_pos = active_cell.get_pos();
+            the_pos = new p.PVector(a_pos.x, a_pos.y - 30);
+        }
+        else {
+            console.log("Setting to default");
+            the_pos = new p.PVector(p.width * (5/8), p.height * (5/8));
+        }
+        if (new Date().getTime() > (last_notification_time + 2000)) { // two seconds
+            all_notifications.push(notification(p, { "text": note, "color": color,
+                        "pos" : the_pos}));
             last_notification_time = new Date().getTime();
         }
     };
