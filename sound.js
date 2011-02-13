@@ -256,6 +256,7 @@ var sound_manager = function() {
 	var max_loaded = num_bg_music + 2 // + 1 for menu music, + 1 for button
 	var bg_music_loaded = function() {
 		num_loaded++;
+        console.log("Loaded " + num_loaded + " out of " + max_loaded);
 	};
 	
 	obj.sounds_loaded = function() {
