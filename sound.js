@@ -210,18 +210,18 @@ var sound_manager = function() {
                            oga : "sounds/"+oggname
 				          });
                         //console.log(name + " is ready");
-						//bg_music_loaded();
+						bg_music_loaded();
                         $(this).bind($.jPlayer.event.progress,
                             function(event) {
-                                console.log(event.jPlayer.status.seekPercent);
+                                //console.log(event.jPlayer.status.seekPercent);
                                 if (event.jPlayer.status.seekPercent === 100) {
-                                    console.log("percent = 100, name: " + mp3name);
-                                    bg_music_loaded();
+                                    //console.log("percent = 100, name: " + mp3name);
+                                    //bg_music_loaded();
                                 }
                         });
                         $(this).bind($.jPlayer.error.NO_SOLUTION,
                             function(event) {
-                                bg_music_loaded();
+                                //bg_music_loaded();
                                 console.log("No audio solutions");
                         });
 				},
@@ -231,8 +231,8 @@ var sound_manager = function() {
                     }
 				},
 				supplied : all_supplied,
-                preload : "auto",
-                errorAlerts : true
+                preload : "auto"
+                //errorAlerts : true
 			});
         }
 
