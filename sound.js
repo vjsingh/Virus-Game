@@ -263,7 +263,7 @@ var sound_manager = function() {
 	
 	obj.sounds_loaded = function() {
 		//console.log(num_loaded);
-		return num_loaded === max_loaded;
+		return num_loaded >= max_loaded;
 	}
     return obj;
 };
