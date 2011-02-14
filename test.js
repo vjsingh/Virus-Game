@@ -10,6 +10,7 @@ var p_code = function(p) {
         // deal with console issues
         // TODO move this code
         if (!window.console) { 
+            alert ("asdf");
             console = { log: function() {} };
         }
         Processing.logger = console;
