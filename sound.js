@@ -199,7 +199,6 @@ var sound_manager = function() {
     }
 
 	obj.load_sounds = function() {
-        console.log("AAA");
 		// init all bg music
 		var all_supplied = "mp3, ogg";
         var init_jplayer = function(name, mp3name, oggname, should_loop) {
@@ -212,6 +211,7 @@ var sound_manager = function() {
 				          });
                         //console.log(name + " is ready");
 						bg_music_loaded();
+                        console.log(mp3name);
 				},
 				ended : function() { // loop
                     if (should_loop) {
