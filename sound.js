@@ -210,15 +210,28 @@ var sound_manager = function() {
                            oga : "sounds/"+oggname
 				          });
                         //console.log(name + " is ready");
-						bg_music_loaded();
-                        console.log(mp3name);
+						//bg_music_loaded();
+                        $(this).bind($.jPlayer.event.progress,
+                            function(event) {
+                                if (event.jPlayer.status.seekPercent === 100) {
+                                    jPlayerElement.jPlayer("play);
+                                    bg_music_loaded();
+                                }
+                        });
+                        $(this).bind($.jPlayer.error.NO_SOLUTION,
+                            function(event) {
+                                bg_music_loaded();
+                                console.log("No audio solutions");
+                        });
 				},
 				ended : function() { // loop
                     if (should_loop) {
                         $(this).jPlayer("play");
                     }
 				},
-				supplied : all_supplied
+				supplied : all_supplied,
+                preload : "auto",
+                errorAlerts : true
 			});
         }
 
