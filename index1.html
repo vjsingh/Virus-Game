@@ -10,7 +10,7 @@
         background: white;
         color: black;
         font-family: Arial, sans-serif;
-        overflow:none;
+        overflow:auto;
     }
 </style>
 
@@ -43,6 +43,7 @@
 <script>
 // If user is already logged in, then refresh to get
 // the auth token
+var fb_login_button;
 if(window.location.hash.length == 0)
 {
     var url = "https://www.facebook.com/dialog/oauth?client_id= \
@@ -159,13 +160,13 @@ function got_user(user) {
             Your browser does not support the HTML5 canvas element. Upgrade to Chrome, Firefox 4, Safari, or Opera to play this game. 
         </canvas>
         <div style="float:right; margin: 1.5em -5px 0.5em 1.5em; padding:0.5em; border: 1px dashed black; font-size:0.8em; width:200;">
-            <div style="margin-bottom:0.5em; font-weight:bold;">Virion was created as an entry in the Hidden Agenda contest</div> 
+            <div style="margin-bottom:0.5em; font-weight:bold;">Virion was created as an entry in the Hidden Agenda contest.<br/> If you like the game, leave some feedback on the Hidden Agenda page to help Virion win!</div> 
             <a href="http://www.facebook.com/haproject" target="_blank"><img src="images/halogo.jpg" width="200" /></a> 
         </div>
         <div style="margin-top:0.8em;">
         <fb:like href="http://www.facebook.com/apps/application.php?id=179028108782663" show_faces="true" width="450"></fb:like>
         </div>
-        <div style="margin-top: 1.5em; margin-bottom:2em; font-size: 0.8em;">
+        <div style="margin-top: 1.5em; /*margin-bottom:4em;*/ font-size: 0.8em;">
             <strong>Note:</strong> If you are using Firefox 3 and the game is not loading or running slowly, please upgrade to Firefox 4 or try using Chrome or Safari. We strongly recommend Chrome for the best performance.
         </div>
     </div>
