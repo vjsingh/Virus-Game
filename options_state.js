@@ -45,7 +45,7 @@ var options_state = function (p, prev_state) {
 			//text: "Sound Effects",
             //text_x_offset: 60,
 			image : "set_sound.png",//option_image,
-			over_image : "set_sound_a.png",
+			//over_image : "set_sound_a.png",
             //style: button_style
 		}
 	});
@@ -61,7 +61,7 @@ var options_state = function (p, prev_state) {
 			//text: "Music",
             //text_x_offset: 60,
 			image : "set_music.png",//option_image,
-			over_image : "set_music_a.png",
+			//over_image : "set_music_a.png",
             //style: button_style
 		}
 	});
@@ -76,7 +76,7 @@ var options_state = function (p, prev_state) {
 			//text: "Spacebar to Fire",
 			//text_x_offset : 60,
 			image : "set_spacebar.png",//option_image,
-			over_image : "set_spacebar_a.png",
+			//over_image : "set_spacebar_a.png",
             //style: button_style
 		}
 	});
@@ -91,7 +91,7 @@ var options_state = function (p, prev_state) {
 			//text: "Mouse Click to Fire",
 			//text_x_offset : 60,
 			image : "set_click.png",//option_image,
-			over_image : "set_click_a.png",
+			//over_image : "set_click_a.png",
             //style: button_style
 		}
 	});
@@ -105,7 +105,7 @@ var options_state = function (p, prev_state) {
 			pos : new p.PVector(col2_x, p.height/2 + 140),
 			//text: "Mouse to Select Cells\nInstead of Left/Right",
 			image : "set_mouseselect.png",//option_image,
-			over_image : "set_mouseselect_a.png",
+			//over_image : "set_mouseselect_a.png",
 			//text_x_offset : 60,
             //style: button_style
 		}
@@ -117,7 +117,7 @@ var options_state = function (p, prev_state) {
             return obj; 
         },
 		rect : {
-			pos : new p.PVector(col1_x - 50, p.height/2 + 140),
+			pos : new p.PVector(col1_x - 50, p.height/2 + 145),
 			image : "track_left.png",
 		}
 	});
@@ -128,7 +128,7 @@ var options_state = function (p, prev_state) {
             return obj; 
         },
 		rect : {
-			pos : new p.PVector(col1_x + 50, p.height/2 + 140),
+			pos : new p.PVector(col1_x + 50, p.height/2 + 145),
 			image : "track_right.png",
 		}
 	});
@@ -180,7 +180,7 @@ var options_state = function (p, prev_state) {
         p.fill(0);
         p.textAlign(p.CENTER);
         p.textSize(14);
-        p.text(g.track, track_x, track_y);
+        p.text(g.track, track_x, track_y+5);
 
 		for_each(all_option_buttons, function(b) { b.draw(); });
     };

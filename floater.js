@@ -8,7 +8,7 @@ var floater = function(p, spec) {
     
     // --- defaults ---
 
-    spec.width = spec.width || 30;
+    spec.width = spec.width || 43;
     spec.height = spec.height || 50;
     spec.vel = new p.PVector(0, 0.3);
 

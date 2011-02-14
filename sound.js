@@ -52,7 +52,7 @@ var sound_manager = function() {
         return function(s){
             if (g.sound_fx) {
                 for (var a = 0; a < audiochannels.length; a++) {
-                    console.log("Checking " + a);
+                    //console.log("Checking " + a);
                     thistime = new Date();
                     if (audiochannels[a]['finished'] < thistime.getTime()) { 
                         audiochannels[a]['finished'] = thistime.getTime() + document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
@@ -92,7 +92,7 @@ var sound_manager = function() {
     // list of objs with props "music" and "name" 
     var all_bg_music = [];
     // keep this updated with names
-    var track_names = [ "Sinister", "Loop 2" ];
+    var track_names = [ "Invasion", "Exploration", "Infiltration"];
     // we will only load however many names there are
 	var num_bg_music = track_names.length;
     // index for background tracks
@@ -230,10 +230,11 @@ var sound_manager = function() {
         console.log("loaded heart loop");
         */
         console.log("loading sinister");
-		init_bg_jplayer(0, "sinister.mp3", "sinister.ogg");
+		init_bg_jplayer(0, "sinister.mp3", "sinister.ogg", true);
         console.log("loaded sinister");
 
-		init_bg_jplayer(1, "gameloop2.mp3", "gameloop2.ogg");
+		init_bg_jplayer(1, "gameloop2.mp3", "gameloop2.ogg", true);
+		init_bg_jplayer(2, "Infiltration.mp3", "Infiltration.ogg", true);
 
 		for (var i = 0; i < num_bg_music; i++) {
 			all_bg_music.push({
@@ -256,6 +257,7 @@ var sound_manager = function() {
 	var max_loaded = num_bg_music + 2 // + 1 for menu music, + 1 for button
 	var bg_music_loaded = function() {
 		num_loaded++;
+        console.log("Loaded " + num_loaded + " out of " + max_loaded);
 	};
 	
 	obj.sounds_loaded = function() {
