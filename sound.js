@@ -214,7 +214,7 @@ var sound_manager = function() {
                         $(this).bind($.jPlayer.event.progress,
                             function(event) {
                                 if (event.jPlayer.status.seekPercent === 100) {
-                                    console.log("percent = 100, name: " + mp3Name);
+                                    console.log("percent = 100, name: " + mp3name);
                                     bg_music_loaded();
                                 }
                         });
