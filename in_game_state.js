@@ -215,7 +215,7 @@ var in_game_state = function (p, previous_state) {
         	game_objects[i] = [];
     	}
 		
-        var startx = p.width-120;
+        var startx = p.width-150;
         if (testing) {
             var startx = 150;
         }
@@ -227,17 +227,17 @@ var in_game_state = function (p, previous_state) {
                 state: "alive",
             }),
             cell(p, {
-                pos: new p.PVector(startx+120, p.height/2-40),
+                pos: new p.PVector(startx+170, p.height/2-40),
                 vel: new p.PVector(0, 0),
                 state: "alive",
             }),
             cell(p, {
-                pos: new p.PVector(startx+120, p.height/2),
+                pos: new p.PVector(startx+170, p.height/2),
                 vel: new p.PVector(0, 0),
                 state: "alive",
             }),
             cell(p, {
-                pos: new p.PVector(startx+120, p.height/2+40),
+                pos: new p.PVector(startx+170, p.height/2+40),
                 vel: new p.PVector(0, 0),
                 state: "alive",
             })
