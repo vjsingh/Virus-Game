@@ -219,7 +219,7 @@ var sound_manager = function() {
 				swfPath : the_swf_path,
 				ready: function () {
 			          $(this).jPlayer("setMedia", {
-				           mp3 : "sounds/asdf"+mp3name,
+				           mp3 : "sounds/"+mp3name,
                            oga : "sounds/"+oggname
 				          });
                         //console.log(name + " is ready");
