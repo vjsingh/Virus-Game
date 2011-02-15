@@ -52,12 +52,12 @@ var sound_manager = function() {
         return function(s){
             if (g.sound_fx) {
                 for (var a = 0; a < audiochannels.length; a++) {
-                    console.log("Checking " + a);
+                    //console.log("Checking " + a);
                     thistime = new Date();
-                    console.log("Finished: " + audiochannels[a]['finished'] + " currTime: " + thistime.getTime());
+                    //console.log("Finished: " + audiochannels[a]['finished'] + " currTime: " + thistime.getTime());
                     if (audiochannels[a]['finished'] < thistime.getTime()) { 
-                        console.log(document.getElementById(s));
-                        console.log(document.getElementById(s).duration);
+                        //console.log(document.getElementById(s));
+                        //console.log(document.getElementById(s).duration);
                         audiochannels[a]['finished'] = thistime.getTime() + 2500; //document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
                         // Audio is encoded as base64
 						/*
@@ -219,7 +219,7 @@ var sound_manager = function() {
 				swfPath : the_swf_path,
 				ready: function () {
 			          $(this).jPlayer("setMedia", {
-				           mp3 : "sounds/"+mp3name,
+				           mp3 : "sounds/asdf"+mp3name,
                            oga : "sounds/"+oggname
 				          });
                         //console.log(name + " is ready");
