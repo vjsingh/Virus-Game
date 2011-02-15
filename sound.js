@@ -16,7 +16,7 @@ var sound_manager = function() {
             audiochannels[a] = new Array();
             audiochannels[a]['channel'] = //new Audio();						// create a new audio object
             	$("#jquery_jplayer_"+a);
-            audiochannels[a]['finished'] = true;							// expected end time for this channel
+            audiochannels[a]['finished'] = -999999;							// expected end time for this channel
             
             //var curr_audio_slot = audiochannels[a];
 			
@@ -44,7 +44,7 @@ var sound_manager = function() {
                     console.log(curr_audio_slot);
 				},
                 */
-				supplied : "mp3, oga",
+				supplied : "oga, mp3",
 				oggSupport: true
 				//solution : "flash, html"
 			});
@@ -54,8 +54,11 @@ var sound_manager = function() {
                 for (var a = 0; a < audiochannels.length; a++) {
                     //console.log("Checking " + a);
                     thistime = new Date();
+                    //console.log("Finished: " + audiochannels[a]['finished'] + " currTime: " + thistime.getTime());
                     if (audiochannels[a]['finished'] < thistime.getTime()) { 
-                        audiochannels[a]['finished'] = thistime.getTime() + document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
+                        //console.log(document.getElementById(s));
+                        //console.log(document.getElementById(s).duration);
+                        audiochannels[a]['finished'] = thistime.getTime() + 2500; //document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
                         // Audio is encoded as base64
 						/*
                         audiochannels[a]['channel'].src = g_soundDataMap[s]; //document.getElementById(s).src;
@@ -200,7 +203,8 @@ var sound_manager = function() {
 	
     var play_a_sound = function(jplayer_instance, sound_name) {
         jplayer_instance.jPlayer("setMedia", {
-            mp3 : g_soundDataMap[sound_name + "mp3"],
+            //mp3 : g_soundDataMap[sound_name + "mp3"],
+            mp3 : "sounds/" + sound_name + ".mp3",
             oga : g_soundDataMap[sound_name]
         });
         //jplayer_instance.jPlayer.event.ready = function() {console.log("read");};
@@ -209,7 +213,7 @@ var sound_manager = function() {
 
 	obj.load_sounds = function() {
 		// init all bg music
-		var all_supplied = "ogg, mp3";
+		var all_supplied = "oga, mp3";
         var init_jplayer = function(name, mp3name, oggname, should_loop) {
 			$(name).jPlayer( {
 				swfPath : the_swf_path,
@@ -240,7 +244,8 @@ var sound_manager = function() {
                     }
 				},
 				supplied : all_supplied,
-                preload : "auto"
+                preload : "auto",
+				oggSupport: true
                 //errorAlerts : true
 			});
         }

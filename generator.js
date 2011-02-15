@@ -66,7 +66,7 @@ var make_generator = function(p, spec) {
             } 
         },
         "floater": {
-            start: 0, num: 3, cap: 7, rate: 7000,
+            start: 1000, num: 3, cap: 7, rate: 7000,
             spacing: "dynamic",//100,
             make_new: function(en_pos) {
                 return floater(p, { pos: en_pos });
@@ -239,9 +239,11 @@ var make_generator = function(p, spec) {
 	// --- private methods ---
 
     var update_types = function() {
+        /*
         if (distance % 100 <= 0.5) {
             console.log(distance);
         }
+        */
         // update nums for types based on rate
         for_each(
             enemy_types,
