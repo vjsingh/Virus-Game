@@ -210,7 +210,7 @@ var sound_manager = function() {
 
 	obj.load_sounds = function() {
 		// init all bg music
-		var all_supplied = "oga, mp3";
+		var all_supplied = "ogg, mp3";
         var init_jplayer = function(name, mp3name, oggname, should_loop) {
 			$(name).jPlayer( {
 				swfPath : the_swf_path,
