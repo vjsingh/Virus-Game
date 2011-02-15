@@ -13,7 +13,7 @@ var credits_state = function(p, prev_state) {
 	var back_button = button(p, {
 		state : function() { return prev_state; },
 		rect : {
-			pos : new p.PVector(p.width/2, 500),
+			pos : new p.PVector(p.width * (3/4), 500),
             width: 120,
             height: 50,
             image: "back.png",

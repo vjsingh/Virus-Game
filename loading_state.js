@@ -70,7 +70,7 @@ var loading_state = function (p) {
         load_progress = image_manager.num_loaded();
         //console.log("images: "+image_manager.is_done_preloading());
         //console.log("sounds: "+sounds.sounds_loaded());
-		if (load_progress === load_max && 
+		if (load_progress >= load_max && 
 				image_manager.is_done_preloading() &&
 				sounds.sounds_loaded()){
             // init all image objects

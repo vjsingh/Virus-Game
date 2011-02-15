@@ -96,7 +96,7 @@ var sound_manager = function() {
     // we will only load however many names there are
 	var num_bg_music = track_names.length;
     // index for background tracks
-    var track_index = Math.floor(Math.random(0)*num_bg_music);
+    var track_index = Math.floor(Math.random()*num_bg_music);
 
 	// Plays a random loop from the beginning
     obj.play_background_music = (function() {
@@ -200,7 +200,7 @@ var sound_manager = function() {
 
 	obj.load_sounds = function() {
 		// init all bg music
-		var all_supplied = "mp3, ogg";
+		var all_supplied = "ogg, mp3";
         var init_jplayer = function(name, mp3name, oggname, should_loop) {
 			$(name).jPlayer( {
 				swfPath : the_swf_path,
@@ -211,13 +211,28 @@ var sound_manager = function() {
 				          });
                         //console.log(name + " is ready");
 						bg_music_loaded();
+                        $(this).bind($.jPlayer.event.progress,
+                            function(event) {
+                                //console.log(event.jPlayer.status.seekPercent);
+                                if (event.jPlayer.status.seekPercent === 100) {
+                                    //console.log("percent = 100, name: " + mp3name);
+                                    //bg_music_loaded();
+                                }
+                        });
+                        $(this).bind($.jPlayer.error.NO_SOLUTION,
+                            function(event) {
+                                //bg_music_loaded();
+                                console.log("No audio solutions");
+                        });
 				},
 				ended : function() { // loop
                     if (should_loop) {
                         $(this).jPlayer("play");
                     }
 				},
-				supplied : all_supplied
+				supplied : all_supplied,
+                preload : "auto"
+                //errorAlerts : true
 			});
         }
 
@@ -262,7 +277,7 @@ var sound_manager = function() {
 	
 	obj.sounds_loaded = function() {
 		//console.log(num_loaded);
-		return num_loaded === max_loaded;
+		return num_loaded >= max_loaded;
 	}
     return obj;
 };
