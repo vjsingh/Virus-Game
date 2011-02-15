@@ -16,7 +16,7 @@ var sound_manager = function() {
             audiochannels[a] = new Array();
             audiochannels[a]['channel'] = //new Audio();						// create a new audio object
             	$("#jquery_jplayer_"+a);
-            audiochannels[a]['finished'] = true;							// expected end time for this channel
+            audiochannels[a]['finished'] = -999999;							// expected end time for this channel
             
             //var curr_audio_slot = audiochannels[a];
 			
