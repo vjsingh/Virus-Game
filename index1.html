@@ -29,17 +29,19 @@
         status:true, xfbml:true 
      });
     // Reload when user logs in (like with the fb login button)
+    // use a timeout to avoid safari looping bug
+    // nobody will log in within 2 seconds anyway
     setTimeout(function() {
-    FB.Event.subscribe('auth.login', function(response) {
-        //console.log(response);
-        if (parent) {
-            parent.location = "http://apps.facebook.com/viriongame/";//.reload();
-        }
-        else {
-            window.location.reload();
-        }
-	});
-}, 2000);
+        FB.Event.subscribe('auth.login', function(response) {
+            //console.log(response);
+            if (parent) {
+                parent.location = "http://apps.facebook.com/viriongame/";//.reload();
+            }
+            else {
+                window.location.reload();
+            }
+        });
+    }, 2000);
 
 </script>	  
   
