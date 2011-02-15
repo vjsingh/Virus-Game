@@ -10,7 +10,7 @@
         background: white;
         color: black;
         font-family: Arial, sans-serif;
-        //overflow:auto;
+        overflow:none;
     }
 </style>
 
@@ -29,18 +29,17 @@
         status:true, xfbml:true 
      });
     // Reload when user logs in (like with the fb login button)
+    setTimeout(function() {
     FB.Event.subscribe('auth.login', function(response) {
-        var real_index = "http://virus-game.cs.brown.edu/index1.html";
-        var url = "https://www.facebook.com/dialog/oauth?client_id= \
-             179028108782663&redirect_uri=" + real_index + //window.location + "1"+
-             "&response_type=token";
+        //console.log(response);
         if (parent) {
-            parent.location = url;//"http://apps.facebook.com/viriongame/";//.reload();
+            parent.location = "http://apps.facebook.com/viriongame/";//.reload();
         }
         else {
-            window.location = url;//.reload();
+            window.location.reload();
         }
 	});
+}, 2000);
 
 </script>	  
   
