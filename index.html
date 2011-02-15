@@ -44,6 +44,7 @@ if(window.location.hash.length == 0)
  	if (response.session) { //logged in and known
         console.log("refreshing");
         window.location=url;
+        return false; // For safari on macs
     }
     else {
         window.location = real_index;
