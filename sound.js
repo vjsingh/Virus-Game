@@ -201,7 +201,7 @@ var sound_manager = function() {
     var play_a_sound = function(jplayer_instance, sound_name) {
         jplayer_instance.jPlayer("setMedia", {
             //mp3 : g_soundDataMap[sound_name + "mp3"],
-            mp3 : "sounds/" + sound_name + ".mp3",
+            mp3 : "sounds/ASDF" + sound_name + ".mp3",
             oga : g_soundDataMap[sound_name]
         });
         //jplayer_instance.jPlayer.event.ready = function() {console.log("read");};
