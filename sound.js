@@ -44,7 +44,7 @@ var sound_manager = function() {
                     console.log(curr_audio_slot);
 				},
                 */
-				supplied : "mp3, oga",
+				supplied : "oga, mp3",
 				oggSupport: true
 				//solution : "flash, html"
 			});
@@ -200,7 +200,8 @@ var sound_manager = function() {
 	
     var play_a_sound = function(jplayer_instance, sound_name) {
         jplayer_instance.jPlayer("setMedia", {
-            mp3 : g_soundDataMap[sound_name + "mp3"],
+            //mp3 : g_soundDataMap[sound_name + "mp3"],
+            mp3 : "sounds/" + sound_name + ".mp3",
             oga : g_soundDataMap[sound_name]
         });
         //jplayer_instance.jPlayer.event.ready = function() {console.log("read");};
@@ -209,7 +210,7 @@ var sound_manager = function() {
 
 	obj.load_sounds = function() {
 		// init all bg music
-		var all_supplied = "ogg, mp3";
+		var all_supplied = "oga, mp3";
         var init_jplayer = function(name, mp3name, oggname, should_loop) {
 			$(name).jPlayer( {
 				swfPath : the_swf_path,
