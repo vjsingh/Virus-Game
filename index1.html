@@ -30,6 +30,7 @@
      });
     // Reload when user logs in (like with the fb login button)
     FB.Event.subscribe('auth.login', function(response) {
+        console.log(response);
         if (parent) {
             parent.location = "http://apps.facebook.com/viriongame/";//.reload();
         }
