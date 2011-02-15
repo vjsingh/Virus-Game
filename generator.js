@@ -239,9 +239,11 @@ var make_generator = function(p, spec) {
 	// --- private methods ---
 
     var update_types = function() {
+        /*
         if (distance % 100 <= 0.5) {
             console.log(distance);
         }
+        */
         // update nums for types based on rate
         for_each(
             enemy_types,
