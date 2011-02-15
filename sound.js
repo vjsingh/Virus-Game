@@ -52,7 +52,7 @@ var sound_manager = function() {
         return function(s){
             if (g.sound_fx) {
                 for (var a = 0; a < audiochannels.length; a++) {
-                    //console.log("Checking " + a);
+                    console.log("Checking " + a);
                     thistime = new Date();
                     if (audiochannels[a]['finished'] < thistime.getTime()) { 
                         audiochannels[a]['finished'] = thistime.getTime() + document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
