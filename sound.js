@@ -95,8 +95,9 @@ var sound_manager = function() {
     var track_names = [ "Invasion", "Exploration", "Infiltration"];
     // we will only load however many names there are
 	var num_bg_music = track_names.length;
-    // index for background tracks
-    var track_index = Math.floor(Math.random()*num_bg_music);
+    // index for background tracks (set after loading)
+    var track_index; //= num_bg_music-1;// Math.floor(Math.random()*num_bg_music);
+    
 
 	// Plays a random loop from the beginning
     obj.play_background_music = (function() {
@@ -151,7 +152,15 @@ var sound_manager = function() {
 
     // sets the background music to the current track index
     var set_background_music = function() {
-        background_music = all_bg_music[track_index].music; 
+        // note that random must be the LAST track
+        var music = all_bg_music[track_index].music;
+        if (!music) {
+            music = all_bg_music
+                [Math.floor(Math.random()*(track_index-1))]
+                .music;
+        }
+        assert(music, "Random wasn't the last track index or a music div was undefined.");
+        background_music = music; 
     };
 
 	obj.resume_background_music = function() {
@@ -264,7 +273,17 @@ var sound_manager = function() {
         init_jplayer("#jquery_jplayer_buttons", "buttonmain.mp3", "buttonmain.ogg", false);
         button_sounds = $("#jquery_jplayer_buttons");
 
-        // set initial track
+        // add random option
+        // THIS MUST BE THE LAST OBJ IN THE ARRAY
+        all_bg_music.push({
+            name: "Random",
+            // don't try to access this music!
+            music: null
+        });
+        track_names.push("Random");
+        num_bg_music += 1;
+        track_index = num_bg_music-1;
+        // set initial track (random)
         g.set_track(track_names[track_index]);
 	};
 

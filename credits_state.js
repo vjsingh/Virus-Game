@@ -6,7 +6,7 @@ var credits_state = function(p, prev_state) {
 
     // --- private variables ---
 
-    var credits_back = image_manager.get_image("creditssplash.png");
+    var credits_back = image_manager.get_image("creditsscreen.png");
 	
 	// Buttons
 	
