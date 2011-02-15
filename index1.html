@@ -29,6 +29,7 @@
         status:true, xfbml:true 
      });
     // Reload when user logs in (like with the fb login button)
+    setTimeout(function() {
     FB.Event.subscribe('auth.login', function(response) {
         console.log(response);
         if (parent) {
@@ -38,6 +39,7 @@
             window.location.reload();
         }
 	});
+}, 2000);
 
 </script>	  
   
