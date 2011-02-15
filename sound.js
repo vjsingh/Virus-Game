@@ -54,6 +54,7 @@ var sound_manager = function() {
                 for (var a = 0; a < audiochannels.length; a++) {
                     console.log("Checking " + a);
                     thistime = new Date();
+                    console.log("Finished: " + audiochannels[a]['finished'] + " currTime: " + thistime.getTime());
                     if (audiochannels[a]['finished'] < thistime.getTime()) { 
                         audiochannels[a]['finished'] = thistime.getTime() + document.getElementById(s).duration * 1000 + 50; // + 50 for a safety margin
                         // Audio is encoded as base64
