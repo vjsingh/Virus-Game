@@ -267,7 +267,10 @@ function got_user(user) {
     
 
 <script>
-     FB.Canvas.setSize();
+    //resize the fb canvas
+    setTimeout(function() {
+        FB.Canvas.setSize();
+    }, 1000);
     //scores.do_scores();
 </script>
 
