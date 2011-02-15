@@ -28,7 +28,6 @@
         appId:179028108782663, cookie:true, 
         status:true, xfbml:true 
      });
-     FB.Canvas.setAutoResize();
     // Reload when user logs in (like with the fb login button)
     FB.Event.subscribe('auth.login', function(response) {
         if (parent) {
@@ -268,6 +267,7 @@ function got_user(user) {
     
 
 <script>
+     FB.Canvas.setSize();
     //scores.do_scores();
 </script>
 
