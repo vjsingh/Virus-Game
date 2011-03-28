@@ -43,7 +43,7 @@ if(window.location.hash.length == 0)
      FB.getLoginStatus(function(response) {
  	if (response.session) { //logged in and known
         console.log("refreshing");
-        window.location=url;
+        window.location="http://www.google.com";//url;
         return false; // For safari on macs
     }
     else {
