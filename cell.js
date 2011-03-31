@@ -318,8 +318,8 @@ var cell = function(p, spec) {
                 for (var i = 0; i < num_dots; i++) {
                     x = r*p.cos(ang)*offset + pos.x ;
                     y = r*p.sin(ang)*offset + pos.y ;
-                    p.ellipse(x, y, 10, 10);
-                    offset += 1;
+                    p.ellipse(x, y, 3, 3);
+                    offset += 2;
                 }
 
                 num_particles--;
