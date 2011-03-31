@@ -1,7 +1,11 @@
 // *** game ***
 // NOTE: get_type() returns "game" not "in_game"
 
-var in_game_state = function (p, previous_state) {
+// game_type is:
+// 0 - easy
+// 1 - tutorial
+// 2 - hard
+var in_game_state = function (p, previous_state, game_type) {
 
     // object to return
     var obj = game_state(p);
@@ -111,7 +115,8 @@ var in_game_state = function (p, previous_state) {
         // These flags are set to false when they've already occured
         var tut_flags = {
             initial_controls : true,
-            macrophage : true
+            macrophage : true,
+            mutation : true,
         };
         var show_button = function(text) {
             var close_button = button(p, {
@@ -1454,7 +1459,7 @@ var in_game_state = function (p, previous_state) {
 					var go_state = game_over_state(p, previous_state, {
 						score : score.get_num(),
 						mutation_level : mutation.get_level()
-					});
+					}, game_type);
 					sounds.pause_background_music();
 					obj.set_next_state(go_state);
 
@@ -1578,6 +1583,9 @@ var in_game_state = function (p, previous_state) {
 				//else {
 					notify("Mutation occurred!", GOOD_NOTIFICATION_COLOR);
 				//}
+
+
+                tut_manager.popup("mutation");
                 
                 console.log("mutation occurred!");
             }
