@@ -254,7 +254,9 @@ var cell = function(p, spec) {
                 || arrow_angle < -p.PI/2) {
             arrow_dir = (2-arrow_dir)-2;
         }
-        arrow_angle += p.radians(5+obj.get_level()/2)*arrow_dir;
+        //arrow_angle += p.radians(5+obj.get_level()/2)*arrow_dir;
+        console.log("sf: " + scroll_factor);
+        arrow_angle += p.radians(5* scroll_factor)*arrow_dir;
     };
 
     var drawArrow = function() {

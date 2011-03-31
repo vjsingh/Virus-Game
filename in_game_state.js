@@ -35,9 +35,10 @@ var in_game_state = function (p, previous_state, game_type) {
     var last_active_cell = null;
     // multiply each object's scroll amount by this
     // factor, which increases throughout the game
-    var scroll_factor = 1;
+    // THIS IS NOW GLOBAL
+    scroll_factor = 1;
     if (game_type < 2) {
-        scroll_factor = 0.5;
+        scroll_factor = 0.7;
     }
 
     var game_objects = [];
