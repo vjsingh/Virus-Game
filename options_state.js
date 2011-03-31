@@ -58,11 +58,18 @@ var options_state = function (p, prev_state) {
 	});
 	var music_button = option_button(p, {
 		click_fun : function() {
-            if (prev_was_splash) {
-                sounds.play_button_click();
-            }
+            sounds.play_button_click();
             // toggle the flag
             g.toggle_music();
+
+            if (g.music) {
+                if (prev_was_splash) {
+                    sounds.play_menu_music();
+                }
+            }
+            else {
+                sounds.pause_menu_music();
+            }
         },
 		global_var : "music",
 		rect : {
