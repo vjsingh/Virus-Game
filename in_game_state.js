@@ -136,6 +136,7 @@ var in_game_state = function (p, previous_state, game_type) {
             arrows: "Use the LEFT and RIGHT arrow keys to switch between infected cells.", 
             macrophage: "Watch out for macrophages! They will kill your virion and alert a B cell.",
             antibodies: "Oh no! The B cell is producing antibodies! If an antibody attaches to an infected cell, the cell will be marked for destruction by a granulocyte.",
+            killer: "A granulocyte just destroyed one of your infected cells and all the virions inside it! Your virus won't be safe from the granulocyte until it mutates, creating a new strain.",
             mutation: "Your virus just mutated to a new strain! Now it will be safe from the immune system until you hit another macrophage. Each virion can only be attacked by immune cells that know about its strain. Immune cells that know about a certain strain will be filled with the same color as virions of that strain.",
         };
 
@@ -157,13 +158,13 @@ var in_game_state = function (p, previous_state, game_type) {
             var w = 300;
             var h = 250;
             var tw = w-50;
-            console.log(tw);
             obj.draw = function() {
                 p.noStroke();
                 p.fill(100);
                 p.rectMode(p.CENTER);
                 p.rect(x, y, w, h);
                 p.fill(0);
+                p.textSize(14);
                 p.textAlign(p.CENTER, p.CENTER);
                 p.text(txt, x-tw/2, y-tw/2, tw, h-50);
             };
@@ -180,7 +181,7 @@ var in_game_state = function (p, previous_state, game_type) {
                     return obj; // the current state
                 },
                 rect: {
-                    pos: new p.PVector(p.width/2, p.height/2+100),
+                    pos: new p.PVector(p.width/2, p.height/2+80),
                     width: 50, height: 50,
                     text: "OK"
                 }
@@ -194,8 +195,7 @@ var in_game_state = function (p, previous_state, game_type) {
             popup : function(type) {
                 if (is_tutorial && tut_flags[type]) {
                     do_pause();
-                    text = tut_msgs[type];//type_to_text(type);
-                    //show_button(text);
+                    text = tut_msgs[type];
                     show_popup(text);
                     tut_flags[type] = false;
                 }
@@ -1037,6 +1037,7 @@ var in_game_state = function (p, previous_state, game_type) {
 							cell.get_state() === "active") 
 						    && cell.has_antibody()
                             && same_mutation_level(tk, cell)) {
+                        tut_manager.popup("killer");
                         cell.die();
 			            sounds.play_sound("kill");	
 						tk.set_target(null);
@@ -1734,8 +1735,12 @@ var in_game_state = function (p, previous_state, game_type) {
     };
 	
 	var do_pause = function() {
-		paused = true;
 		sounds.pause_background_music();
+        tut_pause();
+	};
+
+    var tut_pause = function() {
+		paused = true;
         // stop the animations
         do_to_all_objs(
             function(o) { 
@@ -1744,7 +1749,7 @@ var in_game_state = function (p, previous_state, game_type) {
                 }
             }
         );
-	}
+    };
 	
    	var do_fire = function() {
         if (active_cell !== null) {
