@@ -312,7 +312,7 @@ var cell = function(p, spec) {
             }
             num_dots = 3
             while (num_particles > 0) {
-                var offset = 2;
+                var offset = 4;
                 p.fill(153);
                 p.noStroke();
                 for (var i = 0; i < num_dots; i++) {
