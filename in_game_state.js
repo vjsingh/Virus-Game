@@ -108,10 +108,10 @@ var in_game_state = function (p, previous_state) {
     // Call tut_manager.popup(type) when you want to signal a tutorial message
     // All the types are in tut_flags
     var tut_manager = (function() {
-        // These flags are set to true when they've already occured
+        // These flags are set to false when they've already occured
         var tut_flags = {
-            initial_controls : false,
-            macrophage : false
+            initial_controls : true,
+            macrophage : true
         };
         var show_button = function(text) {
             var close_button = button(p, {
