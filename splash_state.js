@@ -28,11 +28,43 @@ var splash_state = function (p) {
         sounds.pause_menu_music();
     };
 
-    var start_button = button(p, {
+    var easy_button = button(p, {
 		state : function() { 
             pause_menu_music();
             sounds.play_button_click();
-            return in_game_state(p, obj); 
+            return in_game_state(p, obj, 0); 
+        },
+        rect: {
+            pos: new p.PVector(left_x - (left_x * (2/3)), top_row_y),
+            text : "Easy",
+            //image: "mnewgame.png",
+            //over_image: "mnewgame_r.png",
+            width: 80,
+            style: button_style,
+        }
+    });
+
+    var tut_button = button(p, {
+		state : function() { 
+            pause_menu_music();
+            sounds.play_button_click();
+            return in_game_state(p, obj, 1); 
+        },
+        rect: {
+            pos: new p.PVector(left_x - (left_x /3), top_row_y),
+            text : "Tutorial",
+            //image: "mnewgame.png",
+            //over_image: "mnewgame_r.png",
+            width: 80,
+            style: button_style,
+        }
+    });
+
+    var hard_button = button(p, {
+		state : function() { 
+            pause_menu_music();
+            sounds.play_button_click();
+            return in_game_state(p, obj, 2); 
         },
         rect: {
             pos: new p.PVector(left_x, top_row_y),
@@ -152,7 +184,7 @@ var splash_state = function (p) {
 	*/
 	
 	//Not ordered
-	var all_buttons = [start_button, options_button,
+	var all_buttons = [easy_button, tut_button, hard_button, options_button,
         help_button, scores_button, credits_button ];
 
     // --- public methods ---

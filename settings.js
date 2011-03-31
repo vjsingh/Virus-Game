@@ -24,12 +24,6 @@ var game_settings = function() {
     settings.toggle_music = function() { 
         toggle("music"); 
         //console.log(settings.music);
-        if (settings.music) {
-            sounds.play_menu_music();
-        }
-        else {
-            sounds.pause_menu_music();
-        }
     };
 
     settings.next_track = function() {

@@ -1,7 +1,11 @@
 // *** game ***
 // NOTE: get_type() returns "game" not "in_game"
 
-var in_game_state = function (p, previous_state) {
+// game_type is:
+// 0 - easy
+// 1 - tutorial
+// 2 - hard
+var in_game_state = function (p, previous_state, game_type) {
 
     // object to return
     var obj = game_state(p);
@@ -18,6 +22,7 @@ var in_game_state = function (p, previous_state) {
     
     // --- private variables ---
 
+
 	var GOOD_NOTIFICATION_COLOR = p.color(0, 255, 0);
 	var BAD_NOTIFICATION_COLOR = p.color(255, 0, 0);
 	
@@ -31,6 +36,11 @@ var in_game_state = function (p, previous_state) {
     // multiply each object's scroll amount by this
     // factor, which increases throughout the game
     var scroll_factor = 1;
+    g_speed_factor = 1; // multiply all speed constants in the game by this, for easy mode
+    if (game_type < 2) {
+        g_speed_factor = 0.75;
+    }
+    scroll_factor *= g_speed_factor;
 
     var game_objects = [];
 	var paused = false;
@@ -102,6 +112,64 @@ var in_game_state = function (p, previous_state) {
 	var all_status_objs = [score, mult, time_status, mutation];
 	var all_buttons = [pause_button]; 
 	
+    
+    var is_tutorial = false;
+    if (game_type === 1) {
+        is_tutorial = true;
+    }
+    // Global Variable so cell arrows can draw dots
+    GLOBAL_is_easy = false;
+    if (game_type < 2) {
+        GLOBAL_is_easy = true;
+    }
+    // Call tut_manager.popup(type) when you want to signal a tutorial message
+    // All the types are in tut_flags
+    var tut_manager = (function() {
+        // These flags are set to false when they've already occured
+        var tut_flags = {
+            initial_controls : true,
+            macrophage : true,
+            mutation : true,
+        };
+        var show_button = function(text) {
+            var close_button = button(p, {
+                state: function() { 
+                    obj.resume();
+                    all_buttons.pop() // DANGEROUS... Hope we're not adding any other buttons anytime soon
+                    return obj; // the current state
+                },
+                rect: {
+                    pos: new p.PVector(100, 100),
+                    width: 50, height: 50,
+                    text: text
+                }
+            });
+            all_buttons.push(close_button);
+        };
+
+        var tut_obj = {
+            popup : function(type) {
+                if (is_tutorial && tut_flags[type]) {
+                    do_pause();
+                    var type_to_text = function(t) {
+                        switch(t) {
+                            case "initial_controls":
+                                return "initial controls";
+                                break;
+                            case "macrophage":
+                                return "macrophage";
+                                break;
+                        }
+                    }
+                    text = type_to_text(type);
+                    show_button(text)
+                    tut_flags[type] = false;
+                }
+            }
+        }
+        return tut_obj;
+    })()
+
 	var all_notifications = [];
     var last_notification_time = -1
     // takes a string and adds a new notification
@@ -803,6 +871,7 @@ var in_game_state = function (p, previous_state) {
                 par.die();
             }
             if (cell.get_state() === "alive") {
+                tut_manager.popup("initial_controls");
 				//Play sound
 				sounds.play_sound("cell_infect");
 			
@@ -865,6 +934,7 @@ var in_game_state = function (p, previous_state) {
 							flo.activate();
 							alert_b_cell(flo);
 							sounds.play_sound("macrophage_infect");
+                            tut_manager.popup("macrophage");
 						}
                         notify("Macrophage activated!", BAD_NOTIFICATION_COLOR);
                     }
@@ -1402,7 +1472,7 @@ var in_game_state = function (p, previous_state) {
 					var go_state = game_over_state(p, previous_state, {
 						score : score.get_num(),
 						mutation_level : mutation.get_level()
-					});
+					}, game_type);
 					sounds.pause_background_music();
 					obj.set_next_state(go_state);
 
@@ -1526,6 +1596,9 @@ var in_game_state = function (p, previous_state) {
 				//else {
 					notify("Mutation occurred!", GOOD_NOTIFICATION_COLOR);
 				//}
+
+
+                tut_manager.popup("mutation");
                 
                 console.log("mutation occurred!");
             }
@@ -1656,14 +1729,14 @@ var in_game_state = function (p, previous_state) {
 		//right and left
 		k = p.keyCode;
 		if (k === p.LEFT) { //left
-			if (!g.mouse_to_select) {
+			//if (!g.mouse_to_select) {
 				choose_left_cell();
-			}
+			//}
 		}
 		else if (k === 39) { //right
-			if (!g.mouse_to_select) {
+			//if (!g.mouse_to_select) {
 				choose_right_cell();
-			}
+			//}
 		}
 	};
 	

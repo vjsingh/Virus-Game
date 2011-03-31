@@ -7,7 +7,6 @@
         font-family: Arial, sans-serif;
     }
 </style>
-
 </head>
 
 <body>
@@ -29,12 +28,13 @@
 	});
 </script>	  
   
+
 <script>
 // If user is already logged in, then refresh to get
 // the auth token
 if(window.location.hash.length == 0)
 {
-    var real_index = "http://virus-game.cs.brown.edu/index1.html";
+    var real_index = "http://virus-game.cs.brown.edu/dev/index1.html";
     var url = "https://www.facebook.com/dialog/oauth?client_id= \
              179028108782663&redirect_uri=" + real_index + //window.location + "1"+
              "&response_type=token";
