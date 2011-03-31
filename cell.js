@@ -319,7 +319,7 @@ var cell = function(p, spec) {
                 p.noStroke();
                 for (var i = 0; i < num_dots; i++) {
                     x = r*p.cos(ang) + pos.x + offset;
-                    y = r*p.sin(ang) - pos.y + offset;
+                    y = r*p.sin(ang) + pos.y - offset;
                     p.ellipse(x, y, 10, 10);
                     offset += 20;
                 }
