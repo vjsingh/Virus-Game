@@ -1,6 +1,13 @@
 // *** game ***
 // NOTE: get_type() returns "game" not "in_game"
 
+// defined up here cuz instructions need them
+// and a game might not be init'd before reading instr
+g_speed_factor = 1; // multiply all speed constants in the game by this, for easy mode
+
+// Global Variable so cell arrows can draw dots
+GLOBAL_is_easy = false;
+
 // game_type is:
 // 0 - easy
 // 1 - tutorial
@@ -36,7 +43,6 @@ var in_game_state = function (p, previous_state, game_type) {
     // multiply each object's scroll amount by this
     // factor, which increases throughout the game
     var scroll_factor = 1;
-    g_speed_factor = 1; // multiply all speed constants in the game by this, for easy mode
     if (game_type < 2) {
         g_speed_factor = 0.75;
     }
@@ -117,13 +123,11 @@ var in_game_state = function (p, previous_state, game_type) {
     if (game_type === 1) {
         is_tutorial = true;
     }
-    // Global Variable so cell arrows can draw dots
-    GLOBAL_is_easy = false;
     if (game_type < 2) {
         GLOBAL_is_easy = true;
     }
 
-    // the window to draw at a given time
+    // the popup to draw at a given time
     // null if there is none
     var tut_window = null;
     // Call tut_manager.popup(type) when you want to signal a tutorial message
@@ -155,8 +159,8 @@ var in_game_state = function (p, previous_state, game_type) {
 
             var x = p.width/2;
             var y = p.height/2;
-            var w = 300;
-            var h = 250;
+            var w = 400;
+            var h = 200;
             var tw = w-50;
             obj.draw = function() {
                 p.noStroke();
@@ -166,7 +170,7 @@ var in_game_state = function (p, previous_state, game_type) {
                 p.fill(0);
                 p.textSize(14);
                 p.textAlign(p.CENTER, p.CENTER);
-                p.text(txt, x-tw/2, y-tw/2, tw, h-50);
+                p.text(txt, x-tw/2, y-h/2, tw, h-50);
             };
 
             return obj;

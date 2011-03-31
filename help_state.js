@@ -190,7 +190,7 @@ var help_state = function (p, prev_state) {
             img_left: false
         }));
         s1.add_item(item({
-            title: "Infectable Cells",
+            title: "Infectable (Permissive) Cells",
             text: "Hit an infectable cell with a virion to infect it. After penetrating the cell wall, the virion will use the cell's machinery to make copies of itself.",
             //image: cimg,
             illustration: {
@@ -232,8 +232,8 @@ var help_state = function (p, prev_state) {
             img_left: false
         }));
         s1.add_item(item({
-            title: "Tolerant Cells",
-            text: "Some cells can be infected, but will not let your virion replicate. A virion that infects a tolerant cell is as good as dead.",
+            title: "Non-permissive Cells",
+            text: "Some cells can be infected, but will not let your virion replicate. A virion that infects a non-permissive cell is as good as dead.",
             illustration: {
                 width: 50, height: 60,
                 draw: (function() {
@@ -336,8 +336,8 @@ var help_state = function (p, prev_state) {
             img_left: false
         }));
         s2.add_item(item({
-            title: "Killer T Cells",
-            text: "If an infected cell is marked with an antibody, the killer T cell will hunt it down and destroy it, along with all the virions inside!",
+            title: "Granulocytes",
+            text: "If an infected cell is marked with an antibody, the granulocyte will hunt it down and destroy it, along with all the virions inside!",
             //image: image_manager.get_image("tcell_2.png"),
             illustration: {
                 width: 60, height: 60,
@@ -400,7 +400,7 @@ var help_state = function (p, prev_state) {
             img_left: false
         }));
         s3.add_item(item({
-            text: "Macrophages, B cells, T cells, and antibodies are created to attack a specific strain of a virus. So when your virus mutates, the new strain will be safe from the old enemies.",
+            text: "Macrophages, B cells, granulocytes, and antibodies are created to attack a specific strain of a virus. So when your virus mutates, the new strain will be safe from the old enemies.",
             //image: image_manager.get_image("macrophage_1.png"),
             padding: 15,
             illustration: {
@@ -571,8 +571,6 @@ var help_state = function (p, prev_state) {
 
 	//Not ordered
 	var all_buttons = [ previous_button, back_button, next_button ];
-
-    var instruction_text = "You've managed to infiltrate the human body's defenses and get your virus particle into the bloodstream! Now you must infect cells and use them to make more copies of your virus before the immune system wipes you out.\n\nAfter a particle infects a cell, the virus will use the cell's machinery to start making copies of itself. Once the cell is full of new virus particles, press the SPACEBAR or click the MOUSE to kill the cell, causing virus particles to burst through the cell wall towards other cells in the direction the arrow is pointing. You can pick which cell to burst using the LEFT and RIGHT arrow keys.\n\nAim carefully though, because the immune system has sent out macrophages to absorb your particles. If a particle hits a macrophage, it will signal a B-cell, which will start producing antibodies. If an antibody attaches to an infected cell, a T-cell will attack it. If you don't burst the cell in time, the T-cell will kill it, destroying all the particles inside!\n\nLuckily, your virus can mutate and temporarily escape the immune system. Every time the virus replicates, there are errors when copying the virus's genetic material. These errors may cause mutations in the virus. Each time you infect a cell, the virus becomes more and more likely to mutate. Once you mutate, the immune system will not be able to attack you until a macrophage absorbs a virus particle from the new strain.";
 
     // --- public methods ---
     
