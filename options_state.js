@@ -6,7 +6,7 @@ var options_state = function (p, prev_state) {
 
     // Used to determine whether to play menu music when 'music' button is toggled
     var prev_was_splash = false;
-    if prev_state.get_type() === "splash" {
+    if (prev_state.get_type() === "splash") {
         prev_was_splash = true;
     }
 
@@ -58,7 +58,7 @@ var options_state = function (p, prev_state) {
 	});
 	var music_button = option_button(p, {
 		click_fun : function() {
-            if prev_was_splash {
+            if (prev_was_splash) {
                 sounds.play_button_click();
             }
             // toggle the flag
