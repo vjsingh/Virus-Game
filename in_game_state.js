@@ -123,6 +123,7 @@ var in_game_state = function (p, previous_state) {
                 rect: {
                     pos: new p.PVector(100, 100),
                     width: 50, height: 50,
+                    text: text
                 }
             });
             all_buttons.push(close_button);
@@ -132,8 +133,7 @@ var in_game_state = function (p, previous_state) {
             popup : function(message) {
                 if (is_tutorial) {
                     do_pause();
-                    show_button("ASDF")
-                    alert(message);
+                    show_button(message)
                 }
             }
         }
