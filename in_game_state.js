@@ -112,6 +112,11 @@ var in_game_state = function (p, previous_state, game_type) {
     if (game_type === 1) {
         is_tutorial = true;
     }
+    // Global Variable so cell arrows can draw dots
+    GLOBAL_is_easy = false;
+    if (game_type < 2) {
+        GLOBAL_is_easy = true;
+    }
     // Call tut_manager.popup(type) when you want to signal a tutorial message
     // All the types are in tut_flags
     var tut_manager = (function() {

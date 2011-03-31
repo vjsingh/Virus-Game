@@ -288,6 +288,44 @@ var cell = function(p, spec) {
         p.endShape();
 
         p.popMatrix();
+        
+        // Draw Dots if easy
+        if (GLOBAL_is_easy) {
+            var pos = obj.get_pos();
+            var ang = arrow_angle;
+            // use width cuz it's a circle
+            var r = obj.get_width()/2;
+
+            // gen particles at edge of cell for now
+            var x = r*p.cos(ang) + pos.x;
+            var y = r*p.sin(ang) + pos.y;
+
+            var num_particles = get_num_particles();
+            // angle between all the shots
+            var range = p.PI/6;
+            var incr = range/num_particles;
+
+            var particles = [];
+
+            ang = arrow_angle - range/2;
+            // special case
+            if (num_particles === 1) {
+                ang = arrow_angle;
+            }
+            num_dots = 3
+            while (num_particles > 0) {
+                var offset = 10
+                for (var i = 0; i < num_dots; i++) {
+                    x = r*p.cos(ang) + pos.x + offset
+                    y = r*p.sin(ang) + pos.y + offset
+                    p.ellipse(x, y, 10, 10)
+                    offset += 10
+                }
+
+                num_particles--;
+                ang += incr;
+            }
+        }
     };
 
     var get_num_particles = function() {
