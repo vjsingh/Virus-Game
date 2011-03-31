@@ -315,10 +315,11 @@ var cell = function(p, spec) {
             num_dots = 3
             while (num_particles > 0) {
                 var offset = 10
+                p.noStroke();
                 for (var i = 0; i < num_dots; i++) {
                     x = r*p.cos(ang) + pos.x + offset
                     y = r*p.sin(ang) + pos.y + offset
-                    p.ellipse(x, y, 10, 10)
+                    p.ellipse(x, y, 5, 5)
                     offset += 10
                 }
 
