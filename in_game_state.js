@@ -18,6 +18,21 @@ var in_game_state = function (p, previous_state) {
     
     // --- private variables ---
 
+    var is_tutorial = true;
+    // These flags are set to true by the tutorial manager when they've already occured
+    var tut_flags = {
+        initial_controls : false,
+        macrophage : false
+    };
+    
+    // Call this object when you want to signal a tutorial message
+    var tut_manager = {
+        popup : function(message) {
+            do_pause();
+            alert(message);
+        }
+    }
+
 	var GOOD_NOTIFICATION_COLOR = p.color(0, 255, 0);
 	var BAD_NOTIFICATION_COLOR = p.color(255, 0, 0);
 	
@@ -803,6 +818,7 @@ var in_game_state = function (p, previous_state) {
                 par.die();
             }
             if (cell.get_state() === "alive") {
+                tut_manager.popup("ASDF");
 				//Play sound
 				sounds.play_sound("cell_infect");
 			
