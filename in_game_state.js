@@ -132,7 +132,9 @@ var in_game_state = function (p, previous_state) {
 
         var tut_obj = {
             popup : function(type) {
+                console.log(tut_flags[type])
                 if (is_tutorial && tut_flags[type]) {
+                    console.log("in here")
                     do_pause();
                     var type_to_text = function(t) {
                         switch(t) {
