@@ -35,7 +35,7 @@ var in_game_state = function (p, previous_state, game_type) {
     var last_active_cell = null;
     // multiply each object's scroll amount by this
     // factor, which increases throughout the game
-    var scroll_factor = 1;
+    var scroll_factor = 0.3;
 
     var game_objects = [];
 	var paused = false;
