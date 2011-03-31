@@ -24,14 +24,6 @@ var in_game_state = function (p, previous_state) {
         initial_controls : false,
         macrophage : false
     };
-    
-    // Call this object when you want to signal a tutorial message
-    var tut_manager = {
-        popup : function(message) {
-            do_pause();
-            alert(message);
-        }
-    }
 
 	var GOOD_NOTIFICATION_COLOR = p.color(0, 255, 0);
 	var BAD_NOTIFICATION_COLOR = p.color(255, 0, 0);
@@ -117,6 +109,32 @@ var in_game_state = function (p, previous_state) {
 	var all_status_objs = [score, mult, time_status, mutation];
 	var all_buttons = [pause_button]; 
 	
+    
+    // Call tut_manager.popup(type) when you want to signal a tutorial message
+    var tut_manager = {
+        show_button : function(text) {
+            var close_button = button(p, {
+                state: function() { 
+                    resume();
+                    console.log("tut message closed");
+                    return obj; // the current state
+                },
+                rect: {
+                    pos: new p.PVector(100, 100),
+                    width: 50, height: 50,
+                }
+            });
+            all_buttons.push(close_button);
+        }
+        popup : function(message) {
+            if (is_tutorial) {
+                do_pause();
+                show_button("ASDF")
+                alert(message);
+            }
+        }
+    }
+
 	var all_notifications = [];
     var last_notification_time = -1
     // takes a string and adds a new notification
