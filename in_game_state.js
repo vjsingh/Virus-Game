@@ -125,12 +125,25 @@ var in_game_state = function (p, previous_state, game_type) {
     // Call tut_manager.popup(type) when you want to signal a tutorial message
     // All the types are in tut_flags
     var tut_manager = (function() {
-        // These flags are set to false when they've already occured
-        var tut_flags = {
-            initial_controls : true,
-            macrophage : true,
-            mutation : true,
+
+        // object to store all the msgs
+        var tut_msgs = {
+            spacebar: "Press SPACEBAR or CLICK the mouse to shoot virions out of an infected cell in the direction of the arrow.",
+            arrows: "Use the LEFT and RIGHT arrow keys to switch between infected cells", 
+            macrophage : "",
+            mutation : "",
         };
+
+        // These flags are set to false when they've already occured
+        // built based on tut_msgs
+        var tut_flags = {};
+        for_each(
+            keys(tut_msgs),
+            function(type) {
+                tut_flags[type] = true;
+            }
+        );
+            
         var show_button = function(text) {
             var close_button = button(p, {
                 state: function() { 
@@ -151,18 +164,8 @@ var in_game_state = function (p, previous_state, game_type) {
             popup : function(type) {
                 if (is_tutorial && tut_flags[type]) {
                     do_pause();
-                    var type_to_text = function(t) {
-                        switch(t) {
-                            case "initial_controls":
-                                return "initial controls";
-                                break;
-                            case "macrophage":
-                                return "macrophage";
-                                break;
-                        }
-                    }
-                    text = type_to_text(type);
-                    show_button(text)
+                    text = tut_msgs[type];//type_to_text(type);
+                    show_button(text);
                     tut_flags[type] = false;
                 }
             }
@@ -501,7 +504,6 @@ var in_game_state = function (p, previous_state, game_type) {
 	// Chooses the next left cell to be active
 	var choose_left_cell = function() {
 		choose_cell_helper(function (x, y) {return x < y;});
-		
 	};
 	
 	// Same in the right dir
@@ -527,6 +529,12 @@ var in_game_state = function (p, previous_state, game_type) {
 
 		var curr_active = active_cell;
         if (infecteds.length > 0) {
+
+            // tutorial msg about switching cells
+            if (infecteds.length > 1) {
+                tut_manager.popup("arrows");
+            }
+
             active_cell = infecteds[0];
 			//If same as current
 			if (curr_active) { // for the beginning
@@ -871,7 +879,7 @@ var in_game_state = function (p, previous_state, game_type) {
                 par.die();
             }
             if (cell.get_state() === "alive") {
-                tut_manager.popup("initial_controls");
+                tut_manager.popup("spacebar");
 				//Play sound
 				sounds.play_sound("cell_infect");
 			
@@ -882,7 +890,7 @@ var in_game_state = function (p, previous_state, game_type) {
 				    mutation.infected_cell();
                 }
 				
-                		cell.set_state("infected");
+                cell.set_state("infected");
 				cell.set_mutation_info(par.get_mutation_info());
 
 				// Add 10 to score 
