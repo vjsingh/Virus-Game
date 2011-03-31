@@ -1728,14 +1728,14 @@ var in_game_state = function (p, previous_state, game_type) {
 		//right and left
 		k = p.keyCode;
 		if (k === p.LEFT) { //left
-			if (!g.mouse_to_select) {
+			//if (!g.mouse_to_select) {
 				choose_left_cell();
-			}
+			//}
 		}
 		else if (k === 39) { //right
-			if (!g.mouse_to_select) {
+			//if (!g.mouse_to_select) {
 				choose_right_cell();
-			}
+			//}
 		}
 	};
 	
