@@ -140,7 +140,7 @@ var in_game_state = function (p, previous_state) {
                             case "initial_controls":
                                 return "initial controls";
                                 break;
-                            case "macrophage:
+                            case "macrophage":
                                 return "macrophage";
                                 break;
                         }
