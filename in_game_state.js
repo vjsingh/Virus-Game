@@ -125,7 +125,7 @@ var in_game_state = function (p, previous_state) {
                 }
             });
             all_buttons.push(close_button);
-        }
+        },
         popup : function(message) {
             if (is_tutorial) {
                 do_pause();
