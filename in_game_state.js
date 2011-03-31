@@ -18,12 +18,6 @@ var in_game_state = function (p, previous_state) {
     
     // --- private variables ---
 
-    var is_tutorial = true;
-    // These flags are set to true by the tutorial manager when they've already occured
-    var tut_flags = {
-        initial_controls : false,
-        macrophage : false
-    };
 
 	var GOOD_NOTIFICATION_COLOR = p.color(0, 255, 0);
 	var BAD_NOTIFICATION_COLOR = p.color(255, 0, 0);
@@ -110,8 +104,15 @@ var in_game_state = function (p, previous_state) {
 	var all_buttons = [pause_button]; 
 	
     
+    var is_tutorial = true;
     // Call tut_manager.popup(type) when you want to signal a tutorial message
+    // All the types are in tut_flags
     var tut_manager = (function() {
+        // These flags are set to true when they've already occured
+        var tut_flags = {
+            initial_controls : false,
+            macrophage : false
+        };
         var show_button = function(text) {
             var close_button = button(p, {
                 state: function() { 
@@ -130,9 +131,21 @@ var in_game_state = function (p, previous_state) {
         };
 
         var tut_obj = {
-            popup : function(message) {
+            popup : function(type) {
                 if (is_tutorial) {
                     do_pause();
+                    tut_flags[type] = false;
+                    var type_to_text = function(t) {
+                        switch(t) {
+                            case "initial_controls":
+                                return "initial controls";
+                                break;
+                            case "macrophage:
+                                return "macrophage";
+                                break;
+                        }
+                    }
+                    text = type_to_text(type);
                     show_button(message)
                 }
             }
@@ -841,7 +854,7 @@ var in_game_state = function (p, previous_state) {
                 par.die();
             }
             if (cell.get_state() === "alive") {
-                tut_manager.popup("ASDF");
+                tut_manager.popup("initial_controls");
 				//Play sound
 				sounds.play_sound("cell_infect");
 			
