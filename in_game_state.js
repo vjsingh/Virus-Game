@@ -115,7 +115,7 @@ var in_game_state = function (p, previous_state) {
         var show_button = function(text) {
             var close_button = button(p, {
                 state: function() { 
-                    resume();
+                    obj.resume();
                     console.log("tut message closed");
                     return obj; // the current state
                 },
