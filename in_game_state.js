@@ -137,7 +137,6 @@ var in_game_state = function (p, previous_state, game_type) {
             macrophage: "Watch out for macrophages! They will kill your virion and alert a B cell.",
             antibodies: "Oh no! The B cell is producing antibodies! If an antibody attaches to an infected cell, the cell will be marked for destruction by a granulocyte.",
             mutation: "Your virus just mutated to a new strain! Now it will be safe from the immune system until you hit another macrophage. Each virion can only be attacked by immune cells that know about its strain. Immune cells that know about a certain strain will be filled with the same color as virions of that strain.",
-            end: "For more detailed information, pause the game and read the instructions. Now try to keep your virus from getting wiped out for as long as you can!", 
         };
 
         // These flags are set to false when they've already occured
@@ -1095,6 +1094,7 @@ var in_game_state = function (p, previous_state, game_type) {
                 "wall_segment": function(b, wall) {
                     //console.log("collision");
                     if (b.is_activated()) {
+                        tut_manager.popup("antibodies");
                         // start making antibodies
                         b.make_antibodies();
                         // make a tkiller
