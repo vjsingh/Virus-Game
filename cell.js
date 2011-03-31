@@ -305,8 +305,6 @@ var cell = function(p, spec) {
             var range = p.PI/6;
             var incr = range/num_particles;
 
-            var particles = [];
-
             ang = arrow_angle - range/2;
             // special case
             if (num_particles === 1) {
@@ -314,14 +312,14 @@ var cell = function(p, spec) {
             }
             num_dots = 3
             while (num_particles > 0) {
-                var offset = 10;
+                var offset = 2;
                 p.fill(153);
                 p.noStroke();
                 for (var i = 0; i < num_dots; i++) {
-                    x = r*p.cos(ang) + pos.x + offset;
-                    y = r*p.sin(ang) + pos.y - offset;
+                    x = r*p.cos(ang)*offset + pos.x ;
+                    y = r*p.sin(ang)*offset + pos.y ;
                     p.ellipse(x, y, 10, 10);
-                    offset += 20;
+                    offset += 1;
                 }
 
                 num_particles--;
