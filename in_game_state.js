@@ -132,9 +132,8 @@ var in_game_state = function (p, previous_state) {
 
         var tut_obj = {
             popup : function(type) {
-                if (is_tutorial) {
+                if (is_tutorial && tut_flags[type]) {
                     do_pause();
-                    tut_flags[type] = false;
                     var type_to_text = function(t) {
                         switch(t) {
                             case "initial_controls":
@@ -147,6 +146,7 @@ var in_game_state = function (p, previous_state) {
                     }
                     text = type_to_text(type);
                     show_button(text)
+                    tut_flags[type] = false;
                 }
             }
         }
