@@ -111,8 +111,8 @@ var in_game_state = function (p, previous_state) {
 	
     
     // Call tut_manager.popup(type) when you want to signal a tutorial message
-    var tut_manager = {
-        show_button : function(text) {
+    var tut_manager = (function() {
+        var show_button = function(text) {
             var close_button = button(p, {
                 state: function() { 
                     resume();
@@ -125,15 +125,19 @@ var in_game_state = function (p, previous_state) {
                 }
             });
             all_buttons.push(close_button);
-        },
-        popup : function(message) {
-            if (is_tutorial) {
-                do_pause();
-                show_button("ASDF")
-                alert(message);
+        };
+
+        var tut_obj = {
+            popup : function(message) {
+                if (is_tutorial) {
+                    do_pause();
+                    show_button("ASDF")
+                    alert(message);
+                }
             }
         }
-    }
+        return tut_obj;
+    })()
 
 	var all_notifications = [];
     var last_notification_time = -1
