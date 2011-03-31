@@ -117,6 +117,7 @@ var in_game_state = function (p, previous_state) {
                 state: function() { 
                     obj.resume();
                     console.log("tut message closed");
+                    all_buttons.pop() // DANGEROUS... Hope we're not adding any other buttons anytime soon
                     return obj; // the current state
                 },
                 rect: {
