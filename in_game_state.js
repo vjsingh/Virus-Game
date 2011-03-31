@@ -146,7 +146,7 @@ var in_game_state = function (p, previous_state) {
                         }
                     }
                     text = type_to_text(type);
-                    show_button(message)
+                    show_button(text)
                 }
             }
         }
