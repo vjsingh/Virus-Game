@@ -35,7 +35,7 @@ var splash_state = function (p) {
             return in_game_state(p, obj, 0); 
         },
         rect: {
-            pos: new p.PVector(left_x, top_row_y - 200),
+            pos: new p.PVector(left_x - (left_x * (2/3)), top_row_y),
             text : "Easy",
             //image: "mnewgame.png",
             //over_image: "mnewgame_r.png",
@@ -51,7 +51,7 @@ var splash_state = function (p) {
             return in_game_state(p, obj, 1); 
         },
         rect: {
-            pos: new p.PVector(left_x, top_row_y - 100),
+            pos: new p.PVector(left_x - (left_x /3), top_row_y),
             text : "Tutorial",
             //image: "mnewgame.png",
             //over_image: "mnewgame_r.png",

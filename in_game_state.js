@@ -108,7 +108,10 @@ var in_game_state = function (p, previous_state, game_type) {
 	var all_buttons = [pause_button]; 
 	
     
-    var is_tutorial = true;
+    var is_tutorial = false;
+    if (game_type === 1) {
+        is_tutorial = true;
+    }
     // Call tut_manager.popup(type) when you want to signal a tutorial message
     // All the types are in tut_flags
     var tut_manager = (function() {
