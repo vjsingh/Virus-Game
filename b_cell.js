@@ -11,7 +11,7 @@ var b_cell = function(p, spec) {
 
     spec.width = spec.width || 30;
     spec.height = spec.height || 30;
-    spec.speed = (spec.speed || 5) * scroll_factor;
+    spec.speed = (spec.speed || 5) * g_speed_factor;
 
     // obj to return
     var obj = seeker(p, spec);

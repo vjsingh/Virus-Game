@@ -10,8 +10,8 @@ var antibody = function(p, spec) {
 
     spec.width = spec.width || 11;
     spec.height = spec.height || 7;
-	spec.speed = (spec.speed || 4) * scroll_factor;
-	spec.no_target_speed = (spec.no_target_speed || 2) * scroll_factor;
+	spec.speed = (spec.speed || 4) * g_speed_factor;
+	spec.no_target_speed = (spec.no_target_speed || 2) * g_speed_factor;
 	
 	//spec.vel = random_vel();										
     // obj to return

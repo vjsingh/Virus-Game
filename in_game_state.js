@@ -35,11 +35,12 @@ var in_game_state = function (p, previous_state, game_type) {
     var last_active_cell = null;
     // multiply each object's scroll amount by this
     // factor, which increases throughout the game
-    // THIS IS NOW GLOBAL
-    scroll_factor = 1;
+    var scroll_factor = 1;
+    g_speed_factor = 1; // multiply all speed constants in the game by this, for easy mode
     if (game_type < 2) {
-        scroll_factor = 0.7;
+        g_speed_factor = 0.75;
     }
+    scroll_factor *= g_speed_factor;
 
     var game_objects = [];
 	var paused = false;

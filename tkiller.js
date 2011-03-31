@@ -11,7 +11,7 @@ var tkiller = function(p, spec) {
 
     spec.width = spec.width || 35;
     spec.height = spec.height || 35;
-    spec.speed = (spec.speed || 1.5) * scroll_factor;
+    spec.speed = (spec.speed || 1.5) * g_speed_factor;
 
     // obj to return
     var obj = seeker(p, spec);
