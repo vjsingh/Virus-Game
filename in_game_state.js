@@ -8,6 +8,10 @@ g_speed_factor = 1; // multiply all speed constants in the game by this, for eas
 // Global Variable so cell arrows can draw dots
 GLOBAL_is_easy = false;
 
+// flag for whether the tutorial has been played through
+// if false, easy mode will include the tutorial
+g_tut_done = false;
+
 // game_type is:
 // 0 - easy
 // 1 - tutorial
@@ -120,12 +124,19 @@ var in_game_state = function (p, previous_state, game_type) {
 	
     
     var is_tutorial = false;
-    if (game_type === 1) {
+    if (game_type === 1
+            // if the tutorial hasn't been done, do on easy mode
+            || (game_type === 0 && !g_tut_done) ){
         is_tutorial = true;
     }
     if (game_type < 2) {
         GLOBAL_is_easy = true;
     }
+
+    // the tutorial will have been done once by now
+    // (although the player might have died and not seen the whole thing)
+    // TODO change to ensure that player sees whole tutorial??
+    g_tut_done = true;
 
     // the popup to draw at a given time
     // null if there is none
@@ -1837,7 +1848,7 @@ var in_game_state = function (p, previous_state, game_type) {
         //var render_level = type_to_level[type];
         //game_objects[render_level].push(o);
 		if (o.get_type() === "tkiller") {
-            notify("Killer T Cell Incoming!", BAD_NOTIFICATION_COLOR);
+            notify("Granulocyte Incoming!", BAD_NOTIFICATION_COLOR);
 		}
         level(o.get_type()).push(o);
     };
