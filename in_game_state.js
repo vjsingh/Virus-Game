@@ -137,6 +137,9 @@ var in_game_state = function (p, previous_state, game_type) {
     // the popup to draw at a given time
     // null if there is none
     var tut_window = null;
+    // flag for unpausing
+    // when false mouse clicks wont fire
+    var ok_to_fire = true;
     // Call tut_manager.popup(type) when you want to signal a tutorial message
     // All the types are in tut_flags
     var tut_manager = (function() {
@@ -206,6 +209,7 @@ var in_game_state = function (p, previous_state, game_type) {
             popup : function(type) {
                 if (is_tutorial && tut_flags[type]) {
                     do_pause();
+                    ok_to_fire = false;
                     text = tut_msgs[type];
                     show_popup(text);
                     tut_flags[type] = false;
@@ -1819,7 +1823,14 @@ var in_game_state = function (p, previous_state, game_type) {
 	// Fire
     obj.mouse_click = function (x, y) {
 		if (!paused && g.click_to_fire) {
-			do_fire();
+            // stall firing once
+            if (ok_to_fire) {
+			    do_fire();
+            }
+            // then allow it
+            else {
+                ok_to_fire = true;
+            }
 		}
     };
 	
