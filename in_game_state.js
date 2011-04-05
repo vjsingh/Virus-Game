@@ -208,7 +208,7 @@ var in_game_state = function (p, previous_state, game_type) {
         var tut_obj = {
             popup : function(type) {
                 if (is_tutorial && tut_flags[type]) {
-                    do_pause();
+                    tut_pause();
                     ok_to_fire = false;
                     text = tut_msgs[type];
                     show_popup(text);
