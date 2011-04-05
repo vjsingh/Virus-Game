@@ -26,7 +26,6 @@ var multiplier = function(p, spec) {
     // implementing game_object interface
     
     obj.update = function() {
-        console.log("Updating multiplier, it has speed: " + obj.get_vel())
 		obj.bounce();
         obj.move();
     };
