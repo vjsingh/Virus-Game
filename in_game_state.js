@@ -127,16 +127,12 @@ var in_game_state = function (p, previous_state, game_type) {
     if (game_type === 1
             // if the tutorial hasn't been done, do on easy mode
             || (game_type === 0 && !g_tut_done) ){
-        is_tutorial = false; //true;
+        is_tutorial = true;
     }
     if (game_type < 2) {
         GLOBAL_is_easy = true;
     }
 
-    // the tutorial will have been done once by now
-    // (although the player might have died and not seen the whole thing)
-    // TODO change to ensure that player sees whole tutorial??
-    g_tut_done = true;
 
     // the popup to draw at a given time
     // null if there is none
@@ -213,6 +209,19 @@ var in_game_state = function (p, previous_state, game_type) {
                     text = tut_msgs[type];
                     show_popup(text);
                     tut_flags[type] = false;
+                }
+                allFinished = true;
+                for_each(
+                    keys(tut_msgs),
+                    function(type) {
+                        if (tut_flags[type]) {
+                            allFinished = false;
+                        }
+                    }
+                );
+                // the tutorial will have been completely finished by now
+                if (allFinished) {
+                    g_tut_done = true;
                 }
             }
         };
