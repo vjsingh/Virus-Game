@@ -8,7 +8,7 @@ var multiplier = function(p, spec) {
     spec.width = spec.width || 5;
     spec.height = spec.height || 5;
     // make sure it goes left
-    spec.vel = new p.PVector(p.random(0, -1), p.random()) * g_speed_factor;
+    spec.vel = new p.PVector(p.random(0, -1)* g_speed_factor, p.random()* g_speed_factor);
 
     // obj to return
     var obj = game_object(p, spec);
