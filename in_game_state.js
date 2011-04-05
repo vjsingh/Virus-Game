@@ -1709,35 +1709,37 @@ var in_game_state = function (p, previous_state, game_type) {
         }
 	};
 	obj.key_pressed = function(k) {
-		if (k === 32) { //spacebar
-			if (g.spacebar_to_fire) {
-				do_fire();
-			}
-		}
-		else if (k === 112 || p.keyCode === 13 || p.keyCode === 27) { //p, enter, esc
-			do_pause();
-			var p_state = pause_state(p, obj);
-			obj.set_next_state(p_state);
-		}
-        /*
-		else if (k === 104) { //h
-			paused = true;
-			var h_state = help_state(p, obj);
-			obj.set_next_state(h_state);
-		}
-        */
-		//right and left
-		k = p.keyCode;
-		if (k === p.LEFT) { //left
-			//if (!g.mouse_to_select) {
-				choose_left_cell();
-			//}
-		}
-		else if (k === 39) { //right
-			//if (!g.mouse_to_select) {
-				choose_right_cell();
-			//}
-		}
+        if (!paused) {
+            if (k === 32) { //spacebar
+                if (g.spacebar_to_fire) {
+                    do_fire();
+                }
+            }
+            else if (k === 112 || p.keyCode === 13 || p.keyCode === 27) { //p, enter, esc
+                do_pause();
+                var p_state = pause_state(p, obj);
+                obj.set_next_state(p_state);
+            }
+            /*
+            else if (k === 104) { //h
+                paused = true;
+                var h_state = help_state(p, obj);
+                obj.set_next_state(h_state);
+            }
+            */
+            //right and left
+            k = p.keyCode;
+            if (k === p.LEFT) { //left
+                //if (!g.mouse_to_select) {
+                    choose_left_cell();
+                //}
+            }
+            else if (k === 39) { //right
+                //if (!g.mouse_to_select) {
+                    choose_right_cell();
+                //}
+            }
+        }
 	};
 	
 	// Fire
@@ -1749,7 +1751,7 @@ var in_game_state = function (p, previous_state, game_type) {
 	
 	// Choose active cell on mouse movement
 	obj.mouse_moved = function(x, y) {
-		if (g.mouse_to_select) {
+		if (!paused && g.mouse_to_select) {
 			choose_closest_cell(new p.PVector(x, y));
 		}
 	}
