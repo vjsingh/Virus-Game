@@ -193,7 +193,6 @@ var cell = function(p, spec) {
 			// Make sounds
 			sounds.play_sound("cell_fire");
 			
-            // TODO: need a slower death
 			obj.die();
 			
 			var pos = obj.get_pos();
@@ -310,7 +309,7 @@ var cell = function(p, spec) {
             if (num_particles === 1) {
                 ang = arrow_angle;
             }
-            num_dots = 3
+            var num_dots = 5;
             while (num_particles > 0) {
                 var offset = 4;
                 p.fill(153);
@@ -318,7 +317,7 @@ var cell = function(p, spec) {
                 for (var i = 0; i < num_dots; i++) {
                     x = r*p.cos(ang)*offset + pos.x ;
                     y = r*p.sin(ang)*offset + pos.y ;
-                    p.ellipse(x, y, 3, 3);
+                    p.ellipse(x, y, 2, 2);
                     offset += 2;
                 }
 

@@ -1,6 +1,17 @@
 // *** game ***
 // NOTE: get_type() returns "game" not "in_game"
 
+// defined up here cuz instructions need them
+// and a game might not be init'd before reading instr
+g_speed_factor = 1; // multiply all speed constants in the game by this, for easy mode
+
+// Global Variable so cell arrows can draw dots
+GLOBAL_is_easy = false;
+
+// flag for whether the tutorial has been played through
+// if false, easy mode will include the tutorial
+g_tut_done = false;
+
 // game_type is:
 // 0 - easy
 // 1 - tutorial
@@ -36,7 +47,6 @@ var in_game_state = function (p, previous_state, game_type) {
     // multiply each object's scroll amount by this
     // factor, which increases throughout the game
     var scroll_factor = 1;
-    g_speed_factor = 1; // multiply all speed constants in the game by this, for easy mode
     if (game_type < 2) {
         g_speed_factor = 0.75;
     }
@@ -114,59 +124,98 @@ var in_game_state = function (p, previous_state, game_type) {
 	
     
     var is_tutorial = false;
-    if (game_type === 1) {
+    if (game_type === 1
+            // if the tutorial hasn't been done, do on easy mode
+            || (game_type === 0 && !g_tut_done) ){
         is_tutorial = true;
     }
-    // Global Variable so cell arrows can draw dots
-    GLOBAL_is_easy = false;
     if (game_type < 2) {
         GLOBAL_is_easy = true;
     }
+
+    // the tutorial will have been done once by now
+    // (although the player might have died and not seen the whole thing)
+    // TODO change to ensure that player sees whole tutorial??
+    g_tut_done = true;
+
+    // the popup to draw at a given time
+    // null if there is none
+    var tut_window = null;
     // Call tut_manager.popup(type) when you want to signal a tutorial message
     // All the types are in tut_flags
     var tut_manager = (function() {
-        // These flags are set to false when they've already occured
-        var tut_flags = {
-            initial_controls : true,
-            macrophage : true,
-            mutation : true,
+
+        // object to store all the msgs
+        var tut_msgs = {
+            spacebar: "Press SPACEBAR or CLICK the mouse to shoot virions out of an infected cell in the direction of the arrow.",
+            arrows: "Use the LEFT and RIGHT arrow keys to switch between infected cells.", 
+            macrophage: "Watch out for macrophages! They will kill your virion and alert a B cell.",
+            antibodies: "Oh no! The B cell is producing antibodies! If an antibody attaches to an infected cell, the cell will be marked for destruction by a granulocyte.",
+            killer: "A granulocyte just destroyed one of your infected cells and all the virions inside it! Your virus won't be safe from the granulocyte until it mutates, creating a new strain.",
+            mutation: "Your virus just mutated to a new strain! Now it will be safe from the immune system until you hit another macrophage. Each virion can only be attacked by immune cells that know about its strain. Immune cells that know about a certain strain will be filled with the same color as virions of that strain.",
         };
-        var show_button = function(text) {
+
+        // These flags are set to false when they've already occured
+        // built based on tut_msgs
+        var tut_flags = {};
+        for_each(
+            keys(tut_msgs),
+            function(type) {
+                tut_flags[type] = true;
+            }
+        );
+
+        var tut_popup = function(txt) {
+            var obj = {};
+
+            var x = p.width/2;
+            var y = p.height/2;
+            var w = 400;
+            var h = 200;
+            var tw = w-50;
+            obj.draw = function() {
+                p.noStroke();
+                p.fill(100);
+                p.rectMode(p.CENTER);
+                p.rect(x, y, w, h);
+                p.fill(0);
+                p.textSize(14);
+                p.textAlign(p.CENTER, p.CENTER);
+                p.text(txt, x-tw/2, y-h/2, tw, h-50);
+            };
+
+            return obj;
+        };
+            
+        var show_popup = function(text) {
             var close_button = button(p, {
                 state: function() { 
+                    tut_window = null;
                     obj.resume();
                     all_buttons.pop() // DANGEROUS... Hope we're not adding any other buttons anytime soon
                     return obj; // the current state
                 },
                 rect: {
-                    pos: new p.PVector(100, 100),
+                    pos: new p.PVector(p.width/2, p.height/2+80),
                     width: 50, height: 50,
-                    text: text
+                    text: "OK"
                 }
             });
             all_buttons.push(close_button);
+
+            tut_window = tut_popup(text);
         };
 
         var tut_obj = {
             popup : function(type) {
                 if (is_tutorial && tut_flags[type]) {
                     do_pause();
-                    var type_to_text = function(t) {
-                        switch(t) {
-                            case "initial_controls":
-                                return "initial controls";
-                                break;
-                            case "macrophage":
-                                return "macrophage";
-                                break;
-                        }
-                    }
-                    text = type_to_text(type);
-                    show_button(text)
+                    text = tut_msgs[type];
+                    show_popup(text);
                     tut_flags[type] = false;
                 }
             }
-        }
+        };
         return tut_obj;
     })()
 
@@ -501,7 +550,6 @@ var in_game_state = function (p, previous_state, game_type) {
 	// Chooses the next left cell to be active
 	var choose_left_cell = function() {
 		choose_cell_helper(function (x, y) {return x < y;});
-		
 	};
 	
 	// Same in the right dir
@@ -527,6 +575,12 @@ var in_game_state = function (p, previous_state, game_type) {
 
 		var curr_active = active_cell;
         if (infecteds.length > 0) {
+
+            // tutorial msg about switching cells
+            if (infecteds.length > 1) {
+                tut_manager.popup("arrows");
+            }
+
             active_cell = infecteds[0];
 			//If same as current
 			if (curr_active) { // for the beginning
@@ -871,7 +925,7 @@ var in_game_state = function (p, previous_state, game_type) {
                 par.die();
             }
             if (cell.get_state() === "alive") {
-                tut_manager.popup("initial_controls");
+                tut_manager.popup("spacebar");
 				//Play sound
 				sounds.play_sound("cell_infect");
 			
@@ -882,7 +936,7 @@ var in_game_state = function (p, previous_state, game_type) {
 				    mutation.infected_cell();
                 }
 				
-                		cell.set_state("infected");
+                cell.set_state("infected");
 				cell.set_mutation_info(par.get_mutation_info());
 
 				// Add 10 to score 
@@ -998,6 +1052,7 @@ var in_game_state = function (p, previous_state, game_type) {
 							cell.get_state() === "active") 
 						    && cell.has_antibody()
                             && same_mutation_level(tk, cell)) {
+                        tut_manager.popup("killer");
                         cell.die();
 			            sounds.play_sound("kill");	
 						tk.set_target(null);
@@ -1055,6 +1110,7 @@ var in_game_state = function (p, previous_state, game_type) {
                 "wall_segment": function(b, wall) {
                     //console.log("collision");
                     if (b.is_activated()) {
+                        tut_manager.popup("antibodies");
                         // start making antibodies
                         b.make_antibodies();
                         // make a tkiller
@@ -1686,11 +1742,20 @@ var in_game_state = function (p, previous_state, game_type) {
                 remove_elt(all_notifications, n);
             }
         });
+
+        // render the tut msg window if there is one currently
+        if (tut_window) {
+            tut_window.draw();
+        }
     };
 	
 	var do_pause = function() {
-		paused = true;
 		sounds.pause_background_music();
+        tut_pause();
+	};
+
+    var tut_pause = function() {
+		paused = true;
         // stop the animations
         do_to_all_objs(
             function(o) { 
@@ -1699,7 +1764,7 @@ var in_game_state = function (p, previous_state, game_type) {
                 }
             }
         );
-	}
+    };
 	
    	var do_fire = function() {
         if (active_cell !== null) {
@@ -1785,7 +1850,7 @@ var in_game_state = function (p, previous_state, game_type) {
         //var render_level = type_to_level[type];
         //game_objects[render_level].push(o);
 		if (o.get_type() === "tkiller") {
-            notify("Killer T Cell Incoming!", BAD_NOTIFICATION_COLOR);
+            notify("Granulocyte Incoming!", BAD_NOTIFICATION_COLOR);
 		}
         level(o.get_type()).push(o);
     };

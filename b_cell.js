@@ -168,12 +168,14 @@ var b_cell = function(p, spec) {
 			
 			p.popMatrix();
 			
-			if (ascending === true) {
-				counter++;
-			}
-			else if (ascending === false) {
-				counter--;
-			}
+            if (!anim_paused) {
+                if (ascending === true) {
+                    counter++;
+                }
+                else if (ascending === false) {
+                    counter--;
+                }
+            }
 			if (counter === c_max) {
 				ascending = false;
 			}
@@ -237,12 +239,15 @@ var b_cell = function(p, spec) {
 		}
     };
 
+    var anim_paused = false;
     obj.stop_animation = function() {
         b_anim.pause();
+        anim_paused = true;
     };
 
     obj.resume_animation = function() {
         b_anim.start();
+        anim_paused = false;
     };
 
     return obj;
