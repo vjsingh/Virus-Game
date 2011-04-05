@@ -1764,13 +1764,11 @@ var in_game_state = function (p, previous_state, game_type) {
 	};
 
     var tut_pause = function() {
-        console.log("tut pause");
 		paused = true;
         // stop the animations
         do_to_all_objs(
             function(o) { 
                 if (o.stop_animation) {
-                    console.log("stopping animation");
                     o.stop_animation();
                 }
             }

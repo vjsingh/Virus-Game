@@ -150,7 +150,6 @@ var cell = function(p, spec) {
     };
 
     obj.stop_animation = function() {
-        console.log("Stopping cell animation");
         burst_anim.pause();
         infect_anim.pause();
     };
