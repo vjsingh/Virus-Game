@@ -127,7 +127,7 @@ var in_game_state = function (p, previous_state, game_type) {
     if (game_type === 1
             // if the tutorial hasn't been done, do on easy mode
             || (game_type === 0 && !g_tut_done) ){
-        is_tutorial = true;
+        is_tutorial = false; //true;
     }
     if (game_type < 2) {
         GLOBAL_is_easy = true;
