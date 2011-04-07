@@ -146,7 +146,7 @@ var in_game_state = function (p, previous_state, game_type) {
 
         // object to store all the msgs
         var tut_msgs = {
-            spacebar: "Press SPACEBAR or CLICK the mouse to shoot virions out of an infected cell in the direction of the arrow.",
+            spacebar: "Press SPACEBAR or CLICK the mouse to shoot virions out of an infected cell in the direction of the arrow. The dotted lines will help you aim.",
             arrows: "Use the LEFT and RIGHT arrow keys to switch between infected cells.", 
             macrophage: "Watch out for macrophages! They will kill your virion and alert a B cell.",
             antibodies: "Oh no! The B cell is producing antibodies! If an antibody attaches to an infected cell, the cell will be marked for destruction by a granulocyte.",
@@ -172,13 +172,19 @@ var in_game_state = function (p, previous_state, game_type) {
             var w = 400;
             var h = 200;
             var tw = w-50;
+            var tut_box = image_manager.get_image("tutorialbox.png");
             obj.draw = function() {
+                /*
                 p.noStroke();
                 p.fill(100);
                 p.rectMode(p.CENTER);
                 p.rect(x, y, w, h);
-                p.fill(0);
-                p.textSize(14);
+                */
+                p.imageMode(p.CENTER);
+                p.image(tut_box, x, y);
+                p.fill(255);
+                p.textLeading(17);
+                p.textSize(16);
                 p.textAlign(p.CENTER, p.CENTER);
                 p.text(txt, x-tw/2, y-h/2, tw, h-50);
             };
@@ -195,9 +201,10 @@ var in_game_state = function (p, previous_state, game_type) {
                     return obj; // the current state
                 },
                 rect: {
-                    pos: new p.PVector(p.width/2, p.height/2+80),
-                    width: 50, height: 50,
-                    text: "OK"
+                    pos: new p.PVector(p.width/2, p.height/2+60),
+                    //width: 50, height: 50,
+                    //text: "OK"
+                    image: "tut_ok.png"
                 }
             });
             all_buttons.push(close_button);

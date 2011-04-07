@@ -145,6 +145,7 @@ var help_state = function (p, prev_state) {
                 }
             }
 
+            p.textLeading(14);
             if (spec.title) {
                 p.textSize(18);
                 p.textAlign(p.LEFT, p.TOP);
