@@ -95,7 +95,7 @@ var sound_manager = function() {
     // list of objs with props "music" and "name" 
     var all_bg_music = [];
     // keep this updated with names
-    var track_names = [ "Invasion", "Exploration", "Infiltration"];
+    var track_names = [ "Invasion", "Exploration", "Infiltration", "Incubation"];
     // we will only load however many names there are
 	var num_bg_music = track_names.length;
     // index for background tracks (set after loading)
@@ -264,6 +264,7 @@ var sound_manager = function() {
 
 		init_bg_jplayer(1, "gameloop2.mp3", "gameloop2.ogg", true);
 		init_bg_jplayer(2, "Infiltration.mp3", "Infiltration.ogg", true);
+		init_bg_jplayer(3, "Incubation.mp3", "Incubation.ogg", true);
 
 		for (var i = 0; i < num_bg_music; i++) {
 			all_bg_music.push({

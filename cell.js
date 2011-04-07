@@ -193,7 +193,6 @@ var cell = function(p, spec) {
 			// Make sounds
 			sounds.play_sound("cell_fire");
 			
-            // TODO: need a slower death
 			obj.die();
 			
 			var pos = obj.get_pos();
@@ -254,7 +253,7 @@ var cell = function(p, spec) {
                 || arrow_angle < -p.PI/2) {
             arrow_dir = (2-arrow_dir)-2;
         }
-        arrow_angle += p.radians(5+obj.get_level()/2)*arrow_dir;
+        arrow_angle += p.radians(5+obj.get_level()/2)*arrow_dir * g_speed_factor;
     };
 
     var drawArrow = function() {
@@ -288,6 +287,44 @@ var cell = function(p, spec) {
         p.endShape();
 
         p.popMatrix();
+        
+        // Draw Dots if easy
+        if (GLOBAL_is_easy) {
+            var pos = obj.get_pos();
+            var ang = arrow_angle;
+            // use width cuz it's a circle
+            var r = obj.get_width()/2;
+
+            // gen particles at edge of cell for now
+            var x = r*p.cos(ang) + pos.x;
+            var y = r*p.sin(ang) + pos.y;
+
+            var num_particles = get_num_particles();
+            // angle between all the shots
+            var range = p.PI/6;
+            var incr = range/num_particles;
+
+            ang = arrow_angle - range/2;
+            // special case
+            if (num_particles === 1) {
+                ang = arrow_angle;
+            }
+            var num_dots = 5;
+            while (num_particles > 0) {
+                var offset = 4;
+                p.fill(153);
+                p.noStroke();
+                for (var i = 0; i < num_dots; i++) {
+                    x = r*p.cos(ang)*offset + pos.x ;
+                    y = r*p.sin(ang)*offset + pos.y ;
+                    p.ellipse(x, y, 2, 2);
+                    offset += 2;
+                }
+
+                num_particles--;
+                ang += incr;
+            }
+        }
     };
 
     var get_num_particles = function() {

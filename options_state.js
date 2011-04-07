@@ -3,6 +3,13 @@ var options_state = function (p, prev_state) {
     // object to return
     var obj = game_state(p);
 	obj.set_previous_state(prev_state);
+
+    // Used to determine whether to play menu music when 'music' button is toggled
+    var prev_was_splash = false;
+    if (prev_state.get_type() === "splash") {
+        prev_was_splash = true;
+    }
+
 	
     // --- private variables ---
 	
@@ -54,6 +61,15 @@ var options_state = function (p, prev_state) {
             sounds.play_button_click();
             // toggle the flag
             g.toggle_music();
+
+            if (g.music) {
+                if (prev_was_splash) {
+                    sounds.play_menu_music();
+                }
+            }
+            else {
+                sounds.pause_menu_music();
+            }
         },
 		global_var : "music",
 		rect : {

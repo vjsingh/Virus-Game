@@ -68,7 +68,7 @@ var mutation_obj = function(p, spec) {
 	//Shows the curent mutation level
     var level_spec = {
 		pos : new p.PVector(350, spec.status_height || 20),
-		text : "Level ",
+		text : "Strain ",
 		num : 1,
         text_color : p.color(0)
 	};

@@ -2,7 +2,7 @@
 //	score : num representing score of game
 //	mutation_level : num representing mutation level at end of game
 
-var game_over_state = function (p, prev_state, spec) { 
+var game_over_state = function (p, prev_state, spec, game_type) { 
 	//right now, prev_state is not used
 	
     // object to return
@@ -41,7 +41,7 @@ var game_over_state = function (p, prev_state, spec) {
 	var restart_button = button(p, {
 		state : function() { 
             sounds.play_button_click(); 
-            return in_game_state(p, prev_state); 
+            return in_game_state(p, prev_state, game_type); 
         },
 		rect : {
 			pos : new p.PVector(p.width / 2, b_top),//330),

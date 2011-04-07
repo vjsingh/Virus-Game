@@ -1,7 +1,22 @@
 // *** game ***
 // NOTE: get_type() returns "game" not "in_game"
 
-var in_game_state = function (p, previous_state) {
+// defined up here cuz instructions need them
+// and a game might not be init'd before reading instr
+g_speed_factor = 1; // multiply all speed constants in the game by this, for easy mode
+
+// Global Variable so cell arrows can draw dots
+GLOBAL_is_easy = false;
+
+// flag for whether the tutorial has been played through
+// if false, easy mode will include the tutorial
+g_tut_done = false;
+
+// game_type is:
+// 0 - easy
+// 1 - tutorial
+// 2 - hard
+var in_game_state = function (p, previous_state, game_type) {
 
     // object to return
     var obj = game_state(p);
@@ -18,6 +33,7 @@ var in_game_state = function (p, previous_state) {
     
     // --- private variables ---
 
+
 	var GOOD_NOTIFICATION_COLOR = p.color(0, 255, 0);
 	var BAD_NOTIFICATION_COLOR = p.color(255, 0, 0);
 	
@@ -31,6 +47,10 @@ var in_game_state = function (p, previous_state) {
     // multiply each object's scroll amount by this
     // factor, which increases throughout the game
     var scroll_factor = 1;
+    if (game_type < 2) {
+        g_speed_factor = 0.75;
+    }
+    scroll_factor *= g_speed_factor;
 
     var game_objects = [];
 	var paused = false;
@@ -102,6 +122,120 @@ var in_game_state = function (p, previous_state) {
 	var all_status_objs = [score, mult, time_status, mutation];
 	var all_buttons = [pause_button]; 
 	
+    
+    var is_tutorial = false;
+    if (game_type === 1
+            // if the tutorial hasn't been done, do on easy mode
+            || (game_type === 0 && !g_tut_done) ){
+        is_tutorial = true;
+    }
+    if (game_type < 2) {
+        GLOBAL_is_easy = true;
+    }
+
+
+    // the popup to draw at a given time
+    // null if there is none
+    var tut_window = null;
+    // flag for unpausing
+    // when false mouse clicks wont fire
+    var ok_to_fire = true;
+    // Call tut_manager.popup(type) when you want to signal a tutorial message
+    // All the types are in tut_flags
+    var tut_manager = (function() {
+
+        // object to store all the msgs
+        var tut_msgs = {
+            spacebar: "Press SPACEBAR or CLICK the mouse to shoot virions out of an infected cell in the direction of the arrow. The dotted lines will help you aim.",
+            arrows: "Use the LEFT and RIGHT arrow keys to switch between infected cells.", 
+            macrophage: "Watch out for macrophages! They will kill your virion and alert a B cell.",
+            antibodies: "Oh no! The B cell is producing antibodies! If an antibody attaches to an infected cell, the cell will be marked for destruction by a granulocyte.",
+            killer: "A granulocyte just destroyed one of your infected cells marked with an antibody and all the virions inside it! Your virus won't be safe from the granulocyte until it mutates, creating a new strain.",
+            mutation: "Your virus just mutated to a new strain! Each virion can only be attacked by immune cells that know about its strain. Immune cells that know about a certain strain will be filled with the same color as virions of that strain.", strain: "Uh oh! The last virion of the new strain died, so your current highest mutation level went back down. You should try to keep alive the virions of the newest strain - they will earn you the most points!" }; // These flags are set to false when they've already occured
+        // built based on tut_msgs
+        var tut_flags = {};
+        for_each(
+            keys(tut_msgs),
+            function(type) {
+                tut_flags[type] = true;
+            }
+        );
+
+        var tut_popup = function(txt) {
+            var obj = {};
+
+            var x = p.width/2;
+            var y = p.height/2;
+            var w = 400;
+            var h = 200;
+            var tw = w-50;
+            var tut_box = image_manager.get_image("tutorialbox.png");
+            obj.draw = function() {
+                /*
+                p.noStroke();
+                p.fill(100);
+                p.rectMode(p.CENTER);
+                p.rect(x, y, w, h);
+                */
+                p.imageMode(p.CENTER);
+                p.image(tut_box, x, y);
+                p.fill(255);
+                p.textLeading(17);
+                p.textSize(16);
+                p.textAlign(p.CENTER, p.CENTER);
+                p.text(txt, x-tw/2, y-h/2, tw, h-50);
+            };
+
+            return obj;
+        };
+            
+        var show_popup = function(text) {
+            var close_button = button(p, {
+                state: function() { 
+                    tut_window = null;
+                    obj.resume();
+                    all_buttons.pop() // DANGEROUS... Hope we're not adding any other buttons anytime soon
+                    return obj; // the current state
+                },
+                rect: {
+                    pos: new p.PVector(p.width/2, p.height/2+60),
+                    //width: 50, height: 50,
+                    //text: "OK"
+                    image: "tut_ok.png"
+                }
+            });
+            all_buttons.push(close_button);
+
+            tut_window = tut_popup(text);
+        };
+
+        var tut_obj = {
+            popup : function(type) {
+                if (is_tutorial && tut_flags[type]) {
+                    tut_pause();
+                    ok_to_fire = false;
+                    text = tut_msgs[type];
+                    show_popup(text);
+                    tut_flags[type] = false;
+                }
+                allFinished = true;
+                for_each(
+                    keys(tut_msgs),
+                    function(type) {
+                        if (tut_flags[type]) {
+                            allFinished = false;
+                        }
+                    }
+                );
+                // the tutorial will have been completely finished by now
+                if (allFinished) {
+                    g_tut_done = true;
+                }
+            }
+        };
+        return tut_obj;
+    })()
+
 	var all_notifications = [];
     var last_notification_time = -1
     // takes a string and adds a new notification
@@ -433,7 +567,6 @@ var in_game_state = function (p, previous_state) {
 	// Chooses the next left cell to be active
 	var choose_left_cell = function() {
 		choose_cell_helper(function (x, y) {return x < y;});
-		
 	};
 	
 	// Same in the right dir
@@ -459,6 +592,12 @@ var in_game_state = function (p, previous_state) {
 
 		var curr_active = active_cell;
         if (infecteds.length > 0) {
+
+            // tutorial msg about switching cells
+            if (infecteds.length > 1) {
+                tut_manager.popup("arrows");
+            }
+
             active_cell = infecteds[0];
 			//If same as current
 			if (curr_active) { // for the beginning
@@ -624,7 +763,9 @@ var in_game_state = function (p, previous_state) {
 		var type1 = obj1.get_type();
 		var type2 = obj2.get_type();
 		
-        if (check_circle_collision(obj1, obj2)) {
+        if (!obj1.is_off_right() && 
+                !obj2.is_off_right() &&
+                check_circle_collision(obj1, obj2)) {
             var check_again = retrieve(extra_check, type1, type2);
             if (check_again !== undefined) {
                 return check_again(obj1, obj2);
@@ -803,6 +944,7 @@ var in_game_state = function (p, previous_state) {
                 par.die();
             }
             if (cell.get_state() === "alive") {
+                tut_manager.popup("spacebar");
 				//Play sound
 				sounds.play_sound("cell_infect");
 			
@@ -813,7 +955,7 @@ var in_game_state = function (p, previous_state) {
 				    mutation.infected_cell();
                 }
 				
-                		cell.set_state("infected");
+                cell.set_state("infected");
 				cell.set_mutation_info(par.get_mutation_info());
 
 				// Add 10 to score 
@@ -865,6 +1007,7 @@ var in_game_state = function (p, previous_state) {
 							flo.activate();
 							alert_b_cell(flo);
 							sounds.play_sound("macrophage_infect");
+                            tut_manager.popup("macrophage");
 						}
                         notify("Macrophage activated!", BAD_NOTIFICATION_COLOR);
                     }
@@ -928,6 +1071,7 @@ var in_game_state = function (p, previous_state) {
 							cell.get_state() === "active") 
 						    && cell.has_antibody()
                             && same_mutation_level(tk, cell)) {
+                        tut_manager.popup("killer");
                         cell.die();
 			            sounds.play_sound("kill");	
 						tk.set_target(null);
@@ -974,7 +1118,7 @@ var in_game_state = function (p, previous_state) {
                         b.set_mutation_info(flo.get_mutation_info());
                         b.activate(get_bcell_slot());
                         bounce(b, flo);
-                        notify("B-cell activated!", BAD_NOTIFICATION_COLOR);
+                        notify("B cell activated!", BAD_NOTIFICATION_COLOR);
                     }
                     // trying to avoid getting stuck
                     if (b.is_outdated()) {
@@ -985,6 +1129,7 @@ var in_game_state = function (p, previous_state) {
                 "wall_segment": function(b, wall) {
                     //console.log("collision");
                     if (b.is_activated()) {
+                        tut_manager.popup("antibodies");
                         // start making antibodies
                         b.make_antibodies();
                         // make a tkiller
@@ -1402,7 +1547,7 @@ var in_game_state = function (p, previous_state) {
 					var go_state = game_over_state(p, previous_state, {
 						score : score.get_num(),
 						mutation_level : mutation.get_level()
-					});
+					}, game_type);
 					sounds.pause_background_music();
 					obj.set_next_state(go_state);
 
@@ -1526,6 +1671,9 @@ var in_game_state = function (p, previous_state) {
 				//else {
 					notify("Mutation occurred!", GOOD_NOTIFICATION_COLOR);
 				//}
+
+
+                tut_manager.popup("mutation");
                 
                 console.log("mutation occurred!");
             }
@@ -1549,6 +1697,7 @@ var in_game_state = function (p, previous_state) {
                     mutation.reset_mutation();
 
                     notify("Lost new strain!", BAD_NOTIFICATION_COLOR);
+                    tut_manager.popup("strain");
                     console.log("downgraded to mutation level "+max_level);
 
                     scroll_factor -= 0.15;
@@ -1613,11 +1762,20 @@ var in_game_state = function (p, previous_state) {
                 remove_elt(all_notifications, n);
             }
         });
+
+        // render the tut msg window if there is one currently
+        if (tut_window) {
+            tut_window.draw();
+        }
     };
 	
 	var do_pause = function() {
-		paused = true;
 		sounds.pause_background_music();
+        tut_pause();
+	};
+
+    var tut_pause = function() {
+		paused = true;
         // stop the animations
         do_to_all_objs(
             function(o) { 
@@ -1626,7 +1784,7 @@ var in_game_state = function (p, previous_state) {
                 }
             }
         );
-	}
+    };
 	
    	var do_fire = function() {
         if (active_cell !== null) {
@@ -1636,47 +1794,56 @@ var in_game_state = function (p, previous_state) {
         }
 	};
 	obj.key_pressed = function(k) {
-		if (k === 32) { //spacebar
-			if (g.spacebar_to_fire) {
-				do_fire();
-			}
-		}
-		else if (k === 112 || p.keyCode === 13 || p.keyCode === 27) { //p, enter, esc
-			do_pause();
-			var p_state = pause_state(p, obj);
-			obj.set_next_state(p_state);
-		}
-        /*
-		else if (k === 104) { //h
-			paused = true;
-			var h_state = help_state(p, obj);
-			obj.set_next_state(h_state);
-		}
-        */
-		//right and left
-		k = p.keyCode;
-		if (k === p.LEFT) { //left
-			if (!g.mouse_to_select) {
-				choose_left_cell();
-			}
-		}
-		else if (k === 39) { //right
-			if (!g.mouse_to_select) {
-				choose_right_cell();
-			}
-		}
+        if (!paused) {
+            if (k === 32) { //spacebar
+                if (g.spacebar_to_fire) {
+                    do_fire();
+                }
+            }
+            else if (k === 112 || p.keyCode === 13 || p.keyCode === 27) { //p, enter, esc
+                do_pause();
+                var p_state = pause_state(p, obj);
+                obj.set_next_state(p_state);
+            }
+            /*
+            else if (k === 104) { //h
+                paused = true;
+                var h_state = help_state(p, obj);
+                obj.set_next_state(h_state);
+            }
+            */
+            //right and left
+            k = p.keyCode;
+            if (k === p.LEFT) { //left
+                //if (!g.mouse_to_select) {
+                    choose_left_cell();
+                //}
+            }
+            else if (k === 39) { //right
+                //if (!g.mouse_to_select) {
+                    choose_right_cell();
+                //}
+            }
+        }
 	};
 	
 	// Fire
     obj.mouse_click = function (x, y) {
 		if (!paused && g.click_to_fire) {
-			do_fire();
+            // stall firing once
+            if (ok_to_fire) {
+			    do_fire();
+            }
+            // then allow it
+            else {
+                ok_to_fire = true;
+            }
 		}
     };
 	
 	// Choose active cell on mouse movement
 	obj.mouse_moved = function(x, y) {
-		if (g.mouse_to_select) {
+		if (!paused && g.mouse_to_select) {
 			choose_closest_cell(new p.PVector(x, y));
 		}
 	}
@@ -1710,7 +1877,7 @@ var in_game_state = function (p, previous_state) {
         //var render_level = type_to_level[type];
         //game_objects[render_level].push(o);
 		if (o.get_type() === "tkiller") {
-            notify("Killer T Cell Incoming!", BAD_NOTIFICATION_COLOR);
+            notify("Granulocyte Incoming!", BAD_NOTIFICATION_COLOR);
 		}
         level(o.get_type()).push(o);
     };
