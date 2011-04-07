@@ -151,11 +151,7 @@ var in_game_state = function (p, previous_state, game_type) {
             macrophage: "Watch out for macrophages! They will kill your virion and alert a B cell.",
             antibodies: "Oh no! The B cell is producing antibodies! If an antibody attaches to an infected cell, the cell will be marked for destruction by a granulocyte.",
             killer: "A granulocyte just destroyed one of your infected cells marked with an antibody and all the virions inside it! Your virus won't be safe from the granulocyte until it mutates, creating a new strain.",
-            mutation: "Your virus just mutated to a new strain! Now it will be safe from the immune system until you hit another macrophage. Each virion can only be attacked by immune cells that know about its strain. Immune cells that know about a certain strain will be filled with the same color as virions of that strain.",
-            strain: "Uh oh! The last virion of the new strain died, so your current highest mutation level went back down. You should try to keep alive the virions of the newest strain - they will earn you the most points!"
-        };
-
-        // These flags are set to false when they've already occured
+            mutation: "Your virus just mutated to a new strain! Each virion can only be attacked by immune cells that know about its strain. Immune cells that know about a certain strain will be filled with the same color as virions of that strain.", strain: "Uh oh! The last virion of the new strain died, so your current highest mutation level went back down. You should try to keep alive the virions of the newest strain - they will earn you the most points!" }; // These flags are set to false when they've already occured
         // built based on tut_msgs
         var tut_flags = {};
         for_each(
