@@ -766,7 +766,9 @@ var in_game_state = function (p, previous_state, game_type) {
 		var type1 = obj1.get_type();
 		var type2 = obj2.get_type();
 		
-        if (check_circle_collision(obj1, obj2)) {
+        if (!obj1.is_off_right() && 
+                !obj2.is_off_right() &&
+                check_circle_collision(obj1, obj2)) {
             var check_again = retrieve(extra_check, type1, type2);
             if (check_again !== undefined) {
                 return check_again(obj1, obj2);
