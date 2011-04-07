@@ -137,18 +137,22 @@ var in_game_state = function (p, previous_state, game_type) {
     // the popup to draw at a given time
     // null if there is none
     var tut_window = null;
+    // flag for unpausing
+    // when false mouse clicks wont fire
+    var ok_to_fire = true;
     // Call tut_manager.popup(type) when you want to signal a tutorial message
     // All the types are in tut_flags
     var tut_manager = (function() {
 
         // object to store all the msgs
         var tut_msgs = {
-            spacebar: "Press SPACEBAR or CLICK the mouse to shoot virions out of an infected cell in the direction of the arrow.",
+            spacebar: "Press SPACEBAR or CLICK the mouse to shoot virions out of an infected cell in the direction of the arrow. The dotted lines will help you aim.",
             arrows: "Use the LEFT and RIGHT arrow keys to switch between infected cells.", 
             macrophage: "Watch out for macrophages! They will kill your virion and alert a B cell.",
             antibodies: "Oh no! The B cell is producing antibodies! If an antibody attaches to an infected cell, the cell will be marked for destruction by a granulocyte.",
-            killer: "A granulocyte just destroyed one of your infected cells and all the virions inside it! Your virus won't be safe from the granulocyte until it mutates, creating a new strain.",
+            killer: "A granulocyte just destroyed one of your infected cells marked with an antibody and all the virions inside it! Your virus won't be safe from the granulocyte until it mutates, creating a new strain.",
             mutation: "Your virus just mutated to a new strain! Now it will be safe from the immune system until you hit another macrophage. Each virion can only be attacked by immune cells that know about its strain. Immune cells that know about a certain strain will be filled with the same color as virions of that strain.",
+            strain: "Uh oh! The last virion of the new strain died, so your current highest mutation level went back down. You should try to keep alive the virions of the newest strain - they will earn you the most points!"
         };
 
         // These flags are set to false when they've already occured
@@ -169,13 +173,19 @@ var in_game_state = function (p, previous_state, game_type) {
             var w = 400;
             var h = 200;
             var tw = w-50;
+            var tut_box = image_manager.get_image("tutorialbox.png");
             obj.draw = function() {
+                /*
                 p.noStroke();
                 p.fill(100);
                 p.rectMode(p.CENTER);
                 p.rect(x, y, w, h);
-                p.fill(0);
-                p.textSize(14);
+                */
+                p.imageMode(p.CENTER);
+                p.image(tut_box, x, y);
+                p.fill(255);
+                p.textLeading(17);
+                p.textSize(16);
                 p.textAlign(p.CENTER, p.CENTER);
                 p.text(txt, x-tw/2, y-h/2, tw, h-50);
             };
@@ -192,9 +202,10 @@ var in_game_state = function (p, previous_state, game_type) {
                     return obj; // the current state
                 },
                 rect: {
-                    pos: new p.PVector(p.width/2, p.height/2+80),
-                    width: 50, height: 50,
-                    text: "OK"
+                    pos: new p.PVector(p.width/2, p.height/2+60),
+                    //width: 50, height: 50,
+                    //text: "OK"
+                    image: "tut_ok.png"
                 }
             });
             all_buttons.push(close_button);
@@ -205,7 +216,8 @@ var in_game_state = function (p, previous_state, game_type) {
         var tut_obj = {
             popup : function(type) {
                 if (is_tutorial && tut_flags[type]) {
-                    do_pause();
+                    tut_pause();
+                    ok_to_fire = false;
                     text = tut_msgs[type];
                     show_popup(text);
                     tut_flags[type] = false;
@@ -755,7 +767,9 @@ var in_game_state = function (p, previous_state, game_type) {
 		var type1 = obj1.get_type();
 		var type2 = obj2.get_type();
 		
-        if (check_circle_collision(obj1, obj2)) {
+        if (!obj1.is_off_right() && 
+                !obj2.is_off_right() &&
+                check_circle_collision(obj1, obj2)) {
             var check_again = retrieve(extra_check, type1, type2);
             if (check_again !== undefined) {
                 return check_again(obj1, obj2);
@@ -1108,7 +1122,7 @@ var in_game_state = function (p, previous_state, game_type) {
                         b.set_mutation_info(flo.get_mutation_info());
                         b.activate(get_bcell_slot());
                         bounce(b, flo);
-                        notify("B-cell activated!", BAD_NOTIFICATION_COLOR);
+                        notify("B cell activated!", BAD_NOTIFICATION_COLOR);
                     }
                     // trying to avoid getting stuck
                     if (b.is_outdated()) {
@@ -1687,6 +1701,7 @@ var in_game_state = function (p, previous_state, game_type) {
                     mutation.reset_mutation();
 
                     notify("Lost new strain!", BAD_NOTIFICATION_COLOR);
+                    tut_manager.popup("strain");
                     console.log("downgraded to mutation level "+max_level);
 
                     scroll_factor -= 0.15;
@@ -1819,7 +1834,14 @@ var in_game_state = function (p, previous_state, game_type) {
 	// Fire
     obj.mouse_click = function (x, y) {
 		if (!paused && g.click_to_fire) {
-			do_fire();
+            // stall firing once
+            if (ok_to_fire) {
+			    do_fire();
+            }
+            // then allow it
+            else {
+                ok_to_fire = true;
+            }
 		}
     };
 	

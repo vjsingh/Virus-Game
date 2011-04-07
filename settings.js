@@ -8,7 +8,8 @@ var game_settings = function() {
         click_to_fire : true,
         mouse_to_select : false,
         spacebar_to_fire : true,
-        background_color : 0xFF371010
+        background_color : 0xFF3a0101 
+            // 0xFF371010
     };
 
     var toggle = function(name) {

@@ -13,11 +13,14 @@ var splash_state = function (p) {
 	// Have a rectangle representing their position and
 	// a state to go to when pressed
 
-    var top_row_y = 200;
-    var btm_row_y = 480;
-    var left_x = 460;
+    var top_row_y = 150;
+    var btm_row_y = 420;
+    var left_x_top = 465;
+    var left_x_btm = 500;
+    var incr_x = 40;
+    var incr_y = 60;
     var button_style = {
-        height: 160,
+        //height: 160,
         rect_color: back_color
     };
 
@@ -28,6 +31,21 @@ var splash_state = function (p) {
         sounds.pause_menu_music();
     };
 
+    var normal_button = button(p, {
+		state : function() { 
+            pause_menu_music();
+            sounds.play_button_click();
+            return in_game_state(p, obj, 2); 
+        },
+        rect: {
+            pos: new p.PVector(left_x_top+2*incr_x, top_row_y),
+            image: "mnormal.png",
+            over_image: "mnormal_r.png",
+            //width: 80,
+            style: button_style,
+        }
+    });
+
     var easy_button = button(p, {
 		state : function() { 
             pause_menu_music();
@@ -35,11 +53,11 @@ var splash_state = function (p) {
             return in_game_state(p, obj, 0); 
         },
         rect: {
-            pos: new p.PVector(left_x - (left_x * (2/3)), top_row_y),
-            text : "Easy",
-            //image: "mnewgame.png",
-            //over_image: "mnewgame_r.png",
-            width: 80,
+            pos: new p.PVector(left_x_top+incr_x, top_row_y+incr_y),
+            //text : "Easy",
+            image: "mbeginner.png",
+            over_image: "mbeginner_r.png",
+            //width: 80,
             style: button_style,
         }
     });
@@ -51,29 +69,15 @@ var splash_state = function (p) {
             return in_game_state(p, obj, 1); 
         },
         rect: {
-            pos: new p.PVector(left_x - (left_x /3), top_row_y),
-            text : "Tutorial",
-            //image: "mnewgame.png",
-            //over_image: "mnewgame_r.png",
-            width: 80,
+            pos: new p.PVector(left_x_top, top_row_y+2*incr_y),
+            //text : "Tutorial",
+            image: "mtutorial.png",
+            over_image: "mtutorial_r.png",
+            //width: 80,
             style: button_style,
         }
     });
 
-    var hard_button = button(p, {
-		state : function() { 
-            pause_menu_music();
-            sounds.play_button_click();
-            return in_game_state(p, obj, 2); 
-        },
-        rect: {
-            pos: new p.PVector(left_x, top_row_y),
-            image: "mnewgame.png",
-            over_image: "mnewgame_r.png",
-            width: 80,
-            style: button_style,
-        }
-    });
 
     var help_button = button(p, {
 		state : function() { 
@@ -81,24 +85,10 @@ var splash_state = function (p) {
             return help_state(p, obj); 
         },
         rect: {
-            pos: new p.PVector(left_x+150, top_row_y),
+            pos: new p.PVector(left_x_btm, btm_row_y),
             image: "mhowtoplay.png",
             over_image: "mhowtoplay_r.png",
-            width: 100,
-            style: button_style,
-        }
-    });
-
-    var options_button = button(p, {
-		state : function() { 
-            sounds.play_button_click();
-            return options_state(p, obj); 
-        },
-        rect: {
-            pos: new p.PVector(left_x, btm_row_y),
-            image: "msettings.png",
-            over_image: "msettings_r.png",
-            width: 120,
+            //width: 100,
             style: button_style,
         }
     });
@@ -109,11 +99,25 @@ var splash_state = function (p) {
             return high_scores_state(p, obj); 
         },
         rect: {
-            pos: new p.PVector(left_x+150, btm_row_y),
+            pos: new p.PVector(left_x_btm+incr_x, btm_row_y+incr_y),
             image: "mhighscores.png",
             over_image: "mhighscores_r.png",
             //text: "High Scores",
-            width: 100,
+            //width: 100,
+            style: button_style,
+        }
+    });
+
+    var options_button = button(p, {
+		state : function() { 
+            sounds.play_button_click();
+            return options_state(p, obj); 
+        },
+        rect: {
+            pos: new p.PVector(left_x_btm+2*incr_x-10, btm_row_y+2*incr_y),
+            image: "msettings.png",
+            over_image: "msettings_r.png",
+            //width: 120,
             style: button_style,
         }
     });
@@ -184,7 +188,7 @@ var splash_state = function (p) {
 	*/
 	
 	//Not ordered
-	var all_buttons = [easy_button, tut_button, hard_button, options_button,
+	var all_buttons = [easy_button, tut_button, normal_button, options_button,
         help_button, scores_button, credits_button ];
 
     // --- public methods ---
