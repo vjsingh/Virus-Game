@@ -207,6 +207,7 @@ var in_game_state = function (p, previous_state, game_type) {
             all_buttons.push(close_button);
 
             tut_window = tut_popup(text);
+            sounds.play_sound("TextPopUp");
         };
 
         var tut_obj = {

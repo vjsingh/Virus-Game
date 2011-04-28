@@ -21,6 +21,7 @@ var g_soundDataMap =
    "kill"		: "<?php echo data_uri('sounds/kill.ogg', "ogg");?>",
    "buttonmain"		: "<?php echo data_uri('sounds/buttonmain.ogg', "ogg");?>",
    "buttonback"		: "<?php echo data_uri('sounds/buttonback.ogg', "ogg");?>",
+   "TextPopUp"		: "<?php echo data_uri('sounds/TextPopUp.ogg', "ogg");?>",
    "cell_firemp3"          : "<?php echo data_uri('sounds/cell_fire.mp3', "mp3");?>",
    "cell_infectmp3"        : "<?php echo data_uri('sounds/cell_infect.mp3', "mp3");?>",
    "macrophage_infectmp3"  : "<?php echo data_uri('sounds/macrophage_infect.mp3', "mp3");?>",	
@@ -28,6 +29,7 @@ var g_soundDataMap =
    "killmp3"		: "<?php echo data_uri('sounds/kill.mp3', "mp3");?>",
    "buttonmainmp3"		: "<?php echo data_uri('sounds/buttonmain.mp3', "mp3");?>",
    "buttonbackmp3"		: "<?php echo data_uri('sounds/buttonback.mp3', "mp3");?>",
+   "TextPopUpmp3"		: "<?php echo data_uri('sounds/TextPopUp.mp3', "mp3");?>",
 };
 
 /*
