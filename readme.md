@@ -8,7 +8,6 @@
 
 ## Background
 Virion was the winner of the 2011 [Hidden Agenda] (https://twitter.com/haproject) educational game competition. The game is intended to teach kids (or adults!) about the basic workings of the human immune system.  
-
 Players who fully grasp the mechanics of the game will also have absorbed a general intuition about the first line of defence in our bodies, including macrophages, antibodies, T-Cells, and granulocytes.  
 
 ## Getting the code up and running
