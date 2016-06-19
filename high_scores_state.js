@@ -1,6 +1,6 @@
 function positionScoresDiv() {
-    var arbitraryLeftOffsetFromCss = 103;
-    var arbitraryTopOffsetFromCss = 83
+    var arbitraryLeftOffsetFromCss = 54;
+    var arbitraryTopOffsetFromCss = 83;
 
     var canvasLeft = $('.canvas-wrapper').offset().left;
     var canvasTop = $('.canvas-wrapper').offset().top;

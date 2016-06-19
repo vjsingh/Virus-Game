@@ -15,11 +15,11 @@ canvas {
     z-index: 2; 
     /*background: white;*/
     /*color: black;*/
-    width: 500;
+    width: 605px;
     height: 400;
     /* use top/left to center manually */
     /* add in border width */
-    left: 103px;
+    left: 54px;
     top: 83px;
     position: absolute;
     /* start hidden */
