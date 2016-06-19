@@ -6,7 +6,6 @@
 <link type="text/css" href="css/ui-darkness/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
 <link type="text/css" href="css/styles.css" rel="stylesheet" />
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-<script typ
 
 <script type="text/javascript">
 
@@ -158,13 +157,11 @@ function got_user(user) {
 <div>
     <div style="margin-top:1em; font-family: Roboto sans-serif; font-size: 20px">
         <!-- Score -->
-        <!-- Removing because its annoying when hiding all divs for theater mode. I don't think we're even using it anymore?
+        <!-- Removing because its annoying when hiding all divs for theater mode. I don't think we're even using it anymore?  -->
         <div id="scores-wrap">
         <div id="scores">
-            Could not load high scores! You may want to check your internet connection.
         </div>
         </div>
-        -->
         <div class="pure-button theater-disable" style="display: none; font-size: 14px"> Disable Theater Mode </div>
         <!-- Game Canvas -->
         <div class="dont-hide-in-theater canvas-wrapper" style="width: 700px; height: 600px; margin: 0 auto"> <!-- margin here is to center horizontally"  margin: 0 auto-->
@@ -326,6 +323,7 @@ function got_user(user) {
 <script>
 $(document).ready(function() {
     $('.theater-enable').click(function() {
+        var scoresState = $('#scores-wrap').css('display');
         $('.dont-hide-in-theater').siblings().hide();
         $('.theater-disable').show();
 
@@ -333,9 +331,17 @@ $(document).ready(function() {
         $('.canvas-wrapper').css('position', 'absolute');
         $('.canvas-wrapper').css('top', '50%');
         $('.canvas-wrapper').css('left', '50%');
-        $('.canvas-wrapper').css('transform', 'translateX(-50%) translateY(-50%)');
+        // Setting a transform breaks the canvas for some reason.
+        // These values are half of the width / height of the canvas
+        $('.canvas-wrapper').css('margin-left', '-350px');
+        $('.canvas-wrapper').css('margin-top', '-300px');
+
+        // Restore
+        $('#scores-wrap').css('display', scoresState);
     });
     $('.theater-disable').click(function() {
+        var scoresState = $('#scores-wrap').css('display');
+
         $('.dont-hide-in-theater').siblings().show();
         $('.theater-disable').hide();
 
@@ -343,7 +349,12 @@ $(document).ready(function() {
         $('.canvas-wrapper').css('position', '');
         $('.canvas-wrapper').css('top', '');
         $('.canvas-wrapper').css('left', '');
-        $('.canvas-wrapper').css('transform', '');
+        $('.canvas-wrapper').css('margin-left', '');
+        $('.canvas-wrapper').css('margin-top', '');
+        $('.canvas-wrapper').css('margin', '0 auto'); // See HTML for canvas-wrapper
+
+        // Restore
+        $('#scores-wrap').css('display', scoresState);
     });
 });
 </script>
