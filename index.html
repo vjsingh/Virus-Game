@@ -5,14 +5,8 @@
 <link rel="shortcut icon" href="images/logo/logo32.png" />
 <link type="text/css" href="css/ui-darkness/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
 <link type="text/css" href="css/styles.css" rel="stylesheet" />
-<style>
-    body { 
-        background: white;
-        color: black;
-        font-family: Arial, sans-serif;
-        overflow:none;
-    }
-</style>
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<script typ
 
 <script type="text/javascript">
 
@@ -161,41 +155,68 @@ function got_user(user) {
 
 <!-- <div id="fb_name_div"> You are not Logged In</div> -->
 
-<div style="margin: 1em; width: 700; align:center;">
-    <script>
-        if (fb_login_button) {
-            document.write(fb_login_button);
-        }
-    </script>
-
-    <div style="margin-top:1em; position:relative;">
+<div>
+    <div style="margin-top:1em; font-family: Roboto sans-serif; font-size: 20px">
         <!-- Score -->
+        <!-- Removing because its annoying when hiding all divs for theater mode. I don't think we're even using it anymore?
         <div id="scores-wrap">
         <div id="scores">
             Could not load high scores! You may want to check your internet connection.
         </div>
         </div>
+        -->
+        <div class="pure-button theater-disable" style="display: none; font-size: 14px"> Disable Theater Mode </div>
         <!-- Game Canvas -->
-        <canvas width="700" height="600" id="test_canvas"> 
-            Your browser does not support the HTML5 canvas element. Upgrade to Chrome, Firefox 4, Safari, or Opera to play this game. 
-        </canvas>
+        <div class="dont-hide-in-theater canvas-wrapper" style="width: 700px; height: 600px; margin: 0 auto"> <!-- margin here is to center horizontally"  margin: 0 auto-->
+            <canvas class="dont-hide-in-theater" width="700" height="600" id="test_canvas"> 
+                Your browser does not support the HTML5 canvas element. Upgrade to Chrome, Firefox 4, Safari, or Opera to play this game. 
+            </canvas>
+        </div>
+        <div style="width: 100%; background: #151515; margin-top: 60px;">
+            <div class="below-game-section below-game-section-border" style="width: 20%;">
+                <div class="below-game-header"> Theater Mode</div>
+                <div style="margin-bottom: 10px"> Try it, I triple-dog-dare you. </div>
+              <div class="pure-button theater-enable"> Enable </div>
+            </div>
+            <div class="below-game-section below-game-section-border" style="width: 50%;">
+                <div class="below-game-header"> High Scores </div>
+                <div>Log in with Facebook to track your high scores and see your friends':</div>
+                <div style="margin-bottom: 10px">(We promise no cookie-loving ghosts will sneak into your bedroom and steal all your personal information)</div>
+                <div style="width: 275px; margin: 0 auto"> <!-- Center horizontally -->
+                    <script>
+                        if (fb_login_button) {
+                            document.write(fb_login_button);
+                        }
+                    </script>
+                </div>
+            </div>
+            <div class="below-game-section" style="width: 20%;">
+                <div class="below-game-header">Like it?</div>
+                If you like the game, prove it!
+                <div style="margin-top:0.8em;">
+                <fb:like href="http://www.facebook.com/apps/application.php?id=179028108782663" show_faces="true" width="450" colorscheme="dark"></fb:like>
+                </div>
+            </div>
+        </div>
         <!--<div style="float:right; margin: 1.5em -5px 0.5em 1.5em; padding:0.5em; border: 1px dashed black; font-size:0.8em; width:200;">
             <div style="margin-bottom:0.5em; font-weight:bold;">Virion was the first place finisher in the 2010-2011 Hidden Agenda Competition!</div> 
             <a href="http://www.facebook.com/haproject" target="_blank"><img src="images/halogo.jpg" width="200" /></a> 
         </div>-->
-        <div style="margin-top:0.8em;">
-        <fb:like href="http://www.facebook.com/apps/application.php?id=179028108782663" show_faces="true" width="450"></fb:like>
-        </div>
-        <div style="margin-top: 1.5em; /*margin-bottom:4em;*/ font-size: 0.8em;">
-            <strong>Note:</strong> Virion was built entirely using the new open HTML5 standard and the <a href="http://processingjs.org">Processing.js</a> JavaScript library. This means that you will never have to install a proprietary plugin to play our game, and in the near future will be able to play our game on any browser on any platform. Currently, however, some browsers do not yet have full support for the HTML5 standard, so please note the following browser compatibility issues: <br/> <br/>
+        <div style="margin-top: 1.5em; /*margin-bottom:4em;*/ font-size: 1em;">
+            <div> Virion was the winner of the 2011 Hidden Agenda educational game competition. The game is intended to teach kids (or adults!) about the basic workings of the human immune system.
+
+            Players who fully grasp the mechanics of the game will also have absorbed a general intuition about the first line of defence in our bodies, including macrophages, antibodies, T-Cells, and granulocytes.
+            </div>
+            <div style="margin-top: 10px"> <strong>Note:</strong> Virion was built entirely using the new open HTML5 standard and the <a href="http://processingjs.org">Processing.js</a> JavaScript library. This means that you will never have to install a proprietary plugin to play our game, and in the near future will be able to play our game on any browser on any platform. Currently, however, some browsers do not yet have full support for the HTML5 standard, so please note the following browser compatibility issues: <br/> <br/>
             Google Chrome has no problems, and is highly recommended for the best overall performance<br/>
             If you are using Firefox 3 and the game is not loading or running slowly, try updating to Firefox 4<br/>
             If you are using Safari and seeing performance issues, try turning off the sound effects<br/>
             If you are using Internet Explorer, please ensure that you have updated to the latest version (Internet Explorer 9), or the game will not run.
+            </div>
       <br/><br/>        </div>
     </div>
 </div>
-<a href="https://github.com/vjsingh/Virus-Game"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
+<a target="_blank" href="https://github.com/vjsingh/Virus-Game"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
 
     
 <!-- Jplayer divs 
@@ -302,3 +323,27 @@ function got_user(user) {
     //scores.do_scores();
 </script>
 
+<script>
+$(document).ready(function() {
+    $('.theater-enable').click(function() {
+        $('.dont-hide-in-theater').siblings().hide();
+        $('.theater-disable').show();
+
+        // center horizontally and vertically
+        $('.canvas-wrapper').css('position', 'absolute');
+        $('.canvas-wrapper').css('top', '50%');
+        $('.canvas-wrapper').css('left', '50%');
+        $('.canvas-wrapper').css('transform', 'translateX(-50%) translateY(-50%)');
+    });
+    $('.theater-disable').click(function() {
+        $('.dont-hide-in-theater').siblings().show();
+        $('.theater-disable').hide();
+
+        // remove added styling
+        $('.canvas-wrapper').css('position', '');
+        $('.canvas-wrapper').css('top', '');
+        $('.canvas-wrapper').css('left', '');
+        $('.canvas-wrapper').css('transform', '');
+    });
+});
+</script>

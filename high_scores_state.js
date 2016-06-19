@@ -21,8 +21,8 @@ var high_scores_state = function (p, prev_state) {
             sounds.play_button_back();
 
             // hide the div
-            $("#scores-wrap").hide();
-            $("#scores").tabs("destroy");
+            //$("#scores-wrap").hide();
+            //$("#scores").tabs("destroy");
             return prev_state;//splash_state(p);
         },	
 		rect : {
@@ -68,12 +68,12 @@ var high_scores_state = function (p, prev_state) {
     // init the scores immediately
     var init = (function() {
         // add a loading message to be removed on load
-        $("#scores-wrap").prepend(
-            "<div id='scores-loading' style='height:400; background: black; text-align:center;' ><div style='position:relative; top:50%; color:white;'>Loading high score data...</div></div>"
-        );
+        //$("#scores-wrap").prepend(
+            //"<div id='scores-loading' style='height:400; background: black; text-align:center;' ><div style='position:relative; top:50%; color:white;'>Loading high score data...</div></div>"
+        //);
 
         // show the div
-        $("#scores-wrap").show();
+        //$("#scores-wrap").show();
         // update and render scores
         // TODO what if it fails?
         scores.do_scores();
