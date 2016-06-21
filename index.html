@@ -211,7 +211,7 @@ function got_user(user) {
       <br/><br/>        </div>
     </div>
 </div>
-<a target="_blank" href="https://github.com/vjsingh/Virus-Game"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
+<a id="fork-me-baby" target="_blank" href="https://github.com/vjsingh/Virus-Game"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
 
     
 <!-- Jplayer divs 
@@ -325,6 +325,8 @@ $(document).ready(function() {
         $('.dont-hide-in-theater').siblings().hide();
         $('.theater-disable').show();
 
+        $('#fork-me-baby').hide();
+
         // center horizontally and vertically
         $('.canvas-wrapper').css('position', 'absolute');
         $('.canvas-wrapper').css('top', '50%');
@@ -333,6 +335,7 @@ $(document).ready(function() {
         // These values are half of the width / height of the canvas
         $('.canvas-wrapper').css('margin-left', '-350px');
         $('.canvas-wrapper').css('margin-top', '-300px');
+
 
         // Restore
         $('#scores-wrap').css('display', scoresState);
@@ -343,6 +346,8 @@ $(document).ready(function() {
         $('.dont-hide-in-theater').siblings().show();
         $('.theater-disable').hide();
 
+        $('#fork-me-baby').show();
+
         // remove added styling
         $('.canvas-wrapper').css('position', '');
         $('.canvas-wrapper').css('top', '');
@@ -350,6 +355,7 @@ $(document).ready(function() {
         $('.canvas-wrapper').css('margin-left', '');
         $('.canvas-wrapper').css('margin-top', '');
         $('.canvas-wrapper').css('margin', '0 auto'); // See HTML for canvas-wrapper
+
 
         // Restore
         $('#scores-wrap').css('display', scoresState);
