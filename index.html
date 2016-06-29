@@ -353,8 +353,11 @@ $(document).ready(function() {
     $('.theater-enable').click();
 
     var fadeInPage = function() {
-        $('#intro-loading-text').delay(500).animate({ width: '0px'}, 1000);
-        $("#whole-page-intro-overlay").delay(1500).animate({ opacity: 0 }, 4000, "swing", function() {
+        var baseDelay = 1500; // Arbitrary number to make sure everything is loaded.
+
+        // Fade out text first.
+        $('#intro-loading-text').delay(baseDelay).animate({ width: '0px'}, 1000);
+        $("#whole-page-intro-overlay").delay(baseDelay + 1000).animate({ opacity: 0 }, 4000, "swing", function() {
             $('#whole-page-intro-overlay').remove();
         });
     }
