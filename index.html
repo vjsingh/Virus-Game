@@ -22,6 +22,10 @@
 </script>
 </head>
 
+<body style="background:white">
+<div id="whole-page-intro-overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 100; background: white">
+</div>
+
 <!-- Facebook Integration 
 	All of this is just to set g_user_id and g_user_name
 -->
@@ -162,44 +166,19 @@ function got_user(user) {
         <div id="scores">
         </div>
         </div>
-        <div class="pure-button theater-disable" style="display: none; font-size: 14px"> Disable Theater Mode </div>
+        <div class="pure-button theater-disable" style="font-size: 14px"> + More Info</div>
+        <div class="pure-button theater-enable" style="display: none; font-size: 14px"> Enable Theater Mode </div>
         <!-- Game Canvas -->
         <div class="dont-hide-in-theater canvas-wrapper" style="width: 700px; height: 600px; margin: 0 auto"> <!-- margin here is to center horizontally"  margin: 0 auto-->
             <canvas class="dont-hide-in-theater" width="700" height="600" id="test_canvas"> 
                 Your browser does not support the HTML5 canvas element. Upgrade to Chrome, Firefox 4, Safari, or Opera to play this game. 
             </canvas>
         </div>
-        <div style="width: 100%; background: #151515; margin-top: 60px;">
-            <div class="below-game-section below-game-section-border" style="width: 20%;">
-                <div class="below-game-header"> Theater Mode</div>
-                <div style="margin-bottom: 10px"> Try it, I triple-dog-dare you. </div>
-              <div class="pure-button theater-enable"> Enable </div>
-            </div>
-            <div class="below-game-section below-game-section-border" style="width: 50%;">
-                <div class="below-game-header"> High Scores </div>
-                <div>Log in with Facebook to track your high scores and see your friends':</div>
-                <div style="margin-bottom: 10px">(We promise no cookie-loving ghosts will sneak into your bedroom and steal all your personal information)</div>
-                <div style="width: 275px; margin: 0 auto"> <!-- Center horizontally -->
-                    <script>
-                        if (fb_login_button) {
-                            document.write(fb_login_button);
-                        }
-                    </script>
-                </div>
-            </div>
-            <div class="below-game-section" style="width: 20%;">
-                <div class="below-game-header">Like it?</div>
-                If you like the game, prove it!
-                <div style="margin-top:0.8em;">
-                <fb:like href="http://www.facebook.com/apps/application.php?id=179028108782663" show_faces="true" width="450" colorscheme="dark"></fb:like>
-                </div>
-            </div>
-        </div>
         <!--<div style="float:right; margin: 1.5em -5px 0.5em 1.5em; padding:0.5em; border: 1px dashed black; font-size:0.8em; width:200;">
             <div style="margin-bottom:0.5em; font-weight:bold;">Virion was the first place finisher in the 2010-2011 Hidden Agenda Competition!</div> 
             <a href="http://www.facebook.com/haproject" target="_blank"><img src="images/halogo.jpg" width="200" /></a> 
         </div>-->
-        <div style="margin-top: 1.5em; /*margin-bottom:4em;*/ font-size: 1em;">
+        <div style="color: black; margin-top: 5em; /*margin-bottom:4em;*/ font-size: 0.8em;">
             <div> Virion was the winner of the 2011 Hidden Agenda educational game competition. The game is intended to teach kids (or adults!) about the basic workings of the human immune system.
 
             Players who fully grasp the mechanics of the game will also have absorbed a general intuition about the first line of defence in our bodies, including macrophages, antibodies, T-Cells, and granulocytes.
@@ -321,6 +300,8 @@ function got_user(user) {
 <script>
 $(document).ready(function() {
     $('.theater-enable').click(function() {
+        $('body').css('background', 'black');
+
         var scoresState = $('#scores-wrap').css('display');
         $('.dont-hide-in-theater').siblings().hide();
         $('.theater-disable').show();
@@ -341,6 +322,7 @@ $(document).ready(function() {
         $('#scores-wrap').css('display', scoresState);
     });
     $('.theater-disable').click(function() {
+        $('body').css('background', 'white');
         var scoresState = $('#scores-wrap').css('display');
 
         $('.dont-hide-in-theater').siblings().show();
@@ -360,5 +342,12 @@ $(document).ready(function() {
         // Restore
         $('#scores-wrap').css('display', scoresState);
     });
+    $('.theater-enable').click();
+    $("#whole-page-intro-overlay").delay(1500).animate({ opacity: 0 }, 4000, "swing", function() {
+        $('#whole-page-intro-overlay').remove();
+    });
+    $('body').css('background', '');
 });
 </script>
+
+</body>

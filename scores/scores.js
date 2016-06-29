@@ -44,7 +44,8 @@ var make_scores = function(){
                 console.log("got friends scores");
             }
             else {
-                do_global();
+                //do_global();
+                callback("Friends' Scores", do_global)(null);
                 console.log("skipped friends scores");
             }
         };
@@ -59,7 +60,8 @@ var make_scores = function(){
             console.log("getting user high scores");
 		}
         else {
-            do_global();
+            // Ask people to log in to facebook to show their own scores.
+            callback("Your Scores", do_friends)(null);
         }
 	};
 	
@@ -75,6 +77,7 @@ var make_scores = function(){
     // Passing a function as do_more does it at the end of the callback
     var tab_count = 1;
 	var display_scores = function(header, do_more) {
+        console.log("IN DISPLAY SCORES");
         var headers = [ "Rank", "Score", "Level", "Name", "Date" ];
         var formatters = {
             "score": add_commas,
@@ -107,8 +110,14 @@ var make_scores = function(){
                 }
             }
             catch (e) {
-                con += "<div style='padding:5;'>Error loading scores."
+                if (tab_count === 1) {
+                    con += "<div style='padding:5;'>Please log in to facebook to enable personal high scores, by clicking 'More Info' in the top-left of your screen.";
                    +" Please check your internet connection.";
+                } else if (tab_count === 2) {
+                    con += "<div style='padding:5;'>Please log in to facebook to see your friends' high scores, by clicking 'More Info' in the top-left of your screen.";
+                } else if (tab_count === 3) {
+                    con += "<div style='padding:5;'>Error loading scores. Please check your internet connection.";
+                }
             }
             if (scores) {
 
