@@ -23,7 +23,10 @@
 </head>
 
 <body style="background:white">
-<div id="whole-page-intro-overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 100; background: white">
+<div id="whole-page-intro-overlay" style="text-align: center; vertical-align: center; position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 100; background: white">
+  <div id="intro-loading-text" style="color: black; font-size: 16px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); overflow: hidden; white-space: nowrap;"> <!-- Center horizontally and vertically -->
+        L O A D I N G
+  </div>
 </div>
 
 <!-- Facebook Integration 
@@ -349,6 +352,7 @@ $(document).ready(function() {
     $('.theater-enable').click();
 
     var fadeInPage = function() {
+        $('#intro-loading-text').delay(500).animate({ width: '0px'}, 1000);
         $("#whole-page-intro-overlay").delay(1500).animate({ opacity: 0 }, 4000, "swing", function() {
             $('#whole-page-intro-overlay').remove();
         });
@@ -359,6 +363,7 @@ $(document).ready(function() {
         var timeToWait = 200;
         window.setTimeout(function() {
             if (CHECKED_USER_LOGIN_STATUS || count > (2000 / timeToWait)) {  // Don't wait more than 2 seconds
+                console.log(count);
                 fadeInPage();
             } else {
                 waitAndFadeInPage();
@@ -367,7 +372,7 @@ $(document).ready(function() {
         count += 1;
     }
     if (CHECKED_USER_LOGIN_STATUS) {
-        fadInPage();
+        fadeInPage();
     } else {
         waitAndFadeInPage();
     }

@@ -99,7 +99,7 @@ var make_image_manager = function() {
                 sketch.imageCache.add(path);
                 // count it
                 num_images += 1;
-                console.log("loading "+path);
+                //console.log("loading "+path);
             }
         );
     };
