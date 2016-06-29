@@ -93,6 +93,7 @@ if(window.location.hash.length == 0)
         </div> '
         //);
 } else { // access token in URL
+    CHECKED_USER_LOGIN_STATUS = true;
     accessToken = window.location.hash.substring(1);
     // This shouldn't actually be needed to get the friends list, but it
     // isn't working withot it for some reason. So keep it around for later.
