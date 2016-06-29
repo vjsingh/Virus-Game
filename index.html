@@ -361,7 +361,7 @@ $(document).ready(function() {
     $('.theater-enable').click();
 
     var fadeInPage = function() {
-        var baseDelay = 1500; // Arbitrary number to make sure everything is loaded.
+        var baseDelay = 2500; // Arbitrary number to make sure everything is loaded. If the swiping animation is laggy it looks really bad and is worth waiting longer for a good animation, IMO.
 
         // Fade out text first.
         $('#intro-loading-text').delay(baseDelay).animate({ width: '0px'}, 1000);
