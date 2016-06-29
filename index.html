@@ -59,6 +59,8 @@
 // If user is already logged in, then refresh to get
 // the auth token
 var fb_login_button;
+// We want to avoid fading in the page before we know if the user is logged in to avoid a flicker.
+var CHECKED_USER_LOGIN_STATUS = false;
 if(window.location.hash.length == 0)
 {
     var url = "https://www.facebook.com/dialog/oauth?client_id= \
@@ -66,14 +68,15 @@ if(window.location.hash.length == 0)
              "&response_type=token";
     //window.open(url);
     //window.location = url;
-     FB.getLoginStatus(function(response) {
- 	if (response.status === 'connected') { //logged in and known
-        window.location=url;
-    }
-    else {
-        //window.location = window.location + "1";
-    }
- })
+    FB.getLoginStatus(function(response) {
+        if (response.status === 'connected') { //logged in and known
+            window.location=url;
+        }
+        else {
+            //window.location = window.location + "1";
+        }
+        CHECKED_USER_LOGIN_STATUS = true;
+     })
     // Add fb login button if user is not logged in
     //document.write(
     fb_login_button = ' \
@@ -121,6 +124,7 @@ g_get_friends = function() {
 
 // This 'user' object has all the info from fb
 function got_user(user) {
+    console.log('got user');
     //userName.innerText = user.name;
     //console.log("user id: " + user.id);
     
@@ -343,9 +347,30 @@ $(document).ready(function() {
         $('#scores-wrap').css('display', scoresState);
     });
     $('.theater-enable').click();
-    $("#whole-page-intro-overlay").delay(1500).animate({ opacity: 0 }, 4000, "swing", function() {
-        $('#whole-page-intro-overlay').remove();
-    });
+
+    var fadeInPage = function() {
+        $("#whole-page-intro-overlay").delay(1500).animate({ opacity: 0 }, 4000, "swing", function() {
+            $('#whole-page-intro-overlay').remove();
+        });
+    }
+    // yes this could be shorter... but its efficient and it works so there ya have it.
+    var count = 0;
+    var waitAndFadeInPage = function() {
+        var timeToWait = 200;
+        window.setTimeout(function() {
+            if (CHECKED_USER_LOGIN_STATUS || count > (2000 / timeToWait)) {  // Don't wait more than 2 seconds
+                fadeInPage();
+            } else {
+                waitAndFadeInPage();
+            }
+        }, timeToWait);
+        count += 1;
+    }
+    if (CHECKED_USER_LOGIN_STATUS) {
+        fadInPage();
+    } else {
+        waitAndFadeInPage();
+    }
     $('body').css('background', '');
 });
 </script>
